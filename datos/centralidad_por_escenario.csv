@@ -1,0 +1,180 @@
+id,estacion,centralidad_pct_esc0,centralidad_pct_esc1,centralidad_pct_esc2,centralidad_pct_esc3
+E79,Ricaurte,56.81,51.14,42.73,37.21
+E76,AV. Eldorado,47.09,44.03,31.95,29.82
+E77,CAD,38.4,38.07,27.02,25.51
+E78,Paloquemao,38.47,38.07,27.06,25.5
+E70,NQS Calle 75,42.53,38.6,24.14,22.34
+E75,Universidad Nacional,37.14,34.09,24.28,22.14
+E74,Campin - UAN,36.79,33.85,23.95,21.9
+E73,TIGO,36.43,33.62,23.61,21.67
+E72,7 de Agosto,36.06,33.38,23.28,21.45
+E71,Avenida Chile,35.68,33.15,23.0,21.27
+E25,Avenida Jiménez,26.65,22.56,24.33,21.15
+E106,Pradera - Plaza Central,14.39,12.59,21.47,19.8
+E128,Salitre El Greco - Vive Claro,6.84,6.78,15.19,16.94
+E46,Puentelargo,11.96,12.66,15.2,16.81
+E129,El Tiempo - Cámara De Comercio De Bogotá,5.51,5.94,15.54,16.78
+E60,Avenida 68,10.71,13.27,16.18,16.52
+E59,Carrera 53,11.96,14.14,17.87,16.38
+E26,Hortúa,19.03,17.02,17.49,16.01
+E80,Guatoque - Veraguas,15.58,16.77,14.29,15.77
+E27,Nariño,17.9,16.21,16.44,15.24
+E14,Calle 100 - Marketmedios,16.75,13.44,18.5,15.05
+E81,Tygua - San José,14.39,15.94,13.19,14.97
+E82,Bicentenario,13.43,16.02,12.27,14.96
+E28,Fucha,16.75,15.43,15.38,14.49
+E30,Olaya,14.39,15.08,13.19,14.0
+E15,Virrey - Cendiatra,19.0,15.23,15.47,13.76
+E29,Restrepo,15.58,14.68,14.29,13.76
+E47,Av. Suba - Calle 116,10.71,11.83,9.79,12.99
+E45,Suba Calle 100,13.19,13.5,12.78,12.37
+E100,San Facon Carrera 22,20.27,14.64,17.16,12.19
+E48,Humedal Córdoba,9.44,11.01,8.63,12.16
+E88,Alquería,13.19,11.52,13.61,12.1
+E17,Héroes - Colmena Seguros,9.45,10.2,10.82,11.71
+E99,De La Sabana,19.61,14.13,16.5,11.67
+E57,Escuela Militar,17.66,18.46,11.11,11.59
+E24,Calle 22,10.55,10.56,11.03,11.55
+E50,Suba - AV. Boyacá,6.84,11.44,6.24,11.55
+E83,Comuneros,19.03,16.72,13.27,11.53
+E49,Niza - Calle 127,8.15,10.22,7.44,11.34
+E23,Calle 26 - Atrio,10.17,10.3,10.68,11.29
+E101,CDS Carrera 32,20.14,17.72,13.68,11.11
+E22,AV. 39,9.8,10.07,10.36,11.08
+C6_Av68-9,Avenida Carrera 68 - Avenida Calle 24 (Teusaquillo),,,10.12,11.02
+C6_Av68-8,Avenida Carrera 68 (Puente Aranda) [C6·8],,,10.09,10.96
+E21,Calle 53 - Universidad Manuela Beltrán,9.45,9.88,10.12,10.95
+C6_Av68-7,Avenida Carrera 68 - Avenida Calle 13 (Puente Aranda),,,10.11,10.94
+E20,Calle 57,9.1,9.7,9.96,10.86
+E18,Calle 72 - Areandina,8.79,9.58,9.84,10.85
+E19,Flores,8.88,9.6,9.87,10.83
+E107,Marsella,13.19,11.52,12.08,10.66
+E84,Santa Isabel,17.9,15.71,12.27,10.63
+E13,Calle 106,15.58,12.45,14.29,10.55
+E138,Estación San Bernardo,6.84,11.26,6.24,10.47
+E102,Zona Industrial,19.03,16.72,12.85,10.4
+E58,Carrera 47,13.19,15.03,9.22,10.16
+E66,Carrera 90,2.8,10.11,2.55,9.94
+E103,Carrera 43 - Comapan,17.9,15.71,12.21,9.92
+E61,Ferias,9.44,12.4,8.63,9.85
+E85,NQS Calle 30 SUR,16.75,14.69,11.38,9.81
+E139,Policarpa,5.51,10.45,5.03,9.7
+E89,Venecia,11.96,10.44,10.94,9.66
+E108,Av Américas - Av. Boyacá,11.96,10.44,10.94,9.66
+E12,Pepe Sierra - Utel Universidad,14.39,11.51,13.19,9.6
+E104,Puente Aranda,16.75,14.69,11.65,9.53
+E105,Distrito Grafiti,15.58,13.65,11.32,9.31
+E86,CL 38 A Sur - Centro Mayor,15.58,13.65,10.72,9.23
+E62,Boyacá,8.15,11.56,7.44,8.96
+E140,Ciudad Jardín - UAN,4.17,9.64,3.8,8.92
+E32,Calle 40 Sur,11.96,9.4,10.94,8.82
+E87,General Santander,14.39,12.59,10.17,8.82
+C6_Av68-11,Avenida Carrera 68 - Avenida Calle 26 (Salitre),,,12.1,8.72
+E11,Calle 127,13.19,10.64,12.08,8.65
+E90,Sevillana,10.71,9.34,9.79,8.63
+E109,Mandalay,10.71,9.34,9.79,8.63
+E143,Portal 20 de Julio,0.0,9.57,0.0,8.6
+C6_Av68-12,Avenida Carrera 68 - Avenida Calle 53 (Salitre),,,11.77,8.33
+E141,AV. Primero de Mayo,2.8,8.81,2.55,8.13
+E63,Minuto De Dios,6.84,10.73,6.24,8.08
+C6_Av68-13,Avenida Carrera 68 (Teusaquillo),,,11.46,8.04
+E33,Santa Lucía,10.87,8.55,9.93,8.0
+C6_Av68-15,Avenida Carrera 68 - Avenida Calle 72 (Barrios Unidos),,,11.25,7.99
+C6_Av68-18,Avenida Calle 100 - Avenida Carrera 68 (Barrios Unidos),,,7.5,7.92
+C6_Av68-14,Avenida Carrera 68 (Barrios Unidos),,,11.17,7.84
+E130,AV. Rojas - UNISALESIANA,4.17,5.12,3.8,7.81
+E10,Prado,11.96,9.79,10.94,7.76
+C6_Av68-19,Avenida Calle 100 (Barrios Unidos),,,7.26,7.73
+E123,Ciudad Universitaria,13.19,11.16,7.68,7.65
+E91,C. C Paseo Villa Del Rio - Madelena,9.44,8.22,8.63,7.6
+E110,Banderas,9.44,8.22,8.63,7.6
+E42,San Martín,16.75,16.08,6.87,7.54
+E64,Granja - CRA. 77,5.51,9.91,5.03,7.44
+E142,Country Sur,1.41,8.07,1.28,7.41
+E16,Calle 85 - Gato Dumas,4.46,4.7,6.47,7.12
+E69,La Castellana,15.51,11.36,9.57,7.1
+E124,Corferias,11.96,10.26,6.93,7.09
+E65,Avenida Cali,4.17,9.14,3.8,7.06
+E43,Rionegro,15.58,15.22,6.14,6.98
+E131,Normandia,2.8,4.41,2.55,6.96
+E9,Alcalá - Colegio S. Tomás Dominicos,10.71,8.95,9.79,6.93
+E44,Suba - Calle 95,14.39,14.36,5.82,6.79
+C6_Av68-4,Avenida Carrera 68 - Avenida Calle 3 (Puente Aranda),,,7.14,6.64
+E125,Quinta Paredes - RTVC,10.71,9.37,6.29,6.6
+E92,Perdomo,8.15,7.09,7.44,6.55
+E111,Transversal 86,8.15,7.09,7.44,6.55
+E127,CAN - British Council,8.15,7.63,5.85,6.35
+E126,Gobernacion,9.44,8.49,5.93,6.34
+E132,Modelia,1.41,3.97,1.28,6.3
+E8,Calle 142,9.44,8.12,8.63,6.1
+E133,Portal El Dorado - C. C Nuestro Bogotá,0.0,3.73,0.0,5.94
+C4-6,Avenida Carrera 10 - Calle 34 Sur (Restrepo) [C4·6],,6.44,,5.87
+E68,Portal 80,0.0,6.55,0.0,5.84
+C6_Av68-3,Avenida Carrera 68 (Puente Aranda) [C6·3],,,6.14,5.73
+C1-4,Avenida Carrera 86 - Avenida Calle 63 (Tabora),,3.49,,5.68
+E5,Calle 161,5.51,6.76,5.03,5.61
+E93,Portal Sur - JFK Coop. Financiera,6.84,5.95,6.24,5.49
+E112,Biblioteca Tintal,6.84,5.95,6.24,5.49
+C1-3,Avenida Carrera 86 (Tabora) [C1·3],,3.27,,5.44
+E7,Calle 146,8.15,7.3,7.44,5.28
+C1-2,Avenida Carrera 86 (Tabora) [C1·2],,3.07,,5.24
+E56,Polo - FINCOMERCIO,5.53,5.85,4.91,4.98
+C6_Av68-2,Avenida Carrera 68 (Puente Aranda) [C6·2],,,5.24,4.96
+C2-6,Transversal 94L - Transversal 94 (Tabora),,5.69,,4.93
+C3-7,Avenida Carrera 72 - Calle 138 (Niza),,4.16,,4.88
+C4-5,Transversal 5J - Avenida Carrera 10 (Rafael Uribe),,5.32,,4.83
+E51,Gratamira,5.51,6.3,5.03,4.75
+C6_Av68-1,Avenida Carrera 68 (Puente Aranda) [C6·1],,,5.0,4.75
+E6,Mazúren,6.84,6.5,6.24,4.46
+E94,Bosa,5.51,4.79,5.03,4.42
+E113,Patio Bonito,5.51,4.79,5.03,4.42
+C2-5,Avenida Calle 90 - Avenida Carrera 91 (Tabora),,4.85,,4.08
+E52,21 Ángeles,4.17,5.6,3.8,3.94
+C3-6,Avenida Carrera 72 - Calle 147 (Britalia),,3.19,,3.94
+C4-4,Diagonal 50 Sur - Transversal 5N Bis (Rafael Uribe),,4.2,,3.79
+C5-5,Calle 27 Sur (Restrepo),,3.91,,3.43
+E95,La Despensa,4.17,3.61,3.8,3.33
+E114,Portal Americas,4.17,3.61,3.8,3.33
+E137,San Victorino,4.17,3.61,3.8,3.33
+C2-4,Avenida Carrera 104 - Avenida Calle 127 (Rincón de Suba),,4.03,,3.26
+C5-6,Avenida Carrera 10 - Calle 34 Sur (Restrepo) [C5·6],,3.67,,3.13
+C3-5,Avenida Calle 153 (Britalia) [C3·5],,2.29,,2.99
+C4-3,Carrera 5R - Calle 50A Sur (Rafael Uribe),,3.1,,2.77
+E38,Consuelo,4.17,2.85,3.8,2.72
+C3-4,Avenida Calle 153 (Britalia) [C3·4],,2.23,,2.62
+C2-3,Avenida Carrera 104 (Rincón de Suba) [C2·3],,3.22,,2.45
+E122,Concejo de Bogotá,2.83,2.52,2.67,2.39
+E54,La Campiña,1.41,3.91,1.28,2.32
+E3,Portal Norte - Unicervantes,2.8,2.42,2.55,2.23
+E35,Biblioteca,2.8,2.42,2.55,2.23
+E96,León XIII,2.8,2.42,2.55,2.23
+E115,Islandia,2.8,2.42,2.55,2.23
+E136,Las Nieves,2.8,2.42,2.55,2.23
+E55,Portal Suba,0.0,3.1,0.0,1.84
+C4-2,Avenida Carrera 14 - Avenida Calle 51 Sur (Rafael Uribe),,2.04,,1.78
+C2-2,Avenida Carrera 104 (Rincón de Suba) [C2·2],,2.45,,1.72
+E39,Molinos,2.8,1.73,2.55,1.68
+E121,Centro Memoria,1.93,1.77,1.81,1.66
+C2-1,Avenida Carrera 104 - Avenida Calle 139 (Rincón de Suba),,2.38,,1.52
+E120,Museo del Oro,1.98,1.68,1.72,1.49
+E119,Las Aguas - Centro Colombo Americano,1.69,1.5,1.51,1.36
+E118,Universidades CityU,1.55,1.44,1.42,1.33
+E2,Calle 187,1.41,1.22,1.28,1.12
+E97,Terreros - H. Cardiovascular,1.41,1.22,1.28,1.12
+E116,Laureles,1.41,1.22,1.28,1.12
+E135,San Diego,1.41,1.22,1.28,1.12
+C4-1,Avenida Carrera 14 (Rafael Uribe),,0.98,,0.79
+E40,Danubio,1.41,0.7,1.28,0.72
+E41,Portal Usme,0.0,0.34,0.0,0.29
+E1,Terminal,0.0,0.0,0.0,0.0
+E4,Toberín,4.17,0.0,3.8,0.0
+E31,Quiroga,13.19,0.0,12.08,0.0
+E34,Socorro,4.17,0.0,3.8,0.0
+E36,Parque,1.41,0.0,1.28,0.0
+E37,Portal Tunal,0.0,0.0,0.0,0.0
+E53,Suba TV 91 - OMNILIFE SEYTÚ,2.8,0.0,2.55,0.0
+E67,Quirigua,1.41,0.0,1.28,0.0
+E98,San Mateo,0.0,0.0,0.0,0.0
+E117,Tibanica - Primavera,0.0,0.0,0.0,0.0
+E134,Museo Nacional,0.0,0.0,0.0,0.0
+C3-9,Avenida Calle 145 - Carrera 76 (Britalia),,0.0,,0.0

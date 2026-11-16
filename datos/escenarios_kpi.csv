@@ -1,0 +1,5 @@
+escenario,estaciones_bogota,km_adicionales,viajes_pico_am,longitud_media_km,tiempo_medio_congestion_min,carga_paloquemao_ricaurte_pax,vulnerabilidad_ricaurte_pct,puentes_topologicos,alivio_nqs_pct
+Esc. 0: Red Actual Base,139,0.0,433315,11.68,30.1,84683,37.4,110,0.0
+Esc. 1: +5 Corredores Periféricos,161,37.32,456067,10.95,26.9,88894,16.6,38,5.0
+Esc. 2: +Solo Bypass Av. 68,153,22.38,446788,10.92,26.4,70552,0.0,83,-16.7
+Esc. 3: Integral (+5 Perif. + Av. 68),175,59.7,469541,10.51,24.6,68216,0.0,27,-19.4
