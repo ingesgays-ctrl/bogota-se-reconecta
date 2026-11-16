@@ -186,10 +186,9 @@ function mlInit() {
   try { m = new maplibregl.Map({ container: box, style: ML_STYLE, ...camML(cam), attributionControl: { compact: true }, maxPitch: 70, minZoom: 8, maxZoom: 18 }); }
   catch (e) { box.remove(); return; }
   const giveUp = () => { if (ML.on) return; try { m.remove(); } catch (_) { } box.remove(); };
-  let timer = setTimeout(giveUp, 25000);
-  document.addEventListener("visibilitychange", () => { if (ML.on) return; clearTimeout(timer); if (!document.hidden) timer = setTimeout(giveUp, 25000); });
+  // solo se abandona WebGL ante un error real del estilo (p. ej. visores que bloquean la red); las teselas sueltas que fallen no cuentan
+  m.on("error", ev => { if (!ML.on && ev && ev.sourceId === undefined && !ev.tile) giveUp(); });
   m.on("load", () => {
-    clearTimeout(timer);
     try {
       mlSetup(m, "R"); mlInteract(m);
       ML.map = m; ML.on = true;
