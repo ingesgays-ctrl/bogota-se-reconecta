@@ -22,7 +22,7 @@ const TX = [
   [/5 anillos periféricos/g, "5 conexiones entre barrios"], [/anillos periféricos/g, "conexiones entre barrios"],
   [/Los 5 anillos/g, "Las 5 conexiones entre barrios"], [/los 5 anillos/g, "las 5 conexiones entre barrios"], [/5 anillos/g, "5 conexiones entre barrios"],
   [/Los anillos/g, "Las conexiones entre barrios"], [/los anillos/g, "las conexiones entre barrios"], [/anillos/g, "conexiones entre barrios"],
-  [/[Bb]ypass transversal/g, "corredor transversal"], [/el bypass/g, "el corredor transversal"], [/[Bb]ypass/g, "Corredor transversal"],
+  [/el [Bb]ypass transversal/g, "la ruta alterna"], [/[Bb]ypass transversal/g, "ruta alterna"], [/[Ee]l bypass/g, "la ruta alterna"], [/del bypass/g, "de la ruta alterna"], [/al bypass/g, "a la ruta alterna"], [/Bypass/g, "Ruta alterna"], [/bypass/g, "ruta alterna"],
   [/Puentes topológicos/g, "Puntos críticos"], [/puentes topológicos/g, "puntos críticos"], [/puente topológico/g, "punto crítico"],
   [/Centralidad de intermediación/g, "Paso de rutas"], [/centralidad de intermediación/g, "paso de rutas"], [/La centralidad/g, "El paso de rutas"], [/la centralidad/g, "el paso de rutas"],
   [/Centralidad/g, "Paso de rutas"], [/centralidad/g, "paso de rutas"],
@@ -33,7 +33,7 @@ const TX = [
   [/modelo IPF con congestión BPR/g, "modelo de viajes con trancón"], [/IPF \+ congestión BPR/g, "modelo de viajes con trancón"], [/con congestión BPR/g, "con trancón"],
   [/congestión BPR/g, "trancón"], [/del modelo BPR/g, "del modelo de trancón"], [/modelo BPR/g, "modelo de trancón"], [/ BPR/g, ""],
   [/aristas/g, "conexiones"], [/arista/g, "conexión"], [/ nodos/g, " estaciones"], [/ nodo/g, " estación"],
-  [/(\d) pax\b/g, "$1 pasajeros"], [/pico AM/g, "hora pico de la mañana"], [/Escenario integral/g, "Red completa"], [/escenario integral/g, "red completa"],
+  [/(\d) pax\b/g, "$1 pasajeros"], [/Punto de articulación/g, "Estación crítica"], [/Grado en la red/g, "Conexiones directas"], [/pico AM/g, "hora pico de la mañana"], [/Escenario integral/g, "Red completa"], [/escenario integral/g, "red completa"],
 ];
 const tx = h => DEV ? h : TX.reduce((acc, [re, r]) => acc.replace(re, r), h);
 function applyModeTexts() { $$("[data-u]").forEach(el => el.innerHTML = DEV ? el.dataset.d : el.dataset.u); }
@@ -440,7 +440,7 @@ const MK = new Map();
 function marker(id, xy, cls, inner, tip) {
   const g = svgEl("g", { class: "mk " + cls }, cls.startsWith("new") ? lyMkNew : lyMk);
   g.dataset.x = xy[0].toFixed(1); g.dataset.y = xy[1].toFixed(1); g.dataset.id = id; g.dataset.tip = tip;
-  g.innerHTML = inner;
+  g.innerHTML = '<circle class="mkhit" r="9"/>' + inner;
   g.setAttribute("tabindex", "-1");
   g.addEventListener("click", () => select({ type: "node", id }));
   MK.set(id, g); return g;
@@ -596,6 +596,7 @@ const loadCol = addCol(critXY, "load", loadH(E[0].carga));
 const loadLbl = addLbl(critXY, "load", "", () => loadCol.hv, 6);
 const ricLbl = addLbl(NODE.get(RIC).xy, "ric", "Ricaurte", null, 10);
 const failLbl = addLbl(NODE.get(RIC).xy, "ric", "", null, 10); failLbl.el.style.display = "none";
+const pulseLbl = addLbl([0, 0], "pulse", "<i></i><i></i><i></i>", null, 0); pulseLbl.el.style.display = "none";
 const odA = addLbl([0, 0], "od", "", null, 8), odB = addLbl([0, 0], "od", "", null, 8); odA.el.style.display = odB.el.style.display = "none";
 const CORR_LBL = {};
 D.corredores.forEach(c => {
@@ -662,7 +663,7 @@ function apply(s = S) {
     g.classList.toggle("sel", !!(s.sel && s.sel.type === "node" && s.sel.id === id));
   });
   // columnas
-  COLS.forEach(o => { if (o.est) o.el.style.opacity = (s.layers.col && s.layers.est && vc.includes(o.est.corredor)) ? 1 : 0; });
+  COLS.forEach(o => { if (o.est) o.el.style.opacity = s.layers.col ? 1 : 0; });
   const e = E[s.esc];
   setColH(loadCol, loadH(e.carga));
   loadLbl.el.innerHTML = loadHTML(e);
@@ -670,6 +671,9 @@ function apply(s = S) {
   if (s.fail && s.fail !== RIC) { failLbl.xy = NODE.get(s.fail).xy; failLbl.el.querySelector("span").textContent = NODE.get(s.fail).nombre + " · fuera de servicio"; failLbl.el.style.display = ""; }
   else failLbl.el.style.display = "none";
   $("#lgCent").hidden = !s.layers.cent;
+  // ondas sobre la estación elegida
+  if (s.sel && s.sel.type === "node" && NODE.get(s.sel.id)) { pulseLbl.xy = NODE.get(s.sel.id).xy; pulseLbl.el.style.display = ""; pulseLbl.el.classList.toggle("dead", s.fail === s.sel.id); }
+  else pulseLbl.el.style.display = "none";
   // columnas de centralidad
   CCOLS.forEach(o => { const v = CENT[s.esc].get(o.id) || 0; setColH(o, Math.round(v * 300)); o.el.style.opacity = s.layers.cent ? 1 : 0; });
   // UPL
@@ -740,6 +744,7 @@ function select(sel) {
   }
   if (lab.failMode && sel && sel.type === "node") lab.fail = lab.fail === sel.id ? null : sel.id;
   lab.sel = sel; if (sel) { setTab("sta"); openPanel(); } apply(labState());
+  if (sel && sel.type === "node" && lab.view === "map" && !lab.compare) { const n = NODE.get(sel.id); flyTo({ ...cam, ...fit([[n.lon, n.lat]], { pitch: cam.pitch, rot: cam.rot }), z: Math.max(cam.z, 14.4) }, 900); }
 }
 function selSummary(sel) {
   if (sel.type === "corr") { const c = CORR[sel.id]; return `<b>${esc(SHORT[c.id])} · ${esc(c.nombre)}</b><small>${f2(c.km_total)} km (${f2(c.km_nueva)} obra nueva) · ${esc(c.ejes.join(" → "))}</small>`; }
@@ -1489,6 +1494,19 @@ $("#camOrbit").onclick = () => setOrbit($("#camOrbit").getAttribute("aria-presse
 $("#camFollow").onclick = () => setFollow(!follow);
 mapEl.addEventListener("pointerdown", () => { if ($("#camOrbit").getAttribute("aria-pressed") === "true") setOrbit(false); if (follow) setFollow(false); });
 // ---- ticker de estado por eje ----
+// la barra se puede arrastrar, mover con la rueda o con las flechas
+(() => {
+  const t = $("#ticker"); if (!t) return;
+  let d = null;
+  t.addEventListener("pointerdown", ev => { if (ev.button !== 0) return; d = { x: ev.clientX, s: t.scrollLeft, moved: false }; t.classList.add("drag"); });
+  addEventListener("pointermove", ev => { if (!d) return; const dx = ev.clientX - d.x; if (Math.abs(dx) > 3) d.moved = true; t.scrollLeft = d.s - dx; });
+  addEventListener("pointerup", () => { d = null; t.classList.remove("drag"); });
+  t.addEventListener("wheel", ev => { if (Math.abs(ev.deltaY) > Math.abs(ev.deltaX)) { t.scrollLeft += ev.deltaY; ev.preventDefault(); } }, { passive: false });
+  const wrap = t.parentElement, mk = (dir, txt) => { const b = document.createElement("button"); b.type = "button"; b.className = "tk-arrow " + dir; b.setAttribute("aria-label", dir === "l" ? "Ver anteriores" : "Ver siguientes"); b.textContent = txt; b.onclick = () => t.scrollBy({ left: (dir === "l" ? -1 : 1) * t.clientWidth * .6, behavior: "smooth" }); wrap.appendChild(b); return b; };
+  const L = mk("l", "‹"), R = mk("r", "›");
+  const upd = () => { L.hidden = t.scrollLeft < 4 || t.offsetParent === null; R.hidden = t.scrollLeft + t.clientWidth > t.scrollWidth - 4 || t.offsetParent === null; };
+  t.addEventListener("scroll", upd); new ResizeObserver(upd).observe(t); new MutationObserver(upd).observe(t, { childList: true });
+})();
 function renderTicker(s) {
   const e = E[s.esc], pm = s.peak === "pm", c = id => (CENT[s.esc].get(id) || 0) * 100, c0 = id => (CENT[0].get(id) || 0) * 100;
   const lvl = v => v >= 30 ? ["Muy cargado", "bad"] : v >= 15 ? ["Cargado", "mid"] : ["Fluido", "good"];
@@ -1500,7 +1518,8 @@ function renderTicker(s) {
     { n: "Av. Carrera 68", st: e.corredores.includes("C6_Av68") ? "En operación" : "No existe hoy", k: e.corredores.includes("C6_Av68") ? "good" : "off", v: e.corredores.includes("C6_Av68") ? "22,38 km · 14 estaciones" : "", d: "" },
     { n: DEV ? "Corredores periféricos C1–C5" : "Conexiones entre barrios", st: e.corredores.includes("C1") ? "En operación" : "No existen hoy", k: e.corredores.includes("C1") ? "good" : "off", v: e.corredores.includes("C1") ? "37,32 km · 5 tramos" : "", d: "" },
   ];
-  $("#ticker").innerHTML = items.map(i => `<span class="tk ${i.k}"><b>${esc(i.n)}</b><em>${esc(i.st)}</em>${i.v ? `<span>${esc(i.v)}</span>` : ""}${i.d ? `<span class="num">${esc(i.d)}</span>` : ""}</span>`).join("") + (DEV ? '<span class="tk-note">Umbrales de centralidad: ≥ 30 % muy cargado · ≥ 15 % cargado</span>' : "");
+  const head = `<span class="tk-head ${s.esc ? "fut" : ""}">${s.esc ? (DEV ? "Con mejoras · " + ESC_D[s.esc] : "Con las mejoras · " + ESC_U[s.esc]) : (DEV ? "Hoy · Esc. 0 red actual" : "Hoy · red actual")} · ${pm ? "pico tarde" : "pico mañana"}</span>`;
+  $("#ticker").innerHTML = head + items.map(i => `<span class="tk ${i.k}"><b>${esc(i.n)}</b><em>${esc(i.st)}</em>${i.v ? `<span>${esc(i.v)}</span>` : ""}${i.d ? `<span class="num">${esc(i.d)}</span>` : ""}</span>`).join("") + (DEV ? '<span class="tk-note">Umbrales de centralidad: ≥ 30 % muy cargado · ≥ 15 % cargado</span>' : "");
 }
 // ---- interruptor de modo y jornada ----
 function setDev(v) {

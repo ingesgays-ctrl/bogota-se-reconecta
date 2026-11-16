@@ -105,7 +105,7 @@ function mlData(side) {
     if (o.type !== "col" || !colOn(o) || !o.hv) return;
     const cl = o.el.classList;
     if (cl.contains("load")) add(o.xy, o.hv * 55, 150, S.compare && S.esc > 0 ? "#1E7F55" : "#D8101E");
-    else if (cl.contains("dens")) add(o.xy, o.hv * 45, 55, cl.contains("tr") ? "#2A9D8F" : "#F2C14E");
+    else if (cl.contains("dens")) add(o.xy, o.hv * 45, 85, cl.contains("tr") ? "#2A9D8F" : "#F2C14E");
     else if (cl.contains("cent")) add(o.xy, o.hv * 45, 75, "#2B3A44");
     else if (cl.contains("heatcol")) add(o.xy, o.hv * 45, 60, (o.el.style.background.match(/rgb\([^)]+\)/) || ["#E9B949"])[0]);
   });
@@ -128,7 +128,7 @@ function mlLabels() {
     const vis = o.el.style.display !== "none" && o.el.style.opacity !== "0" && !(o === loadLbl && !is3D());
     let mk = ML_LBL.get(o);
     if (!vis) { if (mk) { mk.remove(); ML_LBL.delete(o); } return; }
-    if (!mk) { const el = document.createElement("div"); mk = new maplibregl.Marker({ element: el, anchor: "bottom", offset: [0, o === loadLbl ? -6 : -8] }); ML_LBL.set(o, mk); mk.setLngLat(unP(o.xy)).addTo(m); }
+    if (!mk) { const el = document.createElement("div"); mk = new maplibregl.Marker({ element: el, anchor: o === pulseLbl ? "center" : "bottom", offset: o === pulseLbl ? [0, 0] : [0, o === loadLbl ? -6 : -8] }); ML_LBL.set(o, mk); mk.setLngLat(unP(o.xy)).addTo(m); }
     const el = mk.getElement(); el.className = o.el.className + " ml-lbl"; if (el.innerHTML !== o.el.innerHTML) el.innerHTML = o.el.innerHTML;
     mk.setLngLat(unP(o.xy));
   });
@@ -157,7 +157,13 @@ function mlEnsureB() {
 }
 // ---- interacción ----
 function mlInteract(m) {
-  const pick = e => m.queryRenderedFeatures(e.point, { layers: ["ml-bus", "ml-stations", "ml-corr-hit"] })[0];
+  const pick = e => {
+    const p = e.point, box = [[p.x - 12, p.y - 12], [p.x + 12, p.y + 12]];
+    const bus = m.queryRenderedFeatures(p, { layers: ["ml-bus"] })[0]; if (bus) return bus;
+    const st = m.queryRenderedFeatures(box, { layers: ["ml-stations"] }).filter(f => f.properties.o > 0);
+    if (st.length) { let best = null, bd = 1e9; st.forEach(f => { const q = m.project(f.geometry.coordinates), dd = (q.x - p.x) ** 2 + (q.y - p.y) ** 2; if (dd < bd) { bd = dd; best = f; } }); return best; }
+    return m.queryRenderedFeatures(p, { layers: ["ml-corr-hit"] })[0];
+  };
   m.on("mousemove", e => {
     if (tipPinned) return;
     const f = pick(e); m.getCanvas().style.cursor = f ? "pointer" : "";
