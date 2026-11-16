@@ -64,7 +64,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .tiles{position:absolute;left:0;top:0}
 .tiles img{position:absolute;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .vec{position:absolute;overflow:visible;pointer-events:none}
-.vec .hit,.vec .mk,.vec .upl{pointer-events:auto}
+.vec .hit,.vec .mk,.vec .upl,.vec .bus{pointer-events:auto}
 .cols{position:absolute;left:0;top:0;transform-style:preserve-3d;pointer-events:none}
 .fog{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,#E4E8E7 0%,rgba(228,232,231,.85) 9%,rgba(228,232,231,0) 34%);transition:opacity .4s}
 
@@ -400,6 +400,83 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 .dl a{font:600 13.5px var(--f-mono);color:var(--av68)}
 .dl span{font-size:12.5px;color:var(--muted)}
 @media (max-width:820px){.top-r{width:100%;justify-content:space-between}.present-btn{padding:5px 10px;font-size:13px}.cmp-hud{font-size:11px;max-width:46%;top:40px}.cmp-hud.r{right:8px}.pres-card{max-height:42vh}.presenting .legend{display:none}}
+
+/* =========== Laboratorio amplio (mapa ≥ 82vh, controles plegables) =========== */
+body.mode-laboratorio .stage{display:grid;grid-template-columns:var(--lw,264px) minmax(0,1fr);grid-template-rows:86vh auto;grid-template-areas:"left map" "kpis kpis";overflow-y:auto}
+body.mode-laboratorio.lab-collapsed .stage{--lw:0px}
+body.lab-collapsed .lab-left{display:none!important}
+body.mode-laboratorio .lab-left{grid-area:left;height:86vh;padding:8px 10px 14px;gap:4px;font-size:13.5px}
+.lab-left details.blk{border-bottom:1px solid var(--line);padding:4px 0 8px}
+.lab-left details.blk>summary{cursor:pointer;list-style:none;font:700 17px/1.2 var(--f-display);padding:6px 0;display:flex;align-items:center;gap:6px}
+.lab-left details.blk>summary::-webkit-details-marker{display:none}
+.lab-left details.blk>summary::before{content:"▸";font-size:13px;color:var(--muted);transition:transform .15s}
+.lab-left details.blk[open]>summary::before{transform:rotate(90deg)}
+.lab-left .esc{padding:6px 8px}.lab-left .esc .n{width:22px;height:22px;font-size:13px}.lab-left .esc b{font-size:13.5px}.lab-left .esc small{font-size:11px}
+.lab-left .tg{font-size:13px;padding:3px 0}
+.lab-left .sel{font-size:13px;padding:5px 7px}
+.lab-left .btn-fail{padding:7px;font-size:13.5px}
+.mode-laboratorio .hint{display:none}
+.lab-tools{position:absolute;left:12px;top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;pointer-events:auto;max-width:calc(100% - 70px)}
+body:not(.mode-laboratorio) .lab-tools{display:none}
+.drawer-btn,.sim-btn{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 13px;font-weight:600;font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,.08);white-space:nowrap}
+.sim-btn{background:#1E7F55;color:#fff;border-color:#1E7F55}
+.sim-btn[aria-pressed="true"]{background:var(--ink);border-color:var(--ink)}
+.sim-hud{background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px}
+.sim-hud b{color:var(--tm);font-size:14px}
+.mode-laboratorio .cmp-hud{top:56px}
+body:not(.mode-laboratorio) #lyBus{display:none}
+.bus{cursor:pointer}
+.bus rect:first-child{stroke:#fff;stroke-width:1.3}
+.bus.od rect:first-child{stroke-width:1.6}
+/* tarjeta flotante */
+.fcard{position:absolute;right:12px;bottom:36px;width:min(370px,calc(100% - 24px));max-height:calc(100% - 120px);overflow-y:auto;background:var(--panel);border:1px solid var(--line)!important;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:7}
+.fcard[hidden]{display:none!important}
+.fc-close{position:sticky;top:8px;float:right;margin:8px 8px 0 0;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:19px;line-height:1;z-index:2;display:grid;place-items:center}
+.fc-close:hover{background:var(--soft)}
+.fcard .det{padding:14px 16px 18px;gap:10px}
+.fcard .det h2{font-size:22px;padding-right:30px}
+.fcard .big-row{grid-template-columns:1fr 1fr;gap:6px}
+.fcard .stat .v{font-size:18px}
+.presenting .fcard{display:none!important}
+/* sección inferior en lenguaje claro */
+.kpis.info{display:block;grid-area:kpis;background:var(--paper);border-top:1px solid var(--line)}
+.info-in{max-width:1280px;margin:0 auto;padding:28px 24px 56px;display:flex;flex-direction:column;gap:18px}
+.info-h .tag{font:600 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--tm)}
+.info-h h2{font-size:34px;margin-top:4px}
+.info-h p{font-size:17px;max-width:70ch;margin:6px 0 0}
+.kgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kc.crit{border-top:4px solid var(--tm)}
+.kt{font-weight:600;font-size:15px;line-height:1.25}
+.ks{font-size:12.5px;color:var(--muted)}
+.kval{font:600 30px/1.15 var(--f-mono);font-variant-numeric:tabular-nums;margin-top:8px}
+.kval small{font-size:16px;margin-left:3px;vertical-align:baseline}
+.kd{font-size:13.5px;font-weight:600}
+.kd.good{color:var(--good)}.kd.bad{color:var(--bad)}.kd.flat{color:var(--muted)}
+.kc svg{display:block;width:100%;height:28px;margin-top:8px}
+.kx{font-size:10.5px;color:var(--muted)}
+.why-h{font-size:26px;margin-top:12px}
+.why3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.why3 article{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.why3 article.all{background:var(--ink);color:#fff;border-color:var(--ink)}
+.why3 h4{font:700 21px/1.15 var(--f-display);margin:8px 0 8px}
+.why3 p{margin:0;font-size:14.5px}
+.wn{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--soft);font:700 14px var(--f-mono)}
+.all .wn{background:#fff;color:var(--ink)}
+.corr-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.corr-chips .chip i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+@media (max-width:1100px){.kgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.why3{grid-template-columns:1fr}}
+@media (max-width:820px){
+  body.mode-laboratorio .stage{display:flex;flex-direction:column}
+  body.mode-laboratorio .map-wrap{height:72vh;flex:none;order:0}
+  body.mode-laboratorio .lab-left{order:1;height:auto;overflow:visible;border-bottom:1px solid var(--line)}
+  body.mode-laboratorio .kpis{order:2}
+  .fcard{left:8px;right:8px;width:auto;bottom:8px;max-height:60%}
+  .sim-hud{display:none}
+  .info-h h2{font-size:26px}
+}
+@media (max-width:520px){.kgrid{grid-template-columns:1fr}}
+@media (max-width:520px){.top-r{gap:6px}.modes{overflow-x:auto;min-width:0;flex:1}.modes a{padding:6px 9px;font-size:12.5px}.present-btn{padding:5px 9px;font-size:12.5px}}
 </style>
 </head>
 <body class="mode-relato">
@@ -441,6 +518,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
               <g id="lyRoute" style="display:none"></g>
               <g id="lyMk"></g>
               <g id="lyMkNew"></g>
+              <g id="lyBus" style="display:none"></g>
             </g>
           </svg>
           <div class="cols" id="cols"></div>
@@ -450,6 +528,11 @@ input[type=range]{width:100%;accent-color:var(--ink)}
     </div>
     <div class="lbls" id="lbls" aria-hidden="true"></div>
     <div class="map-ui">
+      <div class="lab-tools">
+        <button type="button" class="drawer-btn" id="drawerBtn" aria-controls="labLeft" aria-expanded="true" title="Mostrar u ocultar controles"><span aria-hidden="true">☰</span> Controles</button>
+        <button type="button" class="sim-btn" id="simPlay" aria-pressed="false"><span aria-hidden="true">▶</span> Simular operación en vivo</button>
+        <span class="sim-hud" id="simHud" hidden></span>
+      </div>
       <div class="map-ctrl" role="group" aria-label="Controles del mapa">
         <button type="button" id="zIn" title="Acercar" aria-label="Acercar">+</button>
         <button type="button" id="zOut" title="Alejar" aria-label="Alejar">−</button>
@@ -462,8 +545,8 @@ input[type=range]{width:100%;accent-color:var(--ink)}
         <span><i class="lg-base"></i>Red actual (143 est.)</span>
         <span><i class="lg-new"></i>Estación nueva</span>
         <span><i class="lg-tr"></i>Transbordo</span>
-        <span><i class="lg-crit"></i>Paloquemao–Ricaurte</span>
-        <span id="lgCent" hidden><i class="lg-cent"></i>Centralidad</span>
+        <span><i class="lg-crit"></i>Tramo más cargado</span>
+        <span id="lgCent" hidden><i class="lg-cent"></i>Rutas que pasan por ahí</span>
         <span class="lg-rt"><i class="lg-ra"></i>Ruta red actual</span><span class="lg-rt"><i class="lg-rb"></i>Ruta escenario</span>
       </div>
       <div class="attrib" id="attrib">Mapa base vectorial · UPL Decreto 555/2021</div>
@@ -477,6 +560,10 @@ input[type=range]{width:100%;accent-color:var(--ink)}
       <div class="pres-card" id="presCard"></div>
       <div class="pres-nav"><button type="button" id="presPrev" aria-label="Escena anterior">←</button><span id="presCount" class="num"></span><button type="button" id="presNext" aria-label="Escena siguiente">→</button><button type="button" id="presExit">Salir · Esc</button></div>
     </div>
+    <aside class="lab-right fcard" id="labRight" aria-label="Ficha seleccionada" hidden>
+      <button type="button" class="fc-close" id="fcClose" aria-label="Cerrar ficha">×</button>
+      <div id="detail"></div>
+    </aside>
     <div class="tip" id="tip" role="status"></div>
     <div class="graph" id="graph" hidden>
       <div id="cy"></div>
@@ -495,13 +582,13 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 
   <!-- LABORATORIO: paneles -->
   <aside class="lab-left" id="labLeft" aria-label="Controles del laboratorio">
-    <div class="blk">
-      <h3>Escenario simulado</h3>
-      <p class="sub">Modelo gravitacional IPF + congestión BPR · hora pico AM</p>
+    <details class="blk" open>
+      <summary>Escenario</summary>
+      <p class="sub">Elige qué red quieres ver. Cifras del modelo para la hora pico de la mañana.</p>
       <div class="esc-list" id="escList" role="radiogroup" aria-label="Escenarios"></div>
-    </div>
-    <div class="blk">
-      <h3>Prueba de resiliencia</h3>
+    </details>
+    <details class="blk">
+      <summary>¿Qué pasa si se cierra una estación?</summary>
       <p class="sub">Retira cualquier estación del grafo y mira cuáles quedan aisladas (en rojo).</p>
       <div class="quick" id="failQuick" role="group" aria-label="Estaciones críticas"></div>
       <label for="failSel" class="vh">Otra estación a retirar</label>
@@ -510,10 +597,10 @@ input[type=range]{width:100%;accent-color:var(--ink)}
       <button type="button" class="btn-fail" id="btnReset"><span class="bolt" aria-hidden="true"></span>Restablecer la red</button>
       <p class="sub" id="failMsg"></p>
       <p class="sub">Calle 76 y Tercer Milenio no están en la matriz de 143 estaciones del proyecto, así que no se pueden simular.</p>
-      <label class="tg"><input type="checkbox" id="tgBridges"><span>Resaltar puentes topológicos</span></label>
-    </div>
-    <div class="blk">
-      <h3>¿Cuánto tiempo me ahorro?</h3>
+      <label class="tg"><input type="checkbox" id="tgBridges"><span>Resaltar puntos críticos (si se cortan, parten la red)</span></label>
+    </details>
+    <details class="blk">
+      <summary>¿Cuánto tiempo me ahorro?</summary>
       <p class="sub">Ruta más corta en la red actual frente al escenario elegido.</p>
       <div class="quick" id="routeQuick" role="group" aria-label="Rutas de ejemplo"></div>
       <label for="rtO" class="vh">Estación de origen</label><select id="rtO" class="sel"></select>
@@ -521,9 +608,9 @@ input[type=range]{width:100%;accent-color:var(--ink)}
       <label class="rng" for="rtPen">Tiempo por transbordo (supuesto): <b id="rtPenV">5 min</b></label>
       <input type="range" id="rtPen" min="0" max="12" step="1" value="5">
       <button type="button" class="chip" id="rtClear">Quitar ruta</button>
-    </div>
-    <div class="blk">
-      <h3>Capas</h3>
+    </details>
+    <details class="blk">
+      <summary>Capas</summary>
       <label class="tg"><input type="checkbox" id="lyRedT" checked><span>Red TransMilenio actual</span></label>
       <label class="tg"><input type="checkbox" id="lyPerT" checked><span>5 corredores periféricos</span></label>
       <label class="tg"><input type="checkbox" id="lyAvT" checked><span>Bypass Av. Carrera 68</span></label>
@@ -531,20 +618,17 @@ input[type=range]{width:100%;accent-color:var(--ink)}
       <label class="tg"><input type="checkbox" id="lyColT" checked><span>Columnas 3D de densidad POT</span></label>
       <label class="tg"><input type="checkbox" id="lyCentT"><span>Columnas 3D de centralidad (top 10)</span></label>
       <label class="tg"><input type="checkbox" id="lyUplT"><span>Límites UPL</span></label>
-    </div>
-    <div class="blk">
-      <h3>Vista</h3>
+    </details>
+    <details class="blk" open>
+      <summary>Vista</summary>
       <div class="seg" role="group" aria-label="Vista">
         <button type="button" id="vMap" aria-pressed="true">Mapa 3D</button>
         <button type="button" id="vCmp" aria-pressed="false">Cortina</button>
         <button type="button" id="vGraph" aria-pressed="false">Grafo</button>
       </div>
-    </div>
+    </details>
   </aside>
-  <aside class="lab-right" id="labRight" aria-label="Detalle">
-    <div id="detail"></div>
-  </aside>
-  <div class="kpis" id="kpis" aria-label="Indicadores del escenario"></div>
+  <section class="kpis info" id="kpis" aria-label="Qué cambia en este escenario"></section>
 
   <!-- ANÁLISIS -->
   <section class="analysis" id="analysis" aria-label="Análisis y datos"></section>
@@ -971,7 +1055,8 @@ NODE.forEach(n => {
 });
 // rutas O→D
 const RT = { a: { cs: svgEl("path", { class: "rt-case" }, lyRoute), ln: svgEl("path", { class: "rt rt-a" }, lyRoute) }, b: { cs: svgEl("path", { class: "rt-case" }, lyRoute), ln: svgEl("path", { class: "rt rt-b" }, lyRoute) } };
-function routeGeom(esc, P) { // usa la geometría real de los corredores cuando el tramo es de corredor
+function routeGeom(esc, P) { return pathD(routePts(esc, P)); }
+function routePts(esc, P) { // usa la geometría real de los corredores cuando el tramo es de corredor
   const pts = [NODE.get(P[0]).xy];
   for (let i = 1; i < P.length; i++) {
     const a = P[i - 1], b = P[i], k = ekey(a, b), c = G[esc].corrEdge.get(k);
@@ -983,8 +1068,84 @@ function routeGeom(esc, P) { // usa la geometría real de los corredores cuando 
     }
     pts.push(NODE.get(b).xy);
   }
-  return pathD(pts);
+  return pts;
 }
+/* ---- simulación de operación en vivo ----
+   Recorridos: pares origen–destino reales por camino más corto (Dijkstra) sobre el grafo del escenario,
+   más servicios reales de la hoja Rutas siguiendo su secuencia de paradas. Velocidad: la velocidad
+   efectiva con congestión del modelo BPR para el escenario (no hay datos de congestión por tramo). */
+const lyBus = $("#lyBus");
+const SIM_OD = [["Portal Usme", "Portal 20 de Julio"], ["Portal Suba", "Portal 80"], ["Portal 80", "Portal El Dorado - C. C Nuestro Bogotá"], ["Portal Suba", "Portal El Dorado - C. C Nuestro Bogotá"],
+  ["Terminal", "Portal Suba"], ["Portal Tunal", "Portal 20 de Julio"], ["Alquería", "Calle 100 - Marketmedios"], ["Portal Usme", "Portal Tunal"]].map(([a, b]) => [byName(a), byName(b)]);
+const SIM_SERV = (() => { // servicios reales: el más largo de cada portal de origen
+  const seen = new Set(), out = [];
+  [...D.servicios].sort((a, b) => b.stops.length - a.stops.length).forEach(sv => { if (out.length < 10 && !seen.has(sv.stops[0])) { seen.add(sv.stops[0]); out.push(sv); } });
+  return out;
+})();
+const SVC_PATH = new Map(SIM_SERV.map(sv => { // secuencia de paradas expandida por el grafo actual
+  const P = [sv.stops[0]];
+  for (let i = 1; i < sv.stops.length; i++) { const r = shortest(0, sv.stops[i - 1], sv.stops[i]); if (r) P.push(...r.path.slice(1)); }
+  return [sv.cod, P];
+}));
+const EJE_XY = EJE.map(id => NODE.get(id).xy), EJE_R = 450 / MPP12;
+const sim = { on: false, t: 0, last: 0, esc: -1, buses: [], raf: 0 };
+const MIN_PER_SEC = 4;   // 1 segundo en pantalla = 4 minutos reales
+function mkTrack(esc, P) {
+  const pts = routePts(esc, P), cum = [0];
+  for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const eje = pts.map(p => EJE_XY.some(q => Math.hypot(q[0] - p[0], q[1] - p[1]) < EJE_R));
+  return { pts, cum, len: cum[cum.length - 1], eje };
+}
+function simBuild() {
+  const esc2 = S.esc; sim.esc = esc2; lyBus.innerHTML = ""; sim.buses = [];
+  const pxPerMin = VEL[esc2] / 60 * 1000 / MPP12; sim.odEje = 0; sim.odN = 0;
+  const add = (tr, label, color, phase, od) => {
+    const g = svgEl("g", { class: "bus" + (od ? " od" : "") }, lyBus);
+    g.innerHTML = `<rect x="-7" y="-3.6" width="14" height="7.2" rx="2" fill="${color}"/><rect x="3.2" y="-2.6" width="2.6" height="5.2" rx=".8" fill="#fff" opacity=".85"/>`;
+    g.dataset.tip = label; sim.buses.push({ g, tr, phase, pxPerMin, od });
+  };
+  SIM_OD.forEach(([a, b], i) => [[a, b], [b, a]].forEach(([o, d], j) => {
+    const r = routeInfo(esc2, o, d); if (!r) return;
+    const usa = r.legs.map(l => l.sv.corr ? `corredor ${SHORT[l.sv.corr]}` : `servicio ${l.sv.cod}`).join(" → ");
+    const pasa = r.eje.length ? `pasa por ${r.eje.map(id => NODE.get(id).nombre).join(", ")}` : "no pasa por el eje central";
+    const col = r.legs.find(l => l.sv.corr) ? COLOR[r.legs.find(l => l.sv.corr).sv.corr] : "#3E4A53";
+    const tr = mkTrack(esc2, r.path); sim.odN++; if (r.eje.length) sim.odEje++;
+    for (let k = 0; k < 2; k++) add(tr, `<b>${esc(short(NODE.get(o).nombre))} → ${esc(short(NODE.get(d).nombre))}</b><small>${esc(usa)} · ${esc(pasa)} · ${fI(tripMin(r))} min</small>`, col, (k * 0.5 + i * 0.13 + j * 0.27) % 1, true);
+  }));
+  SIM_SERV.forEach((sv, i) => {
+    const P = SVC_PATH.get(sv.cod), tr = mkTrack(0, P), trR = mkTrack(0, [...P].reverse());
+    const lbl = (x, y) => `<b>Servicio ${esc(sv.cod)} · ${esc(x)} → ${esc(y)}</b><small>troncal existente · ${sv.stops.length} paradas reales (hoja Rutas)</small>`;
+    add(tr, lbl(short(NODE.get(P[0]).nombre), short(NODE.get(P[P.length - 1]).nombre)), "#D8101E", (i * 0.17) % 1, false);
+    add(trR, lbl(short(NODE.get(P[P.length - 1]).nombre), short(NODE.get(P[0]).nombre)), "#D8101E", (i * 0.17 + .5) % 1, false);
+  });
+}
+function simFrame(now) {
+  if (!sim.on) return;
+  const dt = sim.last ? Math.min(.1, (now - sim.last) / 1000) : 0; sim.last = now; sim.t += dt * MIN_PER_SEC;
+  if (sim.esc !== S.esc) simBuild();
+  const k = 2 ** (cam.z - Z0); let inEje = 0, odEje = 0, nOd = 0;
+  for (const b of sim.buses) {
+    const tr = b.tr, cycle = tr.len / b.pxPerMin + 6;           // minutos por vuelta + 6 min en terminal
+    const m = ((sim.t / cycle + b.phase) % 1) * cycle, d = Math.min(tr.len, m * b.pxPerMin);
+    let i = 1; while (i < tr.cum.length - 1 && tr.cum[i] < d) i++;
+    const a = tr.pts[i - 1], c = tr.pts[i], seg = tr.cum[i] - tr.cum[i - 1] || 1, u = (d - tr.cum[i - 1]) / seg;
+    const x = a[0] + (c[0] - a[0]) * u, y = a[1] + (c[1] - a[1]) * u, ang = Math.atan2(c[1] - a[1], c[0] - a[0]) * 180 / Math.PI;
+    b.g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(1 / k).toFixed(4)}) rotate(${ang.toFixed(0)})`);
+    const e2 = tr.eje[i] || tr.eje[i - 1]; if (e2) inEje++;
+    if (b.od) { nOd++; if (e2) odEje++; }
+  }
+  $("#simHud").innerHTML = `Rutas entre bordes que pasan por el centro: <b class="num">${sim.odEje} de ${sim.odN}</b> · buses en el eje central ahora: <b class="num">${inEje}</b>`;
+  sim.raf = requestAnimationFrame(simFrame);
+}
+function simToggle(on = !sim.on) {
+  sim.on = on; sim.last = 0;
+  $("#simPlay").setAttribute("aria-pressed", on); $("#simPlay").innerHTML = on ? '<span aria-hidden="true">❚❚</span> Pausar simulación' : '<span aria-hidden="true">▶</span> Simular operación en vivo';
+  lyBus.style.display = on || sim.buses.length ? "" : "none"; $("#simHud").hidden = !on;
+  if (on) { if (sim.esc !== S.esc) simBuild(); cancelAnimationFrame(sim.raf); sim.raf = requestAnimationFrame(simFrame); }
+  else cancelAnimationFrame(sim.raf);
+}
+$("#simPlay").onclick = () => simToggle();
+lyBus.addEventListener("click", ev => { const b = ev.target.closest(".bus"); if (b) { ev.stopPropagation(); const r = b.getBoundingClientRect(); showTip(b.dataset.tip, r.left + r.width / 2, r.top, true); } });
 // radio peatonal 500 m
 const radio = svgEl("circle", { class: "radio", r: (500 / MPP12).toFixed(2), cx: 0, cy: 0 }, lyRadio); radio.style.display = "none";
 
@@ -1030,7 +1191,7 @@ mapEl.addEventListener("mouseleave", () => hideTip());
    ===================================================================== */
 const lab = { esc: 3, fail: null, failMode: false, bridges: false, layers: { red: true, per: true, av: true, est: true, col: true, upl: false, cent: false }, sel: null, view: "map", route: null, compare: false };
 let S = { ...lab, layers: { ...lab.layers }, only: null, stagger: false };
-let mode = "relato", presenting = false;
+let mode = "relato", presenting = false, collapsed = matchMedia("(max-width: 820px)").matches;
 
 function visibleCorr(s) {
   const base = s.only || E[s.esc].corredores;
@@ -1102,7 +1263,7 @@ function apply(s = S) {
   // cortina Red actual | Integral
   const cmp = !!s.compare;
   $("#mapWrap").classList.toggle("comparing", cmp);
-  ["lyRed", "lyCorr", "lyMkNew"].forEach(id => cmp ? $("#" + id).setAttribute("clip-path", "url(#clipR)") : $("#" + id).removeAttribute("clip-path"));
+  ["lyRed", "lyCorr", "lyMkNew", "lyBus"].forEach(id => cmp ? $("#" + id).setAttribute("clip-path", "url(#clipR)") : $("#" + id).removeAttribute("clip-path"));
   lyRedL.style.display = cmp && s.layers.red ? "" : "none";
   const critEl = EDGE_EL.get(ekey(CRIT_A, CRIT_B));
   critEl.classList.toggle("ok", cmp && s.esc > 0); critEl.style.strokeWidth = cmp ? `calc(${(6 * E[s.esc].carga / E[0].carga).toFixed(2)}px / var(--k,1))` : "";
@@ -1285,7 +1446,8 @@ const DESC = [
   `Solo el bypass Av. Carrera 68 (${f2(e2.km)} km). Abre una ruta paralela al tronco central: la carga Paloquemao–Ricaurte baja ${sgn(e2.alivio)} % y la vulnerabilidad de Ricaurte llega a ${f1(e2.vulnerabilidad)} %, aunque quedan ${e2.puentes} puentes.`,
   `Corredores periféricos y Av. 68 (${f2(e3.km)} km). Combina los dos efectos: ${e3.puentes} puentes, ${f1(e3.vulnerabilidad)} % de vulnerabilidad y ${sgn(e3.alivio)} % de carga central.`,
 ];
-$("#escList").innerHTML = E.map(e => `<button type="button" class="esc" role="radio" data-e="${e.id}" aria-checked="false"><span class="n">${e.id}</span><b>${esc(e.corto)}</b><small>${f2(e.km)} km · ${e.estaciones} est. · ${e.puentes} puentes</small></button>`).join("");
+const ESC_PLAIN = ["Hoy", "+ 5 anillos periféricos", "+ Av. Carrera 68", "Todo junto"];
+$("#escList").innerHTML = E.map(e => `<button type="button" class="esc" role="radio" data-e="${e.id}" aria-checked="false"><span class="n">${e.id}</span><b>${esc(ESC_PLAIN[e.id])}</b><small>${e.id ? f2(e.km) + " km nuevos · " : ""}${fI(e.carga)} pasajeros en el tramo más cargado</small></button>`).join("");
 $("#escList").addEventListener("click", ev => { const b = ev.target.closest(".esc"); if (!b) return; lab.esc = +b.dataset.e; apply(labState()); });
 $("#failQuick").innerHTML = QUICK.map(id => `<button type="button" class="chip" data-fail="${id}" aria-pressed="false">${esc(NODE.get(id).nombre.replace(" - Centro Colombo Americano", ""))}</button>`).join("");
 $("#failSel").innerHTML = '<option value="">Elegir otra estación…</option>' + [...NODE.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")).map(n => `<option value="${n.id}">${esc(n.nombre)}${n.kind === "new" ? " (nueva)" : ""}</option>`).join("");
@@ -1320,25 +1482,51 @@ $("#rtClear").onclick = () => setRoute(null);
 })();
 
 const KPI = [
-  { k: "carga", t: "Carga Paloquemao–Ricaurte", u: " pax", f: fI, better: -1, crit: true, delta: e => e.id ? sgn(e.alivio) + " %" : "pico AM 6–9" },
-  { k: "vulnerabilidad", t: "Vulnerabilidad Ricaurte", u: " %", f: f1, better: -1, crit: true, delta: e => e.id ? sgn(e.vulnerabilidad - e0.vulnerabilidad) + " pp" : "demanda desconectada" },
-  { k: "puentes", t: "Puentes topológicos", u: "", f: fI, better: -1, delta: e => e.id ? sgn(e.puentes - e0.puentes, fI) : "puntos únicos de falla" },
-  { k: "tiempo", t: "Tiempo medio con congestión", u: " min", f: f1, better: -1, delta: e => e.id ? sgn(e.tiempo - e0.tiempo) + " min" : "BPR" },
-  { k: "longitud", t: "Longitud media de viaje", u: " km", f: f2, better: -1, delta: e => e.id ? sgn(e.longitud - e0.longitud, f2) + " km" : "" },
-  { k: "viajes", t: "Viajes pico AM", u: "", f: fI, better: 1, delta: e => e.id ? sgn(e.viajes - e0.viajes, fI) : "pasajeros" },
-  { k: "estaciones", t: "Estaciones en Bogotá", u: "", f: fI, better: 0, delta: e => e.id ? sgn(e.estaciones - e0.estaciones, fI) : "+4 en Soacha = 143" },
-  { k: "km", t: "Km troncales adicionales", u: " km", f: f2, better: 0, delta: e => e.id ? `${f2(sum(D.corredores.filter(c => e.corredores.includes(c.id)), c => c.km_nueva))} obra nueva` : "" },
+  { k: "carga", t: "Pasajeros en hora pico de la mañana", sub: "en el tramo más cargado: Paloquemao–Ricaurte (NQS)", u: "", f: fI, better: -1, crit: true,
+    delta: e => e.id ? `${Math.abs(e.alivio) === 0 ? "igual que hoy" : (e.alivio < 0 ? f1(-e.alivio) + " % menos" : f1(e.alivio) + " % más") + " que hoy"}` : "entre 6 y 9 a. m." },
+  { k: "vulnerabilidad", t: "Viajes que quedan sin ruta si se cierra Ricaurte", sub: "de cada 100 viajes de la mañana", u: " %", f: f1, better: -1, crit: true,
+    delta: e => e.id ? `hoy son ${f1(e0.vulnerabilidad)} de cada 100` : "Ricaurte es el cruce NQS · Calle 13 · Américas" },
+  { k: "puentes", t: "Puntos críticos donde un cierre parte el sistema en dos", sub: "conexiones sin ruta alternativa", u: "", f: fI, better: -1,
+    delta: e => e.id ? `${fI(e0.puentes - e.puentes)} menos que hoy` : `de ${G[0].nE} conexiones en total` },
+  { k: "tiempo", t: "Tiempo promedio de viaje", sub: "contando el trancón de la hora pico", u: " min", f: f1, better: -1,
+    delta: e => e.id ? `${f1(e0.tiempo - e.tiempo)} min menos que hoy` : "promedio de todos los viajes" },
+  { k: "longitud", t: "Distancia promedio de un viaje", sub: "rutas más directas, menos vueltas", u: " km", f: f2, better: -1,
+    delta: e => e.id ? `${f2(e0.longitud - e.longitud)} km menos que hoy` : "" },
+  { k: "viajes", t: "Viajes en TransMilenio en hora pico", sub: "de 6 a 9 de la mañana", u: "", f: fI, better: 1,
+    delta: e => e.id ? `${fI(e.viajes - e0.viajes)} viajes más que hoy` : "" },
+  { k: "estaciones", t: "Estaciones en Bogotá", sub: "más 4 en Soacha (143 en la red de hoy)", u: "", f: fI, better: 0,
+    delta: e => e.id ? `${fI(e.estaciones - e0.estaciones)} estaciones nuevas` : "" },
+  { k: "km", t: "Kilómetros de troncal agregados", sub: "obra nueva más tramos compartidos", u: " km", f: f2, better: 0,
+    delta: e => e.id ? `${f2(sum(D.corredores.filter(c => e.corredores.includes(c.id)), c => c.km_nueva))} km de obra nueva` : "red de hoy" },
 ];
 function spark(k, cur) {
   const vals = E.map(e => e[k]), mn = Math.min(...vals), mx = Math.max(...vals), w = 120, h = 26, px = i => 6 + i * (w - 12) / 3, py = v => mx === mn ? h / 2 : 4 + (1 - (v - mn) / (mx - mn)) * (h - 8);
   return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><polyline points="${vals.map((v, i) => px(i) + "," + py(v)).join(" ")}" fill="none" stroke="#9AA4A9" stroke-width="1.4" vector-effect="non-scaling-stroke"/>${vals.map((v, i) => `<circle cx="${px(i)}" cy="${py(v)}" r="${i === cur ? 3.6 : 2}" fill="${i === cur ? "#172026" : "#9AA4A9"}"/>`).join("")}</svg>`;
 }
+const PLAIN = [
+  "La red de hoy: casi todos los viajes largos tienen que pasar por el centro (NQS, Caracas, Av. Jiménez).",
+  "Se suman los 5 anillos periféricos: los barrios de los bordes quedan unidos entre sí, pero más gente termina entrando al centro.",
+  "Solo la Av. Carrera 68: una vía paralela a la NQS que descongestiona el centro, aunque los bordes siguen frágiles.",
+  "Los 5 anillos más la Av. 68: menos trancón en el centro y una red que no se parte si se cierra una estación.",
+];
 function renderKPIs() {
-  const e = E[lab.esc];
-  $("#kpis").innerHTML = KPI.map(m => {
+  const e = E[lab.esc], gi = G[lab.esc];
+  const cards = KPI.map(m => {
     const dv = e[m.k] - e0[m.k], cls = !e.id || !m.better || dv === 0 ? "flat" : (dv * m.better > 0 ? "good" : "bad");
-    return `<div class="kpi${m.crit ? " crit" : ""}" title="${esc(m.t)}"><div class="k">${esc(m.t)}</div><div class="v">${m.f(e[m.k])}${m.u}</div><div class="d ${cls}">${m.delta(e)}</div>${spark(m.k, e.id)}</div>`;
+    return `<div class="kc${m.crit ? " crit" : ""}"><div class="kt">${esc(m.t)}</div><div class="ks">${esc(m.sub)}</div><div class="kval">${m.f(e[m.k])}<small>${m.u}</small></div><div class="kd ${cls}">${m.delta(e)}</div>${spark(m.k, e.id)}<div class="kx">Hoy · Anillos · Av. 68 · Todo junto</div></div>`;
   }).join("");
+  $("#kpis").innerHTML = `<div class="info-in">
+    <header class="info-h"><span class="tag">Escenario ${e.id} de 3</span><h2>${esc(["La red de hoy", "Con los 5 anillos periféricos", "Con la Av. Carrera 68", "Todo junto: anillos + Av. 68"][e.id])}</h2><p>${esc(PLAIN[e.id])}</p></header>
+    <div class="kgrid">${cards}</div>
+    <h3 class="why-h">¿Por qué los 5 anillos y la Av. 68 funcionan mejor juntos?</h3>
+    <div class="why3">
+      <article><span class="wn">1</span><h4>Los barrios de los bordes dejan de quedar aislados</h4><p>Hoy, si se cierra Ricaurte, <b>${f1(e0.vulnerabilidad)} de cada 100 viajes</b> se quedan sin ruta, y hay <b>${e0.puentes} puntos</b> donde un solo cierre parte el sistema. Los 5 anillos unen los portales entre sí (Suba con la Calle 80, Usme y Tunal con la Av. Décima…): esos puntos críticos bajan a <b>${e1.puentes}</b>.</p></article>
+      <article><span class="wn">2</span><h4>El centro deja de ser un embudo</h4><p>Por el tramo Paloquemao–Ricaurte pasan <b>${fI(e0.carga)} pasajeros</b> cada mañana. Los anillos solos no lo arreglan: suben a ${fI(e1.carga)} (${f1(e1.alivio)} % más), porque la gente igual va al centro. La Av. Carrera 68 corre paralela a la NQS y lo baja a <b>${fI(e2.carga)}</b> (${f1(-e2.alivio)} % menos).</p></article>
+      <article class="all"><span class="wn">=</span><h4>Juntos: menos trancón y una red que no se cae</h4><p>Con todo junto el tramo más cargado baja a <b>${fI(e3.carga)} pasajeros (${f1(-e3.alivio)} % menos)</b>, los puntos críticos a <b>${e3.puentes}</b>, nadie queda sin ruta si se cierra Ricaurte y el viaje promedio pasa de ${f1(e0.tiempo)} a <b>${f1(e3.tiempo)} minutos</b>. Un viaje Usme → 20 de Julio pasa de ${fI(tripMin(routeInfo(0, ...VIAJE)))} a ${fI(tripMin(routeInfo(3, ...VIAJE)))} minutos.</p></article>
+    </div>
+    ${e.corredores.length ? `<div class="corr-chips"><span class="sub">Corredores de este escenario:</span>${e.corredores.map(id => `<button type="button" class="chip" data-corr="${id}"><i style="background:${COLOR[id]}"></i>${esc(SHORT[id])} · ${esc(CORR[id].nombre)} · ${f2(CORR[id].km_total)} km</button>`).join("")}</div>` : ""}
+    <p class="note">Cifras oficiales del modelo de demanda (IPF) con congestión (BPR). El grafo de este escenario tiene ${gi.nV} estaciones y ${gi.nE} conexiones, y reproduce los ${gi.bridges.size} puntos críticos del modelo. Los conteos del grafo incluyen las 4 estaciones de Soacha.</p>
+  </div>`;
 }
 function renderLabPanels() {
   $$(".esc").forEach(b => b.setAttribute("aria-checked", +b.dataset.e === lab.esc));
@@ -1363,6 +1551,7 @@ function failText(esc, id) {
 }
 function renderDetail() {
   const el = $("#detail"), sel = lab.sel, gi = G[lab.esc];
+  $("#labRight").hidden = !(sel || lab.route);
   if (!sel && lab.route) {
     const rt = lab.route, eb = lab.esc || 3;
     el.innerHTML = `<div class="det"><span class="tag"><i style="background:#1E7F55"></i>Ruta origen → destino</span><h2>${esc(short(NODE.get(rt[0]).nombre))} → ${esc(short(NODE.get(rt[1]).nombre))}</h2>
@@ -1374,13 +1563,7 @@ function renderDetail() {
     return;
   }
   if (!sel) {
-    const e = E[lab.esc];
-    el.innerHTML = `<div class="det"><span class="tag">Escenario ${e.id}</span><h2>${esc(e.nombre.replace(/^Esc\. \d: /, ""))}</h2><p>${DESC[e.id]}</p>
-      <dl class="kv"><dt>Nodos del grafo</dt><dd class="num">${gi.nV}</dd><dt>Aristas</dt><dd class="num">${gi.nE}</dd><dt>Ciclos independientes</dt><dd class="num">${gi.nE - gi.nV + 1}</dd><dt>Puentes calculados</dt><dd class="num">${gi.bridges.size} ${gi.ok ? "· coincide con el modelo" : "· difiere del modelo (" + e.puentes + ")"}</dd><dt>Puntos de articulación</dt><dd class="num">${gi.art.size}</dd></dl>
-      <p class="note">Los conteos de nodos incluyen las 4 estaciones de Soacha. La simulación evalúa la demanda interna de Bogotá: ${e0.estaciones} estaciones en la red base y ${e.estaciones} en este escenario.</p>
-      <p class="sub">Toca un corredor o una estación en el mapa para ver su ficha.</p>
-      <h3 style="font-size:17px">Corredores del escenario</h3>
-      <div style="display:flex;flex-direction:column;gap:6px">${e.corredores.length ? e.corredores.map(id => `<button type="button" class="esc" data-corr="${id}" style="grid-template-columns:auto 1fr"><span class="n" style="background:${COLOR[id]};color:#fff;font-size:11px">${id.slice(0, 2)}</span><b>${esc(CORR[id].nombre)}</b><small>${f2(CORR[id].km_total)} km</small></button>`).join("") : '<p class="sub">Solo la red actual.</p>'}</div></div>`;
+    el.innerHTML = "";
   } else if (sel.type === "corr") {
     const c = CORR[sel.id], inf = new Set(c.conexiones_inferidas.map(x => x.id));
     const items = c.path.map((id, i) => {
@@ -1401,7 +1584,7 @@ function renderDetail() {
       <p><strong>Por qué este trazado.</strong> ${esc(c.justificacion_topologica)}</p>
       <h3 style="font-size:17px">Perfil de la línea</h3><ul class="strip" style="--cc:${COLOR[c.id]}">${items}</ul>
       ${c.id === "C6_Av68" ? `<p class="note">La tabla de coherencia registra ${c.transbordos} transbordos para la Av. 68, pero el archivo de estaciones solo trae sus ${c.estaciones_nuevas} estaciones nuevas. Para el grafo, los cruces con troncales existentes se infieren por cercanía (300 m o menos, ${c.conexiones_inferidas.length} estaciones). No forman parte de los 11 transbordos oficiales.</p>` : ""}
-      <button type="button" class="linkbtn" data-clear>← Volver al resumen del escenario</button></div>`;
+      <button type="button" class="linkbtn" data-clear>Cerrar ficha</button></div>`;
   } else {
     const n = NODE.get(sel.id);
     if (n.kind === "new") {
@@ -1416,7 +1599,7 @@ function renderDetail() {
         ${gi.g.has(e.id) ? `<button type="button" class="btn-fail" data-failnode="${e.id}" aria-pressed="${lab.fail === e.id}"><span class="bolt" aria-hidden="true"></span>${lab.fail === e.id ? "Restablecer esta estación" : "Simular falla de esta estación"}</button>` : ""}
         <p><strong>Justificación POT.</strong> ${esc(e.justificacion)}</p>
         <p class="note">El círculo azul del mapa es el radio peatonal de 500 m que se usó para cruzar la estación con las capas del POT.${e.area_por_upl ? " En la Av. 68, el Área de Actividad se asigna según la UPL de la estación, no por cruce espacial." : ""}</p>
-        <button type="button" class="linkbtn" data-clear>← Volver al resumen del escenario</button></div>`;
+        <button type="button" class="linkbtn" data-clear>Cerrar ficha</button></div>`;
     } else {
       const deg = gi.g.get(n.id)?.size ?? 0, isArt = gi.art.has(n.id);
       el.innerHTML = `<div class="det"><span class="tag"><i style="background:${n.tr.length ? "var(--emerald)" : "#fff"};border:1.5px solid var(--base)"></i>${n.tr.length ? "Estación actual · nodo de transbordo POT" : "Estación actual"}</span><h2>${esc(n.nombre)}</h2>
@@ -1426,10 +1609,13 @@ function renderDetail() {
         ${lab.fail === n.id ? `<p class="sub alert" style="color:var(--tm)">${esc(failText(lab.esc, n.id))}</p>` : ""}
         ${n.tr.map(t => `<p><strong>Transbordo ${esc(SHORT[t.corredor])}.</strong> ${esc(t.justificacion)}. UPL ${esc(t.upl)}, densidad ${f3(t.densidad)}, Metro POT: ${t.metro ? "Sí" : "No"}.</p>`).join("")}
 
-        <button type="button" class="linkbtn" data-clear>← Volver al resumen del escenario</button></div>`;
+        <button type="button" class="linkbtn" data-clear>Cerrar ficha</button></div>`;
     }
   }
 }
+$("#fcClose").onclick = () => { if (lab.sel) select(null); else if (lab.route) setRoute(null); };
+$("#kpis").addEventListener("click", ev => { const c = ev.target.closest("[data-corr]"); if (!c) return; select({ type: "corr", id: c.dataset.corr }); flyTo(fit(CORR[c.dataset.corr].coords, { pitch: cam.pitch || 0, rot: cam.rot, pad: .7 }), 1100); $("#mapWrap").scrollIntoView({ behavior: "smooth", block: "start" }); });
+$("#drawerBtn").onclick = () => { collapsed = !collapsed; document.body.classList.toggle("lab-collapsed", collapsed); $("#drawerBtn").setAttribute("aria-expanded", !document.body.classList.contains("lab-collapsed")); resize(); };
 $("#detail").addEventListener("click", ev => {
   const c = ev.target.closest("[data-corr]"), n = ev.target.closest("[data-node]"), x = ev.target.closest("[data-clear]");
   if (c) { select({ type: "corr", id: c.dataset.corr }); if (lab.view === "map") flyTo(fit(CORR[c.dataset.corr].coords, { pitch: cam.pitch || 0, rot: cam.rot, pad: .75 }), 1100); }
@@ -1717,10 +1903,11 @@ document.addEventListener("keydown", ev => {
 let analysisDone = false;
 function route() {
   if (presenting) { presExit(); return; }
+  if (sim.on && location.hash.replace("#", "") !== "laboratorio") simToggle(false);
   const h = location.hash.replace("#", "");
   const m = ["relato", "laboratorio", "analisis"].includes(h) ? h : "relato";
   const prev = mode; mode = m;
-  document.body.className = "mode-" + m;
+  document.body.className = "mode-" + m + (collapsed ? " lab-collapsed" : "");
   $$(".modes a").forEach(a => a.dataset.mode === m ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
   hideTip(true);
   if (m === "analisis") { if (!analysisDone) { renderAnalysis(); analysisDone = true; } return; }
