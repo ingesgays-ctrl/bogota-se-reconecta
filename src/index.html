@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bogotá se reconecta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>/*CSS*/</style>
+</head>
+<body class="mode-relato">
+<header class="top">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+    <div>
+      <strong>Bogotá se reconecta</strong>
+      <span>Expansión troncal TransMilenio · POT Decreto 555 de 2021</span>
+    </div>
+  </div>
+  <div class="top-r">
+  <div class="mode-sw" role="group" aria-label="Tipo de lectura"><button type="button" id="mUser" aria-pressed="true">Modo usuario</button><button type="button" id="mDev" aria-pressed="false">Modo desarrollador</button></div>
+  <button type="button" class="present-btn" id="presBtn" title="Modo presentación (tecla P)"><span aria-hidden="true">▶</span> Presentar</button>
+  <nav class="modes" aria-label="Secciones">
+    <a href="#relato" data-mode="relato">Relato</a>
+    <a href="#laboratorio" data-mode="laboratorio" data-u="Explorar la red" data-d="Laboratorio de grafos">Explorar la red</a>
+    <a href="#analisis" data-mode="analisis">Análisis y datos</a>
+  </nav>
+  </div>
+</header>
+
+<main class="stage">
+  <!-- MAPA 3D compartido -->
+  <section class="map-wrap" id="mapWrap" aria-label="Mapa 3D de Bogotá">
+    <div class="map" id="map">
+      <div class="cam" id="cam">
+        <div class="plane" id="plane">
+          <div class="tiles" id="tiles"></div>
+          <svg class="vec" id="vec" xmlns="http://www.w3.org/2000/svg">
+            <defs><clipPath id="clipL" clipPathUnits="userSpaceOnUse"><polygon id="polyL" points="0,0"/></clipPath><clipPath id="clipR" clipPathUnits="userSpaceOnUse"><polygon id="polyR" points="0,0"/></clipPath></defs>
+            <g id="world">
+              <g id="lyBase"></g>
+              <g id="lyUpl"></g>
+              <g id="lyRadio"></g>
+              <g id="lyRedL" clip-path="url(#clipL)" style="display:none"></g>
+              <g id="lyRed"></g>
+              <g id="lyCorr"></g>
+              <g id="lyCrit"></g>
+              <g id="lyHeat" style="display:none"></g>
+              <g id="lyRoute" style="display:none"></g>
+              <g id="lyMk"></g>
+              <g id="lyMkNew"></g>
+              <g id="lyBus" style="display:none"></g>
+            </g>
+          </svg>
+          <div class="cols" id="cols"></div>
+        </div>
+      </div>
+      <div class="fog" id="fog"></div>
+    </div>
+    <div class="lbls" id="lbls" aria-hidden="true"></div>
+    <div class="map-ui">
+      <div class="lab-tools">
+        <button type="button" class="drawer-btn" id="drawerBtn" aria-controls="labLeft" aria-expanded="true" title="Mostrar u ocultar controles"><span aria-hidden="true">☰</span> Controles</button>
+        <button type="button" class="sim-btn" id="simPlay" aria-pressed="false"><span aria-hidden="true">▶</span> Simular operación en vivo</button>
+        <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div>
+        <div class="ac ac-top"><label for="qSearch" class="vh">Buscar estación</label><div class="ac-box"><input id="qSearch" class="sel ac-in" type="search" placeholder="Buscar estación…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+        <span class="sim-hud" id="simHud" hidden></span>
+      </div>
+      <div class="map-ctrl" role="group" aria-label="Controles del mapa">
+        <button type="button" id="zIn" title="Acercar" aria-label="Acercar">+</button>
+        <button type="button" id="zOut" title="Alejar" aria-label="Alejar">−</button>
+        <button type="button" id="t3d" title="Alternar vista 2D / 3D" aria-pressed="true">3D</button>
+        <button type="button" id="rotL" title="Girar a la izquierda" aria-label="Girar a la izquierda">⟲</button>
+        <button type="button" id="rotR" title="Girar a la derecha" aria-label="Girar a la derecha">⟳</button>
+        <button type="button" id="north" title="Brújula: toca para orientar el norte arriba" aria-label="Orientar el norte arriba"><svg id="northArrow" viewBox="-12 -12 24 24" width="24" height="24" aria-hidden="true"><circle r="10.5" fill="#fff" stroke="#C9CFCC"/><path d="M0-9 L3.4 0 L-3.4 0Z" fill="#D8101E"/><path d="M0 9 L3.4 0 L-3.4 0Z" fill="#9AA4A9"/><text y="-3.2" text-anchor="middle" font-size="0" fill="#fff">N</text></svg></button>
+      </div>
+      <div class="legend" id="legend">
+        <span><i class="lg-base"></i>Red actual (143 est.)</span>
+        <span><i class="lg-new"></i>Estación nueva</span>
+        <span><i class="lg-tr"></i>Transbordo</span>
+        <span><i class="lg-crit"></i>Tramo más cargado</span>
+        <span id="lgCent" hidden><i class="lg-cent"></i>Rutas que pasan por ahí</span>
+        <span class="lg-rt"><i class="lg-ra"></i>Viaje hoy</span><span class="lg-rt"><i class="lg-rb"></i>Viaje con la nueva red</span>
+        <span class="lg-cl"><i class="lg-blk"></i>Tramo bloqueado</span><span class="lg-cl"><i class="lg-rc"></i>Alternativa de hoy</span>
+        <span id="lgHeat" hidden><i class="lg-h"></i>Tramos: poco usados → muy usados</span>
+      </div>
+      <div class="cardinals" id="cardinals" aria-hidden="true"><span data-a="0"><b>N</b> Norte · Suba / Usaquén</span><span data-a="90"><b>E</b> Oriente · Centro / Chapinero</span><span data-a="180"><b>S</b> Sur · Usme / Tunjuelito</span><span data-a="270"><b>O</b> Occidente · Kennedy / Fontibón / Engativá</span></div>
+      <div class="attrib" id="attrib">Mapa base vectorial · UPL Decreto 555/2021</div>
+      <div class="hint" id="hint">Arrastra para mover · rueda para zoom · Mayús + arrastrar para girar e inclinar</div>
+    </div>
+    <div class="cmp" id="cmp" aria-hidden="false">
+      <div class="cmp-hud l" id="cmpL"></div><div class="cmp-hud r" id="cmpR"></div>
+      <div class="cmp-guide">Desliza la línea vertical y mueve el mapa por toda Bogotá para comparar la Red Actual con la Solución Integral</div>
+      <div class="cmp-bar" id="cmpBar" tabindex="0" role="slider" aria-label="Cortina entre red actual y escenario" aria-valuemin="0" aria-valuemax="100"><span>⟷</span></div>
+    </div>
+    <div class="pres" id="pres" hidden>
+      <div class="pres-card" id="presCard"></div>
+      <div class="pres-nav"><button type="button" id="presPrev" aria-label="Escena anterior">←</button><span id="presCount" class="num"></span><button type="button" id="presNext" aria-label="Escena siguiente">→</button><button type="button" id="presExit">Salir · Esc</button></div>
+    </div>
+    <aside class="lab-right fcard" id="labRight" aria-label="Ficha seleccionada" hidden>
+      <button type="button" class="fc-close" id="fcClose" aria-label="Cerrar ficha">×</button>
+      <div id="detail"></div>
+    </aside>
+    <div class="tip" id="tip" role="status"></div>
+    <div class="graph" id="graph" hidden>
+      <div id="cy"></div>
+      <div class="graph-bar">
+        <button type="button" class="chip" id="gGeo" aria-pressed="true" data-u="Mapa real" data-d="Disposición geográfica"></button>
+        <button type="button" class="chip" id="gTopo" aria-pressed="false" data-u="Mapa esquemático (estilo plano de Metro)" data-d="Disposición topológica"></button>
+        <span class="graph-note" id="gNote"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATO -->
+  <section class="story" id="story" aria-label="Relato por capítulos">
+    <div class="story-inner" id="storyInner"></div>
+  </section>
+
+  <!-- LABORATORIO: paneles -->
+  <aside class="lab-left" id="labLeft" aria-label="Controles del laboratorio">
+    <details class="blk" open>
+      <summary data-u="¿Qué red quieres ver?" data-d="Escenario simulado"></summary>
+      <p class="sub" data-u="Toca una opción para ver cómo cambia la ciudad." data-d="Modelo gravitacional IPF (β = 0,10 km⁻¹) + asignación con congestión BPR. Pico AM oficial."></p>
+      <div class="esc-list" id="escList" role="radiogroup" aria-label="Escenarios"></div>
+    </details>
+    <details class="blk" open>
+      <summary data-u="Planear un viaje" data-d="Ruta O→D con estación cerrada"></summary>
+      <p class="sub" data-u="Escribe de dónde sales y a dónde vas. Si quieres, marca una estación cerrada para ver qué opciones tienes." data-d="Dijkstra por km sobre el grafo del escenario. Transbordos = cambios de servicio (hoja Rutas). El nodo cerrado se excluye del grafo."></p>
+      <div class="quick" id="routeQuick" role="group" aria-label="Viajes de ejemplo"></div>
+      <div class="ac"><label for="rtO" class="fl" data-u="Origen" data-d="Origen (nodo)"></label><div class="ac-box"><input id="rtO" class="sel ac-in" type="search" placeholder="Ej.: Portal Usme" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+      <div class="ac"><label for="rtD" class="fl" data-u="Destino" data-d="Destino (nodo)"></label><div class="ac-box"><input id="rtD" class="sel ac-in" type="search" placeholder="Ej.: Portal 20 de Julio" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+      <div class="ac"><label for="failSel" class="fl" data-u="Estación cerrada (opcional)" data-d="Nodo retirado (opcional)"></label><div class="ac-box"><input id="failSel" class="sel ac-in" type="search" placeholder="Ej.: Avenida Jiménez" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+      <label class="rng" for="rtPen"><span data-u="Tiempo de caminata al cambiar de bus" data-d="Penalización por transbordo (supuesto)"></span> <b id="rtPenV">5 min</b></label>
+      <input type="range" id="rtPen" min="0" max="12" step="1" value="5">
+      <div class="row2"><button type="button" class="chip" id="rtClear">Quitar viaje</button><button type="button" class="chip" id="btnReset">Abrir estación cerrada</button></div>
+    </details>
+    <details class="blk">
+      <summary data-u="¿Qué pasa si se cierra una estación?" data-d="Prueba de resiliencia (remoción de nodo)"></summary>
+      <p class="sub" data-u="Elige una estación: las que quedan incomunicadas se pintan de rojo." data-d="Componentes conexos tras retirar el nodo; aislados en rojo."></p>
+      <div class="quick" id="failQuick" role="group" aria-label="Estaciones críticas"></div>
+      <label class="tg"><input type="checkbox" id="failMode"><span data-u="Tocar una estación del mapa la cierra" data-d="Modo remoción: clic en un nodo lo retira"></span></label>
+      <p class="sub" id="failMsg"></p>
+      <p class="sub">Calle 76 y Tercer Milenio no están entre las 143 estaciones del proyecto. En el eje norte de la Caracas usa Calle 72.</p>
+      <label class="tg"><input type="checkbox" id="tgBridges"><span data-u="Resaltar puntos críticos (si se cortan, parten la red en dos)" data-d="Resaltar puentes topológicos (Tarjan)"></span></label>
+    </details>
+    <details class="blk">
+      <summary>Capas</summary>
+      <label class="tg lay"><input type="checkbox" id="lyRedT" checked><span><b data-u="Red TransMilenio actual" data-d="Red troncal actual"></b><small data-u="Las troncales y portales que funcionan hoy en Bogotá." data-d="ⓘ 143 nodos y 146 aristas de la matriz de adyacencia."></small></span></label>
+      <label class="tg lay"><input type="checkbox" id="lyPerT" checked><span><b data-u="Conexiones directas entre barrios (5 tramos)" data-d="5 corredores periféricos (C1–C5)"></b><small data-u="Enlaces directos entre portales para viajar sin ir al centro." data-d="ⓘ Selección voraz de enlaces y Dijkstra sobre la malla arterial; 37,32 km."></small></span></label>
+      <label class="tg lay"><input type="checkbox" id="lyAvT" checked><span><b data-u="Corredor Av. Carrera 68" data-d="Bypass Av. Carrera 68 (C6)"></b><small data-u="Vía rápida transversal que desahoga los trancones del centro." data-d="ⓘ Escenario contrafactual; 22,38 km (16,54 de obra nueva)."></small></span></label>
+      <label class="tg lay"><input type="checkbox" id="lyEstT" checked><span><b data-u="Estaciones nuevas y transbordos" data-d="36 estaciones aprobadas + 11 transbordos"></b><small data-u="Puntos nuevos donde podrás subirte o cambiar de ruta." data-d="ⓘ Filtro POT (Decreto 555/2021): UPL, Áreas de Actividad, EEP ≤ 45 %, Metro ≤ 350 m."></small></span></label>
+      <label class="tg lay"><input type="checkbox" id="lyColT"><span><b data-u="Zonas con más actividad urbana" data-d="Columnas 3D de densidad POT"></b><small data-u="Barras 3D altas = zonas con más vivienda, comercio y empleo según el POT, que necesitan rutas cercanas." data-d="ⓘ Índice de densidad POT (0,52–0,95) según el Área de Actividad."></small></span></label>
+      <label class="tg lay"><input type="checkbox" id="lyCentT"><span><b data-u="Estaciones por donde pasan más rutas (Top 10)" data-d="Centralidad Top 10"></b><small data-u="Barras 3D altas = estaciones por donde pasa la mayoría de los viajes y que más frenan el sistema si fallan." data-d="ⓘ Intermediación de Brandes ponderada por km."></small></span></label>
+      <label class="tg lay"><input type="checkbox" id="lyHeatT"><span><b data-u="Tramos más usados (mapa de calor)" data-d="Mapa de calor: intermediación de aristas"></b><small data-u="Rojo y alto = tramos por donde pasan más rutas; verde = tramos con holgura." data-d="ⓘ Edge betweenness ponderado por km; relieve 3D en los 20 tramos más usados."></small></span></label>
+      <label class="tg lay"><input type="checkbox" id="lyUplT"><span><b data-u="Sectores urbanos de Bogotá" data-d="Límites UPL"></b><small data-u="División por zonas de la ciudad para ubicar dónde falta cobertura." data-d="ⓘ 33 Unidades de Planeamiento Local del Decreto 555/2021."></small></span></label>
+    </details>
+    <details class="blk" open>
+      <summary>Vista</summary>
+      <div class="seg" role="group" aria-label="Vista">
+        <button type="button" id="vMap" aria-pressed="true">Mapa 3D</button>
+        <button type="button" id="vCmp" aria-pressed="false">Cortina</button>
+        <button type="button" id="vGraph" aria-pressed="false" data-u="Esquema" data-d="Grafo"></button>
+      </div>
+    </details>
+  </aside>
+  <section class="kpis info" id="kpis" aria-label="Qué cambia en este escenario"></section>
+
+  <!-- ANÁLISIS -->
+  <section class="analysis" id="analysis" aria-label="Análisis y datos"></section>
+</main>
+
+<script>window.DATA = /*DATA*/;</script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape@3.34.1/dist/cytoscape.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"></script>
+<script>/*JS*/</script>
+</body>
+</html>

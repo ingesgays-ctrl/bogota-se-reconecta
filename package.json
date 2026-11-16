@@ -1,0 +1,11 @@
+{
+  "name": "bogota-se-reconecta",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Visor interactivo de la expansión troncal de TransMilenio (POT Bogotá, Decreto 555 de 2021)",
+  "scripts": {
+    "check": "node --check src/app.js",
+    "build": "node --check src/app.js && python3 -I scripts/assemble.py src src/data.json index.html",
+    "prep": "python3 -I scripts/prep.py \"datos_originales\" src/data.json"
+  }
+}
