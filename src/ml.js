@@ -186,7 +186,8 @@ function mlInit() {
   try { m = new maplibregl.Map({ container: box, style: ML_STYLE, ...camML(cam), attributionControl: { compact: true }, maxPitch: 70, minZoom: 8, maxZoom: 18 }); }
   catch (e) { box.remove(); return; }
   const giveUp = () => { if (ML.on) return; try { m.remove(); } catch (_) { } box.remove(); };
-  const timer = setTimeout(giveUp, 20000);
+  let timer = setTimeout(giveUp, 25000);
+  document.addEventListener("visibilitychange", () => { if (ML.on) return; clearTimeout(timer); if (!document.hidden) timer = setTimeout(giveUp, 25000); });
   m.on("load", () => {
     clearTimeout(timer);
     try {
@@ -200,4 +201,6 @@ function mlInit() {
     } catch (e) { console.warn("MapLibre no disponible, se usa el motor propio:", e); ML.on = false; ML.map = null; mapEl.style.visibility = ""; mapEl.style.pointerEvents = ""; $("#lbls").style.display = ""; giveUp(); }
   });
 }
-mlInit();
+// arranca solo con la pestaña visible (en segundo plano el navegador no dibuja WebGL)
+if (document.hidden) { const onVis = () => { if (!document.hidden) { document.removeEventListener("visibilitychange", onVis); mlInit(); } }; document.addEventListener("visibilitychange", onVis); }
+else mlInit();
