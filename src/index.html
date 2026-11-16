@@ -6,6 +6,7 @@
 <title>Bogotá se reconecta</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>/*CSS*/</style>
 </head>
@@ -91,6 +92,7 @@
         <span class="sim-hud" id="simHud" hidden></span>
       </div>
       <div class="cam-bar" role="group" aria-label="Cámara y vista">
+        <button type="button" id="cam3d" aria-pressed="true" title="Alternar vista 3D / 2D"><b>3D</b><small>3D / 2D</small></button>
         <button type="button" id="camAll" title="Ver toda la ciudad"><b>⌂</b><small>Ciudad</small></button>
         <button type="button" id="camTop" aria-pressed="false" title="Vista cenital (desde arriba) o inclinada"><b>◎</b><small>Cenital</small></button>
         <button type="button" id="camOrbit" aria-pressed="false" title="Girar la cámara lentamente"><b>↻</b><small>Orbitar</small></button>
@@ -151,7 +153,6 @@
           <div class="quick" id="failQuick" role="group" aria-label="Estaciones críticas"></div>
           <label class="tg"><input type="checkbox" id="failMode"><span data-u="Tocar una estación del mapa la cierra" data-d="Modo remoción: clic en un nodo lo retira"></span></label>
           <p class="sub" id="failMsg"></p>
-          <p class="sub">Calle 76 y Tercer Milenio no están entre las 143 estaciones del proyecto. En el eje norte de la Caracas usa Calle 72.</p>
           <label class="tg"><input type="checkbox" id="tgBridges"><span data-u="Resaltar puntos críticos (si se cortan, parten la red en dos)" data-d="Resaltar puentes topológicos (Tarjan)"></span></label>
         </section>
         <section id="paneSta" role="tabpanel" aria-labelledby="tbSta" hidden><div id="detail"></div></section>
@@ -182,6 +183,7 @@
 </main>
 
 <script>window.DATA = /*DATA*/;</script>
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.34.1/dist/cytoscape.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>

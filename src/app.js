@@ -10,6 +10,7 @@ const nf = (d = 0) => new Intl.NumberFormat("es-CO", { minimumFractionDigits: d,
 const fI = n => nf(0).format(n), f1 = n => nf(1).format(n), f2 = n => nf(2).format(n), f3 = n => nf(3).format(n);
 const sgn = (n, f = f1) => (n > 0 ? "+" : n < 0 ? "−" : "±") + f(Math.abs(n));
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const ML = { on: false };   // motor WebGL (MapLibre + OpenFreeMap); se activa solo si carga, si no se usa el motor propio
 // ---- modo de lectura: usuario (ciudadano) o desarrollador (técnico) ----
 let DEV = false; try { DEV = localStorage.getItem("tm-dev") === "1"; } catch (_) { }
 const TX = [
@@ -248,6 +249,7 @@ const is3D = () => cam.pitch > 1;
 function requestDraw() { if (!raf) raf = requestAnimationFrame(draw); }
 function draw() {
   raf = 0;
+  if (ML.on) { mlPushCam(); drawHud(); return; }
   const k = 2 ** (cam.z - Z0);
   camEl.style.transform = `rotateX(${cam.pitch}deg) rotateZ(${cam.rot}deg)`;
   const C = Math.min(5200, Math.ceil(Math.max(W, H) * (1.25 + 2.2 * Math.sin(cam.pitch * Math.PI / 180))));
@@ -289,6 +291,10 @@ function draw() {
     Object.values(CORR_LBL).forEach(o => { if (side(o) === 0) o.el.style.visibility = "hidden"; });
   }
   fog.style.opacity = Math.min(1, cam.pitch / 50);
+  drawHud();
+  drawTiles(k, C);
+}
+function drawHud() {
   $("#northArrow").style.transform = `rotate(${cam.rot}deg)`;
   const topIn = mode === "laboratorio" ? ($("#hudTop").offsetHeight + 16) : presenting ? 14 : 40, botIn = mode === "laboratorio" ? 96 : 40;
   $$("#cardinals span").forEach(el => {
@@ -299,7 +305,7 @@ function draw() {
     el.style.transform = `translate(${(cx + dx * t).toFixed(0)}px,${(cy2 + dy * t).toFixed(0)}px) translate(-50%,-50%)`;
   });
   $("#t3d").textContent = is3D() ? "3D" : "2D"; $("#t3d").setAttribute("aria-pressed", is3D());
-  drawTiles(k, C);
+  const c3 = $("#cam3d"); if (c3) { c3.querySelector("b").textContent = is3D() ? "3D" : "2D"; c3.setAttribute("aria-pressed", is3D()); }
 }
 // ---- teselas del mapa base (con respaldo automático entre proveedores) ----
 const tilePool = new Map();
@@ -552,6 +558,7 @@ function simFrame(now) {
     }
     if (b.od) { nOd++; if (e2) odEje++; }
   }
+  if (ML.on) mlBuses();
   $("#simHud").innerHTML = (S.peak === "pm" ? "Tarde: más buses saliendo del centro · " : "Mañana: más buses entrando al centro · ") + `Rutas entre bordes que pasan por el centro: <b class="num">${sim.odEje} de ${sim.odN}</b> · buses en el eje central ahora: <b class="num">${inEje}</b>`;
   if (follow && sim.focus && sim.focus.x !== undefined && !drag) { cam.cx += (sim.focus.x - cam.cx) * .12; cam.cy += (sim.focus.y - cam.cy) * .12; requestDraw(); }
   sim.raf = requestAnimationFrame(simFrame);
@@ -711,6 +718,7 @@ function apply(s = S) {
     COLS.forEach(o => { if (o.est) o.el.style.visibility = ""; });
     loadCol.side = null; loadCol.el.classList.remove("ok"); loadLbl.el.innerHTML = loadHTML(e);
   }
+  if (ML.on) mlApply();
   requestDraw();
   if (mode === "laboratorio") { renderLabPanels(); if (lab.view === "graph") updateGraph(); }
 }
@@ -725,7 +733,7 @@ function select(sel) {
     S.sel = sel; apply(S);
     const html = selSummary(sel) + `<div style="margin-top:6px"><a href="#laboratorio" class="linkbtn" style="color:#9DB4FF" id="tipGo">Abrir ficha completa en el laboratorio</a></div>`;
     const el = sel.type === "node" ? MK.get(sel.id) : CORR_EL[sel.id].ln;
-    const r = el.getBoundingClientRect();
+    const r = ML.on ? mlRect(sel) : el.getBoundingClientRect();
     showTip(html, r.left + r.width / 2, r.top, true);
     $("#tipGo").onclick = () => { lab.sel = sel; lab.esc = sel.type === "corr" ? (sel.id === "C6_Av68" ? 2 : 1) : lab.esc; };
     return;
@@ -1013,6 +1021,14 @@ function renderKPIs() {
       <article class="all"><span class="wn">=</span><h4>Juntas: menos trancón y una red que no se cae</h4><p>Con la red completa el tramo más cargado baja a <b>${fI(e3.carga)} pasajeros (${f1(-e3.alivio)} % menos)</b>, los puntos críticos a <b>${e3.puentes}</b>, nadie queda sin ruta si se cierra Ricaurte y el viaje promedio pasa de ${f1(e0.tiempo)} a <b>${f1(e3.tiempo)} minutos</b>. Un viaje Usme → 20 de Julio pasa de ${fI(tripMin(routeInfo(0, ...VIAJE)))} a ${fI(tripMin(routeInfo(3, ...VIAJE)))} minutos.</p></article>
     </div>
     ${e.corredores.length ? `<div class="corr-chips"><span class="sub">Tramos de este escenario:</span>${e.corredores.map(id => `<button type="button" class="chip" data-corr="${id}"><i style="background:${COLOR[id]}"></i>${esc(SHORT[id])} · ${esc(CORR[id].nombre)} · ${f2(CORR[id].km_total)} km</button>`).join("")}</div>` : ""}
+    <details class="card acc dev-only"><summary><h3>Fuente de verdad (fuente_de_verdad_datos.md)</h3><span class="sub">Indicadores oficiales y kilómetros por corredor</span></summary>
+      <div class="tbl-wrap"><table><thead><tr><th>Indicador (pico AM)</th>${E.map(x => `<th class="n">${esc(ESC_D[x.id])}</th>`).join("")}</tr></thead><tbody>
+      ${KPI.map(m => `<tr><td>${esc(m.td)}</td>${E.map(x => `<td class="n">${m.f(x[m.k])}${m.u}</td>`).join("")}</tr>`).join("")}
+      <tr><td>Alivio NQS frente a la red actual</td>${E.map(x => `<td class="n">${sgn(x.alivio)} %</td>`).join("")}</tr></tbody></table></div>
+      <div class="tbl-wrap" style="margin-top:10px"><table><thead><tr><th>Corredor</th><th class="n">Km total</th><th class="n">Obra nueva</th><th class="n">Compartida</th><th class="n">Nuevas</th><th class="n">Transbordos</th></tr></thead><tbody>
+      ${D.corredores.map(c => `<tr><td>${esc(SHORT[c.id])} · ${esc(c.nombre)}</td><td class="n">${f2(c.km_total)}</td><td class="n">${f2(c.km_nueva)}</td><td class="n">${f2(c.km_compartida)}</td><td class="n">${c.estaciones_nuevas}</td><td class="n">${c.transbordos}</td></tr>`).join("")}</tbody></table></div>
+      <p class="sub" style="margin-top:8px">Red base: 143 estaciones (139 Bogotá + 4 Soacha). La saturación V/C por tramo no está en las salidas del modelo entregadas, solo la carga del tramo Paloquemao–Ricaurte. Parámetros BPR α y β no consignados en la memoria (referencia BPR: α = 0,15, β = 4).</p>
+    </details>
     <p class="note dev-only">Cifras oficiales del modelo gravitacional IPF con congestión BPR (comparacion_4_escenarios_congestion.csv). Grafo del escenario: ${gi.nV} nodos, ${gi.nE} aristas, ${gi.bridges.size} puentes (Tarjan), ${gi.art.size} puntos de articulación${gi.ok ? "; coincide con el modelo" : ""}. Incluye las 4 estaciones de Soacha.</p>
   </div>`);
   const fc = $("#focusClear"); if (fc) fc.onclick = () => { lab.sel = null; lab.fail = null; apply(labState()); };
@@ -1450,6 +1466,7 @@ function setFollow(on) {
   if (on) { if (!sim.on) simToggle(true); if (!sim.focus || !sim.focus.g.isConnected) sim.focus = sim.buses.find(b => b.od) || sim.buses[0];
     if (sim.focus) { $("#simHud").hidden = false; flyTo({ ...cam, z: 14, pitch: Math.max(cam.pitch, 45) }, 600); showTip(sim.focus.label, innerWidth / 2, innerHeight / 2, false); setTimeout(() => hideTip(), 2500); } }
 }
+$("#cam3d").onclick = () => $("#t3d").click();
 $("#camAll").onclick = () => { setFollow(false); flyTo(fit(allPts, { pitch: cam.pitch > 1 ? 45 : 0, rot: cam.rot, pad: .9 }), 1000); };
 $("#camTop").onclick = () => { const top = cam.pitch > 1; if (top) prevTilt = cam.pitch; $("#camTop").setAttribute("aria-pressed", top); flyTo({ ...cam, pitch: top ? 0 : prevTilt, rot: top ? 0 : cam.rot }, 800); };
 $("#camOrbit").onclick = () => setOrbit($("#camOrbit").getAttribute("aria-pressed") !== "true");
@@ -1519,5 +1536,6 @@ resize();
 Object.assign(cam, fit(allPts, { pitch: 44, rot: -12, pad: .86 }));
 draw();
 route();
-window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK };
+/*ML*/
+window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML };
 })();

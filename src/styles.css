@@ -620,3 +620,14 @@ body:not(.mode-laboratorio) .hud-top,body:not(.mode-laboratorio) .cam-bar,body:n
   .dd-panel{width:min(320px,calc(100vw - 40px))}
 }
 .cam-bar,.ticker{pointer-events:auto}
+
+/* =========== motor WebGL (MapLibre + OpenFreeMap) =========== */
+.mlmap{position:absolute;inset:0;z-index:1}
+.mlmapB{z-index:0}
+.map-wrap.ml .fog,.map-wrap.ml #attrib{display:none}
+.maplibregl-marker.lbl{position:absolute;left:0;top:0;will-change:transform}
+.maplibregl-marker.lbl span{transform:none}
+.ml-lbl{pointer-events:none}
+.map-wrap.ml .maplibregl-ctrl-bottom-right{margin-bottom:2px}
+.mode-laboratorio .map-wrap.ml .maplibregl-ctrl-bottom-right{bottom:38px}
+.maplibregl-ctrl-attrib{font-size:10.5px}
