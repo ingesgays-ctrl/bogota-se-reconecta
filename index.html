@@ -641,6 +641,11 @@ body:not(.mode-laboratorio) .hud-top,body:not(.mode-laboratorio) .cam-bar,body:n
 .map-wrap.ml .maplibregl-ctrl-bottom-right{margin-bottom:2px}
 .mode-laboratorio .map-wrap.ml .maplibregl-ctrl-bottom-right{bottom:38px}
 .maplibregl-ctrl-attrib{font-size:10.5px}
+/* barra de cámara sin solaparse con el zoom: en el laboratorio el 3D/2D y el giro viven en la barra de cámara */
+.mode-laboratorio #t3d,.mode-laboratorio #rotL,.mode-laboratorio #rotR{display:none}
+.cam-bar{top:128px}
+@media (max-width:820px){.cam-bar{top:128px;bottom:auto}.cam-bar button{width:46px;padding:4px 1px}.cam-bar small{font-size:8.5px}.cam-bar b{font-size:14px}}
+@media (max-height:760px){.cam-bar small{display:none}.cam-bar button{padding:7px 2px}}
 </style>
 </head>
 <body class="mode-relato">
