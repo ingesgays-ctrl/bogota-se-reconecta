@@ -16,7 +16,7 @@ const TX = [
   [/Los 5 corredores periféricos/g, "Las 5 conexiones directas entre barrios"], [/los 5 corredores periféricos/g, "las 5 conexiones directas entre barrios"],
   [/5 corredores periféricos/g, "5 conexiones directas entre barrios"], [/Corredores periféricos/g, "Conexiones directas entre barrios"],
   [/corredores periféricos/g, "conexiones directas entre barrios"], [/corredor periférico/g, "conexión directa entre barrios"],
-  [/El anillo punteado/g, "El círculo punteado"], [/de la vista geográfica a la topológica/g, "del mapa real al mapa esquemático"], [/>nodos/g, ">estaciones"],
+  [/Explora la red como grafo/g, "Explora la red tú mismo"], [/El anillo punteado/g, "El círculo punteado"], [/de la vista geográfica a la topológica/g, "del mapa real al mapa esquemático"], [/>nodos/g, ">estaciones"],
   [/Tres anillos/g, "Tres conexiones"], [/Los 5 anillos periféricos/g, "Las 5 conexiones entre barrios"], [/los 5 anillos periféricos/g, "las 5 conexiones entre barrios"],
   [/5 anillos periféricos/g, "5 conexiones entre barrios"], [/anillos periféricos/g, "conexiones entre barrios"],
   [/Los 5 anillos/g, "Las 5 conexiones entre barrios"], [/los 5 anillos/g, "las 5 conexiones entre barrios"], [/5 anillos/g, "5 conexiones entre barrios"],
@@ -290,7 +290,7 @@ function draw() {
   }
   fog.style.opacity = Math.min(1, cam.pitch / 50);
   $("#northArrow").style.transform = `rotate(${cam.rot}deg)`;
-  const topIn = mode === "laboratorio" ? (sim.on ? 108 : 64) : presenting ? 14 : 40, botIn = mode === "laboratorio" ? 96 : 40;
+  const topIn = mode === "laboratorio" ? ($("#hudTop").offsetHeight + 16) : presenting ? 14 : 40, botIn = mode === "laboratorio" ? 96 : 40;
   $$("#cardinals span").forEach(el => {
     const a = (+el.dataset.a + cam.rot) * Math.PI / 180, hw = el.offsetWidth / 2 + 8, hh = el.offsetHeight / 2 + 4;
     const L = hw, Rr = W - hw - 52, T = topIn + hh, B = H - botIn - hh, dx = Math.sin(a), dy = -Math.cos(a), cx = W / 2, cy2 = H / 2;
@@ -485,6 +485,14 @@ const CHAINS = (() => {
   const cen = NODE.get(byName("Avenida Jiménez")).xy, dc = id => Math.hypot(NODE.get(id).xy[0] - cen[0], NODE.get(id).xy[1] - cen[1]);
   return out.filter(c => c.length >= 3).map(c => dc(c[0]) < dc(c[c.length - 1]) ? [...c].reverse() : c);   // orientadas: periferia → centro
 })();
+const TRONCAL_DEF = [["Portal Tunal", "B · A · H", "Autopista Norte, Caracas y Caracas Sur", "#1F5FAD"], ["Portal Usme", "H", "Caracas Sur (Usme)", "#F07F1D"], ["Portal Suba", "C", "Suba", "#E3A21A"],
+  ["Portal 80", "D", "Calle 80", "#7B3F98"], ["Bicentenario", "E", "NQS Central", "#8C5A2B"], ["San Mateo", "G · S", "NQS Sur y Soacha", "#0098C7"], ["Tibanica - Primavera", "F", "Américas", "#C2185B"],
+  ["Museo del Oro", "J", "Eje Ambiental", "#7E8F2A"], ["Portal El Dorado - C. C Nuestro Bogotá", "K", "Calle 26", "#5B4FBF"], ["Portal 20 de Julio", "L", "Carrera 10", "#0E8C84"]];
+const TRONCAL = CHAINS.map(c => { const d = TRONCAL_DEF.find(t => c.some(id => NODE.get(id).nombre === t[0])); return d ? { letra: d[1], nombre: d[2], color: d[3], ids: c } : { letra: "·", nombre: `${short(NODE.get(c[0]).nombre)} – ${short(NODE.get(c[c.length - 1]).nombre)}`, color: "#6C757D", ids: c }; });
+const EDGE_TR = new Map(); TRONCAL.forEach((t, i) => t.ids.forEach((id, j) => { if (j) EDGE_TR.set(ekey(t.ids[j - 1], id), i); }));
+const troncalesDe = id => TRONCAL.filter(t => t.ids.includes(id));
+function inRing(x, y, r) { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) { const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
+const UPL_OF = new Map(); const uplOf = id => { if (!UPL_OF.has(id)) { const n = NODE.get(id); const u = D.upl.find(u => inRing(n.lon, n.lat, u.rings[0])); UPL_OF.set(id, u ? u.nombre : (n.municipio === "Soacha" ? "Soacha" : "—")); } return UPL_OF.get(id); };
 const EJE_XY = EJE.map(id => NODE.get(id).xy), EJE_R = 450 / MPP12;
 const sim = { on: false, t: 0, last: 0, esc: -1, buses: [], raf: 0 };
 const MIN_PER_SEC = 4;   // 1 segundo en pantalla = 4 minutos reales
@@ -500,7 +508,7 @@ function simBuild() {
   const add = (tr, label, color, phase, od, ids) => {
     const g = svgEl("g", { class: "bus" + (od ? " od" : "") }, lyBus);
     g.innerHTML = `<rect x="-7" y="-3.6" width="14" height="7.2" rx="2" fill="${color}"/><rect x="3.2" y="-2.6" width="2.6" height="5.2" rx=".8" fill="#fff" opacity=".85"/>`;
-    g.dataset.tip = label; sim.buses.push({ g, tr, phase, pxPerMin, od, ids, color, label });
+    g.dataset.tip = label; if (!sim.focus || sim.focus.g && !sim.focus.g.isConnected) sim.focus = null; sim.buses.push({ g, tr, phase, pxPerMin, od, ids, color, label });
   };
   SIM_OD.forEach(([a, b], i) => [[a, b], [b, a]].forEach(([o, d], j) => {
     const r = routeInfo(esc2, o, d); if (!r) return;
@@ -530,7 +538,7 @@ function simFrame(now) {
     let i = 1; while (i < tr.cum.length - 1 && tr.cum[i] < d) i++;
     const a = tr.pts[i - 1], c = tr.pts[i], seg = tr.cum[i] - tr.cum[i - 1] || 1, u = (d - tr.cum[i - 1]) / seg;
     const x = a[0] + (c[0] - a[0]) * u, y = a[1] + (c[1] - a[1]) * u, ang = Math.atan2(c[1] - a[1], c[0] - a[0]) * 180 / Math.PI;
-    b.g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(1 / k).toFixed(4)}) rotate(${ang.toFixed(0)})`);
+    b.g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(1 / k).toFixed(4)}) rotate(${ang.toFixed(0)})`); b.x = x; b.y = y;
     const e2 = tr.eje[i] || tr.eje[i - 1]; if (e2) inEje++;
     if (inGraph && b.ids) {   // misma posición sobre el esquema del grafo
       if (!b.gc) { b.gc = [0]; for (let j = 1; j < b.ids.length; j++) b.gc.push(b.gc[j - 1] + hav(NODE.get(b.ids[j - 1]), NODE.get(b.ids[j]))); }
@@ -545,17 +553,20 @@ function simFrame(now) {
     if (b.od) { nOd++; if (e2) odEje++; }
   }
   $("#simHud").innerHTML = (S.peak === "pm" ? "Tarde: más buses saliendo del centro · " : "Mañana: más buses entrando al centro · ") + `Rutas entre bordes que pasan por el centro: <b class="num">${sim.odEje} de ${sim.odN}</b> · buses en el eje central ahora: <b class="num">${inEje}</b>`;
+  if (follow && sim.focus && sim.focus.x !== undefined && !drag) { cam.cx += (sim.focus.x - cam.cx) * .12; cam.cy += (sim.focus.y - cam.cy) * .12; requestDraw(); }
   sim.raf = requestAnimationFrame(simFrame);
 }
+let follow = false;
 function simToggle(on = !sim.on) {
   sim.on = on; sim.last = 0;
   $("#simPlay").setAttribute("aria-pressed", on); $("#simPlay").innerHTML = on ? '<span aria-hidden="true">❚❚</span> Pausar simulación' : '<span aria-hidden="true">▶</span> Simular operación en vivo';
-  lyBus.style.display = on ? "" : "none"; $("#simHud").hidden = !on; if (!on && cy) cy.$(".bus").remove(); sim.buses.forEach(b => b.cn = null);
+  lyBus.style.display = on && S.layers.bus !== false ? "" : "none"; $("#simHud").hidden = !on; $("#liveBadge").hidden = !on;
+  if (!on && follow) setFollow(false); if (!on && cy) cy.$(".bus").remove(); sim.buses.forEach(b => b.cn = null);
   if (on) { if (sim.esc !== S.esc) simBuild(); cancelAnimationFrame(sim.raf); sim.raf = requestAnimationFrame(simFrame); }
   else cancelAnimationFrame(sim.raf);
 }
 $("#simPlay").onclick = () => simToggle();
-lyBus.addEventListener("click", ev => { const b = ev.target.closest(".bus"); if (b) { ev.stopPropagation(); const r = b.getBoundingClientRect(); showTip(b.dataset.tip, r.left + r.width / 2, r.top, true); } });
+lyBus.addEventListener("click", ev => { const b = ev.target.closest(".bus"); if (b) { ev.stopPropagation(); sim.focus = sim.buses.find(x => x.g === b); const r = b.getBoundingClientRect(); showTip(b.dataset.tip, r.left + r.width / 2, r.top, true); } });
 // radio peatonal 500 m
 const radio = svgEl("circle", { class: "radio", r: (500 / MPP12).toFixed(2), cx: 0, cy: 0 }, lyRadio); radio.style.display = "none";
 
@@ -600,7 +611,7 @@ mapEl.addEventListener("mouseleave", () => hideTip());
 /* =====================================================================
    5. ESTADO Y APLICACIÓN SOBRE EL MAPA
    ===================================================================== */
-const lab = { esc: 3, fail: null, failMode: false, bridges: false, layers: { red: true, per: true, av: true, est: true, col: false, upl: false, cent: false, heat: false }, sel: null, view: "map", route: null, compare: false, peak: "am" };
+const lab = { esc: 3, fail: null, failMode: false, bridges: false, layers: { red: true, per: true, av: true, est: true, col: false, upl: false, cent: false, heat: false, bus: true, base: true }, sel: null, view: "map", route: null, compare: false, peak: "am", colorMode: "corr" };
 let S = { ...lab, layers: { ...lab.layers }, only: null, stagger: false };
 let mode = "relato", presenting = false, collapsed = matchMedia("(max-width: 820px)").matches;
 
@@ -661,6 +672,13 @@ function apply(s = S) {
   if (s.sel && s.sel.type === "node" && NODE.get(s.sel.id).kind === "new" || (s.sel && s.sel.type === "node" && NODE.get(s.sel.id).tr.length)) {
     const xy = NODE.get(s.sel.id).xy; radio.setAttribute("cx", xy[0]); radio.setAttribute("cy", xy[1]); radio.style.display = "";
   } else radio.style.display = "none";
+  // color de la red: por troncal o por uso
+  const byTr = s.colorMode !== "uso";
+  EDGE_EL.forEach((el, k) => { const t = EDGE_TR.get(k); el.style.stroke = byTr && t !== undefined && !el.classList.contains("crit") ? TRONCAL[t].color : ""; el.style.strokeOpacity = byTr && t !== undefined ? ".8" : ""; });
+  if (s.colorMode === "uso") s.layers.heat = true;
+  lyBus.style.display = sim.on && s.layers.bus !== false ? "" : "none";
+  tilesEl.style.visibility = s.layers.base === false ? "hidden" : ""; $("#lyBase").style.visibility = s.layers.base === false ? "hidden" : "";
+  if (mode === "laboratorio") renderTicker(s);
   // mapa de calor de tramos
   const ed = CENT[s.esc].edges, hOn = !!s.layers.heat;
   lyHeat.style.display = hOn ? "" : "none"; $("#lgHeat").hidden = !hOn;
@@ -713,7 +731,7 @@ function select(sel) {
     return;
   }
   if (lab.failMode && sel && sel.type === "node") lab.fail = lab.fail === sel.id ? null : sel.id;
-  lab.sel = sel; apply(labState());
+  lab.sel = sel; if (sel) { setTab("sta"); openPanel(); } apply(labState());
 }
 function selSummary(sel) {
   if (sel.type === "corr") { const c = CORR[sel.id]; return `<b>${esc(SHORT[c.id])} · ${esc(c.nombre)}</b><small>${f2(c.km_total)} km (${f2(c.km_nueva)} obra nueva) · ${esc(c.ejes.join(" → "))}</small>`; }
@@ -870,7 +888,8 @@ const ESC_UD = ["Casi todas las rutas obligan a pasar por el centro, generando t
 const ESC_D = ["Esc. 0 · Red actual", "Esc. 1 · +5 corredores periféricos", "Esc. 2 · +Bypass Av. 68", "Esc. 3 · Integral"];
 const escName = i => DEV ? ESC_D[i] : ESC_U[i];
 function renderEscList() {
-  $("#escList").innerHTML = E.map(e => `<button type="button" class="esc" role="radio" data-e="${e.id}" aria-checked="${e.id === lab.esc}"><span class="n">${e.id}</span><b>${esc(escName(e.id))}</b><small>${DEV ? `${f2(e.km)} km · ${e.puentes} puentes · P–R ${fI(e.carga)} pax · ${f1(e.tiempo)} min` : esc(ESC_UD[e.id])}</small></button>`).join("");
+  $("#escList").innerHTML = E.map(e => `<button type="button" class="esc" role="radio" data-e="${e.id}" aria-checked="${e.id === lab.esc}" title="${esc(ESC_UD[e.id])}"><span class="n">${e.id}</span><b>${esc(escName(e.id))}</b></button>`).join("");
+  const e = E[lab.esc]; $("#escCap").innerHTML = DEV ? `${esc(ESC_D[e.id])} · ${f2(e.km)} km · ${e.puentes} puentes · P–R ${fI(e.carga)} pax · ${f1(e.tiempo)} min` : esc(ESC_UD[e.id]);
 }
 renderEscList();
 $("#escList").addEventListener("click", ev => { const b = ev.target.closest(".esc"); if (!b) return; lab.esc = +b.dataset.e; apply(labState()); });
@@ -882,7 +901,8 @@ function makeAC(input, { onPick, oldOnly = false, onClear }) {
   const pool = () => ALL_SORTED.filter(n => !oldOnly || n.kind === "old");
   const show = () => {
     const q = norm(input.value.trim());
-    items = (q ? pool().filter(n => norm(n.nombre).includes(q)) : pool()).slice(0, 8); act = items.length ? 0 : -1;
+    const rank = n => { const t = norm(n.nombre); return (t.startsWith(q) ? 0 : t.split(/[\s\-()]+/).some(w => w.startsWith(q.split(" ")[0])) && t.includes(q) ? 1 : 2) * 10 + (n.kind === "new" ? 1 : 0); };
+    items = (q ? pool().filter(n => norm(n.nombre).includes(q)).sort((a, b) => rank(a) - rank(b) || a.nombre.length - b.nombre.length) : pool()).slice(0, 8); act = items.length ? 0 : -1;
     list.innerHTML = items.length ? items.map((n, i) => `<li role="option" data-i="${i}" aria-selected="${i === act}">${esc(n.nombre)}<small>${n.kind === "new" ? "estación nueva · " + esc(SHORT[n.est.corredor]) : n.municipio === "Soacha" ? "Soacha" : "estación actual"}</small></li>`).join("") : '<li class="none">Sin resultados</li>';
     list.hidden = false; input.setAttribute("aria-expanded", "true");
   };
@@ -900,14 +920,14 @@ function makeAC(input, { onPick, oldOnly = false, onClear }) {
   return { set: id => { input.value = id ? NODE.get(id).nombre : ""; } };
 }
 const acFail = makeAC($("#failSel"), { onPick: id => { lab.fail = id; if (!lab.route) lab.sel = { type: "node", id }; apply(labState()); if (lab.view === "map" && !lab.route) flyToFail(); }, onClear: () => { lab.fail = null; apply(labState()); } });
-const acSearch = makeAC($("#qSearch"), { onPick: id => { const n = NODE.get(id); lab.sel = { type: "node", id }; if (n.kind === "new" && lab.esc === 0) lab.esc = 3; apply(labState()); if (lab.view !== "graph") flyTo({ ...cam, ...fit([[n.lon, n.lat]], { pitch: cam.pitch, rot: cam.rot }), z: 14.2 }, 1000); } });
+const acSearch = makeAC($("#qSearch"), { onPick: id => { const n = NODE.get(id); lab.sel = { type: "node", id }; setTab("sta"); openPanel(); if (n.kind === "new" && lab.esc === 0) lab.esc = 3; apply(labState()); if (lab.view !== "graph") flyTo({ ...cam, ...fit([[n.lon, n.lat]], { pitch: cam.pitch, rot: cam.rot }), z: 14.2 }, 1000); } });
 $("#failQuick").addEventListener("click", ev => { const b = ev.target.closest("[data-fail]"); if (!b) return; const id = b.dataset.fail; lab.fail = lab.fail === id ? null : id; if (lab.fail) lab.sel = { type: "node", id }; apply(labState()); if (lab.fail && lab.view === "map") flyToFail(); });
 
 $("#failMode").onchange = ev => { lab.failMode = ev.target.checked; mapEl.classList.toggle("failmode", lab.failMode); };
 $("#btnReset").onclick = () => { lab.fail = null; apply(labState()); };
 function flyToFail() { const F = failInfo(lab.esc, lab.fail); const ids = F && F.iso.size ? [...F.iso, lab.fail] : [lab.fail]; flyTo(fit(ids.map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: cam.pitch || 0, rot: cam.rot, pad: .75, dz: ids.length === 1 ? -1.2 : 0 }), 1100); }
 $("#tgBridges").onchange = ev => { lab.bridges = ev.target.checked; apply(labState()); };
-[["lyRedT", "red"], ["lyPerT", "per"], ["lyAvT", "av"], ["lyEstT", "est"], ["lyColT", "col"], ["lyCentT", "cent"], ["lyHeatT", "heat"], ["lyUplT", "upl"]].forEach(([id, k]) => $("#" + id).onchange = ev => { lab.layers[k] = ev.target.checked; apply(labState()); });
+[["lyRedT", "red"], ["lyPerT", "per"], ["lyAvT", "av"], ["lyEstT", "est"], ["lyColT", "col"], ["lyCentT", "cent"], ["lyHeatT", "heat"], ["lyUplT", "upl"], ["lyBusT", "bus"], ["lyBaseT", "base"]].forEach(([id, k]) => $("#" + id).onchange = ev => { lab.layers[k] = ev.target.checked; apply(labState()); });
 $("#vMap").onclick = () => setView("map"); $("#vGraph").onclick = () => setView("graph"); $("#vCmp").onclick = () => setView("cmp");
 const OLD_SORTED = [...NODE.values()].filter(n => n.kind === "old").sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
 const rtSel = { o: null, d: null };
@@ -915,6 +935,7 @@ const rtTry = () => { if (rtSel.o && rtSel.d && rtSel.o !== rtSel.d) setRoute([r
 const acO = makeAC($("#rtO"), { oldOnly: true, onPick: id => { rtSel.o = id; rtTry(); } }), acD = makeAC($("#rtD"), { oldOnly: true, onPick: id => { rtSel.d = id; rtTry(); } });
 $("#routeQuick").innerHTML = ROUTE_PRESETS.map((r, i) => `<button type="button" class="chip" data-rt="${i}" aria-pressed="false">${esc(short(NODE.get(r[0]).nombre).replace("Portal ", ""))} → ${esc(short(NODE.get(r[1]).nombre).replace("Portal ", ""))}</button>`).join("");
 function setRoute(rt) {
+  if (rt) { setTab("trip"); openPanel(); }
   if (!rt) { rtSel.o = rtSel.d = null; }
   lab.route = rt; lab.sel = null; if (rt && lab.esc === 0) lab.esc = 3;
   apply(labState());
@@ -997,13 +1018,14 @@ function renderKPIs() {
   const fc = $("#focusClear"); if (fc) fc.onclick = () => { lab.sel = null; lab.fail = null; apply(labState()); };
 }
 function renderLabPanels() {
-  $$(".esc").forEach(b => b.setAttribute("aria-checked", +b.dataset.e === lab.esc));
+  renderEscList();
   $$("#failQuick [data-fail]").forEach(b => b.setAttribute("aria-pressed", b.dataset.fail === lab.fail));
   if (document.activeElement !== $("#failSel")) acFail.set(lab.fail);
   $("#btnReset").disabled = !lab.fail;
   $("#failMode").checked = lab.failMode;
   $$("#routeQuick [data-rt]").forEach(b => b.setAttribute("aria-pressed", !!lab.route && ROUTE_PRESETS[+b.dataset.rt].join() === lab.route.join()));
   if (lab.route) { rtSel.o = lab.route[0]; rtSel.d = lab.route[1]; } if (document.activeElement !== $("#rtO")) acO.set(lab.route && lab.route[0]); if (document.activeElement !== $("#rtD")) acD.set(lab.route && lab.route[1]); $("#rtClear").disabled = !lab.route;
+  $("#colorMode").value = lab.colorMode || "corr";
   $("#vMap").setAttribute("aria-pressed", lab.view === "map" && !lab.compare); $("#vCmp").setAttribute("aria-pressed", lab.compare); $("#vGraph").setAttribute("aria-pressed", lab.view === "graph");
   const gi = G[lab.esc];
   $("#failMsg").className = "sub" + (lab.fail ? " alert" : "");
@@ -1034,21 +1056,29 @@ function closureCardHTML(rt, eb, cl) {
     <p class="note">En el mapa: rojo discontinuo = tramo bloqueado, naranja = alternativa de hoy, verde = nueva opción. Tiempos con la velocidad promedio con trancón del modelo y ${TRANSFER_MIN} min por cada cambio de bus.</p>
     <button type="button" class="linkbtn" id="rtClear2">Quitar viaje</button></div>`;
 }
+function thermoHTML(title, r, cls) {
+  if (!r) return "";
+  const P = r.path, idx = id => P.indexOf(id);
+  const legColor = l => { if (l.sv.corr) return COLOR[l.sv.corr]; const a = l.from, b = P[idx(a) + 1], t = EDGE_TR.get(ekey(a, b)); return t !== undefined ? TRONCAL[t].color : "#6C757D"; };
+  return `<div class="thermo ${cls}"><div class="th-h"><b>${esc(title)}</b><span class="num">${fI(tripMin(r))} min</span></div><ol>${r.legs.map(l => { const n = idx(l.to) - idx(l.from); return `<li style="--cc:${legColor(l)}"><span class="st">${esc(short(NODE.get(l.from).nombre))}</span><span class="lg">${esc(l.sv.cod)} · ${n} ${n === 1 ? "parada" : "paradas"}</span></li>`; }).join("")}<li class="end"><span class="st">${esc(short(NODE.get(P[P.length - 1]).nombre))}</span></li></ol><small>${f1(r.km)} km · ${r.transfers} ${r.transfers === 1 ? "transbordo" : "transbordos"}${r.eje.length ? " · pasa por el centro" : ""}</small></div>`;
+}
+function renderTrip() {
+  const out = $("#tripOut");
+  if (!lab.route) { out.innerHTML = tx('<p class="sub" style="margin-top:8px">Elige un viaje de ejemplo o escribe de dónde sales y a dónde vas.</p>'); return; }
+  const rt = lab.route, eb = lab.esc || 3, cl = lab.fail;
+  if (cl) {
+    const blocked = routeInfo(0, rt[0], rt[1])?.path.includes(cl);
+    out.innerHTML = tx(closureCardHTML(rt, eb, cl) + `<div class="thermos">${blocked ? thermoHTML("Desvío de hoy", routeInfo(0, rt[0], rt[1], cl), "alt") : thermoHTML(escName(0), routeInfo(0, rt[0], rt[1]), "a")}${thermoHTML(escName(eb), routeInfo(eb, rt[0], rt[1], cl), "b")}</div>`);
+  } else {
+    out.innerHTML = tx(`<div class="det"><h2>${esc(short(NODE.get(rt[0]).nombre))} → ${esc(short(NODE.get(rt[1]).nombre))}</h2>${routeCompareHTML(rt, eb)}<div class="thermos">${thermoHTML(escName(0), routeInfo(0, rt[0], rt[1]), "a")}${thermoHTML(escName(eb), routeInfo(eb, rt[0], rt[1]), "b")}</div></div>`);
+  }
+  const c2 = $("#rtClear2"); if (c2) c2.onclick = () => setRoute(null);
+}
 function renderDetail() {
   const el = $("#detail"), sel = lab.sel, gi = G[lab.esc];
-  $("#labRight").hidden = !(sel || lab.route);
-  if (!sel && lab.route) {
-    const rt = lab.route, eb = lab.esc || 3, cl = lab.fail;
-    el.innerHTML = tx(cl ? closureCardHTML(rt, eb, cl) : `<div class="det"><span class="tag"><i style="background:#1E7F55"></i>${DEV ? "Ruta O→D" : "Tu viaje"}</span><h2>${esc(short(NODE.get(rt[0]).nombre))} → ${esc(short(NODE.get(rt[1]).nombre))}</h2>
-      <p class="sub">En gris punteado, el viaje con la red de hoy. En verde, con ${esc(escName(eb).toLowerCase())}.</p>
-      ${routeCompareHTML(rt, eb)}
-      ${[[escName(0), routeInfo(0, rt[0], rt[1])], [escName(eb), routeInfo(eb, rt[0], rt[1])]].map(([t, r]) => legsHTML(t, r)).join("")}
-      <button type="button" class="linkbtn" id="rtClear2">Quitar viaje</button></div>`);
-    $("#rtClear2").onclick = () => setRoute(null);
-    return;
-  }
+  renderTrip();
   if (!sel) {
-    el.innerHTML = "";
+    el.innerHTML = tx('<p class="sub" style="margin:8px 0">Toca una estación o un corredor en el mapa, o búscala arriba, para ver su ficha.</p>'); return;
   } else if (sel.type === "corr") {
     const c = CORR[sel.id], inf = new Set(c.conexiones_inferidas.map(x => x.id));
     const items = c.path.map((id, i) => {
@@ -1081,7 +1111,7 @@ function renderDetail() {
         ${e.area_actividad ? `<dt>Área de Actividad</dt><dd>${esc(e.area_actividad)}${e.area_por_upl ? " <small>(asignada por UPL)</small>" : ""}</dd>` : ""}
         <dt>Grado en el grafo</dt><dd class="num">${gi.g.get(e.id)?.size ?? "—"}</dd>
         <dt>Centralidad</dt><dd class="num">${gi.g.has(e.id) ? pctC(CENT[lab.esc].get(e.id)) : "— (no está en este escenario)"}</dd></dl>
-        ${gi.g.has(e.id) ? `<button type="button" class="btn-fail" data-failnode="${e.id}" aria-pressed="${lab.fail === e.id}"><span class="bolt" aria-hidden="true"></span>${lab.fail === e.id ? "Restablecer esta estación" : "Simular falla de esta estación"}</button>` : ""}
+        ${gi.g.has(e.id) ? `<button type="button" class="btn-fail" data-failnode="${e.id}" aria-pressed="${lab.fail === e.id}"><span class="bolt" aria-hidden="true"></span>${lab.fail === e.id ? (DEV ? "Restablecer el nodo" : "Abrir esta estación de nuevo") : (DEV ? "Simular falla (retirar nodo)" : "Simular cierre aquí")}</button>` : ""}
         <p><strong>Justificación POT.</strong> ${esc(e.justificacion)}</p>
         <p class="note">El círculo azul del mapa es el radio peatonal de 500 m que se usó para cruzar la estación con las capas del POT.${e.area_por_upl ? " En la Av. 68, el Área de Actividad se asigna según la UPL de la estación, no por cruce espacial." : ""}</p>
         <button type="button" class="linkbtn" data-clear>Cerrar ficha</button></div>`;
@@ -1090,19 +1120,29 @@ function renderDetail() {
       el.innerHTML = `<div class="det"><span class="tag"><i style="background:${n.tr.length ? "var(--emerald)" : "#fff"};border:1.5px solid var(--base)"></i>${n.tr.length ? "Estación actual · nodo de transbordo POT" : "Estación actual"}</span><h2>${esc(n.nombre)}</h2>
         <dl class="kv"><dt>Municipio</dt><dd>${n.municipio}</dd><dt>Grado en el grafo</dt><dd class="num">${deg}</dd><dt>Punto de articulación</dt><dd>${isArt ? '<span class="badge no" style="background:#FDE3E4;color:#9A0F17">Sí: si falla, parte la red</span>' : '<span class="badge yes">No</span>'}</dd>
         <dt>Centralidad</dt><dd class="num">${pctC(CENT[lab.esc].get(n.id))} <small>(puesto ${CENT_RANK[lab.esc].indexOf(n.id) + 1}; red actual ${pctC(CENT[0].get(n.id))})</small></dd></dl>
-        <button type="button" class="btn-fail" data-failnode="${n.id}" aria-pressed="${lab.fail === n.id}"><span class="bolt" aria-hidden="true"></span>${lab.fail === n.id ? "Restablecer esta estación" : "Simular falla de esta estación"}</button>
+        <button type="button" class="btn-fail" data-failnode="${n.id}" aria-pressed="${lab.fail === n.id}"><span class="bolt" aria-hidden="true"></span>${lab.fail === n.id ? (DEV ? "Restablecer el nodo" : "Abrir esta estación de nuevo") : (DEV ? "Simular falla (retirar nodo)" : "Simular cierre aquí")}</button>
         ${lab.fail === n.id ? `<p class="sub alert" style="color:var(--tm)">${esc(failText(lab.esc, n.id))}</p>` : ""}
         ${n.tr.map(t => `<p><strong>Transbordo ${esc(SHORT[t.corredor])}.</strong> ${esc(t.justificacion)}. UPL ${esc(t.upl)}, densidad ${f3(t.densidad)}, Metro POT: ${t.metro ? "Sí" : "No"}.</p>`).join("")}
 
         <button type="button" class="linkbtn" data-clear>Cerrar ficha</button></div>`;
     }
   }
+  if (sel.type === "node") {
+    const n = NODE.get(sel.id), tr = troncalesDe(sel.id), kv = el.querySelector(".kv");
+    const extra = `<dl class="kv"><dt>Troncal</dt><dd>${tr.length ? tr.map(t => `<span class="trk" style="--cc:${t.color}">${esc(t.letra)}</span> ${esc(t.nombre)}`).join("<br>") : n.kind === "new" ? esc(SHORT[n.est.corredor]) + " (nueva)" : "Conector entre troncales"}</dd><dt>Sector (UPL)</dt><dd>${esc(n.est ? n.est.upl : uplOf(sel.id))}</dd>
+      <dt>${DEV ? "Demanda" : "¿Cuánta gente pasa?"}</dt><dd>${DEV ? "Sin dato por estación en el modelo; centralidad " : "El modelo no publica pasajeros por estación. Por aquí pasan "}${G[lab.esc].g.has(sel.id) ? pctC(CENT[lab.esc].get(sel.id)) : "—"}${DEV ? "" : " de los trayectos"}</dd></dl>
+      <div class="row2">${n.kind === "old" ? `<button type="button" class="chip" data-act="o" data-id="${sel.id}">Fijar como origen</button><button type="button" class="chip" data-act="d" data-id="${sel.id}">Fijar como destino</button>` : ""}</div>`;
+    if (kv) kv.insertAdjacentHTML("beforebegin", extra); else el.insertAdjacentHTML("beforeend", extra);
+  }
   el.innerHTML = tx(el.innerHTML);
 }
-$("#fcClose").onclick = () => { if (lab.sel) select(null); else if (lab.route) setRoute(null); };
 $("#kpis").addEventListener("click", ev => { const c = ev.target.closest("[data-corr]"); if (!c) return; select({ type: "corr", id: c.dataset.corr }); flyTo(fit(CORR[c.dataset.corr].coords, { pitch: cam.pitch || 0, rot: cam.rot, pad: .7 }), 1100); $("#mapWrap").scrollIntoView({ behavior: "smooth", block: "start" }); });
-$("#drawerBtn").onclick = () => { collapsed = !collapsed; document.body.classList.toggle("lab-collapsed", collapsed); $("#drawerBtn").setAttribute("aria-expanded", !document.body.classList.contains("lab-collapsed")); resize(); };
 $("#detail").addEventListener("click", ev => {
+  const act = ev.target.closest("[data-act]");
+  if (act) { const id = act.dataset.id;
+    if (act.dataset.act === "close") { lab.fail = lab.fail === id ? null : id; apply(labState()); return; }
+    if (act.dataset.act === "o") rtSel.o = id; else rtSel.d = id;
+    (act.dataset.act === "o" ? acO : acD).set(id); setTab("trip"); if (rtSel.o && rtSel.d && rtSel.o !== rtSel.d) setRoute([rtSel.o, rtSel.d]); return; }
   const c = ev.target.closest("[data-corr]"), n = ev.target.closest("[data-node]"), x = ev.target.closest("[data-clear]");
   if (c) { select({ type: "corr", id: c.dataset.corr }); if (lab.view === "map") flyTo(fit(CORR[c.dataset.corr].coords, { pitch: cam.pitch || 0, rot: cam.rot, pad: .75 }), 1100); }
   if (n) { select({ type: "node", id: n.dataset.node }); const nd = NODE.get(n.dataset.node); if (lab.view === "map") flyTo({ ...cam, ...fit([[nd.lon, nd.lat]], { pitch: cam.pitch, rot: cam.rot }), z: 14.3 }, 1000); }
@@ -1387,6 +1427,48 @@ document.addEventListener("keydown", ev => {
   }
 });
 
+// ---- panel con pestañas ----
+const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"] };
+function setTab(t) { Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); }
+Object.keys(TABS).forEach(k => $(TABS[k][0]).onclick = () => setTab(k));
+function openPanel() { $("#lPanel").hidden = false; $("#btnPanel").hidden = true; }
+$("#lpClose").onclick = () => { $("#lPanel").hidden = true; $("#btnPanel").hidden = false; };
+$("#btnPanel").onclick = openPanel;
+if (matchMedia("(max-width: 820px)").matches) { $("#lPanel").hidden = true; $("#btnPanel").hidden = false; }
+$("#rtSwap").onclick = () => { [rtSel.o, rtSel.d] = [rtSel.d, rtSel.o]; acO.set(rtSel.o); acD.set(rtSel.d); if (rtSel.o && rtSel.d) setRoute([rtSel.o, rtSel.d]); };
+// ---- capas, convenciones, color ----
+$("#btnLayers").onclick = ev => { ev.stopPropagation(); const p = $("#layersPanel"); p.hidden = !p.hidden; $("#btnLayers").setAttribute("aria-expanded", !p.hidden); };
+document.addEventListener("click", ev => { if (!ev.target.closest(".dd")) { $("#layersPanel").hidden = true; $("#btnLayers").setAttribute("aria-expanded", "false"); } });
+$("#btnConv").onclick = () => { const on = $("#btnConv").getAttribute("aria-pressed") !== "true"; $("#btnConv").setAttribute("aria-pressed", on); $("#mapWrap").classList.toggle("conv", on); };
+$("#lgTroncal").innerHTML = TRONCAL.filter(t => t.letra !== "·").map(t => `<span><i class="lg-t" style="background:${t.color}"></i>${esc(t.letra)} ${esc(t.nombre)}</span>`).join("");
+$("#colorMode").onchange = ev => { lab.colorMode = ev.target.value; lab.layers.heat = ev.target.value === "uso"; $("#lyHeatT").checked = lab.layers.heat; apply(labState()); };
+// ---- cámara ----
+let orbitRaf = 0, prevTilt = 48;
+function setOrbit(on) { $("#camOrbit").setAttribute("aria-pressed", on); cancelAnimationFrame(orbitRaf); if (!on) return; const step = () => { cam.rot += .12; requestDraw(); orbitRaf = requestAnimationFrame(step); }; orbitRaf = requestAnimationFrame(step); }
+function setFollow(on) {
+  follow = on; $("#camFollow").setAttribute("aria-pressed", on);
+  if (on) { if (!sim.on) simToggle(true); if (!sim.focus || !sim.focus.g.isConnected) sim.focus = sim.buses.find(b => b.od) || sim.buses[0];
+    if (sim.focus) { $("#simHud").hidden = false; flyTo({ ...cam, z: 14, pitch: Math.max(cam.pitch, 45) }, 600); showTip(sim.focus.label, innerWidth / 2, innerHeight / 2, false); setTimeout(() => hideTip(), 2500); } }
+}
+$("#camAll").onclick = () => { setFollow(false); flyTo(fit(allPts, { pitch: cam.pitch > 1 ? 45 : 0, rot: cam.rot, pad: .9 }), 1000); };
+$("#camTop").onclick = () => { const top = cam.pitch > 1; if (top) prevTilt = cam.pitch; $("#camTop").setAttribute("aria-pressed", top); flyTo({ ...cam, pitch: top ? 0 : prevTilt, rot: top ? 0 : cam.rot }, 800); };
+$("#camOrbit").onclick = () => setOrbit($("#camOrbit").getAttribute("aria-pressed") !== "true");
+$("#camFollow").onclick = () => setFollow(!follow);
+mapEl.addEventListener("pointerdown", () => { if ($("#camOrbit").getAttribute("aria-pressed") === "true") setOrbit(false); if (follow) setFollow(false); });
+// ---- ticker de estado por eje ----
+function renderTicker(s) {
+  const e = E[s.esc], pm = s.peak === "pm", c = id => (CENT[s.esc].get(id) || 0) * 100, c0 = id => (CENT[0].get(id) || 0) * 100;
+  const lvl = v => v >= 30 ? ["Muy cargado", "bad"] : v >= 15 ? ["Cargado", "mid"] : ["Fluido", "good"];
+  const node = (nm, lab2) => { const id = byName(nm), v = c(id), [t, k] = lvl(v); return { n: lab2, st: t, k, v: DEV ? `centralidad ${f1(v)} %` : `${fI(v)} de cada 100 trayectos`, d: s.esc ? (DEV ? sgn(v - c0(id)) + " pp" : `hoy ${fI(c0(id))}`) : "" }; };
+  const prk = e.carga >= e0.carga ? ["Saturado", "bad"] : e.carga >= .9 * e0.carga ? ["Cargado", "mid"] : ["Más fluido", "good"];
+  const items = [
+    { n: pm ? "Ricaurte → Paloquemao (salida)" : "Paloquemao → Ricaurte", st: prk[0], k: prk[1], v: `${fI(e.carga)} pasajeros`, d: s.esc ? sgn(e.alivio) + " %" : "" },
+    node("Avenida Jiménez", "Av. Jiménez"), node("Calle 72 - Areandina", "Calle 72"), node("NQS Calle 75", "NQS Calle 75"),
+    { n: "Av. Carrera 68", st: e.corredores.includes("C6_Av68") ? "En operación" : "No existe hoy", k: e.corredores.includes("C6_Av68") ? "good" : "off", v: e.corredores.includes("C6_Av68") ? "22,38 km · 14 estaciones" : "", d: "" },
+    { n: DEV ? "Corredores periféricos C1–C5" : "Conexiones entre barrios", st: e.corredores.includes("C1") ? "En operación" : "No existen hoy", k: e.corredores.includes("C1") ? "good" : "off", v: e.corredores.includes("C1") ? "37,32 km · 5 tramos" : "", d: "" },
+  ];
+  $("#ticker").innerHTML = items.map(i => `<span class="tk ${i.k}"><b>${esc(i.n)}</b><em>${esc(i.st)}</em>${i.v ? `<span>${esc(i.v)}</span>` : ""}${i.d ? `<span class="num">${esc(i.d)}</span>` : ""}</span>`).join("") + (DEV ? '<span class="tk-note">Umbrales de centralidad: ≥ 30 % muy cargado · ≥ 15 % cargado</span>' : "");
+}
 // ---- interruptor de modo y jornada ----
 function setDev(v) {
   DEV = v; try { localStorage.setItem("tm-dev", v ? "1" : "0"); } catch (_) { }

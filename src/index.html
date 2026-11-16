@@ -60,13 +60,46 @@
     </div>
     <div class="lbls" id="lbls" aria-hidden="true"></div>
     <div class="map-ui">
-      <div class="lab-tools">
-        <button type="button" class="drawer-btn" id="drawerBtn" aria-controls="labLeft" aria-expanded="true" title="Mostrar u ocultar controles"><span aria-hidden="true">☰</span> Controles</button>
-        <button type="button" class="sim-btn" id="simPlay" aria-pressed="false"><span aria-hidden="true">▶</span> Simular operación en vivo</button>
-        <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div>
-        <div class="ac ac-top"><label for="qSearch" class="vh">Buscar estación</label><div class="ac-box"><input id="qSearch" class="sel ac-in" type="search" placeholder="Buscar estación…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+      <div class="hud-top" id="hudTop">
+        <div class="hud-row">
+          <div class="esc-seg" id="escList" role="radiogroup" aria-label="Escenarios"></div>
+          <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div>
+        </div>
+        <div class="hud-cap" id="escCap"></div>
+        <div class="hud-row">
+          <div class="ac ac-top"><label for="qSearch" class="vh">Buscar estación</label><div class="ac-box"><input id="qSearch" class="sel ac-in" type="search" placeholder="Buscar estación…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+          <label class="cmode" for="colorMode"><span data-u="Color" data-d="Color del grafo"></span><select id="colorMode"><option value="corr">por troncal y corredor</option><option value="uso">por uso de los tramos</option></select></label>
+          <div class="dd"><button type="button" class="hud-btn" id="btnLayers" aria-expanded="false" aria-controls="layersPanel">Capas ▾</button>
+            <div class="dd-panel" id="layersPanel" hidden>
+          <label class="tg lay"><input type="checkbox" id="lyBusT" checked><span><b data-u="Buses en operación" data-d="Buses (simulación)"></b><small data-u="Buses de la simulación recorriendo las troncales y los viajes entre barrios." data-d="ⓘ Troncales de paradas_ordenadas.csv + pares O-D por Dijkstra; velocidad efectiva BPR del escenario."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyBaseT" checked><span><b data-u="Mapa base con calles" data-d="Mapa base raster"></b><small data-u="Calles, barrios y nombres de Bogotá debajo de la red." data-d="ⓘ Esri World Light Gray; CARTO Positron si se configura una API key."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyRedT" checked><span><b data-u="Red TransMilenio actual" data-d="Red troncal actual"></b><small data-u="Las troncales y portales que funcionan hoy en Bogotá." data-d="ⓘ 143 nodos y 146 aristas de la matriz de adyacencia."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyPerT" checked><span><b data-u="Conexiones directas entre barrios (5 tramos)" data-d="5 corredores periféricos (C1–C5)"></b><small data-u="Enlaces directos entre portales para viajar sin ir al centro." data-d="ⓘ Selección voraz de enlaces y Dijkstra sobre la malla arterial; 37,32 km."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyAvT" checked><span><b data-u="Corredor Av. Carrera 68" data-d="Bypass Av. Carrera 68 (C6)"></b><small data-u="Vía rápida transversal que desahoga los trancones del centro." data-d="ⓘ Escenario contrafactual; 22,38 km (16,54 de obra nueva)."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyEstT" checked><span><b data-u="Estaciones nuevas y transbordos" data-d="36 estaciones aprobadas + 11 transbordos"></b><small data-u="Puntos nuevos donde podrás subirte o cambiar de ruta." data-d="ⓘ Filtro POT (Decreto 555/2021): UPL, Áreas de Actividad, EEP ≤ 45 %, Metro ≤ 350 m."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyColT"><span><b data-u="Zonas con más actividad urbana" data-d="Columnas 3D de densidad POT"></b><small data-u="Barras 3D altas = zonas con más vivienda, comercio y empleo según el POT, que necesitan rutas cercanas." data-d="ⓘ Índice de densidad POT (0,52–0,95) según el Área de Actividad."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyCentT"><span><b data-u="Estaciones por donde pasan más rutas (Top 10)" data-d="Centralidad Top 10"></b><small data-u="Barras 3D altas = estaciones por donde pasa la mayoría de los viajes y que más frenan el sistema si fallan." data-d="ⓘ Intermediación de Brandes ponderada por km."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyHeatT"><span><b data-u="Tramos más usados (mapa de calor)" data-d="Mapa de calor: intermediación de aristas"></b><small data-u="Rojo y alto = tramos por donde pasan más rutas; verde = tramos con holgura." data-d="ⓘ Edge betweenness ponderado por km; relieve 3D en los 20 tramos más usados."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyUplT"><span><b data-u="Sectores urbanos de Bogotá" data-d="Límites UPL"></b><small data-u="División por zonas de la ciudad para ubicar dónde falta cobertura." data-d="ⓘ 33 Unidades de Planeamiento Local del Decreto 555/2021."></small></span></label>
+            </div>
+          </div>
+          <button type="button" class="hud-btn" id="btnConv" aria-pressed="false">Convenciones</button>
+          <button type="button" class="sim-btn" id="simPlay" aria-pressed="false"><span aria-hidden="true">▶</span> Simular operación</button>
+          <span class="live" id="liveBadge" hidden><i></i>EN VIVO · simulación</span>
+          <button type="button" class="hud-btn" id="btnPanel" hidden>Abrir panel</button>
+        </div>
         <span class="sim-hud" id="simHud" hidden></span>
       </div>
+      <div class="cam-bar" role="group" aria-label="Cámara y vista">
+        <button type="button" id="camAll" title="Ver toda la ciudad"><b>⌂</b><small>Ciudad</small></button>
+        <button type="button" id="camTop" aria-pressed="false" title="Vista cenital (desde arriba) o inclinada"><b>◎</b><small>Cenital</small></button>
+        <button type="button" id="camOrbit" aria-pressed="false" title="Girar la cámara lentamente"><b>↻</b><small>Orbitar</small></button>
+        <button type="button" id="camFollow" aria-pressed="false" title="Seguir un bus en movimiento"><b>➜</b><small>Seguir bus</small></button>
+        <button type="button" id="vMap" aria-pressed="true" title="Mapa"><b>▦</b><small>Mapa</small></button>
+        <button type="button" id="vCmp" aria-pressed="false" title="Cortina: red de hoy frente a red completa"><b>◫</b><small>Cortina</small></button>
+        <button type="button" id="vGraph" aria-pressed="false" title="Esquema de la red"><b>⋔</b><small data-u="Esquema" data-d="Grafo"></small></button>
+      </div>
+      <div class="ticker" id="ticker" aria-label="Estado de los ejes principales"></div>
       <div class="map-ctrl" role="group" aria-label="Controles del mapa">
         <button type="button" id="zIn" title="Acercar" aria-label="Acercar">+</button>
         <button type="button" id="zOut" title="Alejar" aria-label="Alejar">−</button>
@@ -84,6 +117,7 @@
         <span class="lg-rt"><i class="lg-ra"></i>Viaje hoy</span><span class="lg-rt"><i class="lg-rb"></i>Viaje con la nueva red</span>
         <span class="lg-cl"><i class="lg-blk"></i>Tramo bloqueado</span><span class="lg-cl"><i class="lg-rc"></i>Alternativa de hoy</span>
         <span id="lgHeat" hidden><i class="lg-h"></i>Tramos: poco usados → muy usados</span>
+        <div class="lg-tr-list" id="lgTroncal"></div>
       </div>
       <div class="cardinals" id="cardinals" aria-hidden="true"><span data-a="0"><b>N</b> Norte · Suba / Usaquén</span><span data-a="90"><b>E</b> Oriente · Centro / Chapinero</span><span data-a="180"><b>S</b> Sur · Usme / Tunjuelito</span><span data-a="270"><b>O</b> Occidente · Kennedy / Fontibón / Engativá</span></div>
       <div class="attrib" id="attrib">Mapa base vectorial · UPL Decreto 555/2021</div>
@@ -98,9 +132,30 @@
       <div class="pres-card" id="presCard"></div>
       <div class="pres-nav"><button type="button" id="presPrev" aria-label="Escena anterior">←</button><span id="presCount" class="num"></span><button type="button" id="presNext" aria-label="Escena siguiente">→</button><button type="button" id="presExit">Salir · Esc</button></div>
     </div>
-    <aside class="lab-right fcard" id="labRight" aria-label="Ficha seleccionada" hidden>
-      <button type="button" class="fc-close" id="fcClose" aria-label="Cerrar ficha">×</button>
-      <div id="detail"></div>
+    <aside class="lpanel" id="lPanel" aria-label="Panel de viaje, cierres y estación">
+      <div class="lp-head"><div class="tabs" role="tablist"><button type="button" role="tab" id="tbTrip" aria-selected="true" aria-controls="paneTrip">Planear viaje</button><button type="button" role="tab" id="tbFail" aria-selected="false" aria-controls="paneFail" data-u="Cierres" data-d="Cierres / fallas"></button><button type="button" role="tab" id="tbSta" aria-selected="false" aria-controls="paneSta">Estación</button></div><button type="button" class="fc-close" id="lpClose" aria-label="Ocultar panel">×</button></div>
+      <div class="lp-body">
+        <section id="paneTrip" role="tabpanel" aria-labelledby="tbTrip">
+          <div class="quick" id="routeQuick" role="group" aria-label="Viajes de ejemplo"></div>
+        <div class="ac"><label for="rtO" class="fl" data-u="¿Desde dónde sales?" data-d="Origen (nodo)"></label><div class="ac-box"><input id="rtO" class="sel ac-in" type="search" placeholder="Ej.: Portal Usme" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+        <button type="button" class="swap" id="rtSwap" title="Intercambiar origen y destino" aria-label="Intercambiar origen y destino">⇅</button>
+        <div class="ac"><label for="rtD" class="fl" data-u="¿A dónde vas?" data-d="Destino (nodo)"></label><div class="ac-box"><input id="rtD" class="sel ac-in" type="search" placeholder="Ej.: Portal 20 de Julio" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+        <div class="ac"><label for="failSel" class="fl" data-u="Estación cerrada (opcional)" data-d="Nodo retirado (opcional)"></label><div class="ac-box"><input id="failSel" class="sel ac-in" type="search" placeholder="Ej.: Avenida Jiménez" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+          <label class="rng" for="rtPen"><span data-u="Caminata entre buses" data-d="Penalización por transbordo (supuesto)"></span> <b id="rtPenV">5 min</b></label>
+          <input type="range" id="rtPen" min="0" max="12" step="1" value="5">
+          <div class="row2"><button type="button" class="chip" id="rtClear">Quitar viaje</button><button type="button" class="chip" id="btnReset">Abrir estación cerrada</button></div>
+          <div id="tripOut"></div>
+        </section>
+        <section id="paneFail" role="tabpanel" aria-labelledby="tbFail" hidden>
+          <p class="sub" data-u="Elige una estación: las que quedan incomunicadas se pintan de rojo." data-d="Componentes conexos tras retirar el nodo; aislados en rojo."></p>
+          <div class="quick" id="failQuick" role="group" aria-label="Estaciones críticas"></div>
+          <label class="tg"><input type="checkbox" id="failMode"><span data-u="Tocar una estación del mapa la cierra" data-d="Modo remoción: clic en un nodo lo retira"></span></label>
+          <p class="sub" id="failMsg"></p>
+          <p class="sub">Calle 76 y Tercer Milenio no están entre las 143 estaciones del proyecto. En el eje norte de la Caracas usa Calle 72.</p>
+          <label class="tg"><input type="checkbox" id="tgBridges"><span data-u="Resaltar puntos críticos (si se cortan, parten la red en dos)" data-d="Resaltar puentes topológicos (Tarjan)"></span></label>
+        </section>
+        <section id="paneSta" role="tabpanel" aria-labelledby="tbSta" hidden><div id="detail"></div></section>
+      </div>
     </aside>
     <div class="tip" id="tip" role="status"></div>
     <div class="graph" id="graph" hidden>
@@ -119,52 +174,7 @@
   </section>
 
   <!-- LABORATORIO: paneles -->
-  <aside class="lab-left" id="labLeft" aria-label="Controles del laboratorio">
-    <details class="blk" open>
-      <summary data-u="¿Qué red quieres ver?" data-d="Escenario simulado"></summary>
-      <p class="sub" data-u="Toca una opción para ver cómo cambia la ciudad." data-d="Modelo gravitacional IPF (β = 0,10 km⁻¹) + asignación con congestión BPR. Pico AM oficial."></p>
-      <div class="esc-list" id="escList" role="radiogroup" aria-label="Escenarios"></div>
-    </details>
-    <details class="blk" open>
-      <summary data-u="Planear un viaje" data-d="Ruta O→D con estación cerrada"></summary>
-      <p class="sub" data-u="Escribe de dónde sales y a dónde vas. Si quieres, marca una estación cerrada para ver qué opciones tienes." data-d="Dijkstra por km sobre el grafo del escenario. Transbordos = cambios de servicio (hoja Rutas). El nodo cerrado se excluye del grafo."></p>
-      <div class="quick" id="routeQuick" role="group" aria-label="Viajes de ejemplo"></div>
-      <div class="ac"><label for="rtO" class="fl" data-u="Origen" data-d="Origen (nodo)"></label><div class="ac-box"><input id="rtO" class="sel ac-in" type="search" placeholder="Ej.: Portal Usme" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
-      <div class="ac"><label for="rtD" class="fl" data-u="Destino" data-d="Destino (nodo)"></label><div class="ac-box"><input id="rtD" class="sel ac-in" type="search" placeholder="Ej.: Portal 20 de Julio" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
-      <div class="ac"><label for="failSel" class="fl" data-u="Estación cerrada (opcional)" data-d="Nodo retirado (opcional)"></label><div class="ac-box"><input id="failSel" class="sel ac-in" type="search" placeholder="Ej.: Avenida Jiménez" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
-      <label class="rng" for="rtPen"><span data-u="Tiempo de caminata al cambiar de bus" data-d="Penalización por transbordo (supuesto)"></span> <b id="rtPenV">5 min</b></label>
-      <input type="range" id="rtPen" min="0" max="12" step="1" value="5">
-      <div class="row2"><button type="button" class="chip" id="rtClear">Quitar viaje</button><button type="button" class="chip" id="btnReset">Abrir estación cerrada</button></div>
-    </details>
-    <details class="blk">
-      <summary data-u="¿Qué pasa si se cierra una estación?" data-d="Prueba de resiliencia (remoción de nodo)"></summary>
-      <p class="sub" data-u="Elige una estación: las que quedan incomunicadas se pintan de rojo." data-d="Componentes conexos tras retirar el nodo; aislados en rojo."></p>
-      <div class="quick" id="failQuick" role="group" aria-label="Estaciones críticas"></div>
-      <label class="tg"><input type="checkbox" id="failMode"><span data-u="Tocar una estación del mapa la cierra" data-d="Modo remoción: clic en un nodo lo retira"></span></label>
-      <p class="sub" id="failMsg"></p>
-      <p class="sub">Calle 76 y Tercer Milenio no están entre las 143 estaciones del proyecto. En el eje norte de la Caracas usa Calle 72.</p>
-      <label class="tg"><input type="checkbox" id="tgBridges"><span data-u="Resaltar puntos críticos (si se cortan, parten la red en dos)" data-d="Resaltar puentes topológicos (Tarjan)"></span></label>
-    </details>
-    <details class="blk">
-      <summary>Capas</summary>
-      <label class="tg lay"><input type="checkbox" id="lyRedT" checked><span><b data-u="Red TransMilenio actual" data-d="Red troncal actual"></b><small data-u="Las troncales y portales que funcionan hoy en Bogotá." data-d="ⓘ 143 nodos y 146 aristas de la matriz de adyacencia."></small></span></label>
-      <label class="tg lay"><input type="checkbox" id="lyPerT" checked><span><b data-u="Conexiones directas entre barrios (5 tramos)" data-d="5 corredores periféricos (C1–C5)"></b><small data-u="Enlaces directos entre portales para viajar sin ir al centro." data-d="ⓘ Selección voraz de enlaces y Dijkstra sobre la malla arterial; 37,32 km."></small></span></label>
-      <label class="tg lay"><input type="checkbox" id="lyAvT" checked><span><b data-u="Corredor Av. Carrera 68" data-d="Bypass Av. Carrera 68 (C6)"></b><small data-u="Vía rápida transversal que desahoga los trancones del centro." data-d="ⓘ Escenario contrafactual; 22,38 km (16,54 de obra nueva)."></small></span></label>
-      <label class="tg lay"><input type="checkbox" id="lyEstT" checked><span><b data-u="Estaciones nuevas y transbordos" data-d="36 estaciones aprobadas + 11 transbordos"></b><small data-u="Puntos nuevos donde podrás subirte o cambiar de ruta." data-d="ⓘ Filtro POT (Decreto 555/2021): UPL, Áreas de Actividad, EEP ≤ 45 %, Metro ≤ 350 m."></small></span></label>
-      <label class="tg lay"><input type="checkbox" id="lyColT"><span><b data-u="Zonas con más actividad urbana" data-d="Columnas 3D de densidad POT"></b><small data-u="Barras 3D altas = zonas con más vivienda, comercio y empleo según el POT, que necesitan rutas cercanas." data-d="ⓘ Índice de densidad POT (0,52–0,95) según el Área de Actividad."></small></span></label>
-      <label class="tg lay"><input type="checkbox" id="lyCentT"><span><b data-u="Estaciones por donde pasan más rutas (Top 10)" data-d="Centralidad Top 10"></b><small data-u="Barras 3D altas = estaciones por donde pasa la mayoría de los viajes y que más frenan el sistema si fallan." data-d="ⓘ Intermediación de Brandes ponderada por km."></small></span></label>
-      <label class="tg lay"><input type="checkbox" id="lyHeatT"><span><b data-u="Tramos más usados (mapa de calor)" data-d="Mapa de calor: intermediación de aristas"></b><small data-u="Rojo y alto = tramos por donde pasan más rutas; verde = tramos con holgura." data-d="ⓘ Edge betweenness ponderado por km; relieve 3D en los 20 tramos más usados."></small></span></label>
-      <label class="tg lay"><input type="checkbox" id="lyUplT"><span><b data-u="Sectores urbanos de Bogotá" data-d="Límites UPL"></b><small data-u="División por zonas de la ciudad para ubicar dónde falta cobertura." data-d="ⓘ 33 Unidades de Planeamiento Local del Decreto 555/2021."></small></span></label>
-    </details>
-    <details class="blk" open>
-      <summary>Vista</summary>
-      <div class="seg" role="group" aria-label="Vista">
-        <button type="button" id="vMap" aria-pressed="true">Mapa 3D</button>
-        <button type="button" id="vCmp" aria-pressed="false">Cortina</button>
-        <button type="button" id="vGraph" aria-pressed="false" data-u="Esquema" data-d="Grafo"></button>
-      </div>
-    </details>
-  </aside>
+
   <section class="kpis info" id="kpis" aria-label="Qué cambia en este escenario"></section>
 
   <!-- ANÁLISIS -->
