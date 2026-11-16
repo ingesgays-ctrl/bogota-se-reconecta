@@ -97,6 +97,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .col{position:absolute;left:0;top:0;transform-origin:50% 100%;border-radius:2px 2px 0 0;transition:height .9s cubic-bezier(.3,.7,.2,1),top .9s cubic-bezier(.3,.7,.2,1),opacity .4s;backface-visibility:visible}
 .col.dens{width:7px;margin-left:-3.5px;background:linear-gradient(to top,rgba(255,209,102,.95),rgba(255,209,102,.55));box-shadow:inset 0 0 0 1px rgba(17,17,17,.55)}
 .col.dens.tr{background:linear-gradient(to top,rgba(42,157,143,.95),rgba(42,157,143,.5));box-shadow:inset 0 0 0 1px rgba(13,59,54,.6)}
+.col.cent{width:12px;margin-left:-6px;background:linear-gradient(to top,#1E2B33,rgba(30,43,51,.55));box-shadow:inset 0 0 0 1px rgba(0,0,0,.5)}
 .col.load{width:22px;margin-left:-11px;background:linear-gradient(to top,var(--tm),rgba(216,16,30,.6));box-shadow:inset 0 0 0 1.5px rgba(90,0,8,.6)}
 .lbls{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .lbl{position:absolute;left:0;top:0;white-space:nowrap;pointer-events:none;will-change:transform}
@@ -122,6 +123,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .lg-base{height:3px!important;background:var(--base);opacity:.6;width:18px!important}
 .lg-new{background:var(--gold);border:1.5px solid #111;border-radius:50%}
 .lg-tr{background:var(--emerald);transform:rotate(45deg) scale(.82);border:1px solid #0D3B36}
+.lg-cent{background:#1E2B33;width:6px!important;height:14px!important}
 .lg-crit{background:var(--tm);width:6px!important;height:14px!important}
 .lg-c{height:4px!important;width:18px!important;border-radius:2px}
 .attrib{position:absolute;right:8px;bottom:8px;max-width:calc(100% - 16px);font-size:10.5px;color:var(--muted);background:rgba(255,255,255,.8);padding:1px 6px;border-radius:4px;pointer-events:auto}
@@ -303,6 +305,16 @@ tr.click:hover{background:var(--soft)}
 }
 @keyframes pulse{0%{r:6}70%{r:22;opacity:0}100%{r:22;opacity:0}}
 .pulse{fill:none;stroke:var(--tm);stroke-width:2.5;animation:pulse 1.8s ease-out infinite}
+
+.quick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.quick .chip{font-size:12.5px;padding:4px 10px}
+.quick .chip[aria-pressed="true"]{background:var(--tm);border-color:var(--tm)}
+.sel{width:100%;font:inherit;font-size:14px;padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:#fff;margin-bottom:4px}
+.vh{position:absolute;left:-9999px}
+.btn-fail:disabled{opacity:.45;cursor:default}
+.map.failmode{cursor:crosshair}
+.tiles.gray img{filter:grayscale(1) contrast(.92) brightness(1.06)}
+.det .btn-fail{margin-top:2px}
 </style>
 </head>
 <body class="mode-relato">
@@ -359,6 +371,7 @@ tr.click:hover{background:var(--soft)}
         <span><i class="lg-new"></i>Estación nueva</span>
         <span><i class="lg-tr"></i>Transbordo</span>
         <span><i class="lg-crit"></i>Paloquemao–Ricaurte</span>
+        <span id="lgCent" hidden><i class="lg-cent"></i>Centralidad</span>
       </div>
       <div class="attrib" id="attrib">Mapa base vectorial · UPL Decreto 555/2021</div>
       <div class="hint" id="hint">Arrastra para mover · rueda para zoom · Mayús + arrastrar para girar e inclinar</div>
@@ -388,10 +401,14 @@ tr.click:hover{background:var(--soft)}
     </div>
     <div class="blk">
       <h3>Prueba de resiliencia</h3>
-      <button type="button" class="btn-fail" id="btnFail" aria-pressed="false">
-        <span class="bolt" aria-hidden="true"></span><span id="btnFailTxt">Simular falla en Ricaurte</span>
-      </button>
-      <p class="sub" id="failMsg">Retira el nodo Ricaurte del grafo y pinta en rojo las estaciones que quedan aisladas.</p>
+      <p class="sub">Retira cualquier estación del grafo y mira cuáles quedan aisladas (en rojo).</p>
+      <div class="quick" id="failQuick" role="group" aria-label="Estaciones críticas"></div>
+      <label for="failSel" class="vh">Otra estación a retirar</label>
+      <select id="failSel" class="sel"></select>
+      <label class="tg"><input type="checkbox" id="failMode"><span>Tocar una estación del mapa o del grafo la retira</span></label>
+      <button type="button" class="btn-fail" id="btnReset"><span class="bolt" aria-hidden="true"></span>Restablecer la red</button>
+      <p class="sub" id="failMsg"></p>
+      <p class="sub">Calle 76 y Tercer Milenio no están en la matriz de 143 estaciones del proyecto, así que no se pueden simular.</p>
       <label class="tg"><input type="checkbox" id="tgBridges"><span>Resaltar puentes topológicos</span></label>
     </div>
     <div class="blk">
@@ -401,6 +418,7 @@ tr.click:hover{background:var(--soft)}
       <label class="tg"><input type="checkbox" id="lyAvT" checked><span>Bypass Av. Carrera 68</span></label>
       <label class="tg"><input type="checkbox" id="lyEstT" checked><span>Estaciones nuevas y transbordos</span></label>
       <label class="tg"><input type="checkbox" id="lyColT" checked><span>Columnas 3D de densidad POT</span></label>
+      <label class="tg"><input type="checkbox" id="lyCentT"><span>Columnas 3D de centralidad (top 10)</span></label>
       <label class="tg"><input type="checkbox" id="lyUplT"><span>Límites UPL</span></label>
     </div>
     <div class="blk">
@@ -521,13 +539,69 @@ const G = E.map(e => {
   return { g, corrEdge, ...an, comps, iso, nV: g.size, nE, ok: an.bridges.size === e.puentes };
 });
 const GRAPH_OK = G.every(x => x.ok);
+// falla de cualquier estación (con caché)
+const FAIL_CACHE = new Map();
+function failInfo(esc, id) {
+  if (!id) return null;
+  const k = esc + "|" + id; if (FAIL_CACHE.has(k)) return FAIL_CACHE.get(k);
+  const comps = componentsWithout(G[esc].g, id), r = { id, comps, iso: new Set(comps.slice(1).flat()) };
+  FAIL_CACHE.set(k, r); return r;
+}
+// centralidad de intermediación ponderada por km (Brandes + Dijkstra)
+function hav(a, b) { const R = 6371, p1 = a.lat * Math.PI / 180, p2 = b.lat * Math.PI / 180, dl = (b.lon - a.lon) * Math.PI / 180;
+  return 2 * R * Math.asin(Math.sqrt(Math.sin((p2 - p1) / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin(dl / 2) ** 2)); }
+function betweenness(g) {
+  const V = [...g.keys()], C = new Map(V.map(v => [v, 0])), W8 = new Map();
+  V.forEach(v => W8.set(v, [...g.get(v)].map(w => [w, hav(NODE.get(v), NODE.get(w))])));
+  for (const s of V) {
+    const S = [], P = new Map(), sig = new Map(), d = new Map(), done = new Set();
+    V.forEach(v => { P.set(v, []); sig.set(v, 0); d.set(v, Infinity); });
+    sig.set(s, 1); d.set(s, 0); const Q = [[0, s]];
+    while (Q.length) {
+      let bi = 0; for (let i = 1; i < Q.length; i++) if (Q[i][0] < Q[bi][0]) bi = i;
+      const [dv, v] = Q[bi]; Q[bi] = Q[Q.length - 1]; Q.pop();
+      if (done.has(v) || dv > d.get(v)) continue; done.add(v); S.push(v);
+      for (const [w, wt] of W8.get(v)) {
+        const nd = dv + wt;
+        if (nd < d.get(w) - 1e-9) { d.set(w, nd); Q.push([nd, w]); sig.set(w, sig.get(v)); P.set(w, [v]); }
+        else if (Math.abs(nd - d.get(w)) < 1e-9) { sig.set(w, sig.get(w) + sig.get(v)); P.get(w).push(v); }
+      }
+    }
+    const delta = new Map(V.map(v => [v, 0]));
+    for (let i = S.length - 1; i >= 0; i--) { const w = S[i]; for (const v of P.get(w)) delta.set(v, delta.get(v) + sig.get(v) / sig.get(w) * (1 + delta.get(w))); if (w !== s) C.set(w, C.get(w) + delta.get(w)); }
+  }
+  const n = V.length, norm = (n - 1) * (n - 2);
+  C.forEach((v, k) => C.set(k, v / norm));
+  return C;
+}
+const CENT = G.map(x => betweenness(x.g));
+const CENT_RANK = CENT.map(c => [...c.entries()].sort((a, b) => b[1] - a[1]).map(x => x[0]));
+const TOP10 = CENT_RANK[0].slice(0, 10);
+const byName = nm => [...NODE.values()].find(n => n.nombre === nm)?.id;
+const EJE = ["Ricaurte", "Paloquemao", "CAD", "AV. Eldorado", "Avenida Jiménez", "Calle 22", "Calle 26 - Atrio", "Museo del Oro", "San Victorino", "Las Aguas - Centro Colombo Americano"].map(byName).filter(Boolean);
+const ejeMean = i => EJE.reduce((s, id) => s + CENT[i].get(id), 0) / EJE.length;
+const pctC = v => f1(v * 100) + " %";
+const QUICK = [...new Set(["Ricaurte", "Avenida Jiménez", "Banderas"].map(byName).concat(CENT_RANK[0].filter(id => NODE.get(id).kind === "old").slice(0, 4)))].slice(0, 6);
 
 /* =====================================================================
    3. MOTOR DE MAPA 3D (plano CSS en perspectiva + SVG + columnas)
    ===================================================================== */
 const mapEl = $("#map"), camEl = $("#cam"), vec = $("#vec"), world = $("#world"), tilesEl = $("#tiles"), colsEl = $("#cols"), fog = $("#fog");
 const cam = { cx: 0, cy: 0, z: 11.3, pitch: 48, rot: -10 };
-let W = 800, H = 600, lastK = -1, raf = 0, tilesOK = null, tilesWanted = true;
+let W = 800, H = 600, lastK = -1, raf = 0;
+/* Mapa base. CARTO exige una API key desde 2026 (sin clave, sus teselas llevan la marca "API KEY REQUIRED").
+   Si consigues una clave gratuita en https://carto.com/basemaps/apikey pégala aquí y se usará Positron. */
+const CARTO_KEY = "";
+const OSM_ATTR = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const PROVIDERS = [
+  ...(CARTO_KEY ? [{ id: "carto", cls: "", max: 20, retina: true, attr: OSM_ATTR + ' © <a href="https://carto.com/attributions">CARTO</a>',
+    layers: [(z, x, y) => `https://${"abc"[(x + y) % 3]}.basemaps.cartocdn.com/rastertiles/light_all/${z}/${x}/${y}@2x.png?key=${CARTO_KEY}`] }] : []),
+  { id: "esri", cls: "", max: 16, attr: 'Teselas © <a href="https://www.esri.com">Esri</a>, HERE, Garmin, ' + OSM_ATTR,
+    layers: [(z, x, y) => `https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${z}/${y}/${x}`,
+             (z, x, y) => `https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/${z}/${y}/${x}`] },
+  { id: "osm", cls: "gray", max: 19, attr: OSM_ATTR, layers: [(z, x, y) => `https://tile.openstreetmap.org/${z}/${x}/${y}.png`] },
+];
+let prov = 0, provLoaded = 0, provErr = 0;
 const is3D = () => cam.pitch > 1;
 
 function requestDraw() { if (!raf) raf = requestAnimationFrame(draw); }
@@ -564,34 +638,37 @@ function draw() {
   $("#t3d").textContent = is3D() ? "3D" : "2D"; $("#t3d").setAttribute("aria-pressed", is3D());
   drawTiles(k, C);
 }
-// ---- teselas CartoDB Positron (si el entorno las permite) ----
+// ---- teselas del mapa base (con respaldo automático entre proveedores) ----
 const tilePool = new Map();
 function drawTiles(k, C) {
-  if (!tilesWanted || tilesOK === false) { tilesEl.style.display = "none"; return; }
+  const pv = PROVIDERS[prov];
+  if (!pv) { tilesEl.style.display = "none"; return; }
   tilesEl.style.display = "";
-  const tz = Math.max(3, Math.min(18, Math.round(cam.z))), sc = 2 ** (cam.z - tz), size = TS * sc;
+  const tz = Math.max(3, Math.min(pv.max, Math.round(cam.z))), sc = 2 ** (cam.z - tz), size = TS * sc;
   const cAbsX = (cam.cx + ORIGIN[0]) * 2 ** (tz - Z0), cAbsY = (cam.cy + ORIGIN[1]) * 2 ** (tz - Z0);
   const half = C / 2 / sc;
   const x0 = Math.floor((cAbsX - half) / TS), x1 = Math.floor((cAbsX + half) / TS), y0 = Math.floor((cAbsY - half) / TS), y1 = Math.floor((cAbsY + half) / TS);
-  if ((x1 - x0 + 1) * (y1 - y0 + 1) > 500) return;
+  if ((x1 - x0 + 1) * (y1 - y0 + 1) * pv.layers.length > 700) return;
   const want = new Set();
-  for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) {
-    const key = `${tz}/${x}/${y}`; want.add(key);
+  for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) pv.layers.forEach((url, li) => {
+    const key = `${prov}/${li}/${tz}/${x}/${y}`; want.add(key);
     let img = tilePool.get(key);
     if (!img) {
-      img = new Image(); img.alt = ""; img.decoding = "async";
-      img.onload = () => { if (tilesOK !== true) { tilesOK = true; onTilesOK(); } };
-      img.onerror = () => { if (tilesOK === null) { tilesOK = false; onTilesFail(); } };
-      img.src = `https://${"abcd"[(x + y) & 3]}.basemaps.cartocdn.com/light_all/${key}@2x.png`;
+      img = new Image(); img.alt = ""; img.decoding = "async"; img.style.zIndex = li;
+      const p0 = prov;
+      img.onload = () => { if (p0 !== prov) return; if (++provLoaded === 1) onTilesOK(); };
+      img.onerror = () => { if (p0 !== prov) return; if (provLoaded === 0 && ++provErr >= 4) nextProvider(); };
+      img.src = url(tz, x, y);
       tilesEl.appendChild(img); tilePool.set(key, img);
     }
     img.style.width = img.style.height = size + 0.6 + "px";
     img.style.left = (x * TS - cAbsX) * sc + "px"; img.style.top = (y * TS - cAbsY) * sc + "px";
-  }
+  });
   for (const [key, img] of tilePool) if (!want.has(key)) { img.remove(); tilePool.delete(key); }
 }
-function onTilesOK() { $("#lyBase").style.display = "none"; $("#attrib").innerHTML = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a> Positron'; }
-function onTilesFail() { tilesEl.innerHTML = ""; tilePool.clear(); $("#attrib").textContent = "Base vectorial UPL · las teselas CartoDB no cargan en este visor"; }
+function nextProvider() { prov++; provErr = 0; provLoaded = 0; tilesEl.innerHTML = ""; tilePool.clear(); if (!PROVIDERS[prov]) onTilesFail(); else requestDraw(); }
+function onTilesOK() { const pv = PROVIDERS[prov]; $("#lyBase").style.display = "none"; tilesEl.className = "tiles " + pv.cls; $("#attrib").innerHTML = pv.attr; }
+function onTilesFail() { $("#lyBase").style.display = ""; $("#attrib").textContent = "Base vectorial UPL · las teselas externas no cargan en este visor"; }
 
 function resize() { const r = mapEl.getBoundingClientRect(); W = r.width || 800; H = r.height || 600; requestDraw(); }
 new ResizeObserver(resize).observe(mapEl);
@@ -723,11 +800,13 @@ D.estaciones.forEach(e => {
   const o = addCol(xy, "dens" + (e.estado === "Aprobada_Nueva" ? "" : " tr"), Math.round(e.densidad * 72));
   o.est = e;
 });
+const CCOLS = TOP10.map(id => { const o = addCol(NODE.get(id).xy, "cent", 10); o.id = id; o.el.style.opacity = 0; return o; });
 const critXY = [(NODE.get(CRIT_A).xy[0] + NODE.get(CRIT_B).xy[0]) / 2, (NODE.get(CRIT_A).xy[1] + NODE.get(CRIT_B).xy[1]) / 2];
 const loadH = c => Math.round(c / 420);
 const loadCol = addCol(critXY, "load", loadH(E[0].carga));
 const loadLbl = addLbl(critXY, "load", "", () => loadCol.hv, 6);
 const ricLbl = addLbl(NODE.get(RIC).xy, "ric", "Ricaurte", null, 10);
+const failLbl = addLbl(NODE.get(RIC).xy, "ric", "", null, 10); failLbl.el.style.display = "none";
 const CORR_LBL = {};
 D.corredores.forEach(c => {
   const mid = c.coords[Math.floor(c.coords.length * (c.id === "C6_Av68" ? 0.55 : 0.5))];
@@ -749,7 +828,7 @@ mapEl.addEventListener("mouseleave", () => hideTip());
 /* =====================================================================
    5. ESTADO Y APLICACIÓN SOBRE EL MAPA
    ===================================================================== */
-const lab = { esc: 3, fail: false, bridges: false, layers: { red: true, per: true, av: true, est: true, col: true, upl: false }, sel: null, view: "map" };
+const lab = { esc: 3, fail: null, failMode: false, bridges: false, layers: { red: true, per: true, av: true, est: true, col: true, upl: false, cent: false }, sel: null, view: "map" };
 let S = { ...lab, layers: { ...lab.layers }, only: null, stagger: false };
 let mode = "relato";
 
@@ -759,7 +838,7 @@ function visibleCorr(s) {
 }
 function apply(s = S) {
   S = s;
-  const gi = G[s.esc], vc = visibleCorr(s);
+  const gi = G[s.esc], vc = visibleCorr(s), F = failInfo(s.esc, s.fail), dead = s.fail;
   // corredores (animación de trazado)
   let i = 0;
   D.corredores.forEach(c => {
@@ -775,8 +854,8 @@ function apply(s = S) {
   EDGE_EL.forEach((el, k) => {
     const [a, b] = k.split("|");
     el.classList.toggle("bridge", s.bridges && gi.bridges.has(k));
-    el.classList.toggle("iso", s.fail && (gi.iso.has(a) || gi.iso.has(b)) && a !== RIC && b !== RIC);
-    el.classList.toggle("dead", s.fail && (a === RIC || b === RIC));
+    el.classList.toggle("iso", !!F && (F.iso.has(a) || F.iso.has(b)) && a !== dead && b !== dead);
+    el.classList.toggle("dead", !!F && (a === dead || b === dead));
   });
   // marcadores
   const trOn = new Set(); D.estaciones.forEach(e => { if (e.estado !== "Aprobada_Nueva" && vc.includes(e.corredor)) trOn.add(e.existente); });
@@ -788,8 +867,8 @@ function apply(s = S) {
       const isTr = s.layers.est && trOn.has(id), r = g.querySelector(".s-tr");
       if (r) { r.classList.toggle("hidden", !isTr); g.querySelector(".s-old").classList.toggle("hidden", isTr); }
     }
-    g.classList.toggle("iso", s.fail && gi.iso.has(id));
-    g.classList.toggle("dead", s.fail && id === RIC);
+    g.classList.toggle("iso", !!F && F.iso.has(id));
+    g.classList.toggle("dead", !!F && id === dead);
     g.classList.toggle("sel", !!(s.sel && s.sel.type === "node" && s.sel.id === id));
   });
   // columnas
@@ -797,7 +876,12 @@ function apply(s = S) {
   const e = E[s.esc];
   setColH(loadCol, loadH(e.carga));
   loadLbl.el.innerHTML = `<span>${fI(e.carga)} pax<small>Paloquemao–Ricaurte · ${e.id ? sgn(e.alivio) + " %" : "pico AM"}</small></span>`;
-  ricLbl.el.querySelector("span").textContent = s.fail ? "Ricaurte · fuera de servicio" : "Ricaurte";
+  ricLbl.el.querySelector("span").textContent = s.fail === RIC ? "Ricaurte · fuera de servicio" : "Ricaurte";
+  if (s.fail && s.fail !== RIC) { failLbl.xy = NODE.get(s.fail).xy; failLbl.el.querySelector("span").textContent = NODE.get(s.fail).nombre + " · fuera de servicio"; failLbl.el.style.display = ""; }
+  else failLbl.el.style.display = "none";
+  $("#lgCent").hidden = !s.layers.cent;
+  // columnas de centralidad
+  CCOLS.forEach(o => { const v = CENT[s.esc].get(o.id) || 0; setColH(o, Math.round(v * 300)); o.el.style.opacity = s.layers.cent ? 1 : 0; });
   // UPL
   lyUpl.style.display = s.layers.upl ? "" : "none";
   UPL_LBL.forEach(o => o.el.style.display = s.layers.upl ? "" : "none");
@@ -821,6 +905,7 @@ function select(sel) {
     $("#tipGo").onclick = () => { lab.sel = sel; lab.esc = sel.type === "corr" ? (sel.id === "C6_Av68" ? 2 : 1) : lab.esc; };
     return;
   }
+  if (lab.failMode && sel && sel.type === "node") lab.fail = lab.fail === sel.id ? null : sel.id;
   lab.sel = sel; apply(labState());
 }
 function selSummary(sel) {
@@ -840,7 +925,11 @@ const perNew = D.estaciones.filter(e => e.estado === "Aprobada_Nueva" && e.corre
 const avNew = D.estaciones.filter(e => e.corredor === "C6_Av68");
 const kmTot = D.corredores.reduce((s, c) => s + c.km_total, 0), kmNew = D.corredores.reduce((s, c) => s + c.km_nueva, 0), kmSh = D.corredores.reduce((s, c) => s + c.km_compartida, 0);
 const perUpl = [...new Set(perNew.map(e => e.upl))];
-const compName = c => c.some(id => NODE.get(id)?.nombre === "Banderas") ? "troncal Américas" : c.some(id => NODE.get(id)?.nombre === "Alquería") ? "NQS Sur y Soacha" : "otra rama";
+const compName = c => { const has = n => c.some(id => NODE.get(id)?.nombre === n);
+  if (has("Banderas") && has("Alquería")) return "NQS Sur y troncal Américas";
+  if (has("Banderas")) return "troncal Américas"; if (has("Alquería")) return "NQS Sur y Soacha";
+  if (has("Portal Usme") && has("Portal Tunal")) return "Caracas Sur (Tunal y Usme)";
+  const p = c.map(id => NODE.get(id)).find(n => n.nombre.startsWith("Portal")); return p ? "rama de " + p.nombre : (c.length === 1 ? NODE.get(c[0]).nombre : "rama de " + NODE.get(c[0]).nombre); };
 const isoTxt = gi => gi.comps.slice(1).map(c => `${compName(c)} (${c.length} estaciones)`).join(" y ");
 const allPts = [...D.red.nodos.map(n => [n.lon, n.lat]), ...D.corredores.flatMap(c => c.coords)];
 const ptsOf = ids => D.corredores.filter(c => ids.includes(c.id)).flatMap(c => c.coords);
@@ -852,6 +941,11 @@ const areaCount = (() => { const m = {}; perNew.forEach(e => { const a = (e.area
 const top = [...perNew].sort((a, b) => b.densidad - a.densidad)[0];
 const avAreas = Object.entries(avNew.reduce((m, e) => { (m[e.upl] = m[e.upl] || { n: 0, a: e.area_actividad }).n++; return m; }, {}));
 
+const nmC = n => NODE.get(byName(n)), cN = (i, n) => pctC(CENT[i].get(byName(n)));
+const dPct = (a, b) => sgn((b - a) / a * 100, f1) + " %";
+const isoN = (i, n) => failInfo(i, byName(n)).iso.size;
+const JIM = "Avenida Jiménez", ELD = "AV. Eldorado", N75 = "NQS Calle 75";
+const centRows = (ids, i) => `<div class="why">${ids.map(id => `<div><span class="num">${f1(CENT[i].get(id) * 100)}</span><span>${esc(NODE.get(id).nombre)}<small>% de los caminos más cortos que pasan por la estación${i ? ` · red actual ${pctC(CENT[0].get(id))}` : ""}</small></span></div>`).join("")}</div>`;
 const CH = [
   { id: "inicio", cam: () => fit(allPts, { pitch: 44, rot: -12, pad: .86 }), st: { esc: 3, layers: { col: true } },
     html: `<div class="eyebrow">Expansión troncal · POT Bogotá</div>
@@ -864,47 +958,58 @@ const CH = [
       <p>TransMilenio opera hoy ${D.red.nodos.length} estaciones troncales (${D.red.nodos.filter(n => n.municipio === "Bogotá").length} en Bogotá y ${D.red.nodos.filter(n => n.municipio === "Soacha").length} en Soacha) unidas por ${G[0].nE} conexiones directas. Un árbol con ${D.red.nodos.length} nodos tendría ${D.red.nodos.length - 1} aristas; la red actual solo tiene ${G[0].nE - D.red.nodos.length + 1} ciclos independientes.</p>
       <p>Por eso ${fI(e0.puentes)} de sus ${G[0].nE} conexiones son <strong>puentes topológicos</strong>, marcados en naranja: si cualquiera de ellos se interrumpe, la red queda partida en dos.</p>
       <div class="big-row">${stat(fI(e0.puentes), "puentes topológicos (puntos únicos de falla)", "warn")}${stat(f1(e0.tiempo) + " min", "tiempo medio de viaje con congestión")}</div>` },
-  { id: "ricaurte", cam: () => fit([...G[0].iso, RIC].map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: 52, rot: -25, pad: .8 }), st: { esc: 0, fail: true, layers: { col: false } },
+  { id: "ricaurte", cam: () => fit([...G[0].iso, RIC].map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: 52, rot: -25, pad: .8 }), st: { esc: 0, fail: RIC, layers: { col: false } },
     html: `<div class="eyebrow"><b>2</b> El punto crítico</div><h2>Ricaurte, el nodo que parte la ciudad</h2>
       <p>Ricaurte cruza la NQS con la Calle 13 y la troncal Américas. En el grafo es un punto de articulación: si lo retiramos, la red se divide en ${G[0].comps.length} pedazos y quedan aisladas la ${isoTxt(G[0])}.</p>
       <p>El modelo estima que una falla en Ricaurte desconecta el <strong>${f1(e0.vulnerabilidad)} %</strong> de la demanda de la hora pico. Además, por el tramo vecino Paloquemao–Ricaurte pasan <strong>${fI(e0.carga)} pasajeros</strong> entre las 6:00 y las 9:00 a. m. Es la columna roja del mapa.</p>
       <div class="big-row">${stat(f1(e0.vulnerabilidad) + " %", "de la demanda queda desconectada si falla Ricaurte", "crit")}${stat(fI(e0.carga), "pasajeros en Paloquemao–Ricaurte, pico AM", "crit")}</div>` },
+  { id: "eje", cam: () => fit(TOP10.concat(EJE).map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: 56, rot: -18, pad: .62 }), st: { esc: 0, layers: { col: false, cent: true } },
+    html: `<div class="eyebrow"><b>3</b> El eje central de transbordos</div><h2>No es solo Ricaurte: todo el centro hace de embudo</h2>
+      <p>En una red radial casi todos los viajes entre dos puntos de la ciudad pasan por el mismo eje. Para medirlo usamos la <strong>centralidad de intermediación</strong>: el porcentaje de los caminos más cortos (en km) entre todos los pares de estaciones que atraviesan cada una. Las columnas oscuras del mapa la muestran.</p>
+      ${centRows(TOP10.slice(0, 5).concat([byName(JIM)]), 0)}
+      <p>El embudo es la NQS central (Ricaurte, Paloquemao, CAD, Av. El Dorado, NQS Calle 75) más la Caracas Centro: Av. Jiménez (${cN(0, JIM)}), Hortúa (${cN(0, "Hortúa")}) y Nariño (${cN(0, "Nariño")}). La centralidad media de los 10 nodos del eje es ${pctC(ejeMean(0))}.</p>
+      <p>Varios de esos nodos también son puntos de articulación. Si cae Av. Jiménez quedan aisladas ${isoN(0, JIM)} estaciones; si cae Av. El Dorado, ${isoN(0, ELD)}; si cae NQS Calle 75, ${isoN(0, N75)}. Puedes probar cualquier estación en el laboratorio.</p>
+      <p class="note">Calle 76 y Tercer Milenio no están en la matriz de 143 estaciones del proyecto, así que no se pueden medir aquí. La centralidad mide rutas en el grafo, no pasajeros: la única carga en pasajeros del modelo es la del tramo Paloquemao–Ricaurte.</p>` },
   { id: "norte", cam: () => fit(ptsOf(["C1", "C2", "C3"]), { pitch: 50, rot: -20, pad: .82 }), st: { esc: 1, only: ["C1", "C2", "C3"], stagger: true, layers: { col: false } },
-    html: `<div class="eyebrow"><b>3</b> Corredores periféricos · norte</div><h2>Tres anillos que conectan portales sin pasar por el centro</h2>
+    html: `<div class="eyebrow"><b>4</b> Corredores periféricos · norte</div><h2>Tres anillos que conectan portales sin pasar por el centro</h2>
       <p>Los corredores se trazaron con camino mínimo (Dijkstra) sobre la malla vial arterial real del POT. Cada uno une dos portales que hoy solo se comunican a través del tronco central.</p>
       ${ejesHTML(["C1", "C2", "C3"])}
       <p class="note">C3 rodea los Cerros de Suba y la Reserva Thomas van der Hammen por la Calle 153 y la Av. Boyacá, en vez de atravesarlos.</p>` },
   { id: "sur", cam: () => fit(ptsOf(["C4", "C5"]), { pitch: 50, rot: 15, pad: .8 }), st: { esc: 1, only: PERIF, stagger: true, layers: { col: false } },
-    html: `<div class="eyebrow"><b>4</b> Corredores periféricos · sur</div><h2>Usme y Tunal ganan una segunda salida</h2>
+    html: `<div class="eyebrow"><b>5</b> Corredores periféricos · sur</div><h2>Usme y Tunal ganan una segunda salida</h2>
       <p>En el sur, dos corredores llevan Usme y Tunal hacia la troncal Av. Carrera 10 (Portal 20 de Julio). Juntos forman una malla que duplica las rutas de salida de esas localidades.</p>
       ${ejesHTML(["C4", "C5"])}
       <p>Los 5 corredores suman <strong>${f2(sum(PERIF, id => CORR[id].km_total))} km</strong>: ${f2(sum(PERIF, id => CORR[id].km_nueva))} km de obra nueva y ${f2(sum(PERIF, id => CORR[id].km_compartida))} km sobre carriles exclusivos existentes.</p>` },
   { id: "estaciones", cam: () => fit([...perNew.map(e => [e.lon, e.lat]), ...D.estaciones.filter(e => e.estado !== "Aprobada_Nueva").map(e => [e.lon, e.lat])], { pitch: 55, rot: -8, pad: .85 }), st: { esc: 1, layers: { col: true } },
-    html: `<div class="eyebrow"><b>5</b> Justificación POT</div><h2>Por qué cada estación está donde está</h2>
+    html: `<div class="eyebrow"><b>6</b> Justificación POT</div><h2>Por qué cada estación está donde está</h2>
       <p>Se evaluaron estaciones candidatas cada ~950 m, cada una con un radio peatonal de 500 m, contra cuatro capas oficiales del Decreto 555: UPL, Áreas de Actividad, Estructura Ecológica Principal (EEP) y red Metro. Ninguna se descartó por invadir la EEP.</p>
       <p>Resultado: <strong>${perNew.length} estaciones nuevas</strong> en ${perUpl.length} UPL y <strong>${nTr} transbordos</strong> en estaciones actuales. La altura de cada columna es su índice de densidad POT (de ${f3(Math.min(...perNew.map(e => e.densidad)))} a ${f3(Math.max(...perNew.map(e => e.densidad)))}). El anillo punteado indica integración con el Metro a 350 m o menos (${perNew.filter(e => e.metro).length} estaciones).</p>
       <div class="why">${areaCount.map(([a, n]) => `<div><span class="num">${n}</span><span>Área de Actividad ${esc(a)}<small>estaciones nuevas de los corredores periféricos</small></span></div>`).join("")}</div>
       <p>La de mayor densidad es <button class="linkbtn" type="button" data-sel="${top.id}">${esc(top.nombre)}</button> (${f3(top.densidad)}). Toca cualquier estación para ver su ficha.</p>` },
-  { id: "giro", cam: () => fit([...G[1].iso, RIC, CRIT_A].map(id => [NODE.get(id).lon, NODE.get(id).lat]).concat(ptsOf(PERIF)), { pitch: 48, rot: -15, pad: .9 }), st: { esc: 1, fail: true, layers: { col: false } },
-    html: `<div class="eyebrow"><b>6</b> Escenario 1 · +5 corredores periféricos</div><h2>Más resiliencia, pero el centro se carga más</h2>
+  { id: "giro", cam: () => fit([...G[1].iso, RIC, CRIT_A].map(id => [NODE.get(id).lon, NODE.get(id).lat]).concat(ptsOf(PERIF)), { pitch: 48, rot: -15, pad: .9 }), st: { esc: 1, fail: RIC, layers: { col: false, cent: true } },
+    html: `<div class="eyebrow"><b>7</b> Escenario 1 · +5 corredores periféricos</div><h2>Más resiliencia, pero el centro se carga más</h2>
       <p>Los anillos cierran ciclos entre portales y el grafo gana caminos alternativos: los puentes caen de ${e0.puentes} a ${e1.puentes} y la vulnerabilidad de Ricaurte baja de ${f1(e0.vulnerabilidad)} % a ${f1(e1.vulnerabilidad)} %.</p>
       <p>Pero los viajes de la mañana van de la periferia al centro expandido. Los corredores captan ${fI(e1.viajes - e0.viajes)} viajes más, y muchos terminan entrando por el mismo tronco. La carga en Paloquemao–Ricaurte <strong>sube a ${fI(e1.carga)} pasajeros (${sgn(e1.alivio)} %)</strong>.</p>
       <div class="big-row">${stat(`${e0.puentes} → ${e1.puentes}`, "puentes topológicos", "good")}${stat(`${f1(e0.vulnerabilidad)} → ${f1(e1.vulnerabilidad)} %`, "vulnerabilidad Ricaurte", "good")}${stat(sgn(e1.alivio) + " %", `carga Paloquemao–Ricaurte (${fI(e1.carga)} pax)`, "crit")}${stat(`${f1(e0.tiempo)} → ${f1(e1.tiempo)} min`, "tiempo medio con congestión", "good")}</div>
+      <p>En el eje central el alivio es pequeño: la centralidad de Ricaurte pasa de ${cN(0, "Ricaurte")} a ${cN(1, "Ricaurte")} y la media del eje de ${pctC(ejeMean(0))} a ${pctC(ejeMean(1))}. Lo que sí cambia es la robustez: si cae Av. Jiménez ya no se aísla ninguna estación (antes eran ${isoN(0, JIM)}), porque C4 y C5 conectan el sur con la Av. Carrera 10.</p>
       <p class="note">Con Ricaurte fuera de servicio sigue aislada la ${isoTxt(G[1])}: ningún corredor periférico la toca.</p>` },
-  { id: "av68", cam: () => fit(ptsOf(["C6_Av68"]), { pitch: 54, rot: -30, pad: .78 }), st: { esc: 2, stagger: true, layers: { col: true } },
-    html: `<div class="eyebrow"><b>7</b> Escenario 2 · bypass transversal</div><h2>La Av. Carrera 68 descarga el tronco central</h2>
+  { id: "av68", cam: () => fit(ptsOf(["C6_Av68"]), { pitch: 54, rot: -30, pad: .78 }), st: { esc: 2, stagger: true, layers: { col: false, cent: true } },
+    html: `<div class="eyebrow"><b>8</b> Escenario 2 · bypass transversal</div><h2>La Av. Carrera 68 descarga el tronco central</h2>
       ${ejesHTML(["C6_Av68"])}
       <p>${f2(CORR.C6_Av68.km_total)} km (${f2(CORR.C6_Av68.km_nueva)} de obra nueva) y ${avNew.length} estaciones nuevas, ${avNew.filter(e => e.metro).length} de ellas integradas con el Metro. Corre en paralelo a la NQS y la Caracas y cruza las troncales Américas, Calle 26, Calle 80 y Suba, así que los viajes radiales tienen otra ruta hacia el norte.</p>
-      <div class="big-row">${stat(sgn(e2.alivio) + " %", `carga Paloquemao–Ricaurte (${fI(e2.carga)} pax)`, "good")}${stat(f1(e2.vulnerabilidad) + " %", "vulnerabilidad Ricaurte", "good")}</div>
+      <div class="big-row">${stat(sgn(e2.alivio) + " %", `carga Paloquemao–Ricaurte (${fI(e2.carga)} pax)`, "good")}${stat(f1(e2.vulnerabilidad) + " %", "vulnerabilidad Ricaurte", "good")}${stat(`${cN(0, N75)} → ${cN(2, N75)}`, `centralidad NQS Calle 75 (${dPct(CENT[0].get(byName(N75)), CENT[2].get(byName(N75)))})`, "good")}${stat(`${cN(0, "Ricaurte")} → ${cN(2, "Ricaurte")}`, "centralidad Ricaurte", "good")}</div>
+      <p>Es la intervención que más descarga la NQS central: la media del eje baja de ${pctC(ejeMean(0))} a ${pctC(ejeMean(2))}. Pero no protege el sur: si cae Av. Jiménez siguen quedando aisladas ${isoN(2, JIM)} estaciones.</p>
       <div class="why">${avAreas.map(([u, o]) => `<div><span class="num">${o.n}</span><span>UPL ${esc(u)}<small>${esc(o.a)}</small></span></div>`).join("")}</div>
       <p class="note">El Área de Actividad de las 14 estaciones de la Av. 68 se asignó según la UPL donde está cada una, no por cruce espacial con la capa de Áreas de Actividad, que no está en los datos de este visor. Sola, la Av. 68 deja ${e2.puentes} puentes topológicos: la periferia sigue siendo frágil.</p>` },
-  { id: "integral", cam: () => fit(allPts, { pitch: 46, rot: -12, pad: .88 }), st: { esc: 3, layers: { col: true } },
-    html: `<div class="eyebrow"><b>8</b> Escenario 3 · integral</div><h2>Los corredores periféricos y la Av. 68 se complementan</h2>
+  { id: "integral", cam: () => fit(allPts, { pitch: 46, rot: -12, pad: .88 }), st: { esc: 3, layers: { col: false, cent: true } },
+    html: `<div class="eyebrow"><b>9</b> Escenario 3 · integral</div><h2>Los corredores periféricos y la Av. 68 se complementan</h2>
       <p>Cada intervención resuelve un problema distinto. Los anillos periféricos dan resiliencia y la Av. 68 da descongestión. Juntos logran las dos cosas.</p>
       <div class="eqn">${stat(e1.puentes + " puentes", "Esc. 1 aporta resiliencia")}<span class="op">+</span>${stat(sgn(e2.alivio) + " %", "Esc. 2 aporta descongestión")}<span class="op">=</span><div class="stat int"><span class="v">${e3.puentes} · ${sgn(e3.alivio)} %</span><span class="k">Integral: ${e3.puentes} puentes, ${sgn(e3.alivio)} % de carga y ${f1(e3.vulnerabilidad)} % de vulnerabilidad</span></div></div>
+      <p>Sobre el eje central: la centralidad media de sus 10 nodos baja de ${pctC(ejeMean(0))} a ${pctC(ejeMean(3))} (${dPct(ejeMean(0), ejeMean(3))}). Ricaurte pasa de ${cN(0, "Ricaurte")} a ${cN(3, "Ricaurte")} y Av. Jiménez de ${cN(0, JIM)} a ${cN(3, JIM)}. Ninguna falla de Ricaurte, Av. Jiménez, Av. El Dorado o NQS Calle 75 aísla estaciones.</p>
+      <p class="note">El peso no desaparece, se reparte: las estaciones de la Caracas norte suben cerca de un punto (Calle 72: ${cN(0, "Calle 72 - Areandina")} → ${cN(3, "Calle 72 - Areandina")}) porque reciben rutas que antes iban por la NQS. Y Banderas sigue siendo crítica: su falla aísla ${isoN(3, "Banderas")} estaciones de la troncal Américas en todos los escenarios.</p>
       <div class="big-row">${stat(`${f1(e0.tiempo)} → ${f1(e3.tiempo)} min`, "tiempo medio con congestión", "good")}${stat("+" + fI(e3.viajes - e0.viajes), `viajes captados en el pico AM (${fI(e3.viajes)} en total)`, "good")}${stat(`${f2(e0.longitud)} → ${f2(e3.longitud)} km`, "longitud media de viaje", "good")}${stat(`${e0.estaciones} → ${e3.estaciones}`, "estaciones activas en Bogotá", "")}</div>` },
   { id: "explora", cam: () => fit(allPts, { pitch: 30, rot: 0, pad: .9 }), st: { esc: 3, layers: { col: true } },
-    html: `<div class="eyebrow"><b>9</b> Tu turno</div><h2>Explora la red como grafo</h2>
+    html: `<div class="eyebrow"><b>10</b> Tu turno</div><h2>Explora la red como grafo</h2>
       <p>En el laboratorio puedes cambiar de escenario, simular la falla de Ricaurte, ver los puentes topológicos, pasar de la vista geográfica a la topológica y abrir la ficha de cada corredor y estación.</p>
       <p class="note">${GRAPH_OK ? `Verificación: el grafo que calcula esta página reproduce exactamente los puentes topológicos del modelo oficial (${E.map(e => e.puentes).join(", ")}).` : "Aviso: el grafo calculado en esta página no coincide con los puentes oficiales."}</p>
       <div class="cta-row"><a class="cta" href="#laboratorio">Abrir el laboratorio</a><a class="cta ghost" href="#analisis">Ver análisis y datos</a></div>` },
@@ -917,7 +1022,7 @@ function enterChapter(i) {
   $$(".ch", storyInner).forEach((el, j) => el.classList.toggle("active", j === i));
   const c = CH[i], st = c.st;
   hideTip(true);
-  apply({ esc: st.esc, fail: !!st.fail, bridges: !!st.bridges, layers: { red: true, per: true, av: true, est: true, upl: false, col: !!st.layers?.col }, sel: null, only: st.only || null, stagger: !!st.stagger, view: "map" });
+  apply({ esc: st.esc, fail: st.fail || null, bridges: !!st.bridges, layers: { red: true, per: true, av: true, est: true, upl: false, col: !!st.layers?.col, cent: !!st.layers?.cent }, sel: null, only: st.only || null, stagger: !!st.stagger, view: "map" });
   flyTo(c.cam(), 1700);
 }
 const io = new IntersectionObserver(ents => {
@@ -934,16 +1039,22 @@ storyInner.addEventListener("click", ev => {
    7. LABORATORIO
    ===================================================================== */
 const DESC = [
-  `Red troncal en operación: ${D.red.nodos.length} estaciones (139 en Bogotá y 4 en Soacha) y ${G[0].nE} conexiones. ${e0.puentes} de esas conexiones son puentes topológicos y Ricaurte es el punto más crítico.`,
+  `Red troncal en operación: ${D.red.nodos.length} estaciones (139 en Bogotá y 4 en Soacha) y ${G[0].nE} conexiones. ${e0.puentes} de esas conexiones son puentes topológicos y el eje central de transbordos concentra los caminos más cortos: Ricaurte ${pctC(CENT[0].get(RIC))}, Av. El Dorado ${pctC(CENT[0].get(byName("AV. Eldorado")))}, Av. Jiménez ${pctC(CENT[0].get(byName("Avenida Jiménez")))}.`,
   `Se suman los 5 corredores periféricos (${f2(e1.km)} km). Los puentes bajan a ${e1.puentes} y la vulnerabilidad de Ricaurte a ${f1(e1.vulnerabilidad)} %, pero la carga en Paloquemao–Ricaurte sube ${sgn(e1.alivio)} % porque los viajes pendulares siguen yendo al centro.`,
   `Solo el bypass Av. Carrera 68 (${f2(e2.km)} km). Abre una ruta paralela al tronco central: la carga Paloquemao–Ricaurte baja ${sgn(e2.alivio)} % y la vulnerabilidad de Ricaurte llega a ${f1(e2.vulnerabilidad)} %, aunque quedan ${e2.puentes} puentes.`,
   `Corredores periféricos y Av. 68 (${f2(e3.km)} km). Combina los dos efectos: ${e3.puentes} puentes, ${f1(e3.vulnerabilidad)} % de vulnerabilidad y ${sgn(e3.alivio)} % de carga central.`,
 ];
 $("#escList").innerHTML = E.map(e => `<button type="button" class="esc" role="radio" data-e="${e.id}" aria-checked="false"><span class="n">${e.id}</span><b>${esc(e.corto)}</b><small>${f2(e.km)} km · ${e.estaciones} est. · ${e.puentes} puentes</small></button>`).join("");
 $("#escList").addEventListener("click", ev => { const b = ev.target.closest(".esc"); if (!b) return; lab.esc = +b.dataset.e; apply(labState()); });
-$("#btnFail").onclick = () => { lab.fail = !lab.fail; apply(labState()); };
+$("#failQuick").innerHTML = QUICK.map(id => `<button type="button" class="chip" data-fail="${id}" aria-pressed="false">${esc(NODE.get(id).nombre.replace(" - Centro Colombo Americano", ""))}</button>`).join("");
+$("#failSel").innerHTML = '<option value="">Elegir otra estación…</option>' + [...NODE.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")).map(n => `<option value="${n.id}">${esc(n.nombre)}${n.kind === "new" ? " (nueva)" : ""}</option>`).join("");
+$("#failQuick").addEventListener("click", ev => { const b = ev.target.closest("[data-fail]"); if (!b) return; const id = b.dataset.fail; lab.fail = lab.fail === id ? null : id; if (lab.fail) lab.sel = { type: "node", id }; apply(labState()); if (lab.fail && lab.view === "map") flyToFail(); });
+$("#failSel").onchange = ev => { const id = ev.target.value; if (!id) return; lab.fail = id; lab.sel = { type: "node", id }; apply(labState()); if (lab.view === "map") flyToFail(); };
+$("#failMode").onchange = ev => { lab.failMode = ev.target.checked; mapEl.classList.toggle("failmode", lab.failMode); };
+$("#btnReset").onclick = () => { lab.fail = null; apply(labState()); };
+function flyToFail() { const F = failInfo(lab.esc, lab.fail); const ids = F && F.iso.size ? [...F.iso, lab.fail] : [lab.fail]; flyTo(fit(ids.map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: cam.pitch || 0, rot: cam.rot, pad: .75, dz: ids.length === 1 ? -1.2 : 0 }), 1100); }
 $("#tgBridges").onchange = ev => { lab.bridges = ev.target.checked; apply(labState()); };
-[["lyRedT", "red"], ["lyPerT", "per"], ["lyAvT", "av"], ["lyEstT", "est"], ["lyColT", "col"], ["lyUplT", "upl"]].forEach(([id, k]) => $("#" + id).onchange = ev => { lab.layers[k] = ev.target.checked; apply(labState()); });
+[["lyRedT", "red"], ["lyPerT", "per"], ["lyAvT", "av"], ["lyEstT", "est"], ["lyColT", "col"], ["lyCentT", "cent"], ["lyUplT", "upl"]].forEach(([id, k]) => $("#" + id).onchange = ev => { lab.layers[k] = ev.target.checked; apply(labState()); });
 $("#vMap").onclick = () => setView("map"); $("#vGraph").onclick = () => setView("graph");
 
 const KPI = [
@@ -969,14 +1080,21 @@ function renderKPIs() {
 }
 function renderLabPanels() {
   $$(".esc").forEach(b => b.setAttribute("aria-checked", +b.dataset.e === lab.esc));
-  $("#btnFail").setAttribute("aria-pressed", lab.fail);
-  $("#btnFailTxt").textContent = lab.fail ? "Restablecer Ricaurte" : "Simular falla en Ricaurte";
+  $$("#failQuick [data-fail]").forEach(b => b.setAttribute("aria-pressed", b.dataset.fail === lab.fail));
+  $("#failSel").value = lab.fail && !QUICK.includes(lab.fail) ? lab.fail : "";
+  $("#btnReset").disabled = !lab.fail;
+  $("#failMode").checked = lab.failMode;
   const gi = G[lab.esc];
   $("#failMsg").className = "sub" + (lab.fail ? " alert" : "");
-  $("#failMsg").textContent = lab.fail
-    ? (gi.iso.size ? `Sin Ricaurte quedan aisladas ${gi.iso.size} estaciones: ${isoTxt(gi)}. Modelo: ${f1(E[lab.esc].vulnerabilidad)} % de la demanda desconectada.` : `Sin Ricaurte la red sigue conectada: todas las estaciones conservan una ruta. Modelo: ${f1(E[lab.esc].vulnerabilidad)} % de la demanda desconectada.`)
-    : "Retira el nodo Ricaurte del grafo y pinta en rojo las estaciones que quedan aisladas.";
+  $("#failMsg").textContent = failText(lab.esc, lab.fail);
   renderKPIs(); renderDetail();
+}
+function failText(esc, id) {
+  if (!id) return "Elige una estación o activa el modo de tocar para retirarla del grafo. Las estaciones que queden aisladas se pintan en rojo.";
+  const F = failInfo(esc, id), n = NODE.get(id), tot = G[esc].nV - 1;
+  const model = id === RIC ? ` Modelo de demanda: ${f1(E[esc].vulnerabilidad)} % de la demanda desconectada.` : "";
+  if (!F.iso.size) return `Sin ${n.nombre} la red sigue conectada: las demás ${tot} estaciones conservan una ruta.${model}`;
+  return `Sin ${n.nombre} quedan aisladas ${F.iso.size} estaciones (${f1(F.iso.size / tot * 100)} % de la red): ${isoTxt(F)}.${model}`;
 }
 function renderDetail() {
   const el = $("#detail"), sel = lab.sel, gi = G[lab.esc];
@@ -1018,16 +1136,21 @@ function renderDetail() {
         <dt>Densidad POT</dt><dd><span class="num">${f3(e.densidad)}</span><div class="meter"><i style="width:${e.densidad * 100}%"></i></div></dd>
         <dt>Conexión Metro POT</dt><dd><span class="badge ${e.metro ? "yes" : "no"}">${e.metro ? "Sí · ≤ 350 m" : "No"}</span></dd>
         ${e.area_actividad ? `<dt>Área de Actividad</dt><dd>${esc(e.area_actividad)}${e.area_por_upl ? " <small>(asignada por UPL)</small>" : ""}</dd>` : ""}
-        <dt>Grado en el grafo</dt><dd class="num">${gi.g.get(e.id)?.size ?? "—"}</dd></dl>
+        <dt>Grado en el grafo</dt><dd class="num">${gi.g.get(e.id)?.size ?? "—"}</dd>
+        <dt>Centralidad</dt><dd class="num">${gi.g.has(e.id) ? pctC(CENT[lab.esc].get(e.id)) : "— (no está en este escenario)"}</dd></dl>
+        ${gi.g.has(e.id) ? `<button type="button" class="btn-fail" data-failnode="${e.id}" aria-pressed="${lab.fail === e.id}"><span class="bolt" aria-hidden="true"></span>${lab.fail === e.id ? "Restablecer esta estación" : "Simular falla de esta estación"}</button>` : ""}
         <p><strong>Justificación POT.</strong> ${esc(e.justificacion)}</p>
         <p class="note">El círculo azul del mapa es el radio peatonal de 500 m que se usó para cruzar la estación con las capas del POT.${e.area_por_upl ? " En la Av. 68, el Área de Actividad se asigna según la UPL de la estación, no por cruce espacial." : ""}</p>
         <button type="button" class="linkbtn" data-clear>← Volver al resumen del escenario</button></div>`;
     } else {
       const deg = gi.g.get(n.id)?.size ?? 0, isArt = gi.art.has(n.id);
       el.innerHTML = `<div class="det"><span class="tag"><i style="background:${n.tr.length ? "var(--emerald)" : "#fff"};border:1.5px solid var(--base)"></i>${n.tr.length ? "Estación actual · nodo de transbordo POT" : "Estación actual"}</span><h2>${esc(n.nombre)}</h2>
-        <dl class="kv"><dt>Municipio</dt><dd>${n.municipio}</dd><dt>Grado en el grafo</dt><dd class="num">${deg}</dd><dt>Punto de articulación</dt><dd>${isArt ? '<span class="badge no" style="background:#FDE3E4;color:#9A0F17">Sí: si falla, parte la red</span>' : '<span class="badge yes">No</span>'}</dd></dl>
+        <dl class="kv"><dt>Municipio</dt><dd>${n.municipio}</dd><dt>Grado en el grafo</dt><dd class="num">${deg}</dd><dt>Punto de articulación</dt><dd>${isArt ? '<span class="badge no" style="background:#FDE3E4;color:#9A0F17">Sí: si falla, parte la red</span>' : '<span class="badge yes">No</span>'}</dd>
+        <dt>Centralidad</dt><dd class="num">${pctC(CENT[lab.esc].get(n.id))} <small>(puesto ${CENT_RANK[lab.esc].indexOf(n.id) + 1}; red actual ${pctC(CENT[0].get(n.id))})</small></dd></dl>
+        <button type="button" class="btn-fail" data-failnode="${n.id}" aria-pressed="${lab.fail === n.id}"><span class="bolt" aria-hidden="true"></span>${lab.fail === n.id ? "Restablecer esta estación" : "Simular falla de esta estación"}</button>
+        ${lab.fail === n.id ? `<p class="sub alert" style="color:var(--tm)">${esc(failText(lab.esc, n.id))}</p>` : ""}
         ${n.tr.map(t => `<p><strong>Transbordo ${esc(SHORT[t.corredor])}.</strong> ${esc(t.justificacion)}. UPL ${esc(t.upl)}, densidad ${f3(t.densidad)}, Metro POT: ${t.metro ? "Sí" : "No"}.</p>`).join("")}
-        ${n.id === RIC ? `<p>Si Ricaurte falla en este escenario, el modelo estima <strong>${f1(E[lab.esc].vulnerabilidad)} %</strong> de demanda desconectada.</p>` : ""}
+
         <button type="button" class="linkbtn" data-clear>← Volver al resumen del escenario</button></div>`;
     }
   }
@@ -1037,6 +1160,7 @@ $("#detail").addEventListener("click", ev => {
   if (c) { select({ type: "corr", id: c.dataset.corr }); if (lab.view === "map") flyTo(fit(CORR[c.dataset.corr].coords, { pitch: cam.pitch || 0, rot: cam.rot, pad: .75 }), 1100); }
   if (n) { select({ type: "node", id: n.dataset.node }); const nd = NODE.get(n.dataset.node); if (lab.view === "map") flyTo({ ...cam, ...fit([[nd.lon, nd.lat]], { pitch: cam.pitch, rot: cam.rot }), z: 14.3 }, 1000); }
   if (x) select(null);
+  const fb = ev.target.closest("[data-failnode]"); if (fb) { const id = fb.dataset.failnode; lab.fail = lab.fail === id ? null : id; apply(labState()); if (lab.fail && lab.view === "map") flyToFail(); }
 });
 
 /* =====================================================================
@@ -1076,17 +1200,17 @@ function updateGraph() {
     $("#gGeo").onclick = () => { graphLayout = "geo"; runLayout(true); };
     $("#gTopo").onclick = () => { graphLayout = "topo"; runLayout(true); };
   }
-  const gi = G[lab.esc], s = labState(), vcorr = new Set(E[lab.esc].corredores);
+  const gi = G[lab.esc], s = labState(), vcorr = new Set(E[lab.esc].corredores), F = failInfo(lab.esc, lab.fail);
   const els = [];
   gi.g.forEach((_, id) => {
-    const n = NODE.get(id), cls = [n.kind === "new" ? "new" : "", n.kind === "old" && n.tr.some(t => vcorr.has(t.corredor)) ? "tr" : "", id === RIC ? "ric" : "", s.fail && gi.iso.has(id) ? "iso" : "", s.fail && id === RIC ? "dead" : ""].filter(Boolean).join(" ");
+    const n = NODE.get(id), cls = [n.kind === "new" ? "new" : "", n.kind === "old" && n.tr.some(t => vcorr.has(t.corredor)) ? "tr" : "", id === RIC ? "ric" : "", F && F.iso.has(id) ? "iso" : "", F && id === lab.fail ? "dead" : ""].filter(Boolean).join(" ");
     els.push({ group: "nodes", data: { id, label: n.nombre }, position: { x: n.xy[0] * 1.6, y: n.xy[1] * 1.6 }, classes: cls });
   });
   const seen = new Set();
   gi.g.forEach((set, a) => set.forEach(b => {
     const k = ekey(a, b); if (seen.has(k)) return; seen.add(k);
     const cid = gi.corrEdge.get(k);
-    const cls = [cid ? "corr" : "", s.bridges && gi.bridges.has(k) ? "bridge" : "", s.fail && (gi.iso.has(a) || gi.iso.has(b)) && a !== RIC && b !== RIC ? "iso" : "", s.fail && (a === RIC || b === RIC) ? "dead" : "", k === ekey(CRIT_A, CRIT_B) ? "crit" : ""].filter(Boolean).join(" ");
+    const cls = [cid ? "corr" : "", s.bridges && gi.bridges.has(k) ? "bridge" : "", F && (F.iso.has(a) || F.iso.has(b)) && a !== lab.fail && b !== lab.fail ? "iso" : "", F && (a === lab.fail || b === lab.fail) ? "dead" : "", k === ekey(CRIT_A, CRIT_B) ? "crit" : ""].filter(Boolean).join(" ");
     els.push({ group: "edges", data: { id: "e" + k, source: a, target: b, color: cid ? COLOR[cid] : "#B8BEC2" }, classes: cls });
   }));
   const prevPos = {}; cy.nodes().forEach(n => prevPos[n.id()] = { ...n.position() });
@@ -1135,6 +1259,10 @@ function kmChart() {
       <text x="${l + sx(c.km_total) + 6}" y="${y + 16}">${f2(c.km_total)}</text>`; }).join("")}
   </svg>`;
 }
+function dumbbell(a, b) {
+  const w = 180, x = v => 8 + v / 0.6 * (w - 16);
+  return `<svg viewBox="0 0 ${w} 18" width="${w}" height="18" aria-hidden="true"><line x1="8" x2="${w - 8}" y1="9" y2="9" stroke="#E3E6E2"/><line x1="${x(b)}" x2="${x(a)}" y1="9" y2="9" stroke="#9AA4A9" stroke-width="2"/><circle cx="${x(a)}" cy="9" r="4.5" fill="#fff" stroke="#D8101E" stroke-width="2"/><circle cx="${x(b)}" cy="9" r="4.5" fill="#1E7F55"/></svg>`;
+}
 function renderAnalysis() {
   const tot = { t: kmTot, n: kmNew, s: kmSh, en: sum(D.corredores, c => c.estaciones_nuevas), tr: sum(D.corredores, c => c.transbordos) };
   $("#analysis").innerHTML = `<div class="an">
@@ -1143,6 +1271,8 @@ function renderAnalysis() {
     <div class="card"><h3>El hallazgo: complementariedad</h3>
       <div class="eqn">${stat(`${e1.puentes} puentes · ${f1(e1.vulnerabilidad)} %`, `Esc. 1 · 5 periféricos: resiliencia, pero la carga central sube ${sgn(e1.alivio)} %`)}<span class="op">+</span>${stat(`${sgn(e2.alivio)} % · ${f1(e2.vulnerabilidad)} %`, `Esc. 2 · Av. 68: descongestión, pero quedan ${e2.puentes} puentes`)}<span class="op">=</span><div class="stat int"><span class="v">${e3.puentes} · ${sgn(e3.alivio)} % · ${f1(e3.vulnerabilidad)} %</span><span class="k">Integral: puentes, carga Paloquemao–Ricaurte y vulnerabilidad de Ricaurte</span></div></div>
     </div>
+
+    <div class="card"><h3>El problema es todo el eje central</h3><p style="max-width:80ch;margin:0">La red radial obliga a casi todos los viajes a pasar por el mismo eje de transbordos: la NQS central (Ricaurte ${cN(0, "Ricaurte")}, Av. El Dorado ${cN(0, ELD)}, NQS Calle 75 ${cN(0, N75)}) y la Caracas Centro (Av. Jiménez ${cN(0, JIM)}, Hortúa ${cN(0, "Hortúa")}). Los 5 corredores periféricos dan rutas alternativas entre portales y quitan los puntos de falla del sur (sin Av. Jiménez se aíslan ${isoN(0, JIM)} → ${isoN(1, JIM)} estaciones). El bypass de la Av. 68 da una ruta directa paralela a la NQS (NQS Calle 75: ${cN(0, N75)} → ${cN(2, N75)}). Juntos bajan la centralidad media del eje ${dPct(ejeMean(0), ejeMean(3))}.</p></div>
 
     <div><h3>Los 4 escenarios, indicador por indicador</h3><p class="intro" style="margin-bottom:10px">Esc. 0 Red actual · Esc. 1 +5 periféricos · Esc. 2 +solo Av. 68 · Esc. 3 Integral. En rojo, los indicadores del tramo crítico.</p>
       <div class="grid4 chart">${KPI.map(m => `<div class="card">${lineChart(m)}</div>`).join("")}</div></div>
@@ -1156,6 +1286,18 @@ function renderAnalysis() {
         <tfoot><tr><td>Total</td><td class="n">${f2(tot.t)}</td><td class="n">${f2(tot.n)}</td><td class="n">${f2(tot.s)}</td><td class="n">${tot.en}</td><td class="n">${tot.tr}</td><td></td></tr></tfoot></table></div>
         <p class="sub" style="margin-top:8px">Los 6 transbordos de la Av. 68 vienen de la tabla de coherencia. El archivo de estaciones registra 11 transbordos oficiales, todos en los corredores periféricos.</p></div>
     </div>
+
+    <div class="card"><h3>Top 10 de centralidad: cómo se redistribuye el peso del centro</h3>
+      <p class="sub">Centralidad de intermediación ponderada por km: porcentaje de los caminos más cortos entre pares de estaciones que pasan por cada nodo. Se calcula en esta página sobre el grafo de cada escenario. Mide rutas, no pasajeros.</p>
+      <div class="tbl-wrap"><table><thead><tr><th>#</th><th>Estación (top 10 de la red actual)</th>${E.map(e => `<th class="n">${esc(e.corto)}</th>`).join("")}<th class="n">Cambio integral</th><th style="min-width:180px">Red actual → integral</th></tr></thead>
+      <tbody>${TOP10.map((id, i) => { const a = CENT[0].get(id), b = CENT[3].get(id); return `<tr class="click" data-node="${id}" data-c=""><td class="n">${i + 1}</td><td><b>${esc(NODE.get(id).nombre)}</b></td>${CENT.map(c => `<td class="n">${f1(c.get(id) * 100)}</td>`).join("")}<td class="n" style="color:var(--good)">${dPct(a, b)}</td><td>${dumbbell(a, b)}</td></tr>`; }).join("")}
+      <tr><td></td><td><b>Media del eje central</b><br><small>${esc(EJE.map(id => NODE.get(id).nombre.replace(" - Centro Colombo Americano", "")).join(", "))}</small></td>${[0, 1, 2, 3].map(i => `<td class="n">${f1(ejeMean(i) * 100)}</td>`).join("")}<td class="n" style="color:var(--good)">${dPct(ejeMean(0), ejeMean(3))}</td><td>${dumbbell(ejeMean(0), ejeMean(3))}</td></tr></tbody></table></div>
+      <p class="sub" style="margin-top:8px">Top 10 del escenario integral: ${CENT_RANK[3].slice(0, 10).map((id, i) => `${i + 1}. ${esc(NODE.get(id).nombre)} (${f1(CENT[3].get(id) * 100)})`).join(" · ")}. Las estaciones de la Caracas norte suben alrededor de un punto porque reciben rutas que dejan la NQS. Calle 76 y Tercer Milenio no están en la matriz del proyecto.</p></div>
+
+    <div class="card"><h3>Prueba de falla por estación crítica</h3><p class="sub">Estaciones que quedan aisladas del resto de la red si se retira cada nodo.</p>
+      <div class="tbl-wrap"><table><thead><tr><th>Estación retirada</th>${E.map(e => `<th class="n">${esc(e.corto)}</th>`).join("")}</tr></thead>
+      <tbody>${QUICK.map(id => `<tr><td><b>${esc(NODE.get(id).nombre)}</b></td>${E.map((e, i) => { const n = failInfo(i, id).iso.size; return `<td class="n" style="color:${n ? "var(--tm)" : "var(--good)"}">${n}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>
+      <p class="sub" style="margin-top:8px">Para Ricaurte, el modelo de demanda traduce esto a ${E.map(e => f1(e.vulnerabilidad) + " %").join(", ")} de demanda desconectada en los escenarios 0 a 3. En el laboratorio puedes retirar cualquier otra estación.</p></div>
 
     <div class="card"><h3>Indicadores oficiales por escenario</h3><div class="tbl-wrap"><table>
       <thead><tr><th>Indicador (pico AM)</th>${E.map(e => `<th class="n">${esc(e.corto)}</th>`).join("")}</tr></thead>
@@ -1197,7 +1339,7 @@ function renderAnalysis() {
   ["fq", "fc", "ft", "fm"].forEach(id => $("#" + id).addEventListener("input", rows)); rows();
   $("#analysis").addEventListener("click", ev => {
     const n = ev.target.closest("tr[data-node]"), c = ev.target.closest("tr[data-corr]");
-    if (n) { lab.esc = n.dataset.c === "C6_Av68" ? 2 : 1; lab.sel = { type: "node", id: n.dataset.node }; location.hash = "laboratorio"; }
+    if (n) { lab.esc = n.dataset.c === "" ? 3 : n.dataset.c === "C6_Av68" ? 2 : 1; lab.sel = { type: "node", id: n.dataset.node }; location.hash = "laboratorio"; }
     if (c) { lab.esc = c.dataset.corr === "C6_Av68" ? 2 : 1; lab.sel = { type: "corr", id: c.dataset.corr }; location.hash = "laboratorio"; }
   });
 }
@@ -1235,7 +1377,7 @@ resize();
 Object.assign(cam, fit(allPts, { pitch: 44, rot: -12, pad: .86 }));
 draw();
 route();
-window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE };
+window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK };
 })();
 </script>
 </body>
