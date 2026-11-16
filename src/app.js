@@ -33,7 +33,7 @@ const TX = [
   [/modelo IPF con congestión BPR/g, "modelo de viajes con trancón"], [/IPF \+ congestión BPR/g, "modelo de viajes con trancón"], [/con congestión BPR/g, "con trancón"],
   [/congestión BPR/g, "trancón"], [/del modelo BPR/g, "del modelo de trancón"], [/modelo BPR/g, "modelo de trancón"], [/ BPR/g, ""],
   [/aristas/g, "conexiones"], [/arista/g, "conexión"], [/ nodos/g, " estaciones"], [/ nodo/g, " estación"],
-  [/pico AM/g, "hora pico de la mañana"], [/Escenario integral/g, "Red completa"], [/escenario integral/g, "red completa"],
+  [/(\d) pax\b/g, "$1 pasajeros"], [/pico AM/g, "hora pico de la mañana"], [/Escenario integral/g, "Red completa"], [/escenario integral/g, "red completa"],
 ];
 const tx = h => DEV ? h : TX.reduce((acc, [re, r]) => acc.replace(re, r), h);
 function applyModeTexts() { $$("[data-u]").forEach(el => el.innerHTML = DEV ? el.dataset.d : el.dataset.u); }
@@ -723,8 +723,8 @@ function apply(s = S) {
   if (mode === "laboratorio") { renderLabPanels(); if (lab.view === "graph") updateGraph(); }
 }
 let curtain = 0.5;
-const loadHTML = e => `<span>${fI(e.carga)} pax<small>Paloquemao–Ricaurte · ${e.id ? sgn(e.alivio) + " % · " : ""}${S.peak === "pm" ? "pico tarde, salida" : "pico mañana"}</small></span>`;
-const hudHTML = (e, t) => `<b>${esc(t)}</b><span><i class="num">${fI(e.carga)}</i> pax Paloquemao–Ricaurte</span><span><i class="num">${e.puentes}</i> puentes topológicos</span><span><i class="num">${f1(e.vulnerabilidad)} %</i> vulnerabilidad Ricaurte</span>`;
+const loadHTML = e => `<span>${fI(e.carga)} ${DEV ? "pax" : "pasajeros"}<small>Paloquemao–Ricaurte · ${e.id ? sgn(e.alivio) + " % · " : ""}${S.peak === "pm" ? "pico tarde, salida" : "pico mañana"}</small></span>`;
+const hudHTML = (e, t) => `<b>${esc(t)}</b><span><i class="num">${fI(e.carga)}</i> ${DEV ? "pax" : "pasajeros en"} Paloquemao–Ricaurte</span><span><i class="num">${e.puentes}</i> puentes topológicos</span><span><i class="num">${f1(e.vulnerabilidad)} %</i> vulnerabilidad Ricaurte</span>`;
 
 function select(sel) {
   if (mode === "relato") {
@@ -910,7 +910,7 @@ function makeAC(input, { onPick, oldOnly = false, onClear }) {
   const show = () => {
     const q = norm(input.value.trim());
     const rank = n => { const t = norm(n.nombre); return (t.startsWith(q) ? 0 : t.split(/[\s\-()]+/).some(w => w.startsWith(q.split(" ")[0])) && t.includes(q) ? 1 : 2) * 10 + (n.kind === "new" ? 1 : 0); };
-    items = (q ? pool().filter(n => norm(n.nombre).includes(q)).sort((a, b) => rank(a) - rank(b) || a.nombre.length - b.nombre.length) : pool()).slice(0, 8); act = items.length ? 0 : -1;
+    items = (q ? pool().filter(n => norm(n.nombre).includes(q)).sort((a, b) => rank(a) - rank(b) || a.nombre.length - b.nombre.length) : pool()).slice(0, q ? 12 : 250); act = items.length ? 0 : -1;
     list.innerHTML = items.length ? items.map((n, i) => `<li role="option" data-i="${i}" aria-selected="${i === act}">${esc(n.nombre)}<small>${n.kind === "new" ? "estación nueva · " + esc(SHORT[n.est.corredor]) : n.municipio === "Soacha" ? "Soacha" : "estación actual"}</small></li>`).join("") : '<li class="none">Sin resultados</li>';
     list.hidden = false; input.setAttribute("aria-expanded", "true");
   };
@@ -927,6 +927,8 @@ function makeAC(input, { onPick, oldOnly = false, onClear }) {
   input.addEventListener("blur", () => setTimeout(hide, 120));
   return { set: id => { input.value = id ? NODE.get(id).nombre : ""; } };
 }
+const acFail2 = makeAC($("#failSearch"), { onPick: id => { lab.fail = id; lab.sel = { type: "node", id }; apply(labState()); setTab("fail"); if (lab.view === "map") flyToFail(); } });
+const acSta = makeAC($("#staSearch"), { onPick: id => { const n = NODE.get(id); lab.sel = { type: "node", id }; if (n.kind === "new" && lab.esc === 0) lab.esc = 3; setTab("sta"); apply(labState()); if (lab.view !== "graph") flyTo({ ...cam, ...fit([[n.lon, n.lat]], { pitch: cam.pitch, rot: cam.rot }), z: 14.2 }, 1000); } });
 const acFail = makeAC($("#failSel"), { onPick: id => { lab.fail = id; if (!lab.route) lab.sel = { type: "node", id }; apply(labState()); if (lab.view === "map" && !lab.route) flyToFail(); }, onClear: () => { lab.fail = null; apply(labState()); } });
 const acSearch = makeAC($("#qSearch"), { onPick: id => { const n = NODE.get(id); lab.sel = { type: "node", id }; setTab("sta"); openPanel(); if (n.kind === "new" && lab.esc === 0) lab.esc = 3; apply(labState()); if (lab.view !== "graph") flyTo({ ...cam, ...fit([[n.lon, n.lat]], { pitch: cam.pitch, rot: cam.rot }), z: 14.2 }, 1000); } });
 $("#failQuick").addEventListener("click", ev => { const b = ev.target.closest("[data-fail]"); if (!b) return; const id = b.dataset.fail; lab.fail = lab.fail === id ? null : id; if (lab.fail) lab.sel = { type: "node", id }; apply(labState()); if (lab.fail && lab.view === "map") flyToFail(); });
@@ -1037,6 +1039,8 @@ function renderLabPanels() {
   renderEscList();
   $$("#failQuick [data-fail]").forEach(b => b.setAttribute("aria-pressed", b.dataset.fail === lab.fail));
   if (document.activeElement !== $("#failSel")) acFail.set(lab.fail);
+  if (document.activeElement !== $("#failSearch")) acFail2.set(lab.fail);
+  if (document.activeElement !== $("#staSearch")) acSta.set(lab.sel && lab.sel.type === "node" ? lab.sel.id : null);
   $("#btnReset").disabled = !lab.fail;
   $("#failMode").checked = lab.failMode;
   $$("#routeQuick [data-rt]").forEach(b => b.setAttribute("aria-pressed", !!lab.route && ROUTE_PRESETS[+b.dataset.rt].join() === lab.route.join()));
@@ -1078,15 +1082,27 @@ function thermoHTML(title, r, cls) {
   const legColor = l => { if (l.sv.corr) return COLOR[l.sv.corr]; const a = l.from, b = P[idx(a) + 1], t = EDGE_TR.get(ekey(a, b)); return t !== undefined ? TRONCAL[t].color : "#6C757D"; };
   return `<div class="thermo ${cls}"><div class="th-h"><b>${esc(title)}</b><span class="num">${fI(tripMin(r))} min</span></div><ol>${r.legs.map(l => { const n = idx(l.to) - idx(l.from); return `<li style="--cc:${legColor(l)}"><span class="st">${esc(short(NODE.get(l.from).nombre))}</span><span class="lg">${esc(l.sv.cod)} · ${n} ${n === 1 ? "parada" : "paradas"}</span></li>`; }).join("")}<li class="end"><span class="st">${esc(short(NODE.get(P[P.length - 1]).nombre))}</span></li></ol><small>${f1(r.km)} km · ${r.transfers} ${r.transfers === 1 ? "transbordo" : "transbordos"}${r.eje.length ? " · pasa por el centro" : ""}</small></div>`;
 }
+function stepsHTML(r, title, open) {
+  if (!r) return "";
+  const P = r.path, idx = id => P.indexOf(id), nm = id => esc(NODE.get(id).nombre);
+  const svc = l => l.sv.corr ? (DEV ? `corredor ${esc(SHORT[l.sv.corr])}` : `la nueva ${PERIF.includes(l.sv.corr) ? "conexión entre barrios" : "troncal de la Av. Carrera 68"} (${esc(SHORT[l.sv.corr])})`) : l.sv.cod === "—" ? "a pie" : `la ruta <b class="svc">${esc(l.sv.cod)}</b> (hacia ${esc(l.sv.nombre)})`;
+  const items = r.legs.map((l, i) => {
+    const seg = P.slice(idx(l.from), idx(l.to) + 1), n = seg.length - 1;
+    return `<li><span class="sn">${i + 1}</span><div>${i ? "Cambia a" : "Toma"} ${svc(l)} en <b>${nm(l.from)}</b> y bájate en <b>${nm(l.to)}</b> · ${n} ${n === 1 ? "parada" : "paradas"}
+      <details><summary>Ver las ${n + 1} estaciones del tramo</summary><ol class="stops">${seg.map(id => `<li>${nm(id)}</li>`).join("")}</ol></details></div></li>`;
+  }).join("");
+  return `<details class="itin"${open ? " open" : ""}><summary>${esc(title)} · ${fI(tripMin(r))} min · ${r.transfers} ${r.transfers === 1 ? "cambio de bus" : "cambios de bus"}</summary><ol class="steps">${items}<li><span class="sn">✓</span><div>Llegas a <b>${nm(P[P.length - 1])}</b></div></li></ol></details>`;
+}
 function renderTrip() {
   const out = $("#tripOut");
   if (!lab.route) { out.innerHTML = tx('<p class="sub" style="margin-top:8px">Elige un viaje de ejemplo o escribe de dónde sales y a dónde vas.</p>'); return; }
   const rt = lab.route, eb = lab.esc || 3, cl = lab.fail;
   if (cl) {
     const blocked = routeInfo(0, rt[0], rt[1])?.path.includes(cl);
-    out.innerHTML = tx(closureCardHTML(rt, eb, cl) + `<div class="thermos">${blocked ? thermoHTML("Desvío de hoy", routeInfo(0, rt[0], rt[1], cl), "alt") : thermoHTML(escName(0), routeInfo(0, rt[0], rt[1]), "a")}${thermoHTML(escName(eb), routeInfo(eb, rt[0], rt[1], cl), "b")}</div>`);
+    const rToday = blocked ? routeInfo(0, rt[0], rt[1], cl) : routeInfo(0, rt[0], rt[1]), rNew = routeInfo(eb, rt[0], rt[1], cl);
+    out.innerHTML = tx(closureCardHTML(rt, eb, cl) + `<div class="thermos">${blocked ? thermoHTML("Desvío de hoy", rToday, "alt") : thermoHTML(escName(0), rToday, "a")}${thermoHTML(escName(eb), rNew, "b")}</div><h3 class="itin-h">Cómo llegar</h3>${stepsHTML(rNew, "Con " + escName(eb).toLowerCase(), true)}${stepsHTML(rToday, blocked ? "Hoy, con el desvío" : "Hoy", false)}`);
   } else {
-    out.innerHTML = tx(`<div class="det"><h2>${esc(short(NODE.get(rt[0]).nombre))} → ${esc(short(NODE.get(rt[1]).nombre))}</h2>${routeCompareHTML(rt, eb)}<div class="thermos">${thermoHTML(escName(0), routeInfo(0, rt[0], rt[1]), "a")}${thermoHTML(escName(eb), routeInfo(eb, rt[0], rt[1]), "b")}</div></div>`);
+    out.innerHTML = tx(`<div class="det"><h2>${esc(short(NODE.get(rt[0]).nombre))} → ${esc(short(NODE.get(rt[1]).nombre))}</h2>${routeCompareHTML(rt, eb)}<div class="thermos">${thermoHTML(escName(0), routeInfo(0, rt[0], rt[1]), "a")}${thermoHTML(escName(eb), routeInfo(eb, rt[0], rt[1]), "b")}</div><h3 class="itin-h">Cómo llegar</h3>${stepsHTML(routeInfo(eb, rt[0], rt[1]), "Con " + escName(eb).toLowerCase(), true)}${stepsHTML(routeInfo(0, rt[0], rt[1]), "Hoy", false)}</div>`);
   }
   const c2 = $("#rtClear2"); if (c2) c2.onclick = () => setRoute(null);
 }
@@ -1512,6 +1528,7 @@ function route() {
   const m = ["relato", "laboratorio", "analisis"].includes(h) ? h : "relato";
   const prev = mode; mode = m;
   document.body.className = "mode-" + m + (collapsed ? " lab-collapsed" : "") + (DEV ? " dev" : "");
+  if (prev !== m) { $(".stage").scrollTop = 0; $("#story").scrollTop = 0; hideTip(true); }
   $$(".modes a").forEach(a => a.dataset.mode === m ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
   hideTip(true);
   if (m === "analisis") { if (!analysisDone) { renderAnalysis(); analysisDone = true; } return; }

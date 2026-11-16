@@ -150,12 +150,15 @@
         </section>
         <section id="paneFail" role="tabpanel" aria-labelledby="tbFail" hidden>
           <p class="sub" data-u="Elige una estación: las que quedan incomunicadas se pintan de rojo." data-d="Componentes conexos tras retirar el nodo; aislados en rojo."></p>
+          <div class="ac"><label for="failSearch" class="fl" data-u="Escribe o elige la estación que se cierra" data-d="Nodo a retirar"></label><div class="ac-box"><input id="failSearch" class="sel ac-in" type="search" placeholder="Toca aquí para ver todas o escribe…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
           <div class="quick" id="failQuick" role="group" aria-label="Estaciones críticas"></div>
           <label class="tg"><input type="checkbox" id="failMode"><span data-u="Tocar una estación del mapa la cierra" data-d="Modo remoción: clic en un nodo lo retira"></span></label>
           <p class="sub" id="failMsg"></p>
           <label class="tg"><input type="checkbox" id="tgBridges"><span data-u="Resaltar puntos críticos (si se cortan, parten la red en dos)" data-d="Resaltar puentes topológicos (Tarjan)"></span></label>
         </section>
-        <section id="paneSta" role="tabpanel" aria-labelledby="tbSta" hidden><div id="detail"></div></section>
+        <section id="paneSta" role="tabpanel" aria-labelledby="tbSta" hidden>
+          <div class="ac"><label for="staSearch" class="fl" data-u="Escribe o elige una estación" data-d="Nodo"></label><div class="ac-box"><input id="staSearch" class="sel ac-in" type="search" placeholder="Toca aquí para ver todas o escribe…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+          <div id="detail"></div></section>
       </div>
     </aside>
     <div class="tip" id="tip" role="status"></div>
