@@ -51,11 +51,11 @@ CSV con `utf-8-sig` (BOM); "Ricuarte" → "Ricaurte"; `p3_upl.geojson` simplific
 
 - Trazado vial de la red actual: `public/data/tramos_viales_bogota.geojson`, generado una vez con OSRM sobre OpenStreetMap (perfil a pie, carro si el primero da desvío). Resultado: 131 tramos a pie, 5 en carro y 10 en línea recta (sin ruta razonable: ≤ 1,6 × la recta o ≤ 300 m más). 18 tramos que unen troncales distintas se dibujan punteados. Solo cambia el dibujo: los km del grafo y todos los cálculos siguen iguales.
 
+## 7. Mapa base
+CARTO exige API key desde 2026 (sin clave, marca de agua "API KEY REQUIRED"). Por defecto: Esri World Light Gray (base + referencia), respaldo OpenStreetMap en gris, y base vectorial UPL si el visor bloquea imágenes externas. Si se obtiene una clave CARTO, se pega en `CARTO_KEY` y se usa Positron.
+
 ## 8. GTFS estático TransMilenio (GTFS_20261013)
 `datos/gtfs/matriz_arcos_gtfs_visor.csv`: 944 arcos (troncal, `service_id == 1`), 108 estaciones mapeadas a 107 nodos del grafo (`equivalencias_gtfs_grafo.csv`). Validación en `datos/gtfs/VALIDACION.md`. Uso permitido: oferta PROGRAMADA y tiempos programados de referencia. No reemplaza ninguna cifra oficial del modelo IPF/BPR. Pendientes antes de usarlo como oferta total:
 - Cobertura parcial: 27 de 106 rutas del modelo; faltan Américas, Soacha y Eje Ambiental (probable filtro de `service_id`).
 - Discrepancia de topología en la matriz del modelo (Socorro–Biblioteca / Consuelo–Santa Lucía frente a Socorro–Consuelo / Santa Lucía–Biblioteca en GTFS). Faltan los conectores Quiroga–Av. 1 de Mayo y Tygua–Caracas Sur. No se corrigieron, porque la matriz oficial es la que reproduce los 110 / 38 / 83 / 27 puentes.
 - "NQS" 7007 sin resolver (E85 o E86): hacen falta las coordenadas de `troncales_stops.csv`.
-
-## 7. Mapa base
-CARTO exige API key desde 2026 (sin clave, marca de agua "API KEY REQUIRED"). Por defecto: Esri World Light Gray (base + referencia), respaldo OpenStreetMap en gris, y base vectorial UPL si el visor bloquea imágenes externas. Si se obtiene una clave CARTO, se pega en `CARTO_KEY` y se usa Positron.
