@@ -3296,7 +3296,8 @@ function mlFocus() {
   [ML.map, ML.mapB].forEach(m => {
     if (!m || !m.getLayer("ml-svc-line")) return;
     const on = document.body.classList.contains("svc-focus"), stops = on ? svcGeo(LIVE.sel).sv.stops : null;
-    if (on) m.getStyle().layers.forEach(l => { if (l.id.startsWith("ml-") && !FOCUS_KEEP.has(l.id)) m.setLayoutProperty(l.id, "visibility", "none"); });
+    // con ruta elegida se ocultan las capas del visor; sin ruta se vuelven a mostrar (ml-upl la controla su propia capa)
+    m.getStyle().layers.forEach(l => { if (l.id.startsWith("ml-") && !FOCUS_KEEP.has(l.id) && l.id !== "ml-upl" && l.id !== "ml-bldg") m.setLayoutProperty(l.id, "visibility", on ? "none" : "visible"); });
     m.setFilter("ml-stations", on ? ["in", ["get", "id"], ["literal", stops]] : null);
     m.setFilter("ml-bus", on ? ["==", ["get", "sv"], 1] : null);
   });
