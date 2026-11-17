@@ -48,10 +48,22 @@ with open(f"{G}/equivalencias_gtfs_grafo.csv", "w", newline="", encoding="utf-8"
 BASE = {ek(a, b) for a, b in D["red"]["aristas"]}
 QUITA = {ek("E33", "E38"), ek("E34", "E35")}          # Santa Lucía–Consuelo y Socorro–Biblioteca (cruzados en la matriz)
 AGREGA = {ek("E34", "E38"), ek("E33", "E35")}         # Socorro–Consuelo y Santa Lucía–Biblioteca (GTFS y trazado)
-ENLACE = {ek("E31", "E141"): "Quiroga ↔ Av. 1 de Mayo (M83/H83)", ek("E81", "E27"): "Tygua ↔ Nariño (B72/H72)"}
+ENLACE = {ek("E31", "E141"): "Quiroga ↔ Av. 1 de Mayo (M83/H83)", ek("E81", "E27"): "Tygua ↔ Nariño (B72/H72)",
+          # 7 conectores derivados de shapes.txt: estaciones consecutivas del trazado oficial que el grafo no une
+          ek("E121", "E23"): "Calle 26 ↔ Caracas: Centro Memoria ↔ Calle 26 (K23/B23)",
+          ek("E121", "E24"): "Calle 26 ↔ Caracas: Centro Memoria ↔ Calle 22 (3)",
+          ek("E118", "E23"): "Calle 26 ↔ Caracas: Universidades ↔ Calle 26 (J74/B74/J24/D24)",
+          ek("E82", "E25"): "Carrera 10 ↔ Caracas: Bicentenario ↔ Av. Jiménez (L18/B18)",
+          ek("E136", "E25"): "Carrera 10 ↔ Caracas: Las Nieves ↔ Av. Jiménez (M51/F51)",
+          ek("E135", "E121"): "Carrera 10 ↔ Calle 26: San Diego ↔ Centro Memoria (K10/L10)",
+          ek("E81", "E25"): "Calle 6 ↔ Caracas: Tygua ↔ Av. Jiménez (8)",
+          ek("E81", "E26"): "Calle 6 ↔ Caracas: Tygua ↔ Hortúa (C17/H17/D21)",
+          ek("E42", "E57"): "Suba ↔ Calle 80: San Martín ↔ Escuela Militar (7/B50/C50)",
+          ek("E69", "E14"): "NQS ↔ Autonorte: La Castellana ↔ Calle 100 (B12)",
+          ek("E24", "E99"): "Caracas ↔ Calle 13: Calle 22 ↔ De La Sabana (A61/Z61)"}
 CAPA = (BASE - QUITA) | AGREGA
 adj = collections.defaultdict(set)
-for k in CAPA: a, b = k.split("|"); adj[a].add(b); adj[b].add(a)
+for k in CAPA | set(ENLACE): a, b = k.split("|"); adj[a].add(b); adj[b].add(a)
 KMg = {k: hav(N[k.split("|")[0]]["lat"], N[k.split("|")[0]]["lon"], N[k.split("|")[1]]["lat"], N[k.split("|")[1]]["lon"]) for k in CAPA | set(ENLACE)}
 LL = lambda node: (float(CAT[SID_OF[node]]["lat"]), float(CAT[SID_OF[node]]["lon"]))
 def sp(s, t):

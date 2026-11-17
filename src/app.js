@@ -362,8 +362,11 @@ function fit(pts, opt = {}) {
   pts.forEach(([lon, lat]) => { const [x, y] = P(lon, lat); a = [Math.min(a[0], x), Math.min(a[1], y), Math.max(a[2], x), Math.max(a[3], y)]; });
   const pad = opt.pad ?? 0.78, dx = Math.max(a[2] - a[0], 30), dy = Math.max(a[3] - a[1], 30);
   const pitch = opt.pitch ?? 48, rot = opt.rot ?? -10;
-  const z = Z0 + Math.log2(Math.min(W * pad / dx, H * pad / dy)) + (pitch > 1 ? 0.18 : 0) + (opt.dz || 0);
-  return { cx: (a[0] + a[2]) / 2, cy: (a[1] + a[3]) / 2 + (opt.oy || 0), z: Math.max(10, Math.min(15.5, z)), pitch, rot };
+  // opt.right: píxeles tapados a la derecha (panel abierto) → se encuadra en el área libre y se corre el centro
+  const Wf = Math.max(W * .35, W - (opt.right || 0));
+  const z = Math.max(10, Math.min(15.5, Z0 + Math.log2(Math.min(Wf * pad / dx, H * pad / dy)) + (pitch > 1 ? 0.18 : 0) + (opt.dz || 0)));
+  const sh = (W - Wf) / 2 / Math.pow(2, z - Z0), r = rot * Math.PI / 180;
+  return { cx: (a[0] + a[2]) / 2 + sh * Math.cos(r), cy: (a[1] + a[3]) / 2 + (opt.oy || 0) - sh * Math.sin(r), z, pitch, rot };
 }
 let flight = 0;
 function flyTo(t, ms = 1500) {
@@ -511,6 +514,38 @@ const TRONCAL_DEF = [["Portal Tunal", "B · A · H", "Autopista Norte, Caracas y
 const TRONCAL = CHAINS.map(c => { const d = TRONCAL_DEF.find(t => c.some(id => NODE.get(id).nombre === t[0])); return d ? { letra: d[1], nombre: d[2], color: d[3], ids: c } : { letra: "·", nombre: `${short(NODE.get(c[0]).nombre)} – ${short(NODE.get(c[c.length - 1]).nombre)}`, color: "#6C757D", ids: c }; });
 const EDGE_TR = new Map(); TRONCAL.forEach((t, i) => t.ids.forEach((id, j) => { if (j) EDGE_TR.set(ekey(t.ids[j - 1], id), i); }));
 const troncalesDe = id => TRONCAL.filter(t => t.ids.includes(id));
+// ---- filtro por troncal (pestaña "Troncal"): grupos = troncales actuales por letra + corredores nuevos del POT ----
+const TR_EXTRA = { F: ["E99", "E100"], K: ["E121", "E122"] };   // estaciones fuera de las cadenas de paradas_ordenadas
+const TR_GROUPS = (() => {
+  const by = new Map(), base = D.red.aristas.map(([a, b]) => [a, b]);
+  TRONCAL.forEach(t => { const key = t.letra === "·" ? "L" : t.letra; if (!by.has(key)) by.set(key, { key: "t:" + key, letra: key, nombre: "", color: "", ids: new Set(), extra: new Set() });
+    const g = by.get(key); t.ids.forEach(id => g.ids.add(id)); if (t.letra !== "·") { g.nombre = t.nombre; g.color = t.color; } });
+  const out = [...by.values()];
+  out.forEach(g => { (TR_EXTRA[g.letra.split(" ")[0]] || []).forEach(id => { g.ids.add(id); g.extra.add(id); });
+    g.edges = new Set(base.filter(([a, b]) => (g.ids.has(a) && g.ids.has(b)) || g.extra.has(a) || g.extra.has(b)).map(([a, b]) => ekey(a, b))); g.nuevo = false; });
+  D.corredores.forEach(c => out.push({ key: "c:" + c.id, corr: c.id, letra: SHORT[c.id], nombre: c.nombre, color: COLOR[c.id], ids: new Set(c.path), edges: new Set(), nuevo: true }));
+  return out;
+})();
+var TRF = new Set();   // grupos elegidos (vacío = todas las troncales)
+function trSel() { const ids = new Set(), edges = new Set(), corr = new Set(); TR_GROUPS.filter(g => TRF.has(g.key)).forEach(g => { g.ids.forEach(i => ids.add(i)); g.edges.forEach(e => edges.add(e)); if (g.corr) corr.add(g.corr); }); return { ids, edges, corr }; }
+function trBusOff(b, sel) {
+  if (!TRF.size) return false;
+  const stops = b.ids || (b.svc && typeof svcGeo === "function" && (svcGeo(b.svc) || {}).sv && svcGeo(b.svc).sv.stops) || [b.near];
+  return (stops || []).filter(id => sel.ids.has(id)).length < 2;
+}
+function trApply() {
+  const on = TRF.size > 0, sel = on ? trSel() : null;
+  document.body.classList.toggle("tr-filter", on);
+  const col = new Map(); if (on) TR_GROUPS.filter(g => TRF.has(g.key)).forEach(g => g.edges.forEach(e => { if (!col.has(e)) col.set(e, g.color); }));
+  EDGE_EL.forEach((el, k) => { el.classList.toggle("tr-off", on && !sel.edges.has(k)); const hi = on && col.has(k) && !el.classList.contains("crit");
+    el.classList.toggle("tr-on", hi); if (hi) { el.style.stroke = col.get(k); el.style.strokeOpacity = "1"; } });
+  Object.entries(CORR_LBL).forEach(([id, o]) => { if (on && !sel.corr.has(id)) o.el.style.opacity = .08; });
+  if (typeof EDGE_L !== "undefined") EDGE_L.forEach((el, k) => el.classList.toggle("tr-off", on && !sel.edges.has(k)));
+  Object.entries(CORR_EL).forEach(([id, o]) => o.g.classList.toggle("tr-off", on && !sel.corr.has(id)));
+  MK.forEach((g, id) => g.classList.toggle("tr-off", on && !sel.ids.has(id)));
+  sim.buses.forEach(b => b.g && b.g.classList.toggle("tr-off", on && trBusOff(b, sel)));
+  return sel;
+}
 function inRing(x, y, r) { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) { const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; }
 const UPL_OF = new Map(); const uplOf = id => { if (!UPL_OF.has(id)) { const n = NODE.get(id); const u = D.upl.find(u => inRing(n.lon, n.lat, u.rings[0])); UPL_OF.set(id, u ? u.nombre : (n.municipio === "Soacha" ? "Soacha" : "—")); } return UPL_OF.get(id); };
 const EJE_XY = EJE.map(id => NODE.get(id).xy), EJE_R = 450 / MPP12;
@@ -551,6 +586,7 @@ function simBuild() {
     for (let k = 0; k < nOut; k++) add(mkTrack(0, outb), lbl(outb, "hacia los barrios"), pm ? "#D8101E" : "#E58A93", (i * 0.17 + .25 + k / nOut) % 1, false, outb);
   });
   simSvcBuses(add);
+  if (TRF.size) { const sel = trSel(); sim.buses.forEach(b => b.g.classList.toggle("tr-off", trBusOff(b, sel))); }
 }
 function simFrame(now) {
   if (!sim.on) return;
@@ -754,6 +790,7 @@ function apply(s = S) {
     COLS.forEach(o => { if (o.est) o.el.style.visibility = ""; });
     loadCol.side = null; loadCol.el.classList.remove("ok"); loadLbl.el.innerHTML = loadHTML(e);
   }
+  trApply();
   if (ML.on) mlApply();
   requestDraw();
   if (mode === "laboratorio") { renderLabPanels(); if (lab.view === "graph") updateGraph(); }
@@ -1510,13 +1547,37 @@ document.addEventListener("keydown", ev => {
 });
 
 // ---- panel con pestañas ----
-const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"], live: ["#tbLive", "#paneLive"] };
+const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"], live: ["#tbLive", "#paneLive"], tr: ["#tbTr", "#paneTr"] };
 let curTab = "trip";
-function setTab(t) { curTab = t; Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); syncDock(); }
+function setTab(t) { if (curTab === "tr" && t !== "tr") trClear(); curTab = t; Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); $(TABS[t][0]).scrollIntoView({ block: "nearest", inline: "nearest" }); syncDock(); }
 function syncDock() { const open = !$("#lPanel").hidden; $$("#panelDock [data-dock]").forEach(b => b.setAttribute("aria-pressed", open && b.dataset.dock === curTab)); }
 Object.keys(TABS).forEach(k => $(TABS[k][0]).onclick = () => setTab(k));
 function openPanel() { $("#lPanel").hidden = false; syncDock(); }
-function closePanel() { $("#lPanel").hidden = true; syncDock(); }
+function closePanel() { $("#lPanel").hidden = true; if (curTab === "tr") trClear(); syncDock(); }
+// ---- pestaña Troncal: filtra el mapa; al salir de la pestaña o cerrar el panel vuelven todas las troncales ----
+function trClear() { if (!TRF.size) return; TRF.clear(); trRender(); apply(labState()); }
+function trRender() {
+  const chip = g => { const n = [...g.ids].length, km = g.corr ? CORR[g.corr].km_total : null;
+    return `<button type="button" class="tr-chip${g.nuevo ? " nuevo" : ""}" data-tr="${g.key}" aria-pressed="${TRF.has(g.key)}" style="--c:${g.color}"><i class="tr-sw"></i><b>${esc(g.letra)}</b><span>${esc(g.nuevo ? short(g.nombre) : g.nombre)}<small>${n} estaciones${km ? ` · ${f2(km)} km` : ""}${g.nuevo ? " · propuesta POT" : ""}</small></span></button>`; };
+  $("#trListOld").innerHTML = TR_GROUPS.filter(g => !g.nuevo).map(chip).join("");
+  $("#trListNew").innerHTML = TR_GROUPS.filter(g => g.nuevo).map(chip).join("");
+  const sel = TR_GROUPS.filter(g => TRF.has(g.key));
+  $("#trInfo").innerHTML = sel.length ? `Mostrando <b>${sel.length === 1 ? esc(sel[0].nombre) : sel.length + " troncales"}</b> · ${trSel().ids.size} estaciones. Toca otra para sumarla, o toca de nuevo para quitarla.` : "Mostrando <b>todas las troncales</b>. Elige una o varias para ver solo esas en el mapa.";
+  $("#trAll").disabled = !sel.length;
+}
+function trToggle(key) {
+  TRF.has(key) ? TRF.delete(key) : TRF.add(key);
+  const sel = trSel();
+  // una troncal nueva solo existe en los escenarios que la incluyen: si no está, se pasa a la red completa
+  if ([...sel.corr].some(id => !E[lab.esc].corredores.includes(id))) lab.esc = 3;
+  trRender(); apply(labState());
+  if (TRF.size && lab.view === "map") { const ll = [...sel.ids].map(id => NODE.get(id)).filter(Boolean).map(n => [n.lon, n.lat]);
+    const lp = $("#lPanel").getBoundingClientRect(), right = lp.width ? Math.max(0, innerWidth - lp.left) : 0;
+    if (ll.length) flyTo(fit(ll, { pitch: cam.pitch || 0, rot: cam.rot, pad: .8, right }), 1000); }
+}
+$("#paneTr").addEventListener("click", ev => { const b = ev.target.closest("[data-tr]"); if (b) trToggle(b.dataset.tr); });
+$("#trAll").onclick = () => trClear();
+trRender();
 $("#lpClose").onclick = closePanel;
 $("#btnPanel").onclick = openPanel;
 // el panel arranca cerrado; se abre desde los botones bajo la barra 3D (tocar el activo lo cierra)
@@ -1678,5 +1739,5 @@ route();
 /*GTFSRT*/
 /*LIVE*/
 /*ML*/
-window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim, FLEET, EDGE_TR, TRONCAL, ROAD, routeInfo, TRIP_WHEN, whenNow };
+window.__TM = { bprRide, freeRide, congParts, SEM, G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim, FLEET, EDGE_TR, TRONCAL, ROAD, routeInfo, TRIP_WHEN, whenNow };
 })();

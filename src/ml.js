@@ -47,8 +47,8 @@ function mlSetup(m, side) {
   m.addLayer({ id: "ml-heat", type: "line", source: "s-heat", layout: { "line-cap": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": .9 } });
   m.addLayer({ id: "ml-edges", type: "line", source: "s-edges", filter: ["!=", ["get", "d"], 1], layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"] } });
   m.addLayer({ id: "ml-edges-dash", type: "line", source: "s-edges", filter: ["==", ["get", "d"], 1], paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"], "line-dasharray": [2, 1.2] } });
-  m.addLayer({ id: "ml-corr-case", type: "line", source: "s-corr", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": ["+", ["get", "w"], 3.5] } });
-  m.addLayer({ id: "ml-corr", type: "line", source: "s-corr", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"] } });
+  m.addLayer({ id: "ml-corr-case", type: "line", source: "s-corr", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": ["+", ["get", "w"], 3.5], "line-opacity": ["coalesce", ["get", "o"], 1] } });
+  m.addLayer({ id: "ml-corr", type: "line", source: "s-corr", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["coalesce", ["get", "o"], 1] } });
   m.addLayer({ id: "ml-corr-hit", type: "line", source: "s-corr", paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
   m.addLayer({ id: "ml-route-case", type: "line", source: "s-route", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": 10 } });
   [["a", "#4A5560", [2, 1.4], 5], ["ab", "#D8101E", [1.6, 1.2], 5], ["c", "#EF8A17", null, 5.5], ["b", "#1E7F55", null, 6.5]].forEach(([t, c, dash, w]) =>
@@ -74,10 +74,12 @@ function mlData(side) {
     if (cl.contains("live-slow")) { c = "#F2A007"; w = 4.5; o = 1; d = 1; }
     if (cl.contains("conn") && !cl.contains("crit") && !cl.contains("bridge")) d = 1;
     if (cl.contains("dead")) o = .12;
+    if (cl.contains("tr-off")) o = .06;
+    if (cl.contains("tr-on")) { w = 5; o = 1; }
     const [a, b] = k.split("|");
     return { type: "Feature", properties: { c, w, o, d }, geometry: { type: "LineString", coordinates: roadLL(a, b) || [LL(a), LL(b)] } };
   });
-  out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], w: CORR_EL[c.id].ln.classList.contains("sel") ? 8 : 5.5, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "LineString", coordinates: c.coords } }));
+  out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], o: CORR_EL[c.id].g.classList.contains("tr-off") ? .07 : 1, w: CORR_EL[c.id].ln.classList.contains("sel") ? 8 : 5.5, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "LineString", coordinates: c.coords } }));
   out.heat = L || lyHeat.style.display === "none" ? [] : [...HEAT_EL].filter(([, el]) => el.style.display !== "none" && el.style.stroke).map(([k, el]) => ({ type: "Feature", properties: { c: el.style.stroke, w: numW(el.style.strokeWidth) || 3 }, geometry: { type: "LineString", coordinates: heatGeo(k) } }));
   // estaciones
   out.stations = [];
@@ -88,7 +90,7 @@ function mlData(side) {
     let p = isNew ? { r: 5.6, fc: "#FFD166", sc: "#111", sw: 1.6 } : ric ? { r: 6.5, fc: "#D8101E", sc: "#fff", sw: 2 } : tr ? { r: 5.5, fc: "#2A9D8F", sc: "#0D3B36", sw: 1.4 } : { r: 3.6, fc: "#fff", sc: "#6C757D", sw: 1.4 };
     if (!L && cl.contains("iso") && !isNew) p = { ...p, fc: "#D8101E", sc: "#7A0A12" };
     if (!L && cl.contains("sel")) p = { ...p, sc: "#2747D8", sw: 3 };
-    out.stations.push({ type: "Feature", properties: { id, ...p, o: !L && cl.contains("dead") ? .25 : 1, metro: isNew && g.querySelector(".metro") ? 1 : 0, tip: g.dataset.tip }, geometry: { type: "Point", coordinates: LL(id) } });
+    out.stations.push({ type: "Feature", properties: { id, ...p, o: !L && cl.contains("tr-off") ? .12 : !L && cl.contains("dead") ? .25 : 1, metro: isNew && g.querySelector(".metro") ? 1 : 0, tip: g.dataset.tip }, geometry: { type: "Point", coordinates: LL(id) } });
   });
   // rutas O→D
   out.route = [];
@@ -147,7 +149,7 @@ function mlApply() {
 function mlBuses() {
   const m = ML.map; if (!m || !m.getSource("live-buses")) return;
   const on = sim.on && S.layers.bus !== false;
-  m.getSource("live-buses").setData(FC(!on ? [] : sim.buses.filter(b => b.x !== undefined).map((b, i) => ({ type: "Feature", properties: { i: sim.buses.indexOf(b), c: b.color, od: b.od ? 1 : 0, ...mlBusProps(b) }, geometry: { type: "Point", coordinates: unP([b.x, b.y]) } }))));
+  m.getSource("live-buses").setData(FC(!on ? [] : sim.buses.filter(b => b.x !== undefined && !(b.g && b.g.classList.contains("tr-off"))).map((b, i) => ({ type: "Feature", properties: { i: sim.buses.indexOf(b), c: b.color, od: b.od ? 1 : 0, ...mlBusProps(b) }, geometry: { type: "Point", coordinates: unP([b.x, b.y]) } }))));
 }
 // ---- cortina: segundo mapa sincronizado debajo del principal ----
 function mlEnsureB() {

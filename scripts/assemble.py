@@ -11,4 +11,6 @@ tr=f"{os.path.dirname(os.path.abspath(src))}/public/data/tramos_viales_bogota.ge
 if os.path.exists(tr): h=h.replace("/*TRAMOS*/null",open(tr).read().replace("</","<\\/"))
 hr=f"{os.path.dirname(os.path.abspath(src))}/datos/horarios_servicios.json"
 if os.path.exists(hr): h=h.replace("/*HORARIOS*/null",open(hr).read().replace("</","<\\/"))
+sm=f"{os.path.dirname(os.path.abspath(src))}/datos/semaforos_tramos.json"
+if os.path.exists(sm): h=h.replace("/*SEM*/null",open(sm).read().replace("</","<\\/"))
 open(out,"w").write(h); print(len(h))

@@ -182,6 +182,7 @@ function liveLabel(m) {
 function liveSyncBuses() {   // el resto del laboratorio (WebGL, seguir bus, clics) lee sim.buses
   sim.buses = [...LIVE.busMarkers.values()];
   sim.buses.forEach(m => { m.g.classList.toggle("late", m.late); m.g.classList.toggle("slow", !m.late && m.slow); m.g.classList.toggle("svc", !!LIVE.sel && m.svc === LIVE.sel); m.g.style.setProperty("--svc", m.color); });
+  if (TRF.size) { const sel = trSel(); sim.buses.forEach(m => m.g.classList.toggle("tr-off", trBusOff(m, sel))); }
   if (sim.focus && !LIVE.busMarkers.has(sim.focus.id)) sim.focus = null;
 }
 function liveEdgeClasses() {

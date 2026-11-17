@@ -113,9 +113,9 @@ station_id,nombre_gtfs,lat_gtfs,lon_gtfs,nodo_grafo,nombre_grafo,dist_gtfs_grafo
 5002,Biblioteca Tintal A,4.63797523560584,-74.15927967771414,E112,Biblioteca Tintal,11,coordenada,alta
 5001,Patio Bonito A,4.6328612269616025,-74.1649357300714,E113,Patio Bonito,50,coordenada,alta
 5000,Portal Américas T2 A,4.6295088081729165,-74.17276212518998,E114,Portal Americas,36,coordenada,alta
-90011,Islandia A,4.614377976374936,-74.19375138370282,E115,Islandia,1610,nombre (Islandia); el nodo del grafo está a 1610 m de la coordenada GTFS,alta
-90010,Laureles A,4.6110173414413005,-74.2023991841249,E116,Laureles,1104,nombre (Laureles); el nodo del grafo está a 1104 m de la coordenada GTFS,alta
-90009,Tibanica A,4.606806029287865,-74.20602332745385,E117,Tibanica - Primavera,790,nombre (Tibanica); el nodo del grafo está a 790 m de la coordenada GTFS,alta
+90011,Islandia A,4.614377976374936,-74.19375138370282,E115,Islandia,0,nombre (Islandia); el nodo del grafo está a 0 m de la coordenada GTFS,alta
+90010,Laureles A,4.6110173414413005,-74.2023991841249,E116,Laureles,0,nombre (Laureles); el nodo del grafo está a 0 m de la coordenada GTFS,alta
+90009,Tibanica A,4.606806029287865,-74.20602332745385,E117,Tibanica - Primavera,0,nombre (Tibanica); el nodo del grafo está a 0 m de la coordenada GTFS,alta
 6111,Universidades A,4.60475485553183,-74.0672568797864,E118,Universidades CityU,14,coordenada,alta
 14005,Aguas A,4.602562027037322,-74.06835731614862,E119,Las Aguas - Centro Colombo Americano,5,coordenada,alta
 14004,Museo del Oro A,4.601191397675505,-74.07293527384934,E120,Museo del Oro,5,coordenada,alta

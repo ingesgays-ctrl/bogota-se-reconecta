@@ -26,7 +26,7 @@
   - 12 rutas del modelo no tienen viajes en el GTFS de día hábil:
     - D81, K86, L81, L82 y M86: variantes de Ciclovía, que operan solo domingos y festivos.
     - C84, F63, M82, M84, M85, P85 y Z63.
-- **144 de los 146 tramos** de la matriz base tienen oferta. Los 2 que no la tienen son Santa Lucía–Consuelo y Socorro–Biblioteca (ver §4).
+- **143 de los 146 tramos** de la matriz base tienen oferta. Los 3 que no la tienen son Santa Lucía–Consuelo y Socorro–Biblioteca (ver §4) y Virrey–La Castellana (sus buses usan el enlace La Castellana–Calle 100).
 - **Conclusión:** esta versión **sí sirve como oferta programada completa del sistema troncal en día hábil**.
 
 ## 3. Equivalencias station_id → nodo (`equivalencias_gtfs_grafo.csv`)
@@ -53,19 +53,15 @@ El método principal es la coordenada GTFS más cercana al nodo del grafo. Así 
   - E21–E22: 1,06 km (antes 1,55 km).
   - Calle 57 → Av. 39 suma lo mismo que antes, unos 1,8 km.
 
-**Coordenadas del grafo con diferencias grandes frente al GTFS (sin corregir):**
+**Extensión Américas (corregida el 17-nov-2026).** Islandia (E115), Laureles (E116) y Tibanica (E117) estaban en el grafo a 1.610, 1.104 y 790 m de su coordenada GTFS. El orden de las estaciones coincidía; las coordenadas no.
+- **Cambio aplicado:** se tomaron las coordenadas GTFS (90011, 90010, 90009), igual que con E21. La topología no cambió.
+- **Trazado vial nuevo** desde los shapes oficiales:
+  - Portal Américas–Islandia: 3,05 km (shape 12689).
+  - Islandia–Laureles: 1,16 km (shape 13168).
+  - Laureles–Tibanica: 0,64 km (shape 13167).
+- **Efecto en las cifras oficiales:** los puentes siguen en 110 / 38 / 83 / 27 y la centralidad media del eje central sigue en 23,6 % → 16,8 %.
 
-| Nodos | Diferencia | Observación |
-|---|---|---|
-| Islandia (E115) | 1.610 m | Extensión Américas. El orden de las estaciones coincide; las coordenadas no. Se asignaron por nombre. |
-| Laureles (E116) | 1.104 m | Ídem. |
-| Tibanica (E117) | 790 m | Ídem. |
-| Danubio (E40) | 273 m | |
-| Flores (E19) | 256 m | |
-| Calle 57 (E20) | 232 m | |
-| Av. Jiménez (E25) | 191 m | |
-
-Estas diferencias no afectan la topología, pero sí las distancias de esos tramos en el grafo. Se dejan anotadas para revisión.
+**Coordenadas que siguen con diferencias de 190 a 275 m (sin corregir):** Danubio (E40), Flores (E19), Calle 57 (E20) y Av. Jiménez (E25). No afectan la topología.
 
 ## 4. Topología (capa de oferta GTFS, separada de la matriz base)
 **La matriz base de 143 nodos y 146 tramos no se modificó.** Sigue reproduciendo los 110 / 38 / 83 / 27 puentes oficiales. La capa de oferta usa su propio grafo:
@@ -83,19 +79,21 @@ Estas diferencias no afectan la topología, pero sí las distancias de esos tram
 - **Quiroga ↔ Av. 1 de Mayo** (M83/H83): 17,7 y 12,0 bus/h en la mañana.
 - **Tygua ↔ Nariño** (B72/H72): 28,0 y 21,3 bus/h en la mañana.
 
-**Conectores que aún le faltan al grafo.** Son 26 pares origen-destino (72 arcos-franja) en los que el camino más corto del grafo mide más de 1,35 veces la distancia GTFS. Para no inflar tramos por los que el bus no pasa, **no se proyectan** y quedan listados en `validacion_gtfs.json`:
+**Siete conectores más de la capa de oferta (enlaces operacionales de tráfico mixto).** Se derivaron de `shapes.txt`: son estaciones consecutivas del trazado oficial que el grafo base no une. Con ellos ya **no queda ningún par O-D sin proyectar** (antes eran 26 pares y 72 arcos-franja).
 
-| Conector | Rutas | Grafo vs GTFS |
+| Conector | Pares de estaciones | Rutas |
 |---|---|---|
-| Calle 26 (Centro Memoria/Concejo) ↔ Caracas (Calle 26/Calle 22) | 3, K23, B23, J74, B74, J24, D24 | 3,7–6,4 km vs 1,3–3,0 km |
-| Carrera 10 (Las Nieves/Bicentenario) ↔ Caracas (Av. Jiménez) | F51, M51, B18, L18 | 4,6–6,3 km vs 0,7–1,9 km |
-| Carrera 10 (Las Nieves) ↔ Calle 26 (Centro Memoria) | K10, L10 | 8,1–9,3 km vs 1,9–2,2 km |
-| Calle 6 (Tygua/Guatoque) ↔ Caracas (Av. Jiménez/Hortúa/Fucha) | 8, C17, H17, D21 | 3,6–6,0 km vs 1,0–3,7 km |
-| Suba (San Martín/Rionegro) ↔ Calle 80 (Escuela Militar), sin pasar por NQS Calle 75 | 7, B50, C50 | 1,6–2,1 km vs 0,7–1,4 km |
-| NQS (La Castellana) ↔ Autonorte (Calle 100) | B12 | 1,5 km vs 1,1 km |
-| Caracas (Calle 22) ↔ De La Sabana | A61, Z61 | 1,6 km vs 1,1 km |
+| Calle 26 ↔ Caracas | Centro Memoria ↔ Calle 26 · Centro Memoria ↔ Calle 22 · Universidades ↔ Calle 26 | K23, B23, 3, J74, B74, J24, D24 |
+| Carrera 10 ↔ Caracas | Bicentenario ↔ Av. Jiménez · Las Nieves ↔ Av. Jiménez | L18, B18, M51, F51 |
+| Carrera 10 ↔ Calle 26 | San Diego ↔ Centro Memoria | K10, L10 |
+| Calle 6 ↔ Caracas | Tygua ↔ Av. Jiménez · Tygua ↔ Hortúa | 8, C17, H17, D21 |
+| Suba ↔ Calle 80 | San Martín ↔ Escuela Militar | 7, B50, C50 |
+| NQS ↔ Autonorte | La Castellana ↔ Calle 100 | B12 |
+| Caracas ↔ Calle 13 | Calle 22 ↔ De La Sabana | A61, Z61 |
 
-Si se agregan como enlaces de la capa de oferta, como ya se hizo con Quiroga y Tygua, la proyección queda completa.
+En total, la capa tiene 13 enlaces operacionales: estos 11 pares más Quiroga ↔ Av. 1 de Mayo y Tygua ↔ Nariño. Los más cargados en la mañana son La Castellana → Calle 100 (111 bus/h), Calle 100 → La Castellana (85 bus/h) y De La Sabana → Calle 22 (54 bus/h).
+
+**Hallazgo nuevo: Virrey ↔ La Castellana (E15–E69).** Este tramo de la matriz base ya no recibe ningún bus GTFS. Las rutas que unen la NQS con la Autonorte entran por Calle 100, no por Virrey. Se recomienda revisar ese tramo de la matriz (no se tocó, porque cambiaría los puentes oficiales).
 
 ## 5. Reparto de los saltos expresos
 Para cada uno de los 747 pares origen-destino se buscó el método más fiel:
@@ -103,10 +101,9 @@ Para cada uno de los 747 pares origen-destino se buscó el método más fiel:
 | Método | Pares | Qué hace |
 |---|---|---|
 | Adyacente | 282 | Las dos estaciones son vecinas en el grafo. |
-| Trazado | 403 | Se toma el shape oficial que pasa a 60 m o menos de ambas estaciones y cuya longitud se parece a `distancia_km`. La oferta se reparte en las estaciones por las que pasa, a 45 m o menos. |
+| Trazado | 413 | Se toma el shape oficial que pasa a 60 m o menos de ambas estaciones y cuya longitud se parece a `distancia_km`. La oferta se reparte en las estaciones por las que pasa, a 45 m o menos. |
 | Grafo | 32 | No hubo shape compatible; se usa el camino más corto, cuya longitud sí es compatible con la distancia GTFS. |
-| Enlace operacional | 4 | Los dos enlaces de tráfico mixto, en ambos sentidos. |
-| Conector faltante | 26 | No se proyecta (ver §4). |
+| Enlace operacional | 20 | Los 13 enlaces de tráfico mixto (algunos en ambos sentidos). |
 
 El detalle de cada arco, con su camino, método, velocidad implícita y si es apto para calibración, está en `arcos_proyeccion_gtfs.csv`.
 

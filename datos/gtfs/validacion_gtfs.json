@@ -30,18 +30,17 @@
  "shapes_cargados": 1100,
  "metodo_por_par_od": {
   "adyacente": 282,
-  "trazado": 403,
-  "enlace operacional": 4,
-  "conector faltante": 26,
+  "trazado": 413,
+  "enlace operacional": 20,
   "grafo": 32
  },
  "excluidos": {
-  "conector faltante": 72,
   "bucle": 3
  },
  "tramos_base": 146,
- "tramos_base_con_oferta": 144,
+ "tramos_base_con_oferta": 143,
  "tramos_base_sin_oferta": [
+  "E15|E69",
   "E33|E38",
   "E34|E35"
  ],
@@ -57,7 +56,18 @@
  },
  "enlaces_operacionales": {
   "E141|E31": "Quiroga ↔ Av. 1 de Mayo (M83/H83)",
-  "E27|E81": "Tygua ↔ Nariño (B72/H72)"
+  "E27|E81": "Tygua ↔ Nariño (B72/H72)",
+  "E121|E23": "Calle 26 ↔ Caracas: Centro Memoria ↔ Calle 26 (K23/B23)",
+  "E121|E24": "Calle 26 ↔ Caracas: Centro Memoria ↔ Calle 22 (3)",
+  "E118|E23": "Calle 26 ↔ Caracas: Universidades ↔ Calle 26 (J74/B74/J24/D24)",
+  "E25|E82": "Carrera 10 ↔ Caracas: Bicentenario ↔ Av. Jiménez (L18/B18)",
+  "E136|E25": "Carrera 10 ↔ Caracas: Las Nieves ↔ Av. Jiménez (M51/F51)",
+  "E121|E135": "Carrera 10 ↔ Calle 26: San Diego ↔ Centro Memoria (K10/L10)",
+  "E25|E81": "Calle 6 ↔ Caracas: Tygua ↔ Av. Jiménez (8)",
+  "E26|E81": "Calle 6 ↔ Caracas: Tygua ↔ Hortúa (C17/H17/D21)",
+  "E42|E57": "Suba ↔ Calle 80: San Martín ↔ Escuela Militar (7/B50/C50)",
+  "E14|E69": "NQS ↔ Autonorte: La Castellana ↔ Calle 100 (B12)",
+  "E24|E99": "Caracas ↔ Calle 13: Calle 22 ↔ De La Sabana (A61/Z61)"
  },
  "franjas": {
   "am": {
@@ -80,21 +90,6 @@
   }
  },
  "equivalencias_mayor_distancia_m": [
-  {
-   "station_id": "90011",
-   "nodo": "E115",
-   "dist_m": 1610
-  },
-  {
-   "station_id": "90010",
-   "nodo": "E116",
-   "dist_m": 1104
-  },
-  {
-   "station_id": "90009",
-   "nodo": "E117",
-   "dist_m": 790
-  },
   {
    "station_id": "90008",
    "nodo": "E40",
@@ -139,192 +134,23 @@
    "station_id": "9113",
    "nodo": "E24",
    "dist_m": 58
+  },
+  {
+   "station_id": "7006",
+   "nodo": "E87",
+   "dist_m": 58
+  },
+  {
+   "station_id": "4102",
+   "nodo": "E62",
+   "dist_m": 55
+  },
+  {
+   "station_id": "3002",
+   "nodo": "E53",
+   "dist_m": 55
   }
  ],
- "pares_od_conector_faltante": [
-  {
-   "de": "AV. 39",
-   "a": "Universidades CityU",
-   "km": "grafo 4.84 km vs GTFS 3.03 km",
-   "rutas": "J24"
-  },
-  {
-   "de": "Avenida Jiménez",
-   "a": "Bicentenario",
-   "km": "grafo 4.61 km vs GTFS 1.85 km",
-   "rutas": "L18"
-  },
-  {
-   "de": "Avenida Jiménez",
-   "a": "Las Nieves",
-   "km": "grafo 6.25 km vs GTFS 0.71 km",
-   "rutas": "M51"
-  },
-  {
-   "de": "Avenida Jiménez",
-   "a": "Tygua - San José",
-   "km": "grafo 3.61 km vs GTFS 1.06 km",
-   "rutas": "8"
-  },
-  {
-   "de": "Bicentenario",
-   "a": "Avenida Jiménez",
-   "km": "grafo 4.61 km vs GTFS 1.93 km",
-   "rutas": "B18"
-  },
-  {
-   "de": "Calle 22",
-   "a": "Centro Memoria",
-   "km": "grafo 4.81 km vs GTFS 1.95 km",
-   "rutas": "3"
-  },
-  {
-   "de": "Calle 22",
-   "a": "De La Sabana",
-   "km": "grafo 1.56 km vs GTFS 1.06 km",
-   "rutas": "Z61"
-  },
-  {
-   "de": "Calle 26 - Atrio",
-   "a": "Concejo de Bogotá",
-   "km": "grafo 6.44 km vs GTFS 2.17 km",
-   "rutas": "K23"
-  },
-  {
-   "de": "Calle 26 - Atrio",
-   "a": "Universidades CityU",
-   "km": "grafo 3.67 km vs GTFS 1.88 km",
-   "rutas": "J74"
-  },
-  {
-   "de": "Centro Memoria",
-   "a": "Calle 22",
-   "km": "grafo 4.81 km vs GTFS 1.32 km",
-   "rutas": "3"
-  },
-  {
-   "de": "Centro Memoria",
-   "a": "Las Nieves",
-   "km": "grafo 8.05 km vs GTFS 1.88 km",
-   "rutas": "L10"
-  },
-  {
-   "de": "Concejo de Bogotá",
-   "a": "Calle 26 - Atrio",
-   "km": "grafo 6.44 km vs GTFS 2.42 km",
-   "rutas": "B23"
-  },
-  {
-   "de": "De La Sabana",
-   "a": "Calle 22",
-   "km": "grafo 1.56 km vs GTFS 1.08 km",
-   "rutas": "A61"
-  },
-  {
-   "de": "Escuela Militar",
-   "a": "Rionegro",
-   "km": "grafo 2.08 km vs GTFS 1.42 km",
-   "rutas": "C50"
-  },
-  {
-   "de": "Escuela Militar",
-   "a": "San Martín",
-   "km": "grafo 1.57 km vs GTFS 0.86 km",
-   "rutas": "7"
-  },
-  {
-   "de": "Fucha",
-   "a": "Guatoque - Veraguas",
-   "km": "grafo 5.71 km vs GTFS 3.69 km",
-   "rutas": "D21"
-  },
-  {
-   "de": "Guatoque - Veraguas",
-   "a": "Hortúa",
-   "km": "grafo 5.99 km vs GTFS 2.23 km",
-   "rutas": "H17"
-  },
-  {
-   "de": "Hortúa",
-   "a": "Guatoque - Veraguas",
-   "km": "grafo 4.35 km vs GTFS 2.25 km",
-   "rutas": "C17"
-  },
-  {
-   "de": "La Castellana",
-   "a": "Calle 100 - Marketmedios",
-   "km": "grafo 1.51 km vs GTFS 1.10 km",
-   "rutas": "B12"
-  },
-  {
-   "de": "Las Nieves",
-   "a": "Avenida Jiménez",
-   "km": "grafo 6.25 km vs GTFS 0.85 km",
-   "rutas": "F51"
-  },
-  {
-   "de": "Las Nieves",
-   "a": "Centro Memoria",
-   "km": "grafo 9.28 km vs GTFS 2.16 km",
-   "rutas": "K10"
-  },
-  {
-   "de": "Rionegro",
-   "a": "Escuela Militar",
-   "km": "grafo 2.08 km vs GTFS 1.24 km",
-   "rutas": "B50"
-  },
-  {
-   "de": "San Martín",
-   "a": "Escuela Militar",
-   "km": "grafo 1.57 km vs GTFS 0.72 km",
-   "rutas": "7"
-  },
-  {
-   "de": "Tygua - San José",
-   "a": "Avenida Jiménez",
-   "km": "grafo 3.61 km vs GTFS 1.00 km",
-   "rutas": "8"
-  },
-  {
-   "de": "Universidades CityU",
-   "a": "AV. 39",
-   "km": "grafo 4.84 km vs GTFS 2.78 km",
-   "rutas": "D24"
-  },
-  {
-   "de": "Universidades CityU",
-   "a": "Calle 26 - Atrio",
-   "km": "grafo 3.67 km vs GTFS 1.73 km",
-   "rutas": "B74"
-  }
- ],
- "pares_od_sin_camino": [
-  "E118→E22",
-  "E118→E23",
-  "E121→E136",
-  "E121→E24",
-  "E122→E23",
-  "E136→E121",
-  "E136→E25",
-  "E22→E118",
-  "E23→E118",
-  "E23→E122",
-  "E24→E121",
-  "E24→E99",
-  "E25→E136",
-  "E25→E81",
-  "E25→E82",
-  "E26→E80",
-  "E28→E80",
-  "E42→E57",
-  "E43→E57",
-  "E57→E42",
-  "E57→E43",
-  "E69→E14",
-  "E80→E26",
-  "E81→E25",
-  "E82→E25",
-  "E99→E24"
- ]
+ "pares_od_conector_faltante": [],
+ "pares_od_sin_camino": []
 }

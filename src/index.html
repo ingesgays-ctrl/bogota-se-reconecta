@@ -107,6 +107,7 @@
         <button type="button" data-dock="fail" aria-pressed="false" title="Simular cierres de estaciones"><b>⚠</b><small>Cierres</small></button>
         <button type="button" data-dock="sta" aria-pressed="false" title="Ficha de una estación"><b>◉</b><small>Estación</small></button>
         <button type="button" data-dock="live" aria-pressed="false" title="Rutas y buses en vivo"><b>≋</b><small>Rutas</small></button>
+        <button type="button" data-dock="tr" aria-pressed="false" title="Filtrar el mapa por troncal"><b>☷</b><small>Troncal</small></button>
       </div>
       <div class="ticker" id="ticker" aria-label="Estado de los ejes principales"></div>
       <div class="map-ctrl" role="group" aria-label="Controles del mapa">
@@ -143,7 +144,7 @@
       <div class="pres-nav"><button type="button" id="presPrev" aria-label="Escena anterior">←</button><span id="presCount" class="num"></span><button type="button" id="presNext" aria-label="Escena siguiente">→</button><button type="button" id="presExit">Salir · Esc</button></div>
     </div>
     <aside class="lpanel" id="lPanel" aria-label="Panel de viaje, cierres y estación">
-      <div class="lp-head"><div class="tabs" role="tablist"><button type="button" role="tab" id="tbTrip" aria-selected="true" aria-controls="paneTrip">Planear viaje</button><button type="button" role="tab" id="tbFail" aria-selected="false" aria-controls="paneFail" data-u="Cierres" data-d="Cierres / fallas"></button><button type="button" role="tab" id="tbSta" aria-selected="false" aria-controls="paneSta">Estación</button><button type="button" role="tab" id="tbLive" aria-selected="false" aria-controls="paneLive">Rutas</button></div><button type="button" class="fc-close" id="lpClose" aria-label="Ocultar panel">×</button></div>
+      <div class="lp-head"><div class="tabs" role="tablist"><button type="button" role="tab" id="tbTrip" aria-selected="true" aria-controls="paneTrip">Planear viaje</button><button type="button" role="tab" id="tbFail" aria-selected="false" aria-controls="paneFail" data-u="Cierres" data-d="Cierres / fallas"></button><button type="button" role="tab" id="tbSta" aria-selected="false" aria-controls="paneSta">Estación</button><button type="button" role="tab" id="tbLive" aria-selected="false" aria-controls="paneLive">Rutas</button><button type="button" role="tab" id="tbTr" aria-selected="false" aria-controls="paneTr">Troncal</button></div><button type="button" class="fc-close" id="lpClose" aria-label="Ocultar panel">×</button></div>
       <div class="lp-body">
         <section id="paneTrip" role="tabpanel" aria-labelledby="tbTrip">
           <div class="quick" id="routeQuick" role="group" aria-label="Viajes de ejemplo"></div>
@@ -182,6 +183,14 @@
             <p class="note">El feed oficial (gis.transmilenio.gov.co/gtfs) no permite lectura directa desde el navegador (sin CORS); se usa el puente de <code>bridge/</code>. Vacío = solo simulación (el feed oficial no se puede leer directo desde el navegador). También acepta <code>?live=URL</code> en la dirección.</p>
           </details>
         </section>
+        <section id="paneTr" role="tabpanel" aria-labelledby="tbTr" hidden>
+          <p class="tr-info" id="trInfo" aria-live="polite"></p>
+          <h4 class="tr-h">Troncales de hoy</h4>
+          <div class="tr-list" id="trListOld" role="group" aria-label="Troncales actuales"></div>
+          <h4 class="tr-h">Troncales nuevas (POT)</h4>
+          <div class="tr-list" id="trListNew" role="group" aria-label="Troncales nuevas del POT"></div>
+          <button type="button" class="chip" id="trAll">Ver todas las troncales</button>
+        </section>
       </div>
     </aside>
     <div class="tip" id="tip" role="status"></div>
@@ -211,6 +220,7 @@
 <script>window.DATA = /*DATA*/;</script>
 <script>window.TRAMOS = /*TRAMOS*/null;</script>
 <script>window.HORARIOS = /*HORARIOS*/null;</script>
+<script>window.SEM_DATA = /*SEM*/null;</script>
 <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.34.1/dist/cytoscape.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
