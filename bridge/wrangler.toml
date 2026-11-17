@@ -1,0 +1,9 @@
+name = "tm-gtfsrt-bridge"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+UPSTREAM = "https://gis.transmilenio.gov.co/gtfs/"
+ALLOWED_ORIGIN = "https://ingesgays-ctrl.github.io"
+CACHE_SECONDS = "10"
+# ROUTES_URL = "https://.../routes.txt"   # opcional: GTFS estático para traducir route_id → código (B74, K23…)

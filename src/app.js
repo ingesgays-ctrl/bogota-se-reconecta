@@ -509,6 +509,7 @@ function mkTrack(esc, P) {
   return { pts, cum, len: cum[cum.length - 1], eje };
 }
 function simBuild() {
+  if (LIVE.mode === "live") return;
   const esc2 = S.esc; sim.esc = esc2; sim.peak = S.peak; lyBus.innerHTML = ""; sim.buses = []; if (cy) cy.$(".bus").remove();
   const pxPerMin = VEL[esc2] / 60 * 1000 / MPP12; sim.odEje = 0; sim.odN = 0;
   const add = (tr, label, color, phase, od, ids) => {
@@ -531,9 +532,11 @@ function simBuild() {
     for (let k = 0; k < nIn; k++) add(mkTrack(0, inb), lbl(inb, "hacia el centro"), pm ? "#E58A93" : "#D8101E", (i * 0.17 + k / nIn) % 1, false, inb);
     for (let k = 0; k < nOut; k++) add(mkTrack(0, outb), lbl(outb, "hacia los barrios"), pm ? "#D8101E" : "#E58A93", (i * 0.17 + .25 + k / nOut) % 1, false, outb);
   });
+  simSvcBuses(add);
 }
 function simFrame(now) {
   if (!sim.on) return;
+  if (LIVE.mode === "live") { liveFrame(now); sim.raf = requestAnimationFrame(simFrame); return; }
   const dt = sim.last ? Math.min(.1, (now - sim.last) / 1000) : 0; sim.last = now; sim.t += dt * MIN_PER_SEC;
   if (sim.esc !== S.esc || sim.peak !== S.peak) simBuild();
   const k = 2 ** (cam.z - Z0); let inEje = 0, odEje = 0, nOd = 0;
@@ -569,8 +572,9 @@ function simToggle(on = !sim.on) {
   $("#simPlay").setAttribute("aria-pressed", on); $("#simPlay").innerHTML = on ? '<span aria-hidden="true">❚❚</span> Pausar simulación' : '<span aria-hidden="true">▶</span> Simular operación en vivo';
   lyBus.style.display = on && S.layers.bus !== false ? "" : "none"; $("#simHud").hidden = !on; $("#liveBadge").hidden = !on;
   if (!on && follow) setFollow(false); if (!on && cy) cy.$(".bus").remove(); sim.buses.forEach(b => b.cn = null);
-  if (on) { if (sim.esc !== S.esc) simBuild(); cancelAnimationFrame(sim.raf); sim.raf = requestAnimationFrame(simFrame); }
-  else cancelAnimationFrame(sim.raf);
+  if (on) { if (sim.esc !== S.esc) simBuild(); cancelAnimationFrame(sim.raf); sim.raf = requestAnimationFrame(simFrame); liveStart(); }
+  else { cancelAnimationFrame(sim.raf); liveStop(); if (LIVE.mode === "live") liveToSim(); }
+  renderLive();
 }
 $("#simPlay").onclick = () => simToggle();
 lyBus.addEventListener("click", ev => { const b = ev.target.closest(".bus"); if (b) { ev.stopPropagation(); sim.focus = sim.buses.find(x => x.g === b); const r = b.getBoundingClientRect(); showTip(b.dataset.tip, r.left + r.width / 2, r.top, true); } });
@@ -1465,7 +1469,7 @@ document.addEventListener("keydown", ev => {
 });
 
 // ---- panel con pestañas ----
-const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"] };
+const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"], live: ["#tbLive", "#paneLive"] };
 function setTab(t) { Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); }
 Object.keys(TABS).forEach(k => $(TABS[k][0]).onclick = () => setTab(k));
 function openPanel() { $("#lPanel").hidden = false; $("#btnPanel").hidden = true; }
@@ -1484,7 +1488,7 @@ let orbitRaf = 0, prevTilt = 48;
 function setOrbit(on) { $("#camOrbit").setAttribute("aria-pressed", on); cancelAnimationFrame(orbitRaf); if (!on) return; const step = () => { cam.rot += .12; requestDraw(); orbitRaf = requestAnimationFrame(step); }; orbitRaf = requestAnimationFrame(step); }
 function setFollow(on) {
   follow = on; $("#camFollow").setAttribute("aria-pressed", on);
-  if (on) { if (!sim.on) simToggle(true); if (!sim.focus || !sim.focus.g.isConnected) sim.focus = sim.buses.find(b => b.od) || sim.buses[0];
+  if (on) { if (!sim.on) simToggle(true); if (!sim.focus || !sim.focus.g.isConnected) sim.focus = (LIVE.sel && sim.buses.find(b => b.svc === LIVE.sel)) || sim.buses.find(b => b.od) || sim.buses[0];
     if (sim.focus) { $("#simHud").hidden = false; flyTo({ ...cam, z: 14, pitch: Math.max(cam.pitch, 45) }, 600); showTip(sim.focus.label, innerWidth / 2, innerHeight / 2, false); setTimeout(() => hideTip(), 2500); } }
 }
 $("#cam3d").onclick = () => $("#t3d").click();
@@ -1519,7 +1523,7 @@ function renderTicker(s) {
     { n: DEV ? "Corredores periféricos C1–C5" : "Conexiones entre barrios", st: e.corredores.includes("C1") ? "En operación" : "No existen hoy", k: e.corredores.includes("C1") ? "good" : "off", v: e.corredores.includes("C1") ? "37,32 km · 5 tramos" : "", d: "" },
   ];
   const head = `<span class="tk-head ${s.esc ? "fut" : ""}">${s.esc ? (DEV ? "Con mejoras · " + ESC_D[s.esc] : "Con las mejoras · " + ESC_U[s.esc]) : (DEV ? "Hoy · Esc. 0 red actual" : "Hoy · red actual")} · ${pm ? "pico tarde" : "pico mañana"}</span>`;
-  $("#ticker").innerHTML = head + items.map(i => `<span class="tk ${i.k}"><b>${esc(i.n)}</b><em>${esc(i.st)}</em>${i.v ? `<span>${esc(i.v)}</span>` : ""}${i.d ? `<span class="num">${esc(i.d)}</span>` : ""}</span>`).join("") + (DEV ? '<span class="tk-note">Umbrales de centralidad: ≥ 30 % muy cargado · ≥ 15 % cargado</span>' : "");
+  $("#ticker").innerHTML = head + (typeof LIVE !== "undefined" && LIVE ? liveTickerHTML() : "") + items.map(i => `<span class="tk ${i.k}"><b>${esc(i.n)}</b><em>${esc(i.st)}</em>${i.v ? `<span>${esc(i.v)}</span>` : ""}${i.d ? `<span class="num">${esc(i.d)}</span>` : ""}</span>`).join("") + (DEV ? '<span class="tk-note">Umbrales de centralidad: ≥ 30 % muy cargado · ≥ 15 % cargado</span>' : "");
 }
 // ---- interruptor de modo y jornada ----
 function setDev(v) {
@@ -1572,6 +1576,8 @@ resize();
 Object.assign(cam, fit(allPts, { pitch: 44, rot: -12, pad: .86 }));
 draw();
 route();
+/*GTFSRT*/
+/*LIVE*/
 /*ML*/
-window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML };
+window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim };
 })();

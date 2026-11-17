@@ -670,3 +670,41 @@ body:not(.mode-laboratorio) .tk-arrow{display:none!important}
 .lbl.pulse.dead i{border-color:#D8101E;background:rgba(216,16,30,.12)}
 @keyframes tmPulse{0%{transform:scale(.5);opacity:1}70%{opacity:.55}100%{transform:scale(3.6);opacity:0}}
 @media (prefers-reduced-motion:reduce){.lbl.pulse i{animation:none;opacity:.8;transform:scale(1.4)}.lbl.pulse i+i{display:none}}
+
+/* ---- datos en vivo y ruta seleccionada ---- */
+.live.sim{background:#6C757D}
+.live-st{font-size:13px;line-height:1.45;padding:8px 10px;border-radius:8px;background:#F3F5F4;margin-bottom:10px}
+.live-st small{color:var(--muted)}
+.live-st .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9AA3A8;margin-right:6px;vertical-align:1px}
+.live-st .dot.ok{background:#1E7F55;box-shadow:0 0 0 0 rgba(30,127,85,.6);animation:liveDot 1.6s infinite}
+.live-st .dot.sim{background:#E9B949}.live-st .dot.wait{background:#0B66E4;animation:liveDot 1.2s infinite}
+@keyframes liveDot{0%{box-shadow:0 0 0 0 rgba(30,127,85,.55)}100%{box-shadow:0 0 0 9px rgba(30,127,85,0)}}
+.svc-chip{display:inline-block;min-width:34px;text-align:center;font:700 12px/1 var(--f-mono);color:#fff;background:var(--c);padding:4px 6px;border-radius:5px;margin-right:4px}
+#svcList li>span{display:flex;align-items:center;gap:4px;flex-wrap:wrap}#svcList small.lv{color:#1E7F55;font-weight:600}
+.svc-card{border:1px solid var(--line);border-left:5px solid var(--c);border-radius:10px;padding:10px 12px;margin:10px 0}
+.svc-h{display:flex;align-items:center;gap:6px;font-size:15px}.svc-od{margin:6px 0 2px;font-size:13px;color:var(--muted)}
+.svc-now{margin:6px 0;font-size:13.5px}.svc-now .bad,.lr .bad{color:#B0101A;font-weight:600}.svc-now .mid,.lr .mid{color:#9A6A00;font-weight:600}
+.svc-alert{margin:6px 0;font-size:13px;background:#FFF4E5;border-radius:6px;padding:6px 8px}
+.svc-btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+#liveRoutes h4{margin:12px 0 4px;font-size:13px}.lr{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px;font-size:13px}
+.lr button{background:none;border:1px solid var(--line);border-radius:6px;padding:4px 6px;cursor:pointer;display:flex;gap:6px;align-items:center;width:100%;text-align:left}
+.live-cfg{margin-top:12px;font-size:13px}.live-cfg input{width:100%;margin:4px 0}
+/* trazo de la ruta elegida: brillo + línea + flujo animado */
+#lySvc path{fill:none;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.svc-glow{stroke:var(--svc);stroke-opacity:.2;stroke-width:calc(16px / var(--k,1))}
+.svc-line{stroke:var(--svc);stroke-width:calc(5px / var(--k,1))}
+.svc-flow{stroke:#fff;stroke-width:calc(2.2px / var(--k,1));stroke-dasharray:calc(6px / var(--k,1)) calc(10px / var(--k,1));animation:svcFlow 1s linear infinite}
+@keyframes svcFlow{to{stroke-dashoffset:calc(-16px / var(--k,1))}}
+.lbl.svcstop i{left:-8px;top:-8px;width:16px;height:16px;border-color:var(--svc,#0B66E4);background:transparent;border-width:2px;animation-duration:1.8s}
+.lbl.svcstop i:nth-child(2){animation-delay:.9s}
+/* buses: anillo pulsante en la ruta elegida y estados en vivo */
+.bus .ring{display:none}
+.bus.svc .ring{display:block;fill:none;stroke:var(--svc,#0B66E4);stroke-width:2.5;transform-box:fill-box;transform-origin:center;animation:busRing 1.5s ease-out infinite}
+@keyframes busRing{0%{transform:scale(.6);opacity:1}100%{transform:scale(2.4);opacity:0}}
+.bus.late rect:nth-of-type(1){stroke:#D8101E;stroke-width:2.6}
+.bus.slow rect:nth-of-type(1){stroke:#F2A007;stroke-width:2.6}
+.edge.live-slow{stroke:#F2A007!important;stroke-opacity:1!important;stroke-width:calc(4.5px / var(--k,1))!important;stroke-dasharray:calc(6px / var(--k,1)) calc(4px / var(--k,1))}
+.tip .lt{display:inline-block;font-style:normal;font-weight:700;font-size:11px;padding:1px 6px;border-radius:999px;margin:2px 0}
+.tip .lt.bad{background:#D8101E}.tip .lt.mid{background:#E9B949;color:#172026}.tip .lt.good{background:#1E7F55}
+@media (prefers-reduced-motion:reduce){.svc-flow,.bus.svc .ring,.live-st .dot{animation:none}}

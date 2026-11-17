@@ -70,6 +70,7 @@ function mlData(side) {
     if (cl.contains("crit")) { c = !L && cl.contains("ok") ? "#1E7F55" : "#D8101E"; w = L ? 6 : (numW(el.style.strokeWidth) || 6); o = 1; }
     if (cl.contains("bridge")) { c = "#E85D04"; w = 3.2; o = .95; d = 1; }
     if (cl.contains("iso")) { c = "#D8101E"; w = 2.8; o = .9; d = 0; }
+    if (cl.contains("live-slow")) { c = "#F2A007"; w = 4.5; o = 1; d = 1; }
     if (cl.contains("dead")) o = .12;
     const [a, b] = k.split("|");
     return { type: "Feature", properties: { c, w, o, d }, geometry: { type: "LineString", coordinates: [LL(a), LL(b)] } };
@@ -135,7 +136,7 @@ function mlLabels() {
 }
 function mlApply() {
   if (!ML.map) return;
-  mlApplyTo(ML.map, "R"); mlLabels(); mlBuses();
+  mlApplyTo(ML.map, "R"); mlLabels(); mlBuses(); mlSvcApply();
   if (S.compare) mlEnsureB(); else if (ML.boxB) ML.boxB.style.display = "none";
   if (ML.mapB && S.compare) { ML.boxB.style.display = ""; mlApplyTo(ML.mapB, "L"); }
   mlCurtain();
@@ -143,7 +144,7 @@ function mlApply() {
 function mlBuses() {
   const m = ML.map; if (!m || !m.getSource("s-bus")) return;
   const on = sim.on && S.layers.bus !== false;
-  m.getSource("s-bus").setData(FC(!on ? [] : sim.buses.filter(b => b.x !== undefined).map((b, i) => ({ type: "Feature", properties: { i: sim.buses.indexOf(b), c: b.color, od: b.od ? 1 : 0 }, geometry: { type: "Point", coordinates: unP([b.x, b.y]) } }))));
+  m.getSource("s-bus").setData(FC(!on ? [] : sim.buses.filter(b => b.x !== undefined).map((b, i) => ({ type: "Feature", properties: { i: sim.buses.indexOf(b), c: b.color, od: b.od ? 1 : 0, ...mlBusProps(b) }, geometry: { type: "Point", coordinates: unP([b.x, b.y]) } }))));
 }
 // ---- cortina: segundo mapa sincronizado debajo del principal ----
 function mlEnsureB() {
@@ -196,13 +197,13 @@ function mlInit() {
   m.on("error", ev => { if (!ML.on && ev && ev.sourceId === undefined && !ev.tile) giveUp(); });
   m.on("load", () => {
     try {
-      mlSetup(m, "R"); mlInteract(m);
+      mlSetup(m, "R"); mlLiveSetup(m); mlInteract(m);
       ML.map = m; ML.on = true;
       box.style.visibility = "";
       mapEl.style.visibility = "hidden"; mapEl.style.pointerEvents = "none"; $("#lbls").style.display = "none";
       wrap.classList.add("ml");
       new ResizeObserver(() => m.resize()).observe(box);
-      apply(S); requestDraw();
+      apply(S); requestDraw(); svcAnimate();
     } catch (e) { console.warn("MapLibre no disponible, se usa el motor propio:", e); ML.on = false; ML.map = null; mapEl.style.visibility = ""; mapEl.style.pointerEvents = ""; $("#lbls").style.display = ""; giveUp(); }
   });
 }

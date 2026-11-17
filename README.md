@@ -15,3 +15,15 @@ npm run build   # valida src/app.js y genera index.html (un solo archivo) a part
 ```
 
 `src/data.json` es el resultado del preprocesado (`scripts/prep.py`) de los archivos originales del proyecto. Los datos limpios descargables están en `datos/`.
+
+## Datos en vivo (GTFS-RT)
+
+El laboratorio puede mostrar los buses reales de TransMilenio, tomados del feed GTFS Realtime oficial, a través del puente de [`bridge/`](bridge/README.md). Cada posición GPS se acopla al tramo más cercano del grafo de la red troncal (a menos de 250 m).
+
+Estados de un bus:
+- **Retrasado:** 5 minutos o más de retraso.
+- **Lento:** menos de 10 km/h fuera de una estación.
+
+Si dos o más buses van lentos en el mismo tramo, el tramo se marca en ámbar.
+
+Sin puente, o si el feed falla, el laboratorio muestra la simulación. La pestaña **Rutas** permite elegir cualquiera de las 114 rutas, verla sobre el mapa con ondas en sus paradas y seguir uno de sus buses.
