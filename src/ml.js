@@ -45,6 +45,7 @@ function mlSetup(m, side) {
   m.addSource("live-buses", { type: "geojson", data: FC([]) });   // única fuente de buses: solo se actualiza con setData
   m.addLayer({ id: "ml-upl", type: "line", source: "s-upl", paint: { "line-color": "#7E8A90", "line-width": 1.1, "line-dasharray": [3, 2] } });
   m.addLayer({ id: "ml-heat", type: "line", source: "s-heat", layout: { "line-cap": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": .9 } });
+  m.addLayer({ id: "ml-edges-case", type: "line", source: "s-edges", filter: ["all", ["!=", ["get", "d"], 1], [">=", ["get", "w"], 3]], layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#2B3238", "line-width": ["+", ["get", "w"], 1.6], "line-opacity": ["*", 0.55, ["get", "o"]] } });
   m.addLayer({ id: "ml-edges", type: "line", source: "s-edges", filter: ["!=", ["get", "d"], 1], layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"] } });
   m.addLayer({ id: "ml-edges-dash", type: "line", source: "s-edges", filter: ["==", ["get", "d"], 1], paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"], "line-dasharray": [2, 1.2] } });
   m.addLayer({ id: "ml-corr-case", type: "line", source: "s-corr", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": ["+", ["get", "w"], 3.5], "line-opacity": ["coalesce", ["get", "o"], 1] } });
@@ -67,7 +68,7 @@ function mlData(side) {
   // red actual (estado leído de los trazos SVG que actualiza apply)
   const els = L ? EDGE_L : EDGE_EL, redOn = (L ? lyRedL : lyRed).style.display !== "none" || (L && S.layers.red);
   out.edges = !redOn ? [] : [...els].map(([k, el]) => {
-    const cl = el.classList; let c = el.style.stroke || "#6C757D", w = 2.2, o = el.style.strokeOpacity ? +el.style.strokeOpacity : .55, d = 0;
+    const cl = el.classList; let c = el.style.stroke || "#6C757D", w = cl.contains("by-tr") ? 3.4 : 2.2, o = el.style.strokeOpacity ? +el.style.strokeOpacity : .55, d = 0;
     if (cl.contains("crit")) { c = !L && cl.contains("ok") ? "#1E7F55" : "#D8101E"; w = L ? 6 : (numW(el.style.strokeWidth) || 6); o = 1; }
     if (cl.contains("bridge")) { c = "#E85D04"; w = 3.2; o = .95; d = 1; }
     if (cl.contains("iso")) { c = "#D8101E"; w = 2.8; o = .9; d = 0; }

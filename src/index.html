@@ -155,8 +155,9 @@
           <div class="when"><select id="rtDia" class="sel" aria-label="Día del viaje"><option value="ahora">Ahora</option><option value="lv">Lunes a viernes</option><option value="s">Sábado</option><option value="df">Domingo o festivo</option></select><input id="rtHora" class="sel" type="time" step="300" aria-label="Hora de salida"></div>
           <small class="note" id="whenTxt">Horarios oficiales de la Guía de viaje de TransMilenio (agosto 2026).</small></div>
         <div class="ac"><label for="failSel" class="fl" data-u="Estación cerrada (opcional)" data-d="Nodo retirado (opcional)"></label><div class="ac-box"><input id="failSel" class="sel ac-in" type="search" placeholder="Toca para ver las paradas de tu viaje" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
-          <label class="rng" for="rtPen"><span data-u="Caminata entre buses" data-d="Penalización por transbordo (supuesto)"></span> <b id="rtPenV">5 min</b></label>
-          <input type="range" id="rtPen" min="0" max="12" step="1" value="5">
+          <p class="rng user-only pen-fix">Caminata entre buses <b>≈ 5 min</b> <small>por cada cambio de bus (valor fijo)</small></p>
+          <label class="rng dev-only" for="rtPen"><span data-u="Caminata entre buses" data-d="Penalización por transbordo (supuesto)"></span> <b id="rtPenV">5 min</b></label>
+          <input type="range" id="rtPen" class="dev-only" min="0" max="12" step="1" value="5">
           <div class="row2"><button type="button" class="chip" id="rtClear">Quitar viaje</button><button type="button" class="chip" id="btnReset">Abrir estación cerrada</button></div>
           <div id="tripOut"></div>
         </section>

@@ -14,6 +14,15 @@ const ML = { on: false };   // motor WebGL (MapLibre + OpenFreeMap); se activa s
 // ---- modo de lectura: usuario (ciudadano) o desarrollador (técnico) ----
 let DEV = false; try { DEV = localStorage.getItem("tm-dev") === "1"; } catch (_) { }
 const TX = [
+  // concordancia (van antes de las reglas generales, que cambian el sustantivo pero no el artículo)
+  [/un solo nodo/g, "una sola estación"], [/El nodo/g, "La estación"], [/el nodo/g, "la estación"], [/del nodo/g, "de la estación"], [/al nodo/g, "a la estación"], [/un nodo/g, "una estación"], [/Un nodo/g, "Una estación"], [/este nodo/g, "esta estación"], [/ese nodo/g, "esa estación"],
+  [/Varios de esos nodos también son puntos de articulación/g, "Varias de esas estaciones también son críticas"], [/esos nodos/g, "esas estaciones"], [/estos nodos/g, "estas estaciones"],
+  [/Los nodos/g, "Las estaciones"], [/los nodos/g, "las estaciones"], [/los (\d+) nodos/g, "las $1 estaciones"], [/nodos del eje central atravesados/g, "estaciones del eje central atravesadas"],
+  [/La centralidad media/g, "El paso de rutas medio"], [/la centralidad media/g, "el paso de rutas medio"], [/la <strong>centralidad de intermediación<\/strong>/g, "el <strong>paso de rutas</strong>"], [/la centralidad de intermediación/g, "el paso de rutas"],
+  [/Los corredores periféricos/g, "Las conexiones directas entre barrios"], [/los corredores periféricos/g, "las conexiones directas entre barrios"], [/ningún corredor periférico/g, "ninguna conexión directa entre barrios"],
+  [/Los anillos periféricos dan resiliencia y la Av\. 68 da descongestión\. Juntos/g, "Las conexiones entre barrios dan resiliencia y la Av. 68 da descongestión. Juntas"],
+  [/Tres anillos que conectan portales/g, "Tres conexiones que unen portales"], [/el pico AM/g, "la hora pico de la mañana"],
+  [/los puentes caen/g, "los puntos críticos bajan"], [/(\d+) puentes\b/g, "$1 puntos críticos"],
   [/Los 5 corredores periféricos/g, "Las 5 conexiones directas entre barrios"], [/los 5 corredores periféricos/g, "las 5 conexiones directas entre barrios"],
   [/5 corredores periféricos/g, "5 conexiones directas entre barrios"], [/Corredores periféricos/g, "Conexiones directas entre barrios"],
   [/corredores periféricos/g, "conexiones directas entre barrios"], [/corredor periférico/g, "conexión directa entre barrios"],
@@ -230,7 +239,8 @@ function routeInfo(esc, o, d, avoid, when = TRIP_WHEN()) {
   ROUTE_CACHE.set(k, out); return out;
 }
 const ROUTE_PRESETS = [["Portal Usme", "Portal 20 de Julio"], ["Portal Suba", "Portal El Dorado - C. C Nuestro Bogotá"], ["Portal Tunal", "Calle 72 - Areandina"], ["Portal 80", "Portal El Dorado - C. C Nuestro Bogotá"], ["Terminal", "Portal Suba"], ["Alquería", "Calle 100 - Marketmedios"]].map(([a, b]) => [byName(a), byName(b)]);
-let TRANSFER_MIN = 5;   // supuesto ajustable: minutos por transbordo (espera + caminata)
+const TRANSFER_FIX = 5;   // modo usuario: valor fijo aproximado de caminata + espera por transbordo
+let TRANSFER_MIN = TRANSFER_FIX;   // modo desarrollador: supuesto ajustable con el deslizador
 const tripMin = r => bprRide(r.esc, r.path) + r.transfers * TRANSFER_MIN;   // tiempo en bus tramo a tramo con BPR estimado (según franja)
 /*FLEET*/
 /*HORARIOS_JS*/
@@ -508,21 +518,24 @@ const CHAINS = (() => {
   const cen = NODE.get(byName("Avenida Jiménez")).xy, dc = id => Math.hypot(NODE.get(id).xy[0] - cen[0], NODE.get(id).xy[1] - cen[1]);
   return out.filter(c => c.length >= 3).map(c => dc(c[0]) < dc(c[c.length - 1]) ? [...c].reverse() : c);   // orientadas: periferia → centro
 })();
-const TRONCAL_DEF = [["Portal Tunal", "B · A · H", "Autopista Norte, Caracas y Caracas Sur", "#1F5FAD"], ["Portal Usme", "H", "Caracas Sur (Usme)", "#F07F1D"], ["Portal Suba", "C", "Suba", "#E3A21A"],
-  ["Portal 80", "D", "Calle 80", "#7B3F98"], ["Bicentenario", "E", "NQS Central", "#8C5A2B"], ["San Mateo", "G · S", "NQS Sur y Soacha", "#0098C7"], ["Tibanica - Primavera", "F", "Américas", "#C2185B"],
-  ["Museo del Oro", "J", "Eje Ambiental", "#7E8F2A"], ["Portal El Dorado - C. C Nuestro Bogotá", "K", "Calle 26", "#5B4FBF"], ["Portal 20 de Julio", "L", "Carrera 10", "#0E8C84"]];
-const TRONCAL = CHAINS.map(c => { const d = TRONCAL_DEF.find(t => c.some(id => NODE.get(id).nombre === t[0])); return d ? { letra: d[1], nombre: d[2], color: d[3], ids: c } : { letra: "·", nombre: `${short(NODE.get(c[0]).nombre)} – ${short(NODE.get(c[c.length - 1]).nombre)}`, color: "#6C757D", ids: c }; });
-const EDGE_TR = new Map(); TRONCAL.forEach((t, i) => t.ids.forEach((id, j) => { if (j) EDGE_TR.set(ekey(t.ids[j - 1], id), i); }));
+// Troncales: bloques de color de la hoja "Estaciones" del Excel (scripts/troncales_excel.py → data.json "troncales").
+// La Caracas Sur (H) va en dos ramales, Tunal y Usme, que comparten el tronco Hortúa – Santa Lucía.
+const TRONCAL = D.troncales.map(t => ({ letra: t.letra, nombre: t.nombre, color: t.color, ids: t.ids, own: new Set(t.propias) }));
+// cada tramo de la matriz se pinta con la troncal que lo contiene (ambos extremos en sus estaciones y al menos uno propio);
+// los tramos entre dos troncales consecutivas en el Excel van con la segunda; el resto son conectores (sin color)
+const EDGE_TR = new Map();
+(() => { const num = id => +id.slice(1), ownOf = id => TRONCAL.findIndex(t => t.own.has(id));
+  D.red.aristas.forEach(([a, b]) => { const k = ekey(a, b);
+    let i = TRONCAL.findIndex(t => t.ids.includes(a) && t.ids.includes(b) && (t.own.has(a) || t.own.has(b)));
+    if (i < 0 && Math.abs(num(a) - num(b)) === 1) i = ownOf(num(a) > num(b) ? a : b);
+    if (i >= 0) EDGE_TR.set(k, i); }); })();
 const troncalesDe = id => TRONCAL.filter(t => t.ids.includes(id));
 // ---- filtro por troncal (pestaña "Troncal"): grupos = troncales actuales por letra + corredores nuevos del POT ----
-const TR_EXTRA = { F: ["E99", "E100"], K: ["E121", "E122"] };   // estaciones fuera de las cadenas de paradas_ordenadas
 const TR_GROUPS = (() => {
-  const by = new Map(), base = D.red.aristas.map(([a, b]) => [a, b]);
-  TRONCAL.forEach(t => { const key = t.letra === "·" ? "L" : t.letra; if (!by.has(key)) by.set(key, { key: "t:" + key, letra: key, nombre: "", color: "", ids: new Set(), extra: new Set() });
-    const g = by.get(key); t.ids.forEach(id => g.ids.add(id)); if (t.letra !== "·") { g.nombre = t.nombre; g.color = t.color; } });
-  const out = [...by.values()];
-  out.forEach(g => { (TR_EXTRA[g.letra.split(" ")[0]] || []).forEach(id => { g.ids.add(id); g.extra.add(id); });
-    g.edges = new Set(base.filter(([a, b]) => (g.ids.has(a) && g.ids.has(b)) || g.extra.has(a) || g.extra.has(b)).map(([a, b]) => ekey(a, b))); g.nuevo = false; });
+  const base = D.red.aristas;
+  const out = TRONCAL.map((t, i) => { const ids = new Set(t.ids);
+    return { key: "t:" + i, letra: t.letra, nombre: t.nombre, color: t.color, ids, nuevo: false,
+      edges: new Set(base.filter(([a, b]) => ids.has(a) && ids.has(b) || [...EDGE_TR].some(([k, j]) => j === i && k === ekey(a, b))).map(([a, b]) => ekey(a, b))) }; });
   D.corredores.forEach(c => out.push({ key: "c:" + c.id, corr: c.id, letra: SHORT[c.id], nombre: c.nombre, color: COLOR[c.id], ids: new Set(c.path), edges: new Set(), nuevo: true }));
   return out;
 })();
@@ -750,7 +763,8 @@ function apply(s = S) {
   const satM = s.colorMode === "sat";
   EDGE_EL.forEach((el, k) => { const t = EDGE_TR.get(k), x = satX(s.esc || 0, k, s.peak);
     if (satM && !el.classList.contains("crit")) { el.style.stroke = satColor(x); el.style.strokeOpacity = "1"; }
-    else { el.style.stroke = byTr && !satM && t !== undefined && !el.classList.contains("crit") ? TRONCAL[t].color : ""; el.style.strokeOpacity = byTr && t !== undefined ? ".8" : ""; }
+    else { el.style.stroke = byTr && !satM && t !== undefined && !el.classList.contains("crit") ? TRONCAL[t].color : ""; el.style.strokeOpacity = byTr && t !== undefined ? "1" : ""; }
+    el.classList.toggle("by-tr", byTr && !satM && t !== undefined);
     el.classList.toggle("sat-hot", x > SAT_ALERT && (satM || sim.on)); });
   $("#lgSat").hidden = !satM;
   if (sim.cmode !== s.colorMode) { sim.cmode = s.colorMode; sim.buses.forEach(b => busLook(b)); }
@@ -833,10 +847,10 @@ const avNew = D.estaciones.filter(e => e.corredor === "C6_Av68");
 const kmTot = D.corredores.reduce((s, c) => s + c.km_total, 0), kmNew = D.corredores.reduce((s, c) => s + c.km_nueva, 0), kmSh = D.corredores.reduce((s, c) => s + c.km_compartida, 0);
 const perUpl = [...new Set(perNew.map(e => e.upl))];
 const compName = c => { const has = n => c.some(id => NODE.get(id)?.nombre === n);
-  if (has("Banderas") && has("Alquería")) return "NQS Sur y troncal Américas";
-  if (has("Banderas")) return "troncal Américas"; if (has("Alquería")) return "NQS Sur y Soacha";
-  if (has("Portal Usme") && has("Portal Tunal")) return "Caracas Sur (Tunal y Usme)";
-  const p = c.map(id => NODE.get(id)).find(n => n.nombre.startsWith("Portal")); return p ? "rama de " + p.nombre : (c.length === 1 ? NODE.get(c[0]).nombre : "rama de " + NODE.get(c[0]).nombre); };
+  if (has("Banderas") && has("Alquería")) return "la NQS Sur y la troncal Américas";
+  if (has("Banderas")) return "la troncal Américas"; if (has("Alquería")) return "la NQS Sur y Soacha";
+  if (has("Portal Usme") && has("Portal Tunal")) return "la Caracas Sur (Tunal y Usme)";
+  const p = c.map(id => NODE.get(id)).find(n => n.nombre.startsWith("Portal")); return p ? "la rama de " + p.nombre : (c.length === 1 ? NODE.get(c[0]).nombre : "la rama de " + NODE.get(c[0]).nombre); };
 const isoTxt = gi => gi.comps.slice(1).map(c => `${compName(c)} (${c.length} estaciones)`).join(" y ");
 const allPts = [...D.red.nodos.map(n => [n.lon, n.lat]), ...D.corredores.flatMap(c => c.coords)];
 const ptsOf = ids => D.corredores.filter(c => ids.includes(c.id)).flatMap(c => c.coords);
@@ -862,7 +876,7 @@ function routeCompareHTML(rt, eb, compact) {
   return `<div class="big-row">${stat(`${sgn(tb - ta, fI)} min`, `de ${fI(ta)} a ${fI(tb)} min (${sgn((tb - ta) / ta * 100, fI)} %)`, tb < ta ? "good" : "")}${stat(`${f1(a.km)} → ${f1(b.km)} km`, "distancia recorrida", b.km < a.km ? "good" : "")}${stat(`${a.transfers} → ${b.transfers}`, "transbordos", b.transfers < a.transfers ? "good" : "")}${stat(`${a.eje.length} → ${b.eje.length}`, "nodos del eje central atravesados", b.eje.length < a.eje.length ? "good" : "")}</div>
     <div class="rt-cmp"><div><b class="rt-key a">Red actual</b><div class="route">${svc(a)}</div><small>${a.path.length - 1} tramos · eje central: ${eje(a)}</small></div>
     <div><b class="rt-key b">${esc(E[eb].corto)}</b><div class="route">${svc(b)}</div><small>${b.path.length - 1} tramos · eje central: ${eje(b)}</small></div></div>
-    ${compact ? "" : ""}<p class="note">Ruta más corta en km (Dijkstra) sobre el grafo de cada escenario. Transbordos: cambios entre los 114 servicios de la hoja Rutas (cada corredor nuevo cuenta como un servicio). Tiempo: suma tramo a tramo de km ÷ velocidad BPR estimada (t = t0·(1 + 0,15·x⁴), x = V/C estimado del tramo para la franja elegida, calibrado con el tiempo medio oficial de cada escenario), más ${TRANSFER_MIN} min por transbordo (supuesto ajustable).</p>`;
+    ${compact ? "" : ""}<p class="note">Ruta más corta en km (Dijkstra) sobre el grafo de cada escenario. Transbordos: cambios entre los 114 servicios de la hoja Rutas (cada corredor nuevo cuenta como un servicio). Tiempo: suma tramo a tramo de km ÷ velocidad BPR estimada (t = t0·(1 + 0,15·x⁴), x = V/C estimado del tramo para la franja elegida, calibrado con el tiempo medio oficial de cada escenario), más ${TRANSFER_MIN} min por transbordo (${DEV ? "supuesto ajustable" : "valor aproximado"}).</p>`;
 }
 const CH = [
   { id: "inicio", cam: () => fit(allPts, { pitch: 44, rot: -12, pad: .86 }), st: { esc: 3, layers: { col: true } },
@@ -878,12 +892,12 @@ const CH = [
       <div class="big-row">${stat(fI(e0.puentes), "puentes topológicos (puntos únicos de falla)", "warn")}${stat(f1(e0.tiempo) + " min", "tiempo medio de viaje con congestión")}</div>` },
   { id: "ricaurte", cam: () => fit([...G[0].iso, RIC].map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: 52, rot: -25, pad: .8 }), st: { esc: 0, fail: RIC, layers: { col: false } },
     html: `<div class="eyebrow"><b>2</b> El punto crítico</div><h2>Ricaurte, el nodo que parte la ciudad</h2>
-      <p>Ricaurte cruza la NQS con la Calle 13 y la troncal Américas. En el grafo es un punto de articulación: si lo retiramos, la red se divide en ${G[0].comps.length} pedazos y quedan aisladas la ${isoTxt(G[0])}.</p>
+      <p>Ricaurte cruza la NQS con la Calle 13 y la troncal Américas. En el grafo es un punto de articulación: si se retira, la red se divide en ${G[0].comps.length} pedazos y quedan aisladas ${isoTxt(G[0])}.</p>
       <p>El modelo estima que una falla en Ricaurte desconecta el <strong>${f1(e0.vulnerabilidad)} %</strong> de la demanda de la hora pico. Además, por el tramo vecino Paloquemao–Ricaurte pasan <strong>${fI(e0.carga)} pasajeros</strong> entre las 6:00 y las 9:00 a. m. Es la columna roja del mapa.</p>
       <div class="big-row">${stat(f1(e0.vulnerabilidad) + " %", "de la demanda queda desconectada si falla Ricaurte", "crit")}${stat(fI(e0.carga), "pasajeros en Paloquemao–Ricaurte, pico AM", "crit")}</div>` },
   { id: "eje", cam: () => fit(TOP10.concat(EJE).map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: 56, rot: -18, pad: .62 }), st: { esc: 0, layers: { col: false, cent: true } },
     html: `<div class="eyebrow"><b>3</b> El eje central de transbordos</div><h2>No es solo Ricaurte: todo el centro hace de embudo</h2>
-      <p>En una red radial casi todos los viajes entre dos puntos de la ciudad pasan por el mismo eje. Para medirlo usamos la <strong>centralidad de intermediación</strong>: el porcentaje de los caminos más cortos (en km) entre todos los pares de estaciones que atraviesan cada una. Las columnas oscuras del mapa la muestran.</p>
+      <p>En una red radial casi todos los viajes entre dos puntos de la ciudad pasan por el mismo eje. Para medirlo usamos la <strong>centralidad de intermediación</strong>: el porcentaje de los caminos más cortos (en km) entre todos los pares de estaciones que atraviesan cada una. Las columnas oscuras del mapa muestran ese porcentaje.</p>
       ${centRows(TOP10.slice(0, 5).concat([byName(JIM)]), 0)}
       <p>El embudo es la NQS central (Ricaurte, Paloquemao, CAD, Av. El Dorado, NQS Calle 75) más la Caracas Centro: Av. Jiménez (${cN(0, JIM)}), Hortúa (${cN(0, "Hortúa")}) y Nariño (${cN(0, "Nariño")}). La centralidad media de los 10 nodos del eje es ${pctC(ejeMean(0))}.</p>
       <p>Varios de esos nodos también son puntos de articulación. Si cae Av. Jiménez quedan aisladas ${isoN(0, JIM)} estaciones; si cae Av. El Dorado, ${isoN(0, ELD)}; si cae NQS Calle 75, ${isoN(0, N75)}. Puedes probar cualquier estación en el laboratorio.</p>
@@ -895,7 +909,7 @@ const CH = [
       <p class="note">C3 rodea los Cerros de Suba y la Reserva Thomas van der Hammen por la Calle 153 y la Av. Boyacá, en vez de atravesarlos.</p>` },
   { id: "sur", cam: () => fit(ptsOf(["C4", "C5"]), { pitch: 50, rot: 15, pad: .8 }), st: { esc: 1, only: PERIF, stagger: true, layers: { col: false } },
     html: `<div class="eyebrow"><b>5</b> Corredores periféricos · sur</div><h2>Usme y Tunal ganan una segunda salida</h2>
-      <p>En el sur, dos corredores llevan Usme y Tunal hacia la troncal Av. Carrera 10 (Portal 20 de Julio). Juntos forman una malla que duplica las rutas de salida de esas localidades.</p>
+      <p>En el sur, dos corredores conectan Usme y Tunal con la troncal Av. Carrera 10 (Portal 20 de Julio). Juntos forman una malla que duplica las rutas de salida de esas localidades.</p>
       ${ejesHTML(["C4", "C5"])}
       <p>Los 5 corredores suman <strong>${f2(sum(PERIF, id => CORR[id].km_total))} km</strong>: ${f2(sum(PERIF, id => CORR[id].km_nueva))} km de obra nueva y ${f2(sum(PERIF, id => CORR[id].km_compartida))} km sobre carriles exclusivos existentes.</p>` },
   { id: "estaciones", cam: () => fit([...perNew.map(e => [e.lon, e.lat]), ...D.estaciones.filter(e => e.estado !== "Aprobada_Nueva").map(e => [e.lon, e.lat])], { pitch: 55, rot: -8, pad: .85 }), st: { esc: 1, layers: { col: true } },
@@ -910,11 +924,11 @@ const CH = [
       <p>Pero los viajes de la mañana van de la periferia al centro expandido. Los corredores captan ${fI(e1.viajes - e0.viajes)} viajes más, y muchos terminan entrando por el mismo tronco. La carga en Paloquemao–Ricaurte <strong>sube a ${fI(e1.carga)} pasajeros (${sgn(e1.alivio)} %)</strong>.</p>
       <div class="big-row">${stat(`${e0.puentes} → ${e1.puentes}`, "puentes topológicos", "good")}${stat(`${f1(e0.vulnerabilidad)} → ${f1(e1.vulnerabilidad)} %`, "vulnerabilidad Ricaurte", "good")}${stat(sgn(e1.alivio) + " %", `carga Paloquemao–Ricaurte (${fI(e1.carga)} pax)`, "crit")}${stat(`${f1(e0.tiempo)} → ${f1(e1.tiempo)} min`, "tiempo medio con congestión", "good")}</div>
       <p>En el eje central el alivio es pequeño: la centralidad de Ricaurte pasa de ${cN(0, "Ricaurte")} a ${cN(1, "Ricaurte")} y la media del eje de ${pctC(ejeMean(0))} a ${pctC(ejeMean(1))}. Lo que sí cambia es la robustez: si cae Av. Jiménez ya no se aísla ninguna estación (antes eran ${isoN(0, JIM)}), porque C4 y C5 conectan el sur con la Av. Carrera 10.</p>
-      <p class="note">Con Ricaurte fuera de servicio sigue aislada la ${isoTxt(G[1])}: ningún corredor periférico la toca.</p>` },
+      <p class="note">Con Ricaurte fuera de servicio sigue aislada ${isoTxt(G[1])}: ningún corredor periférico la toca.</p>` },
   { id: "av68", cam: () => fit(ptsOf(["C6_Av68"]), { pitch: 54, rot: -30, pad: .78 }), st: { esc: 2, stagger: true, layers: { col: false, cent: true } },
     html: `<div class="eyebrow"><b>8</b> Escenario 2 · bypass transversal</div><h2>La Av. Carrera 68 descarga el tronco central</h2>
       ${ejesHTML(["C6_Av68"])}
-      <p>${f2(CORR.C6_Av68.km_total)} km (${f2(CORR.C6_Av68.km_nueva)} de obra nueva) y ${avNew.length} estaciones nuevas, ${avNew.filter(e => e.metro).length} de ellas integradas con el Metro. Corre en paralelo a la NQS y la Caracas y cruza las troncales Américas, Calle 26, Calle 80 y Suba, así que los viajes radiales tienen otra ruta hacia el norte.</p>
+      <p>${f2(CORR.C6_Av68.km_total)} km (${f2(CORR.C6_Av68.km_nueva)} de obra nueva) y ${avNew.length} estaciones nuevas, ${avNew.filter(e => e.metro).length} de ellas integradas con el Metro. Corre en paralelo a la NQS y a la Caracas y cruza las troncales Américas, Calle 26, Calle 80 y Suba, así que los viajes radiales tienen otra ruta hacia el norte.</p>
       <div class="big-row">${stat(sgn(e2.alivio) + " %", `carga Paloquemao–Ricaurte (${fI(e2.carga)} pax)`, "good")}${stat(f1(e2.vulnerabilidad) + " %", "vulnerabilidad Ricaurte", "good")}${stat(`${cN(0, N75)} → ${cN(2, N75)}`, `centralidad NQS Calle 75 (${dPct(CENT[0].get(byName(N75)), CENT[2].get(byName(N75)))})`, "good")}${stat(`${cN(0, "Ricaurte")} → ${cN(2, "Ricaurte")}`, "centralidad Ricaurte", "good")}</div>
       <p>Es la intervención que más descarga la NQS central: la media del eje baja de ${pctC(ejeMean(0))} a ${pctC(ejeMean(2))}. Pero no protege el sur: si cae Av. Jiménez siguen quedando aisladas ${isoN(2, JIM)} estaciones.</p>
       <div class="why">${avAreas.map(([u, o]) => `<div><span class="num">${o.n}</span><span>UPL ${esc(u)}<small>${esc(o.a)}</small></span></div>`).join("")}</div>
@@ -1670,6 +1684,7 @@ function renderTicker(s) {
 // ---- interruptor de modo y jornada ----
 function setDev(v) {
   DEV = v; try { localStorage.setItem("tm-dev", v ? "1" : "0"); } catch (_) { }
+  TRANSFER_MIN = v ? +$("#rtPen").value : TRANSFER_FIX;
   document.body.classList.toggle("dev", v);
   $("#mUser").setAttribute("aria-pressed", !v); $("#mDev").setAttribute("aria-pressed", v);
   applyModeTexts(); renderEscList(); renderStory();

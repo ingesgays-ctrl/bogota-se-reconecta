@@ -795,3 +795,8 @@ body.tr-filter #lyBus .bus.tr-off{display:none}
 .edge,.corrg,.mk{transition:opacity .25s}
 body.tr-filter .edge.tr-on{stroke-width:calc(5px / var(--k,1))!important}
 .franja-box .cong-parts{display:block;margin-top:2px;color:var(--muted);font-size:12px;line-height:1.4}
+/* troncales con el color del Excel: línea más gruesa y un borde oscuro fino para que el amarillo, el durazno y el cian se lean */
+.edge.by-tr{stroke-width:calc(3.4px / var(--k,1))}
+#lyRed{filter:drop-shadow(0 0 .5px rgba(30,35,40,.75)) drop-shadow(0 0 .5px rgba(30,35,40,.45))}
+.pen-fix{margin:6px 0 10px}
+.pen-fix small{color:var(--muted);font-weight:400}

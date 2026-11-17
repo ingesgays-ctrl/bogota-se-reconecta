@@ -82,3 +82,27 @@ Se suma al BPR del §6 en el tiempo de viaje del planeador y en la simulación d
 - **Recalibración:** v0 y K se volvieron a ajustar con los tres componentes para que el tiempo medio siga reproduciendo el oficial: 29,6 / 27,4 / 26,0 / 24,9 min frente a 30,1 / 26,9 / 26,4 / 24,6 (error medio 1,7 %; antes 1,8 %). La velocidad a flujo libre pasa de 25,6 a 28,5 km/h.
 - **Congestión del viaje medio en el pico:** red actual 5,0 min, de los cuales 1,9 min son semáforos; red completa 2,8 min. En la muestra del planeador (1.001 pares O-D, red actual), el pico da media 5,2 min, mediana 5,0 y percentil 90 de 9,4 min; la hora valle da 1,8 min.
 
+## 11. Troncales y colores del mapa
+Fuente: hoja `Estaciones` del Excel, color de relleno del nombre de cada estación (`scripts/troncales_excel.py` → `src/data.json`, clave `troncales`). Cada bloque de color es una troncal.
+
+| Troncal | Estaciones | Color |
+|---|---|---|
+| B Autopista Norte | E1–E17 | #92D050 |
+| A Caracas | E18–E25 | #6600FF |
+| H Caracas Sur · Tunal | E26–E37 | #FF9933 |
+| H Caracas Sur · Usme | E38–E41, con el tronco E26–E33 | #FF9933 |
+| C Suba | E42–E55 | #FFFF00 |
+| D Calle 80 | E56–E68 | #9933FF |
+| E NQS Central | E69–E82 | #F6C6AD |
+| G · S NQS Sur y Soacha | E83–E98 | #00B0F0 |
+| F Américas | E99–E117 | #FF0000 |
+| J Eje Ambiental | E118–E120 | #FF99FF |
+| K Calle 26 | E121–E133 | #F0AD76 |
+| L Carrera 10 | E134–E143 | #66FFFF |
+
+- Tunal y Usme tienen el mismo color en el Excel. En el visor se separan en dos ramales: comparten el tronco Hortúa – Santa Lucía y cada uno se puede filtrar por separado en la pestaña Troncal.
+- Un tramo toma el color de la troncal que contiene sus dos estaciones. Los tramos entre dos troncales consecutivas en el Excel van con la segunda. Los 16 conectores restantes van sin color (gris).
+- Para que el amarillo, el durazno y el cian se lean sobre el mapa claro, las líneas van con un borde oscuro fino; el color no se cambia.
+- Socorro sigue en el ramal Tunal, como en el orden del Excel y en la matriz oficial. El GTFS la ubica en el ramal Usme (ver §8).
+- Caminata entre buses: en modo usuario es un valor fijo de 5 min por transbordo; en modo desarrollador sigue siendo un supuesto ajustable de 0 a 12 min.
+
