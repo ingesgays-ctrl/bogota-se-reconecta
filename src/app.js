@@ -71,6 +71,11 @@ D.estaciones.forEach(e => {
   else NODE.get(e.existente).tr.push(e);
 });
 const ekey = (a, b) => a < b ? a + "|" + b : b + "|" + a;
+// geometría vial real de la red actual: public/data/tramos_viales_bogota.geojson (OSRM sobre OpenStreetMap, generado una vez)
+const ROAD = new Map(), ROAD_TIPO = new Map();
+((window.TRAMOS && window.TRAMOS.features) || []).forEach(f => { ROAD.set(f.properties.k, f.geometry.coordinates); ROAD_TIPO.set(f.properties.k, f.properties.tipo_tramo); });
+function roadLL(a, b) { const k = ekey(a, b), c = ROAD.get(k); if (!c || c.length < 3) return null; return k.split("|")[0] === a ? c : c.slice().reverse(); }
+function roadXY(a, b) { const c = roadLL(a, b); return c ? c.map(([lon, lat]) => P(lon, lat)) : null; }
 function buildGraph(corrIds) {
   const g = new Map(); const add = (a, b) => { if (!g.has(a)) g.set(a, new Set()); if (!g.has(b)) g.set(b, new Set()); if (a !== b) { g.get(a).add(b); g.get(b).add(a); } };
   D.red.nodos.forEach(n => g.set(n.id, new Set()));
@@ -337,8 +342,9 @@ function drawTiles(k, C) {
   for (const [key, img] of tilePool) if (!want.has(key)) { img.remove(); tilePool.delete(key); }
 }
 function nextProvider() { prov++; provErr = 0; provLoaded = 0; tilesEl.innerHTML = ""; tilePool.clear(); if (!PROVIDERS[prov]) onTilesFail(); else requestDraw(); }
-function onTilesOK() { const pv = PROVIDERS[prov]; $("#lyBase").style.display = "none"; tilesEl.className = "tiles " + pv.cls; $("#attrib").innerHTML = pv.attr; }
-function onTilesFail() { $("#lyBase").style.display = ""; $("#attrib").innerHTML = 'Mapa simplificado. Para ver las calles abre <a href="https://ingesgays-ctrl.github.io/bogota-se-reconecta/">la versión web completa</a>'; }
+const ROAD_ATTR = () => (window.TRAMOS ? ' · Trazado de troncales: OSRM sobre © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' : "");
+function onTilesOK() { const pv = PROVIDERS[prov]; $("#lyBase").style.display = "none"; tilesEl.className = "tiles " + pv.cls; $("#attrib").innerHTML = pv.attr + ROAD_ATTR(); }
+function onTilesFail() { $("#lyBase").style.display = ""; $("#attrib").innerHTML = 'Mapa simplificado. Para ver las calles abre <a href="https://ingesgays-ctrl.github.io/bogota-se-reconecta/">la versión web completa</a>' + ROAD_ATTR(); }
 
 function resize() { const r = mapEl.getBoundingClientRect(); W = r.width || 800; H = r.height || 600; requestDraw(); }
 new ResizeObserver(resize).observe(mapEl);
@@ -416,10 +422,10 @@ D.upl.forEach(u => {
   const p = svgEl("path", { d, class: "upl", "fill-rule": "evenodd" }, lyUpl);
   p.dataset.tip = `<b>UPL ${esc(u.nombre)}</b><small>Vocación ${esc(u.vocacion)} · ${fI(u.area_ha)} ha</small>`;
 });
-// red actual (aristas de la matriz de adyacencia)
+// red actual (aristas de la matriz de adyacencia), dibujadas sobre su trazado vial real si existe
 const EDGE_EL = new Map(), EDGE_L = new Map();
 D.red.aristas.forEach(([a, b]) => {
-  const k = ekey(a, b); const el = svgEl("path", { d: pathD([NODE.get(a).xy, NODE.get(b).xy]), class: "edge" + (k === ekey(CRIT_A, CRIT_B) ? " crit" : "") }, lyRed);
+  const k = ekey(a, b); const el = svgEl("path", { d: pathD(roadXY(a, b) || [NODE.get(a).xy, NODE.get(b).xy]), class: "edge" + (k === ekey(CRIT_A, CRIT_B) ? " crit" : "") + (ROAD_TIPO.get(k) === "conexion" ? " conn" : "") }, lyRed);
   EDGE_EL.set(k, el);
   EDGE_L.set(k, el.cloneNode(true)); lyRedL.appendChild(EDGE_L.get(k));
 });
@@ -473,7 +479,7 @@ function routePts(esc, P) { // usa la geometría real de los corredores cuando e
       const near = q => L.reduce((bi, p, j) => (Math.hypot(p[0] - q[0], p[1] - q[1]) < Math.hypot(L[bi][0] - q[0], L[bi][1] - q[1]) ? j : bi), 0);
       const ia = near(A), ib = near(B), seg = ia <= ib ? L.slice(ia, ib + 1) : L.slice(ib, ia + 1).reverse();
       pts.push(...seg);
-    }
+    } else { const r = roadXY(a, b); if (r) pts.push(...r.slice(1, -1)); }
     pts.push(NODE.get(b).xy);
   }
   return pts;
@@ -1598,5 +1604,5 @@ route();
 /*GTFSRT*/
 /*LIVE*/
 /*ML*/
-window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim, FLEET };
+window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim, FLEET, EDGE_TR, TRONCAL, ROAD };
 })();

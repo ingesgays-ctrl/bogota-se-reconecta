@@ -734,3 +734,4 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
 .franja-box ul{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}.franja-box small{color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.edge.sat-hot{animation:none;stroke-width:calc(5px / var(--k,1))}}
 .valle-box[hidden]{display:none!important}
+.edge.conn{stroke-dasharray:calc(5px / var(--k,1)) calc(4px / var(--k,1))}

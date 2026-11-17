@@ -27,3 +27,7 @@ Estados de un bus:
 Si dos o más buses van lentos en el mismo tramo, el tramo se marca en ámbar. Para la ruta elegida también se calcula cada cuánto pasa un bus, los huecos (más de 1,6 veces el intervalo medio), los buses pegados y el tiempo real del recorrido completo comparado con el modelo.
 
 Sin puente, o si el feed falla, el laboratorio muestra la simulación. La pestaña **Rutas** permite elegir cualquiera de las 114 rutas, verla sobre el mapa con ondas en sus paradas y seguir uno de sus buses.
+
+## Trazado vial de las troncales
+
+`public/data/tramos_viales_bogota.geojson` tiene cada uno de los 146 tramos de la red actual ajustado a las vías reales (OSRM sobre OpenStreetMap, © colaboradores de OpenStreetMap, ODbL). Se generó una sola vez; para regenerarlo: `node scripts/gen_tramos_osrm.mjs`. `npm run build` lo incrusta en `index.html`, y también queda publicado como archivo en GitHub Pages.

@@ -7,4 +7,6 @@ import os
 if os.path.exists(f"{src}/ml.js"): h=h.replace("/*ML*/",open(f"{src}/ml.js").read())
 for k,f in (("/*FLEET*/","services/fleetTelemetry.js"),("/*GTFSRT*/","gtfsrt.js"),("/*LIVE*/","live.js")):
     if os.path.exists(f"{src}/{f}"): h=h.replace(k,open(f"{src}/{f}").read())
+tr=f"{os.path.dirname(os.path.abspath(src))}/public/data/tramos_viales_bogota.geojson"
+if os.path.exists(tr): h=h.replace("/*TRAMOS*/null",open(tr).read().replace("</","<\\/"))
 open(out,"w").write(h); print(len(h))

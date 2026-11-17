@@ -61,7 +61,7 @@ function mlSetup(m, side) {
   m.getSource("s-upl").setData(FC(D.upl.map(u => ({ type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: u.rings } }))));
 }
 const HEAT_GEO = new Map();
-const heatGeo = k => { if (!HEAT_GEO.has(k)) { const [a, b] = k.split("|"), c = G[3].corrEdge.get(k); HEAT_GEO.set(k, c && !BASE_EDGES.has(k) ? routePts(3, [a, b]).map(unP) : [LL(a), LL(b)]); } return HEAT_GEO.get(k); };
+const heatGeo = k => { if (!HEAT_GEO.has(k)) { const [a, b] = k.split("|"), c = G[3].corrEdge.get(k); HEAT_GEO.set(k, c && !BASE_EDGES.has(k) ? routePts(3, [a, b]).map(unP) : (roadLL(a, b) || [LL(a), LL(b)])); } return HEAT_GEO.get(k); };
 function mlData(side) {
   const L = side === "L", out = {};
   // red actual (estado leído de los trazos SVG que actualiza apply)
@@ -72,9 +72,10 @@ function mlData(side) {
     if (cl.contains("bridge")) { c = "#E85D04"; w = 3.2; o = .95; d = 1; }
     if (cl.contains("iso")) { c = "#D8101E"; w = 2.8; o = .9; d = 0; }
     if (cl.contains("live-slow")) { c = "#F2A007"; w = 4.5; o = 1; d = 1; }
+    if (cl.contains("conn") && !cl.contains("crit") && !cl.contains("bridge")) d = 1;
     if (cl.contains("dead")) o = .12;
     const [a, b] = k.split("|");
-    return { type: "Feature", properties: { c, w, o, d }, geometry: { type: "LineString", coordinates: [LL(a), LL(b)] } };
+    return { type: "Feature", properties: { c, w, o, d }, geometry: { type: "LineString", coordinates: roadLL(a, b) || [LL(a), LL(b)] } };
   });
   out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], w: CORR_EL[c.id].ln.classList.contains("sel") ? 8 : 5.5, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "LineString", coordinates: c.coords } }));
   out.heat = L || lyHeat.style.display === "none" ? [] : [...HEAT_EL].filter(([, el]) => el.style.display !== "none" && el.style.stroke).map(([k, el]) => ({ type: "Feature", properties: { c: el.style.stroke, w: numW(el.style.strokeWidth) || 3 }, geometry: { type: "LineString", coordinates: heatGeo(k) } }));

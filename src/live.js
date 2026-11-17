@@ -313,7 +313,7 @@ function mlLiveSetup(m) {
 function mlSvcApply() {
   [ML.map, ML.mapB].forEach(m => { if (!m || !m.getSource("s-svc")) return; const geo = LIVE.sel && svcGeo(LIVE.sel);
     m.getSource("s-svc").setData({ type: "FeatureCollection", features: geo ? [{ type: "Feature", properties: { c: geo.color }, geometry: { type: "LineString", coordinates: geo.pts.map(unP) } }] : [] });
-    const hot = m === ML.map ? [...EDGE_EL].filter(([, el]) => el.classList.contains("sat-hot") && lyRed.style.display !== "none").map(([k]) => { const [a, b] = k.split("|"); return { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: [LL(a), LL(b)] } }; }) : [];
+    const hot = m === ML.map ? [...EDGE_EL].filter(([, el]) => el.classList.contains("sat-hot") && lyRed.style.display !== "none").map(([k]) => { const [a, b] = k.split("|"); return { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: roadLL(a, b) || [LL(a), LL(b)] } }; }) : [];
     if (m.getSource("s-sat")) m.getSource("s-sat").setData({ type: "FeatureCollection", features: hot }); ML.hot = hot.length; });
   svcAnimate();
 }
