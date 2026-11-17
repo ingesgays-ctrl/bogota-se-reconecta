@@ -831,3 +831,12 @@ body.night .fog{background:linear-gradient(to bottom,#12181C 0%,rgba(18,24,28,.8
 body.night .lbl span{color:var(--ink)}
 body.night .rt-case{stroke:#0E1418}
 body.night .corr-case{stroke:#0E1418}
+/* modo noche: fondo del mapa fuera de la base y avisos del planeador */
+body.night .map-wrap{background:#161D22}
+body.night .when-sum{background:#183326;color:#CDEBD9}
+body.night .when-sum.bad{background:#3A1E20;color:#F5C9CB}
+body.night .map{background:#161D22}
+body.night .franja-box,body.night .live-st{background:var(--soft);color:var(--ink)}
+body.night .thermo.b{background:#183326}
+body.night .badge.yes{background:#183326;color:#CDEBD9}
+body.night .focus-note{background:#3A3116;color:#F3E2B0}
