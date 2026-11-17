@@ -72,7 +72,8 @@ function svcGeo(cod) {   // camino en el grafo que une las paradas del servicio,
   const edges = new Set(); for (let i = 1; i < path.length; i++) edges.add(ekey(path[i - 1], path[i]));
   // color = troncal de DESTINO: la del último tramo troncal del recorrido
   let dest; for (let i = path.length - 1; i > 0 && dest === undefined; i--) dest = EDGE_TR.get(ekey(path[i - 1], path[i]));
-  const g = { sv, path, edges, color: dest !== undefined ? TRONCAL[dest].color : "#0B66E4", pts: routePts(0, path) };
+  // color oficial del Excel (hoja Rutas): el de la troncal de destino; si faltara, el de la última troncal del recorrido
+  const g = { sv, path, edges, color: sv.color || (dest !== undefined ? TRONCAL[dest].color : "#0B66E4"), pts: routePts(0, path) };
   SVC_GEO.set(cod, g); return g;
 }
 
@@ -279,7 +280,7 @@ function selectSvc(cod) {
   if (LIVE.sel) {
     const geo = svcGeo(LIVE.sel), d = "M" + geo.pts.map(p => p[0].toFixed(1) + " " + p[1].toFixed(1)).join("L");
     lySvc.style.setProperty("--svc", geo.color);
-    lySvc.innerHTML = `<path class="svc-glow" d="${d}"/><path class="svc-line" d="${d}"/><path class="svc-flow" d="${d}"/>`;
+    lySvc.innerHTML = `<path class="svc-glow" d="${d}"/><path class="svc-case" d="${d}"/><path class="svc-line" d="${d}"/><path class="svc-flow" d="${d}"/>`;
     geo.sv.stops.forEach((id, i) => {
       if (!SVC_STOP_LBL[i]) SVC_STOP_LBL[i] = addLbl([0, 0], "pulse svcstop", "<i></i><i></i>", null, 0);
       const o = SVC_STOP_LBL[i]; o.xy = NODE.get(id).xy; o.el.style.display = ""; o.el.style.setProperty("--svc", geo.color);
@@ -304,7 +305,7 @@ function svcFocus() {
   document.body.classList.toggle("svc-focus", on);
   MK.forEach((g, id) => g.classList.toggle("onsvc", !!on && stops.has(id)));
 }
-const FOCUS_KEEP = new Set(["ml-bldg", "ml-svc-glow", "ml-svc-line", "ml-svc-flow", "ml-bus", "ml-bus-ring", "ml-stations"]);
+const FOCUS_KEEP = new Set(["ml-bldg", "ml-svc-glow", "ml-svc-case", "ml-svc-line", "ml-svc-flow", "ml-bus", "ml-bus-ring", "ml-stations"]);
 function mlFocus() {
   [ML.map, ML.mapB].forEach(m => {
     if (!m || !m.getLayer("ml-svc-line")) return;
@@ -326,6 +327,7 @@ function mlLiveSetup(m) {
   m.addSource("s-sat", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
   m.addLayer({ id: "ml-sat-pulse", type: "line", source: "s-sat", layout: { "line-cap": "round" }, paint: { "line-color": "#D8101E", "line-width": 9, "line-opacity": .35, "line-blur": 2 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-glow", type: "line", source: "s-svc", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": 16, "line-opacity": .22, "line-blur": 4 } }, "ml-stations");
+  m.addLayer({ id: "ml-svc-case", type: "line", source: "s-svc", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#172026", "line-width": 8, "line-opacity": .55 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-line", type: "line", source: "s-svc", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": 5 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-flow", type: "line", source: "s-svc", layout: { "line-cap": "butt", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": 2.4, "line-dasharray": [0, 4, 3] } }, "ml-stations");
   m.addLayer({ id: "ml-bus-ring", type: "circle", source: "live-buses", filter: ["==", ["get", "sv"], 1], paint: { "circle-radius": 8, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "c"], "circle-stroke-width": 2.5, "circle-stroke-opacity": .9, "circle-pitch-alignment": "map" } }, "ml-bus");
@@ -361,7 +363,8 @@ function svcAnimate() {
 // ---------- panel "Rutas" ----------
 const SVC_LIST = D.servicios.map(sv => ({ sv, txt: norm(`${sv.cod} ${sv.nombre} ${NODE.get(sv.stops[0]).nombre} ${NODE.get(sv.stops[sv.stops.length - 1]).nombre}`) }));
 const svcLine = sv => `${short(NODE.get(sv.stops[0]).nombre)} → ${short(NODE.get(sv.stops[sv.stops.length - 1]).nombre)}`;
-function svcChip(cod) { const g = svcGeo(cod); return `<span class="svc-chip" style="--c:${g ? g.color : "#6C757D"}">${esc(cod)}</span>`; }
+const inkOn = hex => { const n = parseInt(hex.slice(1), 16), r = n >> 16, g = n >> 8 & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 165 ? "#172026" : "#fff"; };
+function svcChip(cod) { const g = svcGeo(cod), c = g ? g.color : "#6C757D"; return `<span class="svc-chip" style="--c:${c};color:${inkOn(c)}">${esc(cod)}</span>`; }
 (() => {
   const inp = $("#svcSearch"), list = $("#svcList"); let act = -1, items = [];
   const show = () => {

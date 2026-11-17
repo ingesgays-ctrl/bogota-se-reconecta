@@ -691,6 +691,9 @@ function apply(s = S) {
   setColH(loadCol, loadH(e.carga));
   loadLbl.el.innerHTML = loadHTML(e);
   ricLbl.el.querySelector("span").textContent = s.fail === RIC ? "Ricaurte · fuera de servicio" : "Ricaurte";
+  // capa "Columna de pasajeros en Ricaurte": controla la columna, la tarjeta de pasajeros y la etiqueta de Ricaurte
+  menuSumUpd();
+  { const on = !s.layers || s.layers.load !== false; loadCol.el.style.display = on ? "" : "none"; loadLbl.el.style.display = on && is3D() ? "" : "none"; ricLbl.el.style.display = on || s.fail === RIC ? "" : "none"; }
   if (s.fail && s.fail !== RIC) { failLbl.xy = NODE.get(s.fail).xy; failLbl.el.querySelector("span").textContent = NODE.get(s.fail).nombre + " · fuera de servicio"; failLbl.el.style.display = ""; }
   else failLbl.el.style.display = "none";
   $("#lgCent").hidden = !s.layers.cent;
@@ -1523,7 +1526,41 @@ $("#panelDock").addEventListener("click", ev => { const b = ev.target.closest("[
 $("#rtSwap").onclick = () => { [rtSel.o, rtSel.d] = [rtSel.d, rtSel.o]; acO.set(rtSel.o); acD.set(rtSel.d); if (rtSel.o && rtSel.d) setRoute([rtSel.o, rtSel.d]); };
 // ---- capas, convenciones, color ----
 $("#btnLayers").onclick = ev => { ev.stopPropagation(); const p = $("#layersPanel"); p.hidden = !p.hidden; $("#btnLayers").setAttribute("aria-expanded", !p.hidden); };
-document.addEventListener("click", ev => { if (!ev.target.closest(".dd")) { $("#layersPanel").hidden = true; $("#btnLayers").setAttribute("aria-expanded", "false"); } });
+document.addEventListener("click", ev => { if (!ev.target.closest(".dd") && !ev.target.closest("#hudMenu")) { $("#layersPanel").hidden = true; $("#btnLayers").setAttribute("aria-expanded", "false"); } });
+// ---- Menú del laboratorio: escenario, franja, búsqueda, color, capas, convenciones y simulación en un solo lugar ----
+(() => {
+  const top = $("#hudTop"), menu = document.createElement("div"), bar = document.createElement("div");
+  menu.id = "hudMenu"; menu.className = "hud-menu"; menu.hidden = true; menu.setAttribute("role", "dialog"); menu.setAttribute("aria-label", "Menú del laboratorio");
+  bar.className = "hud-bar";
+  bar.innerHTML = '<button type="button" class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="hudMenu"><span aria-hidden="true">☰</span> Menú</button><button type="button" class="menu-sum" id="menuSum" title="Abrir el menú"></button>';
+  const sec = (t, ...els) => { const s = document.createElement("section"); s.innerHTML = `<h4>${t}</h4>`; const box = document.createElement("div"); box.className = "msec"; els.forEach(e => e && box.appendChild(e)); s.appendChild(box); menu.appendChild(s); };
+  sec("Escenario", $("#escList"), $("#escCap"));
+  sec("Franja horaria", $(".peak"), $("#valleBox"));
+  sec("Buscar estación", $(".ac-top"));
+  sec("Color del mapa", $(".cmode"));
+  const lp = $("#layersPanel"); lp.hidden = false; lp.classList.add("in-menu"); $("#btnLayers").hidden = true; sec("Capas", lp);
+  sec("Simulación", $("#simPlay"), $("#spdBox"), $("#liveBadge"));
+  sec("Leyenda", $("#btnConv"));
+  // lo que quede en las filas viejas (botones que el código sigue usando) se guarda oculto, no se borra
+  const keep = document.createElement("div"); keep.hidden = true; top.querySelectorAll(".hud-row [id]").forEach(e => keep.appendChild(e)); menu.appendChild(keep);
+  [...top.querySelectorAll(".hud-row")].forEach(r => r.remove());
+  top.prepend(menu); top.prepend(bar);
+  const open = on => { menu.hidden = !on; $("#menuBtn").setAttribute("aria-expanded", on); if (on) { const q = $("#qSearch"); } requestDraw(); };
+  $("#menuBtn").onclick = ev => { ev.stopPropagation(); open(menu.hidden); };
+  $("#menuSum").onclick = ev => { ev.stopPropagation(); open(true); };
+  const pin = new URLSearchParams(location.search).get("menu") === "fijo";   // ?menu=fijo: menú siempre abierto (presentaciones / pruebas)
+  if (pin) open(true);
+  $("#simPlay").addEventListener("click", () => setTimeout(menuSumUpd, 0));
+  document.addEventListener("click", ev => { if (pin || menu.hidden) return; const path = ev.composedPath();   // la ruta del evento se fija al despachar: sirve aunque el botón se redibuje
+    if (!path.some(n => n === menu || (n.classList && (n.classList.contains("hud-bar") || n.classList.contains("ac-list"))))) open(false); });
+  document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !menu.hidden && !pin) { open(false); $("#menuBtn").focus(); } });
+  // al elegir una estación en la búsqueda, el menú se cierra para ver el mapa
+  $("#qSearch").addEventListener("keydown", ev => { if (ev.key === "Enter" && !pin) setTimeout(() => open(false), 50); });
+})();
+function menuSumUpd() {
+  const el = document.getElementById("menuSum"); if (!el) return;
+  el.innerHTML = `<b>${lab.esc}</b> ${esc(escName(lab.esc))} · ${esc(FRANJAS[lab.peak].u)}${sim.on ? ' · <span class="ms-sim">● simulando</span>' : ""}`;
+}
 $("#btnConv").onclick = () => { const on = $("#btnConv").getAttribute("aria-pressed") !== "true"; $("#btnConv").setAttribute("aria-pressed", on); $("#mapWrap").classList.toggle("conv", on); };
 $("#lgTroncal").innerHTML = TRONCAL.filter(t => t.letra !== "·").map(t => `<span><i class="lg-t" style="background:${t.color}"></i>${esc(t.letra)} ${esc(t.nombre)}</span>`).join("");
 $("#colorMode").onchange = ev => { lab.colorMode = ev.target.value; lab.layers.heat = ev.target.value === "uso"; $("#lyHeatT").checked = lab.layers.heat; apply(labState()); };
