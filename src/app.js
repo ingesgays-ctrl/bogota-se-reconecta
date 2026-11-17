@@ -930,14 +930,14 @@ $("#escList").addEventListener("click", ev => { const b = ev.target.closest(".es
 $("#failQuick").innerHTML = QUICK.map(id => `<button type="button" class="chip" data-fail="${id}" aria-pressed="false">${esc(NODE.get(id).nombre.replace(" - Centro Colombo Americano", ""))}</button>`).join("");
 const norm = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const ALL_SORTED = [...NODE.values()].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
-function makeAC(input, { onPick, oldOnly = false, onClear }) {
+function makeAC(input, { onPick, oldOnly = false, onClear, poolFn, subFn, emptyMsg }) {
   const list = input.parentElement.querySelector(".ac-list"); let items = [], act = -1;
-  const pool = () => ALL_SORTED.filter(n => !oldOnly || n.kind === "old");
+  const pool = () => poolFn ? poolFn() : ALL_SORTED.filter(n => !oldOnly || n.kind === "old");
   const show = () => {
     const q = norm(input.value.trim());
     const rank = n => { const t = norm(n.nombre); return (t.startsWith(q) ? 0 : t.split(/[\s\-()]+/).some(w => w.startsWith(q.split(" ")[0])) && t.includes(q) ? 1 : 2) * 10 + (n.kind === "new" ? 1 : 0); };
     items = (q ? pool().filter(n => norm(n.nombre).includes(q)).sort((a, b) => rank(a) - rank(b) || a.nombre.length - b.nombre.length) : pool()).slice(0, q ? 12 : 250); act = items.length ? 0 : -1;
-    list.innerHTML = items.length ? items.map((n, i) => `<li role="option" data-i="${i}" aria-selected="${i === act}">${esc(n.nombre)}<small>${n.kind === "new" ? "estación nueva · " + esc(SHORT[n.est.corredor]) : n.municipio === "Soacha" ? "Soacha" : "estación actual"}</small></li>`).join("") : '<li class="none">Sin resultados</li>';
+    list.innerHTML = items.length ? items.map((n, i) => `<li role="option" data-i="${i}" aria-selected="${i === act}">${esc(n.nombre)}<small>${subFn ? subFn(n) : n.kind === "new" ? "estación nueva · " + esc(SHORT[n.est.corredor]) : n.municipio === "Soacha" ? "Soacha" : "estación actual"}</small></li>`).join("") : `<li class="none">${q || !emptyMsg ? "Sin resultados" : emptyMsg()}</li>`;
     list.hidden = false; input.setAttribute("aria-expanded", "true");
   };
   const hide = () => { list.hidden = true; input.setAttribute("aria-expanded", "false"); };
@@ -955,7 +955,14 @@ function makeAC(input, { onPick, oldOnly = false, onClear }) {
 }
 const acFail2 = makeAC($("#failSearch"), { onPick: id => { lab.fail = id; lab.sel = { type: "node", id }; apply(labState()); setTab("fail"); if (lab.view === "map") flyToFail(); } });
 const acSta = makeAC($("#staSearch"), { onPick: id => { const n = NODE.get(id); lab.sel = { type: "node", id }; if (n.kind === "new" && lab.esc === 0) lab.esc = 3; setTab("sta"); apply(labState()); if (lab.view !== "graph") flyTo({ ...cam, ...fit([[n.lon, n.lat]], { pitch: cam.pitch, rot: cam.rot }), z: 14.2 }, 1000); } });
-const acFail = makeAC($("#failSel"), { onPick: id => { lab.fail = id; if (!lab.route) lab.sel = { type: "node", id }; apply(labState()); if (lab.view === "map" && !lab.route) flyToFail(); }, onClear: () => { lab.fail = null; apply(labState()); } });
+// solo las paradas intermedias del viaje elegido (ruta de hoy y, si cambia, la del escenario), en orden de recorrido
+function tripStops() {
+  if (!lab.route) return [];
+  const [o, d] = lab.route, eb = lab.esc || 3, seen = new Set([o, d]), out = [];
+  [[0, "en tu ruta de hoy"], [eb, "en la ruta con " + escName(eb).toLowerCase()]].forEach(([e, why]) => { const r = routeInfo(e, o, d); if (r) r.path.forEach(id => { if (!seen.has(id)) { seen.add(id); out.push({ n: NODE.get(id), why, i: out.length + 1 }); } }); });
+  return out;
+}
+const acFail = makeAC($("#failSel"), { poolFn: () => tripStops().map(x => Object.assign(Object.create(x.n), { _why: x.why, _i: x.i })), subFn: n => `parada ${n._i} · ${n._why}`, emptyMsg: () => "Primero elige de dónde sales y a dónde vas", onPick: id => { lab.fail = id; if (!lab.route) lab.sel = { type: "node", id }; apply(labState()); if (lab.view === "map" && !lab.route) flyToFail(); }, onClear: () => { lab.fail = null; apply(labState()); } });
 const acSearch = makeAC($("#qSearch"), { onPick: id => { const n = NODE.get(id); lab.sel = { type: "node", id }; setTab("sta"); openPanel(); if (n.kind === "new" && lab.esc === 0) lab.esc = 3; apply(labState()); if (lab.view !== "graph") flyTo({ ...cam, ...fit([[n.lon, n.lat]], { pitch: cam.pitch, rot: cam.rot }), z: 14.2 }, 1000); } });
 $("#failQuick").addEventListener("click", ev => { const b = ev.target.closest("[data-fail]"); if (!b) return; const id = b.dataset.fail; lab.fail = lab.fail === id ? null : id; if (lab.fail) lab.sel = { type: "node", id }; apply(labState()); if (lab.fail && lab.view === "map") flyToFail(); });
 
