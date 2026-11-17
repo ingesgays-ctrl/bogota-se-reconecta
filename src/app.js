@@ -1470,12 +1470,18 @@ document.addEventListener("keydown", ev => {
 
 // ---- panel con pestañas ----
 const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"], live: ["#tbLive", "#paneLive"] };
-function setTab(t) { Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); }
+let curTab = "trip";
+function setTab(t) { curTab = t; Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); syncDock(); }
+function syncDock() { const open = !$("#lPanel").hidden; $$("#panelDock [data-dock]").forEach(b => b.setAttribute("aria-pressed", open && b.dataset.dock === curTab)); }
 Object.keys(TABS).forEach(k => $(TABS[k][0]).onclick = () => setTab(k));
-function openPanel() { $("#lPanel").hidden = false; $("#btnPanel").hidden = true; }
-$("#lpClose").onclick = () => { $("#lPanel").hidden = true; $("#btnPanel").hidden = false; };
+function openPanel() { $("#lPanel").hidden = false; syncDock(); }
+function closePanel() { $("#lPanel").hidden = true; syncDock(); }
+$("#lpClose").onclick = closePanel;
 $("#btnPanel").onclick = openPanel;
-if (matchMedia("(max-width: 820px)").matches) { $("#lPanel").hidden = true; $("#btnPanel").hidden = false; }
+// el panel arranca cerrado; se abre desde los botones bajo la barra 3D (tocar el activo lo cierra)
+$("#lPanel").hidden = true;
+$("#panelDock").addEventListener("click", ev => { const b = ev.target.closest("[data-dock]"); if (!b) return; const t = b.dataset.dock; if (!$("#lPanel").hidden && curTab === t) closePanel(); else { setTab(t); openPanel(); } });
+(() => { const bar = $(".cam-bar"), dock = $("#panelDock"); const place = () => { dock.style.top = (bar.offsetTop + bar.offsetHeight + 8) + "px"; }; new ResizeObserver(place).observe(bar); addEventListener("resize", place); place(); })();
 $("#rtSwap").onclick = () => { [rtSel.o, rtSel.d] = [rtSel.d, rtSel.o]; acO.set(rtSel.o); acD.set(rtSel.d); if (rtSel.o && rtSel.d) setRoute([rtSel.o, rtSel.d]); };
 // ---- capas, convenciones, color ----
 $("#btnLayers").onclick = ev => { ev.stopPropagation(); const p = $("#layersPanel"); p.hidden = !p.hidden; $("#btnLayers").setAttribute("aria-expanded", !p.hidden); };
