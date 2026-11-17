@@ -287,7 +287,8 @@ function draw() {
     o.el.style.transform = `translate(${X.toFixed(1)}px,${Y.toFixed(1)}px)`;
   }
   colsEl.style.opacity = is3D() ? 1 : 0;
-  loadLbl.el.style.display = is3D() ? "" : "none";
+  const loadOn = !S.layers || S.layers.load !== false;
+  loadLbl.el.style.display = is3D() && loadOn ? "" : "none"; loadCol.el.style.display = loadOn ? "" : "none";
   // cortina: recorte en coordenadas del mapa por proyección inversa de la línea de pantalla
   if (S.compare) {
     const Xc = curtain * W;
@@ -514,7 +515,8 @@ function inRing(x, y, r) { let c = false; for (let i = 0, j = r.length - 1; i < 
 const UPL_OF = new Map(); const uplOf = id => { if (!UPL_OF.has(id)) { const n = NODE.get(id); const u = D.upl.find(u => inRing(n.lon, n.lat, u.rings[0])); UPL_OF.set(id, u ? u.nombre : (n.municipio === "Soacha" ? "Soacha" : "—")); } return UPL_OF.get(id); };
 const EJE_XY = EJE.map(id => NODE.get(id).xy), EJE_R = 450 / MPP12;
 const sim = { on: false, t: 0, last: 0, esc: -1, buses: [], raf: 0 };
-const MIN_PER_SEC = 4;   // 1 segundo en pantalla = 4 minutos reales
+const MIN_PER_SEC = 4;   // 1 segundo en pantalla = 4 minutos reales (× SIM_SPEED)
+let SIM_SPEED = 1;
 function mkTrack(esc, P) {
   return mkTimedTrack(esc, P);
 }
@@ -553,7 +555,7 @@ function simBuild() {
 function simFrame(now) {
   if (!sim.on) return;
   if (LIVE.mode === "live") { liveFrame(now); sim.raf = requestAnimationFrame(simFrame); return; }
-  const dt = sim.last ? Math.min(.1, (now - sim.last) / 1000) : 0; sim.last = now; sim.t += dt * MIN_PER_SEC;
+  const dt = sim.last ? Math.min(.1, (now - sim.last) / 1000) : 0; sim.last = now; sim.t += dt * MIN_PER_SEC * SIM_SPEED;
   if (sim.esc !== S.esc || sim.peak !== S.peak) simBuild();
   const k = 2 ** (cam.z - Z0); let inEje = 0, odEje = 0, nOd = 0;
   const inGraph = lab.view === "graph" && cy && mode === "laboratorio";
@@ -640,7 +642,7 @@ mapEl.addEventListener("mouseleave", () => hideTip());
 /* =====================================================================
    5. ESTADO Y APLICACIÓN SOBRE EL MAPA
    ===================================================================== */
-const lab = { esc: 3, fail: null, failMode: false, bridges: false, layers: { red: true, per: true, av: true, est: true, col: false, upl: false, cent: false, heat: false, bus: true, base: true }, sel: null, view: "map", route: null, compare: false, peak: "am", colorMode: "corr" };
+const lab = { esc: 3, fail: null, failMode: false, bridges: false, layers: { load: true, red: true, per: true, av: true, est: true, col: false, upl: false, cent: false, heat: false, bus: true, base: true }, sel: null, view: "map", route: null, compare: false, peak: "am", colorMode: "corr" };
 let S = { ...lab, layers: { ...lab.layers }, only: null, stagger: false };
 let mode = "relato", presenting = false, collapsed = matchMedia("(max-width: 820px)").matches;
 
@@ -976,7 +978,7 @@ $("#failMode").onchange = ev => { lab.failMode = ev.target.checked; mapEl.classL
 $("#btnReset").onclick = () => { lab.fail = null; apply(labState()); };
 function flyToFail() { const F = failInfo(lab.esc, lab.fail); const ids = F && F.iso.size ? [...F.iso, lab.fail] : [lab.fail]; flyTo(fit(ids.map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: cam.pitch || 0, rot: cam.rot, pad: .75, dz: ids.length === 1 ? -1.2 : 0 }), 1100); }
 $("#tgBridges").onchange = ev => { lab.bridges = ev.target.checked; apply(labState()); };
-[["lyRedT", "red"], ["lyPerT", "per"], ["lyAvT", "av"], ["lyEstT", "est"], ["lyColT", "col"], ["lyCentT", "cent"], ["lyHeatT", "heat"], ["lyUplT", "upl"], ["lyBusT", "bus"], ["lyBaseT", "base"]].forEach(([id, k]) => $("#" + id).onchange = ev => { lab.layers[k] = ev.target.checked; apply(labState()); });
+[["lyLoadT", "load"], ["lyRedT", "red"], ["lyPerT", "per"], ["lyAvT", "av"], ["lyEstT", "est"], ["lyColT", "col"], ["lyCentT", "cent"], ["lyHeatT", "heat"], ["lyUplT", "upl"], ["lyBusT", "bus"], ["lyBaseT", "base"]].forEach(([id, k]) => $("#" + id).onchange = ev => { lab.layers[k] = ev.target.checked; apply(labState()); });
 $("#vMap").onclick = () => setView("map"); $("#vGraph").onclick = () => setView("graph"); $("#vCmp").onclick = () => setView("cmp");
 const OLD_SORTED = [...NODE.values()].filter(n => n.kind === "old").sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
 const rtSel = { o: null, d: null };

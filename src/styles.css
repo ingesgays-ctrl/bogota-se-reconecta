@@ -741,3 +741,13 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
 .hor{display:block;font-size:12px;color:var(--muted);margin-top:2px}.hor.warn{color:#9A6A00;font-weight:600}.hor.bad{color:#B0101A;font-weight:600}
 .steps li.nohora>div{opacity:.85}.steps li.nohora .sn{background:#D8101E}
 .when-sum{font-size:12.5px;background:#E9F5EE;border-radius:8px;padding:6px 10px;margin:8px 0}.when-sum.bad{background:#FDECEC}
+
+/* modo ruta: troncales apagadas, solo la ruta elegida */
+body.svc-focus.mode-laboratorio #lyRed,body.svc-focus.mode-laboratorio #lyRedL,body.svc-focus.mode-laboratorio #lyCorr,body.svc-focus.mode-laboratorio #lyCrit,body.svc-focus.mode-laboratorio #lyHeat,body.svc-focus.mode-laboratorio #lyRoute,body.svc-focus.mode-laboratorio #lyRadio{opacity:0;pointer-events:none;transition:opacity .3s}
+#lyRed,#lyCorr,#lyCrit{transition:opacity .3s}
+body.svc-focus.mode-laboratorio #lyMk .mk:not(.onsvc),body.svc-focus.mode-laboratorio #lyMkNew .mk:not(.onsvc){opacity:.08;pointer-events:none}
+body.svc-focus.mode-laboratorio #lyBus .bus:not(.svc){display:none}
+body.svc-focus.mode-laboratorio .col{opacity:0!important}
+body.svc-focus.mode-laboratorio .lbl:not(.pulse){display:none!important}
+.spd{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.08);pointer-events:auto}
+.spd[hidden]{display:none!important}.spd input{width:80px}.spd b{min-width:28px}

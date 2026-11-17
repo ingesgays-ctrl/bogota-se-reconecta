@@ -70,9 +70,9 @@ function svcGeo(cod) {   // camino en el grafo que une las paradas del servicio,
   const path = [sv.stops[0]];
   for (let i = 1; i < sv.stops.length; i++) { const r = shortest(0, sv.stops[i - 1], sv.stops[i]); if (r) path.push(...r.path.slice(1)); }
   const edges = new Set(); for (let i = 1; i < path.length; i++) edges.add(ekey(path[i - 1], path[i]));
-  const tr = [...edges].map(k => EDGE_TR.get(k)).filter(t => t !== undefined);
-  const mode2 = tr.length ? tr.sort((a, b) => tr.filter(x => x === b).length - tr.filter(x => x === a).length)[0] : undefined;
-  const g = { sv, path, edges, color: mode2 !== undefined ? TRONCAL[mode2].color : "#0B66E4", pts: routePts(0, path) };
+  // color = troncal de DESTINO: la del último tramo troncal del recorrido
+  let dest; for (let i = path.length - 1; i > 0 && dest === undefined; i--) dest = EDGE_TR.get(ekey(path[i - 1], path[i]));
+  const g = { sv, path, edges, color: dest !== undefined ? TRONCAL[dest].color : "#0B66E4", pts: routePts(0, path) };
   SVC_GEO.set(cod, g); return g;
 }
 
@@ -274,6 +274,7 @@ const lySvc = (() => { const g = svgEl("g", { id: "lySvc" }, lyMk.parentNode); l
 const SVC_STOP_LBL = [];
 function selectSvc(cod) {
   LIVE.sel = cod || null; lySvc.innerHTML = "";
+  svcFocus();
   SVC_STOP_LBL.forEach(o => o.el.style.display = "none");
   if (LIVE.sel) {
     const geo = svcGeo(LIVE.sel), d = "M" + geo.pts.map(p => p[0].toFixed(1) + " " + p[1].toFixed(1)).join("L");
@@ -289,13 +290,35 @@ function selectSvc(cod) {
   }
   if (LIVE.mode !== "live" && sim.on) { sim.esc = -1; simBuild(); } else liveSyncBuses();
   if (ML.on) { mlApply(); mlSvcApply(); }
-  svcAnimate(); renderLive(); requestDraw();
+  svcAnimate(); renderLive(); requestDraw(); spdSync();
 }
 function followSvc() {
   const b = sim.buses.find(x => x.svc && x.svc === LIVE.sel) || null;
   if (!b) return false;
   sim.focus = b; setFollow(true); return true;
 }
+
+// ---------- modo ruta: se apagan las troncales y solo queda la ruta elegida ----------
+function svcFocus() {
+  const on = !!LIVE.sel && mode === "laboratorio", stops = on ? new Set(svcGeo(LIVE.sel).sv.stops) : null;
+  document.body.classList.toggle("svc-focus", on);
+  MK.forEach((g, id) => g.classList.toggle("onsvc", !!on && stops.has(id)));
+}
+const FOCUS_KEEP = new Set(["ml-bldg", "ml-svc-glow", "ml-svc-line", "ml-svc-flow", "ml-bus", "ml-bus-ring", "ml-stations"]);
+function mlFocus() {
+  [ML.map, ML.mapB].forEach(m => {
+    if (!m || !m.getLayer("ml-svc-line")) return;
+    const on = document.body.classList.contains("svc-focus"), stops = on ? svcGeo(LIVE.sel).sv.stops : null;
+    if (on) m.getStyle().layers.forEach(l => { if (l.id.startsWith("ml-") && !FOCUS_KEEP.has(l.id)) m.setLayoutProperty(l.id, "visibility", "none"); });
+    m.setFilter("ml-stations", on ? ["in", ["get", "id"], ["literal", stops]] : null);
+    m.setFilter("ml-bus", on ? ["==", ["get", "sv"], 1] : null);
+  });
+}
+// ---------- velocidad de la simulación ----------
+const SPD = [.25, .5, 1, 2, 4, 8];
+function spdSync() { const b = $("#spdBox"); if (b) b.hidden = !sim.on; }
+$("#simSpd").addEventListener("input", ev => { SIM_SPEED = SPD[+ev.target.value]; $("#spdV").textContent = (SIM_SPEED < 1 ? String(SIM_SPEED).replace(".", ",") : SIM_SPEED) + "×"; });
+$("#simPlay").addEventListener("click", () => setTimeout(spdSync, 0));
 
 // ---------- capa WebGL (MapLibre) de la ruta elegida ----------
 function mlLiveSetup(m) {
@@ -315,7 +338,7 @@ function mlSvcApply() {
     m.getSource("s-svc").setData({ type: "FeatureCollection", features: geo ? [{ type: "Feature", properties: { c: geo.color }, geometry: { type: "LineString", coordinates: geo.pts.map(unP) } }] : [] });
     const hot = m === ML.map ? [...EDGE_EL].filter(([, el]) => el.classList.contains("sat-hot") && lyRed.style.display !== "none").map(([k]) => { const [a, b] = k.split("|"); return { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: roadLL(a, b) || [LL(a), LL(b)] } }; }) : [];
     if (m.getSource("s-sat")) m.getSource("s-sat").setData({ type: "FeatureCollection", features: hot }); ML.hot = hot.length; });
-  svcAnimate();
+  svcAnimate(); mlFocus();
 }
 const mlBusProps = b => ({ st: b.late || b.st === "retraso" ? 2 : b.slow || b.st === "congestionado" ? 1 : 0, sv: LIVE.sel && b.svc === LIVE.sel ? 1 : 0 });
 let svcRaf = 0;

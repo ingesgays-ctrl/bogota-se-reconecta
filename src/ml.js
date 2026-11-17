@@ -103,11 +103,12 @@ function mlData(side) {
   out.cols = [];
   const colOn = o => o.el.style.opacity !== "0" && o.el.style.visibility !== "hidden";
   const add = (xy, h, half, c) => out.cols.push({ type: "Feature", properties: { h, c }, geometry: { type: "Polygon", coordinates: square(unP(xy), half) } });
-  if (L) add(loadCol.xy, loadH(E[0].carga) * 55, 150, "#D8101E");
+  const loadOn = !S.layers || S.layers.load !== false;
+  if (L) { if (loadOn) add(loadCol.xy, loadH(E[0].carga) * 55, 150, "#D8101E"); }
   else COLS.forEach(o => {
     if (o.type !== "col" || !colOn(o) || !o.hv) return;
     const cl = o.el.classList;
-    if (cl.contains("load")) add(o.xy, o.hv * 55, 150, S.compare && S.esc > 0 ? "#1E7F55" : "#D8101E");
+    if (cl.contains("load")) { if (loadOn) add(o.xy, o.hv * 55, 150, S.compare && S.esc > 0 ? "#1E7F55" : "#D8101E");}
     else if (cl.contains("dens")) add(o.xy, o.hv * 45, 85, cl.contains("tr") ? "#2A9D8F" : "#F2C14E");
     else if (cl.contains("cent")) add(o.xy, o.hv * 45, 75, "#2B3A44");
     else if (cl.contains("heatcol")) add(o.xy, o.hv * 45, 60, (o.el.style.background.match(/rgb\([^)]+\)/) || ["#E9B949"])[0]);

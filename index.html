@@ -751,6 +751,16 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
 .hor{display:block;font-size:12px;color:var(--muted);margin-top:2px}.hor.warn{color:#9A6A00;font-weight:600}.hor.bad{color:#B0101A;font-weight:600}
 .steps li.nohora>div{opacity:.85}.steps li.nohora .sn{background:#D8101E}
 .when-sum{font-size:12.5px;background:#E9F5EE;border-radius:8px;padding:6px 10px;margin:8px 0}.when-sum.bad{background:#FDECEC}
+
+/* modo ruta: troncales apagadas, solo la ruta elegida */
+body.svc-focus.mode-laboratorio #lyRed,body.svc-focus.mode-laboratorio #lyRedL,body.svc-focus.mode-laboratorio #lyCorr,body.svc-focus.mode-laboratorio #lyCrit,body.svc-focus.mode-laboratorio #lyHeat,body.svc-focus.mode-laboratorio #lyRoute,body.svc-focus.mode-laboratorio #lyRadio{opacity:0;pointer-events:none;transition:opacity .3s}
+#lyRed,#lyCorr,#lyCrit{transition:opacity .3s}
+body.svc-focus.mode-laboratorio #lyMk .mk:not(.onsvc),body.svc-focus.mode-laboratorio #lyMkNew .mk:not(.onsvc){opacity:.08;pointer-events:none}
+body.svc-focus.mode-laboratorio #lyBus .bus:not(.svc){display:none}
+body.svc-focus.mode-laboratorio .col{opacity:0!important}
+body.svc-focus.mode-laboratorio .lbl:not(.pulse){display:none!important}
+.spd{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.08);pointer-events:auto}
+.spd[hidden]{display:none!important}.spd input{width:80px}.spd b{min-width:28px}
 </style>
 </head>
 <body class="mode-relato">
@@ -821,6 +831,7 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
           <label class="tg lay"><input type="checkbox" id="lyPerT" checked><span><b data-u="Conexiones directas entre barrios (5 tramos)" data-d="5 corredores periféricos (C1–C5)"></b><small data-u="Enlaces directos entre portales para viajar sin ir al centro." data-d="ⓘ Selección voraz de enlaces y Dijkstra sobre la malla arterial; 37,32 km."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyAvT" checked><span><b data-u="Corredor Av. Carrera 68" data-d="Bypass Av. Carrera 68 (C6)"></b><small data-u="Vía rápida transversal que desahoga los trancones del centro." data-d="ⓘ Escenario contrafactual; 22,38 km (16,54 de obra nueva)."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyEstT" checked><span><b data-u="Estaciones nuevas y transbordos" data-d="36 estaciones aprobadas + 11 transbordos"></b><small data-u="Puntos nuevos donde podrás subirte o cambiar de ruta." data-d="ⓘ Filtro POT (Decreto 555/2021): UPL, Áreas de Actividad, EEP ≤ 45 %, Metro ≤ 350 m."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyLoadT" checked><span><b data-u="Columna de pasajeros en Ricaurte" data-d="Columna de carga Paloquemao–Ricaurte"></b><small data-u="La barra roja con los pasajeros que cruzan el tramo Paloquemao–Ricaurte en hora pico." data-d="ⓘ Carga oficial del tramo crítico por escenario (pax, pico AM)."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyColT"><span><b data-u="Zonas con más actividad urbana" data-d="Columnas 3D de densidad POT"></b><small data-u="Barras 3D altas = zonas con más vivienda, comercio y empleo según el POT, que necesitan rutas cercanas." data-d="ⓘ Índice de densidad POT (0,52–0,95) según el Área de Actividad."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyCentT"><span><b data-u="Estaciones por donde pasan más rutas (Top 10)" data-d="Centralidad Top 10"></b><small data-u="Barras 3D altas = estaciones por donde pasa la mayoría de los viajes y que más frenan el sistema si fallan." data-d="ⓘ Intermediación de Brandes ponderada por km."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyHeatT"><span><b data-u="Tramos más usados (mapa de calor)" data-d="Mapa de calor: intermediación de aristas"></b><small data-u="Rojo y alto = tramos por donde pasan más rutas; verde = tramos con holgura." data-d="ⓘ Edge betweenness ponderado por km; relieve 3D en los 20 tramos más usados."></small></span></label>
@@ -828,7 +839,7 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
             </div>
           </div>
           <button type="button" class="hud-btn" id="btnConv" aria-pressed="false">Convenciones</button>
-          <button type="button" class="sim-btn" id="simPlay" aria-pressed="false"><span aria-hidden="true">▶</span> Simular operación</button>
+          <button type="button" class="sim-btn" id="simPlay" aria-pressed="false"><span aria-hidden="true">▶</span> Simular operación</button><label class="spd" id="spdBox" hidden title="Velocidad de la simulación">Velocidad <input id="simSpd" type="range" min="0" max="5" step="1" value="2" aria-label="Velocidad de la simulación"><b id="spdV">1×</b></label>
           <span class="live" id="liveBadge" hidden><i></i>EN VIVO · simulación</span>
           <button type="button" class="hud-btn" id="btnPanel" hidden>Abrir panel</button>
         </div>
@@ -1441,7 +1452,8 @@ function draw() {
     o.el.style.transform = `translate(${X.toFixed(1)}px,${Y.toFixed(1)}px)`;
   }
   colsEl.style.opacity = is3D() ? 1 : 0;
-  loadLbl.el.style.display = is3D() ? "" : "none";
+  const loadOn = !S.layers || S.layers.load !== false;
+  loadLbl.el.style.display = is3D() && loadOn ? "" : "none"; loadCol.el.style.display = loadOn ? "" : "none";
   // cortina: recorte en coordenadas del mapa por proyección inversa de la línea de pantalla
   if (S.compare) {
     const Xc = curtain * W;
@@ -1668,7 +1680,8 @@ function inRing(x, y, r) { let c = false; for (let i = 0, j = r.length - 1; i < 
 const UPL_OF = new Map(); const uplOf = id => { if (!UPL_OF.has(id)) { const n = NODE.get(id); const u = D.upl.find(u => inRing(n.lon, n.lat, u.rings[0])); UPL_OF.set(id, u ? u.nombre : (n.municipio === "Soacha" ? "Soacha" : "—")); } return UPL_OF.get(id); };
 const EJE_XY = EJE.map(id => NODE.get(id).xy), EJE_R = 450 / MPP12;
 const sim = { on: false, t: 0, last: 0, esc: -1, buses: [], raf: 0 };
-const MIN_PER_SEC = 4;   // 1 segundo en pantalla = 4 minutos reales
+const MIN_PER_SEC = 4;   // 1 segundo en pantalla = 4 minutos reales (× SIM_SPEED)
+let SIM_SPEED = 1;
 function mkTrack(esc, P) {
   return mkTimedTrack(esc, P);
 }
@@ -1707,7 +1720,7 @@ function simBuild() {
 function simFrame(now) {
   if (!sim.on) return;
   if (LIVE.mode === "live") { liveFrame(now); sim.raf = requestAnimationFrame(simFrame); return; }
-  const dt = sim.last ? Math.min(.1, (now - sim.last) / 1000) : 0; sim.last = now; sim.t += dt * MIN_PER_SEC;
+  const dt = sim.last ? Math.min(.1, (now - sim.last) / 1000) : 0; sim.last = now; sim.t += dt * MIN_PER_SEC * SIM_SPEED;
   if (sim.esc !== S.esc || sim.peak !== S.peak) simBuild();
   const k = 2 ** (cam.z - Z0); let inEje = 0, odEje = 0, nOd = 0;
   const inGraph = lab.view === "graph" && cy && mode === "laboratorio";
@@ -1794,7 +1807,7 @@ mapEl.addEventListener("mouseleave", () => hideTip());
 /* =====================================================================
    5. ESTADO Y APLICACIÓN SOBRE EL MAPA
    ===================================================================== */
-const lab = { esc: 3, fail: null, failMode: false, bridges: false, layers: { red: true, per: true, av: true, est: true, col: false, upl: false, cent: false, heat: false, bus: true, base: true }, sel: null, view: "map", route: null, compare: false, peak: "am", colorMode: "corr" };
+const lab = { esc: 3, fail: null, failMode: false, bridges: false, layers: { load: true, red: true, per: true, av: true, est: true, col: false, upl: false, cent: false, heat: false, bus: true, base: true }, sel: null, view: "map", route: null, compare: false, peak: "am", colorMode: "corr" };
 let S = { ...lab, layers: { ...lab.layers }, only: null, stagger: false };
 let mode = "relato", presenting = false, collapsed = matchMedia("(max-width: 820px)").matches;
 
@@ -2130,7 +2143,7 @@ $("#failMode").onchange = ev => { lab.failMode = ev.target.checked; mapEl.classL
 $("#btnReset").onclick = () => { lab.fail = null; apply(labState()); };
 function flyToFail() { const F = failInfo(lab.esc, lab.fail); const ids = F && F.iso.size ? [...F.iso, lab.fail] : [lab.fail]; flyTo(fit(ids.map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: cam.pitch || 0, rot: cam.rot, pad: .75, dz: ids.length === 1 ? -1.2 : 0 }), 1100); }
 $("#tgBridges").onchange = ev => { lab.bridges = ev.target.checked; apply(labState()); };
-[["lyRedT", "red"], ["lyPerT", "per"], ["lyAvT", "av"], ["lyEstT", "est"], ["lyColT", "col"], ["lyCentT", "cent"], ["lyHeatT", "heat"], ["lyUplT", "upl"], ["lyBusT", "bus"], ["lyBaseT", "base"]].forEach(([id, k]) => $("#" + id).onchange = ev => { lab.layers[k] = ev.target.checked; apply(labState()); });
+[["lyLoadT", "load"], ["lyRedT", "red"], ["lyPerT", "per"], ["lyAvT", "av"], ["lyEstT", "est"], ["lyColT", "col"], ["lyCentT", "cent"], ["lyHeatT", "heat"], ["lyUplT", "upl"], ["lyBusT", "bus"], ["lyBaseT", "base"]].forEach(([id, k]) => $("#" + id).onchange = ev => { lab.layers[k] = ev.target.checked; apply(labState()); });
 $("#vMap").onclick = () => setView("map"); $("#vGraph").onclick = () => setView("graph"); $("#vCmp").onclick = () => setView("cmp");
 const OLD_SORTED = [...NODE.values()].filter(n => n.kind === "old").sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
 const rtSel = { o: null, d: null };
@@ -2982,9 +2995,9 @@ function svcGeo(cod) {   // camino en el grafo que une las paradas del servicio,
   const path = [sv.stops[0]];
   for (let i = 1; i < sv.stops.length; i++) { const r = shortest(0, sv.stops[i - 1], sv.stops[i]); if (r) path.push(...r.path.slice(1)); }
   const edges = new Set(); for (let i = 1; i < path.length; i++) edges.add(ekey(path[i - 1], path[i]));
-  const tr = [...edges].map(k => EDGE_TR.get(k)).filter(t => t !== undefined);
-  const mode2 = tr.length ? tr.sort((a, b) => tr.filter(x => x === b).length - tr.filter(x => x === a).length)[0] : undefined;
-  const g = { sv, path, edges, color: mode2 !== undefined ? TRONCAL[mode2].color : "#0B66E4", pts: routePts(0, path) };
+  // color = troncal de DESTINO: la del último tramo troncal del recorrido
+  let dest; for (let i = path.length - 1; i > 0 && dest === undefined; i--) dest = EDGE_TR.get(ekey(path[i - 1], path[i]));
+  const g = { sv, path, edges, color: dest !== undefined ? TRONCAL[dest].color : "#0B66E4", pts: routePts(0, path) };
   SVC_GEO.set(cod, g); return g;
 }
 
@@ -3186,6 +3199,7 @@ const lySvc = (() => { const g = svgEl("g", { id: "lySvc" }, lyMk.parentNode); l
 const SVC_STOP_LBL = [];
 function selectSvc(cod) {
   LIVE.sel = cod || null; lySvc.innerHTML = "";
+  svcFocus();
   SVC_STOP_LBL.forEach(o => o.el.style.display = "none");
   if (LIVE.sel) {
     const geo = svcGeo(LIVE.sel), d = "M" + geo.pts.map(p => p[0].toFixed(1) + " " + p[1].toFixed(1)).join("L");
@@ -3201,13 +3215,35 @@ function selectSvc(cod) {
   }
   if (LIVE.mode !== "live" && sim.on) { sim.esc = -1; simBuild(); } else liveSyncBuses();
   if (ML.on) { mlApply(); mlSvcApply(); }
-  svcAnimate(); renderLive(); requestDraw();
+  svcAnimate(); renderLive(); requestDraw(); spdSync();
 }
 function followSvc() {
   const b = sim.buses.find(x => x.svc && x.svc === LIVE.sel) || null;
   if (!b) return false;
   sim.focus = b; setFollow(true); return true;
 }
+
+// ---------- modo ruta: se apagan las troncales y solo queda la ruta elegida ----------
+function svcFocus() {
+  const on = !!LIVE.sel && mode === "laboratorio", stops = on ? new Set(svcGeo(LIVE.sel).sv.stops) : null;
+  document.body.classList.toggle("svc-focus", on);
+  MK.forEach((g, id) => g.classList.toggle("onsvc", !!on && stops.has(id)));
+}
+const FOCUS_KEEP = new Set(["ml-bldg", "ml-svc-glow", "ml-svc-line", "ml-svc-flow", "ml-bus", "ml-bus-ring", "ml-stations"]);
+function mlFocus() {
+  [ML.map, ML.mapB].forEach(m => {
+    if (!m || !m.getLayer("ml-svc-line")) return;
+    const on = document.body.classList.contains("svc-focus"), stops = on ? svcGeo(LIVE.sel).sv.stops : null;
+    if (on) m.getStyle().layers.forEach(l => { if (l.id.startsWith("ml-") && !FOCUS_KEEP.has(l.id)) m.setLayoutProperty(l.id, "visibility", "none"); });
+    m.setFilter("ml-stations", on ? ["in", ["get", "id"], ["literal", stops]] : null);
+    m.setFilter("ml-bus", on ? ["==", ["get", "sv"], 1] : null);
+  });
+}
+// ---------- velocidad de la simulación ----------
+const SPD = [.25, .5, 1, 2, 4, 8];
+function spdSync() { const b = $("#spdBox"); if (b) b.hidden = !sim.on; }
+$("#simSpd").addEventListener("input", ev => { SIM_SPEED = SPD[+ev.target.value]; $("#spdV").textContent = (SIM_SPEED < 1 ? String(SIM_SPEED).replace(".", ",") : SIM_SPEED) + "×"; });
+$("#simPlay").addEventListener("click", () => setTimeout(spdSync, 0));
 
 // ---------- capa WebGL (MapLibre) de la ruta elegida ----------
 function mlLiveSetup(m) {
@@ -3227,7 +3263,7 @@ function mlSvcApply() {
     m.getSource("s-svc").setData({ type: "FeatureCollection", features: geo ? [{ type: "Feature", properties: { c: geo.color }, geometry: { type: "LineString", coordinates: geo.pts.map(unP) } }] : [] });
     const hot = m === ML.map ? [...EDGE_EL].filter(([, el]) => el.classList.contains("sat-hot") && lyRed.style.display !== "none").map(([k]) => { const [a, b] = k.split("|"); return { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: roadLL(a, b) || [LL(a), LL(b)] } }; }) : [];
     if (m.getSource("s-sat")) m.getSource("s-sat").setData({ type: "FeatureCollection", features: hot }); ML.hot = hot.length; });
-  svcAnimate();
+  svcAnimate(); mlFocus();
 }
 const mlBusProps = b => ({ st: b.late || b.st === "retraso" ? 2 : b.slow || b.st === "congestionado" ? 1 : 0, sv: LIVE.sel && b.svc === LIVE.sel ? 1 : 0 });
 let svcRaf = 0;
@@ -3427,11 +3463,12 @@ function mlData(side) {
   out.cols = [];
   const colOn = o => o.el.style.opacity !== "0" && o.el.style.visibility !== "hidden";
   const add = (xy, h, half, c) => out.cols.push({ type: "Feature", properties: { h, c }, geometry: { type: "Polygon", coordinates: square(unP(xy), half) } });
-  if (L) add(loadCol.xy, loadH(E[0].carga) * 55, 150, "#D8101E");
+  const loadOn = !S.layers || S.layers.load !== false;
+  if (L) { if (loadOn) add(loadCol.xy, loadH(E[0].carga) * 55, 150, "#D8101E"); }
   else COLS.forEach(o => {
     if (o.type !== "col" || !colOn(o) || !o.hv) return;
     const cl = o.el.classList;
-    if (cl.contains("load")) add(o.xy, o.hv * 55, 150, S.compare && S.esc > 0 ? "#1E7F55" : "#D8101E");
+    if (cl.contains("load")) { if (loadOn) add(o.xy, o.hv * 55, 150, S.compare && S.esc > 0 ? "#1E7F55" : "#D8101E");}
     else if (cl.contains("dens")) add(o.xy, o.hv * 45, 85, cl.contains("tr") ? "#2A9D8F" : "#F2C14E");
     else if (cl.contains("cent")) add(o.xy, o.hv * 45, 75, "#2B3A44");
     else if (cl.contains("heatcol")) add(o.xy, o.hv * 45, 60, (o.el.style.background.match(/rgb\([^)]+\)/) || ["#E9B949"])[0]);
