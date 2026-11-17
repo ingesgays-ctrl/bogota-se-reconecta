@@ -175,7 +175,7 @@
             <label for="liveUrl" class="fl">URL del puente (/vehicles, /stream o wss://)</label>
             <input id="liveUrl" class="sel" type="url" placeholder="https://tm-gtfsrt-bridge.TU-CUENTA.workers.dev/vehicles">
             <button type="button" class="btn" data-svc-act="connect">Conectar</button>
-            <p class="note">El feed oficial (gis.transmilenio.gov.co/gtfs) no permite lectura directa desde el navegador (sin CORS); se usa el puente de <code>bridge/</code>. Vacío = intenta el feed oficial y, si falla, simulación. También acepta <code>?live=URL</code> en la dirección.</p>
+            <p class="note">El feed oficial (gis.transmilenio.gov.co/gtfs) no permite lectura directa desde el navegador (sin CORS); se usa el puente de <code>bridge/</code>. Vacío = solo simulación (el feed oficial no se puede leer directo desde el navegador). También acepta <code>?live=URL</code> en la dirección.</p>
           </details>
         </section>
       </div>

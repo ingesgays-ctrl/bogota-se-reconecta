@@ -14,7 +14,7 @@ const LIVE_OFFICIAL = "https://gis.transmilenio.gov.co/gtfs/vehiclepos.pb";
 const SNAP_MAX_M = 250;            // más lejos que esto de un tramo troncal = bus zonal o fuera de la red: no se dibuja
 const LATE_S = 300, SLOW_MS = 2.8; // retraso ≥ 5 min · lento < 10 km/h fuera de estación
 var LIVE = {
-  url: (() => { const q = new URLSearchParams(location.search).get("live"); if (q === "off") return ""; let s = ""; try { s = localStorage.getItem("tm-live") || ""; } catch (_) { } return q || s || LIVE_DEFAULT || LIVE_OFFICIAL; })(),
+  url: (() => { const q = new URLSearchParams(location.search).get("live"); if (q === "off") return ""; let s = ""; try { s = localStorage.getItem("tm-live") || ""; } catch (_) { } return q || s || LIVE_DEFAULT || ""; })(),   // sin puente no se consulta el feed oficial (no tiene CORS: solo daría errores en consola)
   mode: "sim",          // "sim" | "live"
   status: "idle",       // idle · connecting · ok · error
   err: "", interval: 15000, timer: 0, es: null, ws: null, fails: 0,

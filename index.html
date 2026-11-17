@@ -912,7 +912,7 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
             <label for="liveUrl" class="fl">URL del puente (/vehicles, /stream o wss://)</label>
             <input id="liveUrl" class="sel" type="url" placeholder="https://tm-gtfsrt-bridge.TU-CUENTA.workers.dev/vehicles">
             <button type="button" class="btn" data-svc-act="connect">Conectar</button>
-            <p class="note">El feed oficial (gis.transmilenio.gov.co/gtfs) no permite lectura directa desde el navegador (sin CORS); se usa el puente de <code>bridge/</code>. Vacío = intenta el feed oficial y, si falla, simulación. También acepta <code>?live=URL</code> en la dirección.</p>
+            <p class="note">El feed oficial (gis.transmilenio.gov.co/gtfs) no permite lectura directa desde el navegador (sin CORS); se usa el puente de <code>bridge/</code>. Vacío = solo simulación (el feed oficial no se puede leer directo desde el navegador). También acepta <code>?live=URL</code> en la dirección.</p>
           </details>
         </section>
       </div>
@@ -2808,7 +2808,7 @@ const LIVE_OFFICIAL = "https://gis.transmilenio.gov.co/gtfs/vehiclepos.pb";
 const SNAP_MAX_M = 250;            // más lejos que esto de un tramo troncal = bus zonal o fuera de la red: no se dibuja
 const LATE_S = 300, SLOW_MS = 2.8; // retraso ≥ 5 min · lento < 10 km/h fuera de estación
 var LIVE = {
-  url: (() => { const q = new URLSearchParams(location.search).get("live"); if (q === "off") return ""; let s = ""; try { s = localStorage.getItem("tm-live") || ""; } catch (_) { } return q || s || LIVE_DEFAULT || LIVE_OFFICIAL; })(),
+  url: (() => { const q = new URLSearchParams(location.search).get("live"); if (q === "off") return ""; let s = ""; try { s = localStorage.getItem("tm-live") || ""; } catch (_) { } return q || s || LIVE_DEFAULT || ""; })(),   // sin puente no se consulta el feed oficial (no tiene CORS: solo daría errores en consola)
   mode: "sim",          // "sim" | "live"
   status: "idle",       // idle · connecting · ok · error
   err: "", interval: 15000, timer: 0, es: null, ws: null, fails: 0,
