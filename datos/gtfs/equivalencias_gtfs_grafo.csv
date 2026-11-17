@@ -1,0 +1,109 @@
+station_id,nombre_gtfs,nodo_grafo,nombre_grafo,metodo,confianza
+2000,Portal Norte T5B,E3,Portal Norte - Unicervantes,nombre,alta
+2001,Calle 187 B,E2,Calle 187,nombre,alta
+2101,Toberín E,E4,Toberín,nombre,alta
+2103,Mazurén C,E6,Mazúren,nombre,alta
+2104,Calle 146 A,E7,Calle 146,nombre,alta
+2105,Calle 142 B,E8,Calle 142,nombre,alta
+2200,Alcalá B,E9,Alcalá - Colegio S. Tomás Dominicos,nombre,alta
+2201,Prado C,E10,Prado,nombre,alta
+2202,Calle 127 B,E11,Calle 127,nombre,alta
+2204,Pepe Sierra B,E12,Pepe Sierra - Utel Universidad,nombre,alta
+2300,Calle 100 B,E14,Calle 100 - Marketmedios,nombre,alta
+2302,Virrey A,E15,Virrey - Cendiatra,nombre,alta
+2304,Héroes A,E17,Héroes - Colmena Seguros,nombre,alta
+2502,Terminal B,E1,Terminal,nombre,alta
+3000,Portal Suba T6,E55,Portal Suba,nombre,alta
+3001,La Campiña A,E54,La Campiña,nombre,alta
+3002,Suba,E53,Suba TV 91 - OMNILIFE SEYTÚ,posición: 'Suba' entre La Campiña y Gratamira,media
+3004,Gratamira A,E51,Gratamira,nombre,alta
+3006,Niza,E49,Niza - Calle 127,nombre,alta
+3007,Humedal Córdoba B,E48,Humedal Córdoba,nombre,alta
+3009,Av. Suba,E47,Av. Suba - Calle 116,nombre,alta
+3010,Puentelargo A,E46,Puentelargo,nombre,alta
+3012,Suba,E44,Suba - Calle 95,"posición: segundo 'Suba' después de Puentelargo, antes de San Martín",media
+3013,Rionegro A,E43,Rionegro,nombre,alta
+3014,San Martín A,E42,San Martín,nombre,alta
+4000,Portal 80 T-1B,E68,Portal 80,nombre,alta
+4001,Quirigua A,E67,Quirigua,nombre,alta
+4002,Cra. 90 A,E66,Carrera 90,nombre,alta
+4003,Av. Cali B,E65,Avenida Cali,nombre,alta
+4004,Granja,E64,Granja - CRA. 77,nombre,alta
+4101,Minuto de Dios A,E63,Minuto De Dios,nombre,alta
+4102,Boyacá B,E62,Boyacá,nombre,alta
+4103,Ferias A,E61,Ferias,nombre,alta
+4104,Av. 68 A,E60,Avenida 68,nombre,alta
+4106,Cra. 47 B,E58,Carrera 47,nombre,alta
+4108,Polo B,E56,Polo - FINCOMERCIO,nombre,alta
+6000,Portal Eldorado T-2,E133,Portal El Dorado - C. C Nuestro Bogotá,nombre,alta
+6001,Modelia A,E132,Modelia,nombre,alta
+6100,Av. Rojas B,E130,AV. Rojas - UNISALESIANA,nombre,alta
+6101,El Tiempo,E129,El Tiempo - Cámara De Comercio De Bogotá,nombre,alta
+6102,Salitre,E128,Salitre El Greco - Vive Claro,nombre,alta
+6103,CAN A,E127,CAN - British Council,nombre,alta
+6105,Quinta Paredes B,E125,Quinta Paredes - RTVC,nombre,alta
+6106,Corferias A,E124,Corferias,nombre,alta
+6107,Ciudad Universitaria A,E123,Ciudad Universitaria,nombre,alta
+6108,Concejo de Bogotá A,E122,Concejo de Bogotá,nombre,alta
+6109,Centro Memoria A,E121,Centro Memoria,nombre,alta
+6111,Universidades B,E118,Universidades CityU,nombre,alta
+7000,Portal Sur T3.,E93,Portal Sur - JFK Coop. Financiera,nombre,alta
+7001,Perdomo A,E92,Perdomo,nombre,alta
+7002,Madelena A,E91,C. C Paseo Villa Del Rio - Madelena,nombre,alta
+7003,Sevillana B,E90,Sevillana,nombre,alta
+7004,Venecia A,E89,Venecia,nombre,alta
+7005,Alquería B,E88,Alquería,nombre,alta
+7006,G. Santander B,E87,General Santander,nombre,alta
+7007,NQS,E85,NQS Calle 30 SUR,posición: 'NQS' entre Sevillana y Comuneros; puede ser NQS Calle 30 Sur (E85) o NQS Calle 38A Sur (E86),revisar
+7101,Castellana B,E69,La Castellana,nombre,alta
+7102,NQS,E70,NQS Calle 75,posición: 'NQS' entre Cra. 47 y Av. Chile = NQS Calle 75,media
+7103,Av. Chile A,E71,Avenida Chile,nombre,alta
+7104,7 de Agosto B,E72,7 de Agosto,nombre,alta
+7105,Movistar Arena B,E73,TIGO,nombre comercial nuevo: Movistar Arena = TIGO en el modelo,media
+7106,Campín-UAN A,E74,Campin - UAN,nombre,alta
+7107,U. Nacional A,E75,Universidad Nacional,nombre,alta
+7108,Av. El Dorado B,E76,AV. Eldorado,nombre,alta
+7109,CAD A,E77,CAD,nombre,alta
+7110,Paloquemao A,E78,Paloquemao,nombre,alta
+7111,Ricaurte B,E79,Ricaurte,nombre,alta
+7112,Comuneros A,E83,Comuneros,nombre,alta
+7113,Santa Isabel A,E84,Santa Isabel,nombre,alta
+7200,Tygua,E81,Tygua - San José,nombre,alta
+7201,Guatoque,E80,Guatoque - Veraguas,nombre,alta
+8000,Portal Tunal T5.,E37,Portal Tunal,nombre,alta
+8001,Parque A,E36,Parque,nombre,alta
+8002,Biblioteca A,E35,Biblioteca,nombre,alta
+9001,Molinos B,E39,Molinos,nombre,alta
+9002,Consuelo B,E38,Consuelo,nombre,alta
+9003,Socorro B,E34,Socorro,nombre,alta
+9004,Santa Lucía B,E33,Santa Lucía,nombre,alta
+9100,Calle 40 S. C,E32,Calle 40 Sur,nombre,alta
+9101,Quiroga B,E31,Quiroga,nombre,alta
+9103,Olaya B,E30,Olaya,nombre,alta
+9104,Restrepo B,E29,Restrepo,nombre,alta
+9105,Fucha B,E28,Fucha,nombre,alta
+9106,Nariño B,E27,Nariño,nombre,alta
+9107,Hortúa B,E26,Hortúa,nombre,alta
+9110,Av. Jiménez C,E25,Avenida Jiménez,nombre,alta
+9113,Calle 22 B,E24,Calle 22,nombre,alta
+9114,Calle 26 A,E23,Calle 26 - Atrio,nombre,alta
+9116,Av. 39 A,E22,AV. 39,nombre,alta
+9118,Marly B,E21,Calle 53 - Universidad Manuela Beltrán,"posición entre Av. 39 y Calle 57 (en el modelo se llama 'Calle 53'; tramo de 0,32 km frente a 3,4 min programados)",revisar
+9119,Calle 57 B,E20,Calle 57,nombre,alta
+9121,Flores A,E19,Flores,nombre,alta
+9122,Calle 72 A,E18,Calle 72 - Areandina,nombre,alta
+10000,PORTAL 20 DE JULIO T9.,E143,Portal 20 de Julio,nombre,alta
+10001,Country Sur B,E142,Country Sur,nombre,alta
+10002,Av. 1 de Mayo B,E141,AV. Primero de Mayo,nombre,alta
+10003,Ciudad Jardín-UAN B,E140,Ciudad Jardín - UAN,nombre,alta
+10004,Policarpa A,E139,Policarpa,nombre,alta
+10005,Bicentenario B,E82,Bicentenario,nombre,alta
+10006,San Victorino B,E137,San Victorino,nombre,alta
+10007,Las Nieves B,E136,Las Nieves,nombre,alta
+10008,San Diego A,E135,San Diego,nombre,alta
+10009,Museo Nacional A,E134,Museo Nacional,nombre,alta
+10010,San Bernardo A,E138,Estación San Bernardo,nombre,alta
+74372,Portal Usme T3A,E41,Portal Usme,"nombre (Portal Usme T3A, mismo portal que 90004)",alta
+90004,Portal Usme T1A,E41,Portal Usme,nombre (Portal Usme T1A),alta
+90007,Suba,E45,Suba Calle 100,posición: primer 'Suba' después de Puentelargo,media
+90008,Danubio  A,E40,Danubio,nombre,alta

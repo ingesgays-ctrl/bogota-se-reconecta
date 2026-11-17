@@ -31,3 +31,7 @@ Sin puente, o si el feed falla, el laboratorio muestra la simulación. La pesta�
 ## Trazado vial de las troncales
 
 `public/data/tramos_viales_bogota.geojson` tiene cada uno de los 146 tramos de la red actual ajustado a las vías reales (OSRM sobre OpenStreetMap, © colaboradores de OpenStreetMap, ODbL). Se generó una sola vez; para regenerarlo: `node scripts/gen_tramos_osrm.mjs`. `npm run build` lo incrusta en `index.html`, y también queda publicado como archivo en GitHub Pages.
+
+## GTFS estático (oferta programada)
+
+`datos/gtfs/` tiene la matriz de arcos del GTFS oficial (GTFS_20261013), la equivalencia de estaciones con el grafo, la oferta programada por tramo y franja, y el reporte de validación (`VALIDACION.md`). Para regenerarlo: `python3 -I scripts/gtfs_integrar.py`.
