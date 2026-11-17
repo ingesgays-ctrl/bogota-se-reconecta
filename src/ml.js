@@ -43,6 +43,9 @@ function mlSetup(m, side) {
       "fill-extrusion-base": ["interpolate", ["linear"], ["zoom"], 13, 0, 15, ["coalesce", ["get", "render_min_height"], 0]] } }, firstSym);
   ["upl", "heat", "edges", "corr", "route", "radio", "cols", "stations"].forEach(id => m.addSource("s-" + id, { type: "geojson", data: FC([]) }));
   m.addSource("live-buses", { type: "geojson", data: FC([]) });   // única fuente de buses: solo se actualiza con setData
+  // modo noche: velo oscuro sobre el mapa base (debajo de todas las capas del visor)
+  m.addSource("s-night", { type: "geojson", data: FC([{ type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [[[-75.5, 3.5], [-72.5, 3.5], [-72.5, 6], [-75.5, 6], [-75.5, 3.5]]] } }]) });
+  m.addLayer({ id: "ml-night", type: "fill", source: "s-night", layout: { visibility: "none" }, paint: { "fill-color": "#0B1116", "fill-opacity": 0.62 } });
   m.addLayer({ id: "ml-upl", type: "line", source: "s-upl", paint: { "line-color": "#7E8A90", "line-width": 1.1, "line-dasharray": [3, 2] } });
   m.addLayer({ id: "ml-heat", type: "line", source: "s-heat", layout: { "line-cap": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": .9 } });
   m.addLayer({ id: "ml-edges-case", type: "line", source: "s-edges", filter: ["all", ["!=", ["get", "d"], 1], [">=", ["get", "w"], 3]], layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#2B3238", "line-width": ["+", ["get", "w"], 1.6], "line-opacity": ["*", 0.55, ["get", "o"]] } });
@@ -58,6 +61,10 @@ function mlSetup(m, side) {
   m.addLayer({ id: "ml-cols", type: "fill-extrusion", source: "s-cols", paint: { "fill-extrusion-color": ["get", "c"], "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": .88 } });
   m.addLayer({ id: "ml-metro", type: "circle", source: "s-stations", filter: ["==", ["get", "metro"], 1], paint: { "circle-radius": 9.5, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "#111", "circle-stroke-width": 1, "circle-stroke-opacity": .7 } });
   m.addLayer({ id: "ml-stations", type: "circle", source: "s-stations", paint: { "circle-radius": ["get", "r"], "circle-color": ["get", "fc"], "circle-stroke-color": ["get", "sc"], "circle-stroke-width": ["get", "sw"], "circle-opacity": ["get", "o"], "circle-stroke-opacity": ["get", "o"], "circle-pitch-alignment": "map" } });
+  // portales: "P" sobre el círculo oscuro (con la fuente del estilo base); si el estilo no trae fuentes, un punto blanco
+  const fontL = st.layers.find(l => l.type === "symbol" && l.layout && l.layout["text-font"]);
+  if (fontL) m.addLayer({ id: "ml-portal", type: "symbol", source: "s-stations", filter: ["==", ["get", "portal"], 1], layout: { "text-field": "P", "text-font": fontL.layout["text-font"], "text-size": 10.5, "text-allow-overlap": true, "text-ignore-placement": true }, paint: { "text-color": ["get", "pc"] } });
+  else m.addLayer({ id: "ml-portal-dot", type: "circle", source: "s-stations", filter: ["==", ["get", "portal"], 1], paint: { "circle-radius": 2.6, "circle-color": ["get", "pc"] } });
   m.addLayer({ id: "ml-bus", type: "circle", source: "live-buses", paint: { "circle-radius": ["case", ["==", ["get", "od"], 1], 5.5, 4.5], "circle-color": ["get", "c"], "circle-stroke-color": "#fff", "circle-stroke-width": 1.5 } });
   m.getSource("s-upl").setData(FC(D.upl.map(u => ({ type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: u.rings } }))));
 }
@@ -88,10 +95,11 @@ function mlData(side) {
     const cl = g.classList; if (cl.contains("hidden")) return;
     const isNew = cl.contains("new"); if (L && isNew) return;
     const tr = !L && !!g.querySelector(".s-tr:not(.hidden)"), ric = cl.contains("ric");
-    let p = isNew ? { r: 5.6, fc: "#FFD166", sc: "#111", sw: 1.6 } : ric ? { r: 6.5, fc: "#D8101E", sc: "#fff", sw: 2 } : tr ? { r: 5.5, fc: "#2A9D8F", sc: "#0D3B36", sw: 1.4 } : { r: 3.6, fc: "#fff", sc: "#6C757D", sw: 1.4 };
+    const por = cl.contains("portal"), night = document.body.classList.contains("night");
+    let p = isNew ? { r: 5.6, fc: "#FFD166", sc: "#111", sw: 1.6 } : ric ? { r: 6.5, fc: "#D8101E", sc: "#fff", sw: 2 } : por ? { r: 7.5, fc: night ? "#E3E7EA" : "#1B2A38", sc: night ? "#12181C" : "#fff", sw: 2.2 } : tr ? { r: 5.5, fc: "#2A9D8F", sc: "#0D3B36", sw: 1.4 } : { r: 3.6, fc: night ? "#1C242A" : "#fff", sc: night ? "#8A949B" : "#6C757D", sw: 1.4 };
     if (!L && cl.contains("iso") && !isNew) p = { ...p, fc: "#D8101E", sc: "#7A0A12" };
     if (!L && cl.contains("sel")) p = { ...p, sc: "#2747D8", sw: 3 };
-    out.stations.push({ type: "Feature", properties: { id, ...p, o: !L && cl.contains("tr-off") ? .12 : !L && cl.contains("dead") ? .25 : 1, metro: isNew && g.querySelector(".metro") ? 1 : 0, tip: g.dataset.tip }, geometry: { type: "Point", coordinates: LL(id) } });
+    out.stations.push({ type: "Feature", properties: { id, portal: por ? 1 : 0, pc: night ? "#12181C" : "#fff", ...p, o: !L && cl.contains("tr-off") ? .12 : !L && cl.contains("dead") ? .25 : 1, metro: isNew && g.querySelector(".metro") ? 1 : 0, tip: g.dataset.tip }, geometry: { type: "Point", coordinates: LL(id) } });
   });
   // rutas O→D
   out.route = [];
@@ -125,6 +133,9 @@ function mlApplyTo(m, side) {
   m.setLayoutProperty("ml-upl", "visibility", side === "R" && S.layers.upl ? "visible" : "none");
   const base = S.layers.base === false ? "none" : "visible";
   m.getStyle().layers.forEach(l => { if (!l.id.startsWith("ml-") || l.id === "ml-bldg") m.setLayoutProperty(l.id, "visibility", base); });
+  const night = document.body.classList.contains("night");
+  m.setLayoutProperty("ml-night", "visibility", night && base === "visible" ? "visible" : "none");
+  if (m.getLayer("ml-bldg")) m.setPaintProperty("ml-bldg", "fill-extrusion-color", night ? "#3A4651" : "#E2E8F0");
 }
 // etiquetas HTML como marcadores (pocas: corredores, Ricaurte, carga, origen/destino, UPL)
 const ML_LBL = new Map();
@@ -132,7 +143,8 @@ function mlLabels() {
   const m = ML.map; if (!m) return;
   COLS.forEach(o => {
     if (o.type !== "lbl") return;
-    const vis = o.el.style.display !== "none" && o.el.style.opacity !== "0" && !(o === loadLbl && !is3D());
+    const vis = o.el.style.display !== "none" && o.el.style.opacity !== "0" && !(o === loadLbl && !is3D())
+      && (!document.body.classList.contains("trip-focus") || o.el.classList.contains("od") || o.el.classList.contains("xf"));
     let mk = ML_LBL.get(o);
     if (!vis) { if (mk) { mk.remove(); ML_LBL.delete(o); } return; }
     if (!mk) { const el = document.createElement("div"); mk = new maplibregl.Marker({ element: el, anchor: o === pulseLbl ? "center" : "bottom", offset: o === pulseLbl ? [0, 0] : [0, o === loadLbl ? -6 : -8] }); ML_LBL.set(o, mk); mk.setLngLat(unP(o.xy)).addTo(m); }
@@ -142,7 +154,7 @@ function mlLabels() {
 }
 function mlApply() {
   if (!ML.map) return;
-  mlApplyTo(ML.map, "R"); mlLabels(); mlBuses(); mlSvcApply();
+  mlApplyTo(ML.map, "R"); mlLabels(); mlBuses(); mlSvcApply(); if (typeof mlFocus === "function") mlFocus();
   if (S.compare) mlEnsureB(); else if (ML.boxB) ML.boxB.style.display = "none";
   if (ML.mapB && S.compare) { ML.boxB.style.display = ""; mlApplyTo(ML.mapB, "L"); }
   mlCurtain();

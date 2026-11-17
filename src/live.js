@@ -310,15 +310,21 @@ function svcFocus() {
   document.body.classList.toggle("svc-focus", on);
   MK.forEach((g, id) => g.classList.toggle("onsvc", !!on && stops.has(id)));
 }
-const FOCUS_KEEP = new Set(["ml-bldg", "ml-svc-glow", "ml-svc-case", "ml-svc-line", "ml-svc-flow", "ml-bus", "ml-bus-ring", "ml-stations"]);
+const FOCUS_KEEP = new Set(["ml-bldg", "ml-portal", "ml-portal-dot", "ml-svc-glow", "ml-svc-case", "ml-svc-line", "ml-svc-flow", "ml-bus", "ml-bus-ring", "ml-stations"]);
+// modo ruta (Rutas) o modo viaje (Planear viaje): se apagan las capas del visor y solo queda lo elegido
+const TRIP_KEEP = new Set(["ml-bldg", "ml-route-case", "ml-route-a", "ml-route-ab", "ml-route-b", "ml-route-c", "ml-stations", "ml-portal", "ml-portal-dot"]);
+const FOCUS_SKIP = new Set(["ml-upl", "ml-bldg", "ml-night"]);   // las controla su propia capa
 function mlFocus() {
   [ML.map, ML.mapB].forEach(m => {
-    if (!m || !m.getLayer("ml-svc-line")) return;
-    const on = document.body.classList.contains("svc-focus"), stops = on ? svcGeo(LIVE.sel).sv.stops : null;
-    // con ruta elegida se ocultan las capas del visor; sin ruta se vuelven a mostrar (ml-upl la controla su propia capa)
-    m.getStyle().layers.forEach(l => { if (l.id.startsWith("ml-") && !FOCUS_KEEP.has(l.id) && l.id !== "ml-upl" && l.id !== "ml-bldg") m.setLayoutProperty(l.id, "visibility", on ? "none" : "visible"); });
-    m.setFilter("ml-stations", on ? ["in", ["get", "id"], ["literal", stops]] : null);
-    m.setFilter("ml-bus", on ? ["==", ["get", "sv"], 1] : null);
+    if (!m || !m.getLayer("ml-stations")) return;
+    const svc = document.body.classList.contains("svc-focus") && !!m.getLayer("ml-svc-line"), trip = !svc && document.body.classList.contains("trip-focus");
+    const keep = svc ? FOCUS_KEEP : trip ? TRIP_KEEP : null;
+    m.getStyle().layers.forEach(l => { if (l.id.startsWith("ml-") && !FOCUS_SKIP.has(l.id)) m.setLayoutProperty(l.id, "visibility", !keep || keep.has(l.id) || (l.id.startsWith("ml-portal") && !trip && !svc) ? "visible" : "none"); });
+    const ids = svc ? svcGeo(LIVE.sel).sv.stops : trip ? [...TRIP_IDS] : null;
+    const inIds = ids ? ["in", ["get", "id"], ["literal", ids]] : null, isP = ["==", ["get", "portal"], 1];
+    if (m.getLayer("ml-stations")) m.setFilter("ml-stations", inIds);
+    ["ml-portal", "ml-portal-dot"].forEach(id => { if (m.getLayer(id)) m.setFilter(id, inIds ? ["all", isP, inIds] : isP); });
+    m.setFilter("ml-bus", svc ? ["==", ["get", "sv"], 1] : null);
   });
 }
 // ---------- velocidad de la simulación ----------

@@ -11,7 +11,7 @@
 const BPR = { a: .15, b: 4 };
 const FRANJAS = {
   am: { u: "Pico mañana · 6–9 a. m.", demanda: () => 1 },
-  valle: { u: "Hora valle", demanda: () => FLEET.valle },    // supuesto ajustable, sin dato oficial
+  valle: { get u() { return DEV ? "Hora valle · 9 a. m.–4:30 p. m." : "Hora tranquila · 9 a. m.–4:30 p. m."; }, demanda: () => FLEET.valle },    // supuesto ajustable, sin dato oficial
   pm: { u: "Pico tarde · 4:30–7:30 p. m.", demanda: () => 1 },  // OD transpuesta: mismos volúmenes por tramo
 };
 // ---------- semáforos y demanda de pasajeros (estimación del visor; supuestos en la fuente de verdad §10) ----------

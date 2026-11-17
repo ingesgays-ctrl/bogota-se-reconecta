@@ -13,6 +13,10 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const ML = { on: false };   // motor WebGL (MapLibre + OpenFreeMap); se activa solo si carga, si no se usa el motor propio
 // ---- modo de lectura: usuario (ciudadano) o desarrollador (técnico) ----
 let DEV = false; try { DEV = localStorage.getItem("tm-dev") === "1"; } catch (_) { }
+// ---- modo noche (se guarda en el navegador) ----
+let NIGHT = false; try { NIGHT = localStorage.getItem("tm-night") === "1"; } catch (_) { }
+document.body.classList.toggle("night", NIGHT);
+var TRIP_OPEN = false; var TRIP_IDS = new Set();   // pestaña "Planear viaje" abierta: con un viaje elegido se muestra solo la ruta
 const TX = [
   // concordancia (van antes de las reglas generales, que cambian el sustantivo pero no el artículo)
   [/un solo nodo/g, "una sola estación"], [/El nodo/g, "La estación"], [/el nodo/g, "la estación"], [/del nodo/g, "de la estación"], [/al nodo/g, "a la estación"], [/un nodo/g, "una estación"], [/Un nodo/g, "Una estación"], [/este nodo/g, "esta estación"], [/ese nodo/g, "esa estación"],
@@ -463,6 +467,8 @@ D.corredores.forEach(c => {
   CORR_EL[c.id] = { g, cs, ln, drawn: false };
 });
 // marcadores
+// portales: cabeceras de troncal (nombre "Portal …"); se dibujan distinto en todas las vistas
+const isPortal = id => { const n = NODE.get(id); return !!n && n.kind === "old" && /^Portal\b/.test(n.nombre); };
 const MK = new Map();
 function marker(id, xy, cls, inner, tip) {
   const g = svgEl("g", { class: "mk " + cls }, cls.startsWith("new") ? lyMkNew : lyMk);
@@ -474,10 +480,11 @@ function marker(id, xy, cls, inner, tip) {
 }
 NODE.forEach(n => {
   if (n.kind === "old") {
-    const ric = n.id === RIC;
-    marker(n.id, n.xy, "old" + (ric ? " ric" : ""),
-      ric ? '<circle class="pulse" r="6"/><circle class="s-ric" r="6.5"/>' : '<circle class="s-old" r="3.2"/><rect class="s-tr hidden" x="-5" y="-5" width="10" height="10" transform="rotate(45)"/>',
-      `<b>${esc(n.nombre)}</b><small>Estación actual${n.municipio === "Soacha" ? " · Soacha" : ""}${n.tr.length ? " · transbordo POT" : ""}</small>`);
+    const ric = n.id === RIC, por = isPortal(n.id);
+    marker(n.id, n.xy, "old" + (ric ? " ric" : "") + (por ? " portal" : ""),
+      ric ? '<circle class="pulse" r="6"/><circle class="s-ric" r="6.5"/>' : por ? '<rect class="s-portal" x="-7" y="-7" width="14" height="14" rx="3.5"/><text class="s-portal-t" y="3.6">P</text>'
+        : '<circle class="s-old" r="3.2"/><rect class="s-tr hidden" x="-5" y="-5" width="10" height="10" transform="rotate(45)"/>',
+      `<b>${esc(n.nombre)}</b><small>${por ? "Portal · " : ""}Estación actual${n.municipio === "Soacha" ? " · Soacha" : ""}${n.tr.length ? " · transbordo POT" : ""}</small>`);
   } else {
     const e = n.est;
     marker(n.id, n.xy, "new", (e.metro ? '<circle class="metro" r="9.5"/>' : "") + '<circle class="s-new" r="5.6"/>',
@@ -630,7 +637,7 @@ function simFrame(now) {
     if (b.od) { nOd++; if (e2) odEje++; }
   }
   if (ML.on) mlBuses();
-  $("#simHud").innerHTML = (S.peak === "pm" ? "Tarde: más buses saliendo del centro · " : S.peak === "valle" ? `Valle: demanda al ${fI(FLEET.valle * 100)} % del pico (supuesto) · ` : "Mañana: más buses entrando al centro · ") + `Rutas entre bordes que pasan por el centro: <b class="num">${sim.odEje} de ${sim.odN}</b> · buses en el eje central ahora: <b class="num">${inEje}</b>`;
+  $("#simHud").innerHTML = (S.peak === "pm" ? "Tarde: más buses saliendo del centro · " : S.peak === "valle" ? `${DEV ? "Valle" : "Hora tranquila"}: demanda al ${fI(FLEET.valle * 100)} % del pico (supuesto) · ` : "Mañana: más buses entrando al centro · ") + `Rutas entre bordes que pasan por el centro: <b class="num">${sim.odEje} de ${sim.odN}</b> · buses en el eje central ahora: <b class="num">${inEje}</b>`;
   if (follow && sim.focus && sim.focus.x !== undefined && !drag) { cam.cx += (sim.focus.x - cam.cx) * .12; cam.cy += (sim.focus.y - cam.cy) * .12; requestDraw(); }
   sim.raf = requestAnimationFrame(simFrame);
 }
@@ -670,6 +677,7 @@ const ricLbl = addLbl(NODE.get(RIC).xy, "ric", "Ricaurte", null, 10);
 const failLbl = addLbl(NODE.get(RIC).xy, "ric", "", null, 10); failLbl.el.style.display = "none";
 const pulseLbl = addLbl([0, 0], "pulse", "<i></i><i></i><i></i>", null, 0); pulseLbl.el.style.display = "none";
 const odA = addLbl([0, 0], "od", "", null, 8), odB = addLbl([0, 0], "od", "", null, 8); odA.el.style.display = odB.el.style.display = "none";
+const XF = Array.from({ length: 6 }, () => { const o = addLbl([0, 0], "xf", "", null, 7); o.el.style.display = "none"; return o; });   // transbordos del viaje
 const CORR_LBL = {};
 D.corredores.forEach(c => {
   const mid = c.coords[Math.floor(c.coords.length * (c.id === "C6_Av68" ? 0.55 : 0.5))];
@@ -788,8 +796,17 @@ function apply(s = S) {
     setRT(RT.a, ra ? routeGeom(0, ra.path) : ""); RT.a.ln.classList.toggle("blocked", blocked);
     setRT(RT.c, rc ? routeGeom(0, rc.path) : ""); setRT(RT.b, rb ? routeGeom(eb, rb.path) : "");
     odA.xy = NODE.get(rt[0]).xy; odB.xy = NODE.get(rt[1]).xy;
-    odA.el.innerHTML = `<span>Origen · ${esc(short(NODE.get(rt[0]).nombre))}</span>`; odB.el.innerHTML = `<span>Destino · ${esc(short(NODE.get(rt[1]).nombre))}</span>`;
-  }
+    // transbordos del viaje con la red elegida (o el de hoy si no hay)
+    const rv = rb || rc || ra, legs = rv ? rv.legs : [], cod = l => l.sv.cod === "—" ? "a pie" : l.sv.cod;
+    odA.el.innerHTML = `<span>Origen · ${esc(short(NODE.get(rt[0]).nombre))}${legs[0] ? ` <em>toma ${esc(cod(legs[0]))}</em>` : ""}</span>`; odB.el.innerHTML = `<span>Destino · ${esc(short(NODE.get(rt[1]).nombre))}</span>`;
+    XF.forEach((o, i) => { const l = legs[i + 1]; if (!l) { o.el.style.display = "none"; return; }
+      o.xy = NODE.get(l.from).xy; o.el.style.display = ""; o.el.innerHTML = `<span><b>Transbordo ${i + 1}</b> · ${esc(short(NODE.get(l.from).nombre))}<em>${esc(cod(legs[i]))} → ${esc(cod(l))}</em></span>`; });
+    TRIP_IDS = new Set([...(ra ? ra.path : []), ...(rc ? rc.path : []), ...(rb ? rb.path : [])]);
+  } else { XF.forEach(o => o.el.style.display = "none"); TRIP_IDS = new Set(); }
+  // con la pestaña Planear viaje abierta se apaga todo lo demás: solo la ruta, sus estaciones y los transbordos
+  const tf = !!rt && TRIP_OPEN && mode === "laboratorio";
+  document.body.classList.toggle("trip-focus", tf);
+  MK.forEach((g, id) => g.classList.toggle("onroute", tf && TRIP_IDS.has(id)));
   // cortina Red actual | Integral
   const cmp = !!s.compare;
   $("#mapWrap").classList.toggle("comparing", cmp);
@@ -1303,11 +1320,12 @@ function updateGraph() {
         { selector: "node", style: { width: 7, height: 7, "background-color": "#fff", "border-width": 1.5, "border-color": "#6C757D" } },
         { selector: "node.new", style: { width: 11, height: 11, "background-color": "#FFD166", "border-color": "#111" } },
         { selector: "node.tr", style: { shape: "diamond", width: 13, height: 13, "background-color": "#2A9D8F", "border-color": "#0D3B36" } },
+        { selector: "node.portal", style: { shape: "round-rectangle", width: 15, height: 15, "background-color": "#1B2A38", "border-color": "#fff", "border-width": 2, label: "P", color: "#fff", "font-size": 9, "font-weight": 700, "text-valign": "center", "text-halign": "center" } },
         { selector: "node.ric", style: { width: 16, height: 16, "background-color": "#D8101E", "border-color": "#fff", label: "Ricaurte", "font-size": 11, "font-weight": 600, "text-margin-y": -6 } },
         { selector: "node.iso", style: { "background-color": "#D8101E", "border-color": "#7A0A12" } },
         { selector: "node.dead", style: { opacity: .25 } },
         { selector: "node:selected", style: { "border-color": "#2747D8", "border-width": 3.5 } },
-        { selector: "node.hl", style: { label: "data(label)", "font-size": 10, color: "#172026", "text-background-color": "#fff", "text-background-opacity": .85, "text-background-padding": 2 } },
+        { selector: "node.hl", style: { label: "data(label)", "font-size": 10, color: NIGHT ? "#E3E7EA" : "#172026", "text-background-color": NIGHT ? "#1C242A" : "#fff", "text-background-opacity": .85, "text-background-padding": 2 } },
         { selector: "edge", style: { width: 2, "line-color": "#B8BEC2", "curve-style": "straight" } },
         { selector: "edge.corr", style: { width: 3.4, "line-color": "data(color)" } },
         { selector: "edge.bridge", style: { "line-color": "#E85D04", "line-style": "dashed", width: 3 } },
@@ -1326,7 +1344,7 @@ function updateGraph() {
   const gi = G[lab.esc], s = labState(), vcorr = new Set(E[lab.esc].corredores), F = failInfo(lab.esc, lab.fail);
   const els = [];
   gi.g.forEach((_, id) => {
-    const n = NODE.get(id), cls = [n.kind === "new" ? "new" : "", n.kind === "old" && n.tr.some(t => vcorr.has(t.corredor)) ? "tr" : "", id === RIC ? "ric" : "", F && F.iso.has(id) ? "iso" : "", F && id === lab.fail ? "dead" : ""].filter(Boolean).join(" ");
+    const n = NODE.get(id), cls = [n.kind === "new" ? "new" : "", n.kind === "old" && n.tr.some(t => vcorr.has(t.corredor)) ? "tr" : "", id === RIC ? "ric" : "", isPortal(id) ? "portal" : "", F && F.iso.has(id) ? "iso" : "", F && id === lab.fail ? "dead" : ""].filter(Boolean).join(" ");
     els.push({ group: "nodes", data: { id, label: n.nombre }, position: { x: n.xy[0] * 1.6, y: n.xy[1] * 1.6 }, classes: cls });
   });
   const seen = new Set();
@@ -1368,8 +1386,8 @@ function lineChart(m) {
   return `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(m.t)} por escenario">
     <text class="ttl" x="0" y="14">${esc(m.t)}</text>
     ${ticks.map(v => `<line x1="${l - 10}" x2="${w - r + 10}" y1="${y(v)}" y2="${y(v)}" stroke="#E3E6E2"/>`).join("")}
-    <polyline points="${vals.map((v, i) => x(i) + "," + y(v)).join(" ")}" fill="none" stroke="${m.crit ? "#D8101E" : "#172026"}" stroke-width="2"/>
-    ${vals.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${i === 3 ? 4.5 : 3}" fill="${i === 3 ? (m.crit ? "#D8101E" : "#172026") : "#fff"}" stroke="${m.crit ? "#D8101E" : "#172026"}" stroke-width="1.6"/><text class="lab" x="${x(i)}" y="${y(v) - 8}" text-anchor="middle">${m.f(v)}</text><text x="${x(i)}" y="${h - 8}" text-anchor="middle">Esc. ${i}</text>`).join("")}
+    <polyline points="${vals.map((v, i) => x(i) + "," + y(v)).join(" ")}" fill="none" stroke="${m.crit ? "#D8101E" : "var(--ink)"}" style="stroke:${m.crit ? "#D8101E" : "var(--ink)"}" stroke-width="2"/>
+    ${vals.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${i === 3 ? 4.5 : 3}" style="fill:${i === 3 ? (m.crit ? "#D8101E" : "var(--ink)") : "var(--panel)"};stroke:${m.crit ? "#D8101E" : "var(--ink)"}" stroke-width="1.6"/><text class="lab" x="${x(i)}" y="${y(v) - 8}" text-anchor="middle">${m.f(v)}</text><text x="${x(i)}" y="${h - 8}" text-anchor="middle">Esc. ${i}</text>`).join("")}
   </svg>`;
 }
 function kmChart() {
@@ -1530,7 +1548,7 @@ function presEnter() {
   if (presenting) return;
   prevHash = location.hash.replace("#", "") || "relato";
   if (mode !== "relato") { mode = "relato"; }
-  presenting = true; document.body.className = "mode-relato presenting" + (DEV ? " dev" : ""); $("#pres").hidden = false; $("#graph").hidden = true;
+  presenting = true; document.body.className = "mode-relato presenting" + (DEV ? " dev" : "") + (NIGHT ? " night" : ""); $("#pres").hidden = false; $("#graph").hidden = true;
   try { const p = document.documentElement.requestFullscreen?.(); if (p && p.catch) p.catch(() => { }); } catch (_) { }
   resize(); presGo(curCh > 0 ? Math.min(curCh, STEPS.length - 1) : 0);
 }
@@ -1564,7 +1582,8 @@ document.addEventListener("keydown", ev => {
 const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"], live: ["#tbLive", "#paneLive"], tr: ["#tbTr", "#paneTr"] };
 let curTab = "trip";
 function setTab(t) { if (curTab === "tr" && t !== "tr") trClear(); curTab = t; Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); $(TABS[t][0]).scrollIntoView({ block: "nearest", inline: "nearest" }); syncDock(); }
-function syncDock() { const open = !$("#lPanel").hidden; $$("#panelDock [data-dock]").forEach(b => b.setAttribute("aria-pressed", open && b.dataset.dock === curTab)); }
+function syncDock() { const open = !$("#lPanel").hidden; $$("#panelDock [data-dock]").forEach(b => b.setAttribute("aria-pressed", open && b.dataset.dock === curTab));
+  const tp = open && curTab === "trip"; if (tp !== TRIP_OPEN) { TRIP_OPEN = tp; if (mode === "laboratorio") apply(labState()); } }
 Object.keys(TABS).forEach(k => $(TABS[k][0]).onclick = () => setTab(k));
 function openPanel() { $("#lPanel").hidden = false; syncDock(); }
 function closePanel() { $("#lPanel").hidden = true; if (curTab === "tr") trClear(); syncDock(); }
@@ -1638,6 +1657,7 @@ function menuSumUpd() {
 }
 $("#btnConv").onclick = () => { const on = $("#btnConv").getAttribute("aria-pressed") !== "true"; $("#btnConv").setAttribute("aria-pressed", on); $("#mapWrap").classList.toggle("conv", on); };
 $("#lgTroncal").innerHTML = TRONCAL.filter(t => t.letra !== "·").map(t => `<span><i class="lg-t" style="background:${t.color}"></i>${esc(t.letra)} ${esc(t.nombre)}</span>`).join("");
+$("#lgTroncal").insertAdjacentHTML("beforebegin", `<div class="lg-row lg-portal"><span><i class="lg-p">P</i>Portal (cabecera de troncal)</span></div>`);
 $("#colorMode").onchange = ev => { lab.colorMode = ev.target.value; lab.layers.heat = ev.target.value === "uso"; $("#lyHeatT").checked = lab.layers.heat; apply(labState()); };
 // ---- cámara ----
 let orbitRaf = 0, prevTilt = 48;
@@ -1693,6 +1713,13 @@ function setDev(v) {
   if (presenting) presGo(step);
 }
 $("#mUser").onclick = () => setDev(false); $("#mDev").onclick = () => setDev(true);
+function setNight(v) {
+  NIGHT = v; try { localStorage.setItem("tm-night", v ? "1" : "0"); } catch (_) { }
+  document.body.classList.toggle("night", v); $("#tNight").setAttribute("aria-pressed", v); $("#tNight").textContent = v ? "☀ Día" : "🌙 Noche";
+  if (ML.on) mlApply(); requestDraw();
+  if (typeof cy !== "undefined" && cy) cy.style().selector("node.hl").style({ color: v ? "#E3E7EA" : "#172026", "text-background-color": v ? "#1C242A" : "#fff" }).update();
+}
+$("#tNight").onclick = () => setNight(!NIGHT); setNight(NIGHT);
 const setPeak = pk => { lab.peak = pk; $("#pkAM").setAttribute("aria-pressed", pk === "am"); $("#pkVL").setAttribute("aria-pressed", pk === "valle"); $("#pkPM").setAttribute("aria-pressed", pk === "pm"); $("#valleBox").hidden = pk !== "valle"; apply(labState()); };
 $("#pkAM").onclick = () => setPeak("am"); $("#pkPM").onclick = () => setPeak("pm"); $("#pkVL").onclick = () => setPeak("valle");
 // ¿Cuándo sales? → filtra las rutas por su horario oficial y ajusta la franja del modelo
@@ -1725,7 +1752,7 @@ function route() {
   const h = location.hash.replace("#", "");
   const m = ["relato", "laboratorio", "analisis"].includes(h) ? h : "relato";
   const prev = mode; mode = m;
-  document.body.className = "mode-" + m + (collapsed ? " lab-collapsed" : "") + (DEV ? " dev" : "");
+  document.body.className = "mode-" + m + (collapsed ? " lab-collapsed" : "") + (DEV ? " dev" : "") + (NIGHT ? " night" : "") + (TRF.size ? " tr-filter" : "");
   if (prev !== m) { $(".stage").scrollTop = 0; $("#story").scrollTop = 0; hideTip(true); }
   $$(".modes a").forEach(a => a.dataset.mode === m ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
   hideTip(true);

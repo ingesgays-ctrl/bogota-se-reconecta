@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="top-r">
-  <div class="mode-sw" role="group" aria-label="Tipo de lectura"><button type="button" id="mUser" aria-pressed="true">Modo usuario</button><button type="button" id="mDev" aria-pressed="false">Modo desarrollador</button></div>
+  <div class="mode-sw" role="group" aria-label="Tipo de lectura"><button type="button" id="mUser" aria-pressed="true">Modo usuario</button><button type="button" id="mDev" aria-pressed="false">Modo desarrollador</button></div><button type="button" class="night-sw" id="tNight" aria-pressed="false" title="Modo noche: oscurece la página">🌙 Noche</button>
   <button type="button" class="present-btn" id="presBtn" title="Modo presentación (tecla P)"><span aria-hidden="true">▶</span> Presentar</button>
   <nav class="modes" aria-label="Secciones">
     <a href="#relato" data-mode="relato">Relato</a>
@@ -64,7 +64,7 @@
       <div class="hud-top" id="hudTop">
         <div class="hud-row">
           <div class="esc-seg" id="escList" role="radiogroup" aria-label="Escenarios"></div>
-          <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkVL" aria-pressed="false" title="Hora valle: supuesto, sin dato oficial">☁ Valle</button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div><label class="valle-box" id="valleBox" hidden>Demanda en valle <input id="valleF" type="range" min="20" max="90" step="5" value="50"> <b id="valleV">50 %</b> <small>del pico · supuesto</small></label>
+          <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkVL" aria-pressed="false" title="Entre picos (9 a. m.–4:30 p. m.): demanda supuesta, sin dato oficial">☁ <span data-u="Hora tranquila · 9 a. m.–4:30 p. m." data-d="Valle · 9 a. m.–4:30 p. m."></span></button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div><label class="valle-box" id="valleBox" hidden><span data-u="Gente en hora tranquila" data-d="Demanda en valle"></span> <input id="valleF" type="range" min="20" max="90" step="5" value="50"> <b id="valleV">50 %</b> <small>del pico · supuesto</small></label>
         </div>
         <div class="hud-cap" id="escCap"></div>
         <div class="hud-row">
