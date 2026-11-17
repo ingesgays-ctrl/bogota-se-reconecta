@@ -720,3 +720,4 @@ body:not(.mode-laboratorio) .tk-arrow{display:none!important}
 body:not(.mode-laboratorio) .panel-dock{display:none!important}
 @media (max-width:820px){.panel-dock{right:8px}.panel-dock button{width:46px;padding:4px 1px}.panel-dock small{font-size:8.5px}}
 @media (max-height:760px){.panel-dock small{display:none}.panel-dock button{padding:7px 2px}}
+.svc-real{font-size:13px;line-height:1.5;margin:6px 0;padding:6px 8px;background:#F3F5F4;border-radius:6px}.svc-real .bad{color:#B0101A;font-weight:600}.svc-real .mid{color:#9A6A00;font-weight:600}.svc-real small{color:var(--muted)}

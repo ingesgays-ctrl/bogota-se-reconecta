@@ -24,6 +24,6 @@ Estados de un bus:
 - **Retrasado:** 5 minutos o más de retraso.
 - **Lento:** menos de 10 km/h fuera de una estación.
 
-Si dos o más buses van lentos en el mismo tramo, el tramo se marca en ámbar.
+Si dos o más buses van lentos en el mismo tramo, el tramo se marca en ámbar. Para la ruta elegida también se calcula cada cuánto pasa un bus, los huecos (más de 1,6 veces el intervalo medio), los buses pegados y el tiempo real del recorrido completo comparado con el modelo.
 
 Sin puente, o si el feed falla, el laboratorio muestra la simulación. La pestaña **Rutas** permite elegir cualquiera de las 114 rutas, verla sobre el mapa con ondas en sus paradas y seguir uno de sus buses.
