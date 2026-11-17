@@ -1,109 +1,144 @@
-station_id,nombre_gtfs,nodo_grafo,nombre_grafo,metodo,confianza
-2000,Portal Norte T5B,E3,Portal Norte - Unicervantes,nombre,alta
-2001,Calle 187 B,E2,Calle 187,nombre,alta
-2101,Toberín E,E4,Toberín,nombre,alta
-2103,Mazurén C,E6,Mazúren,nombre,alta
-2104,Calle 146 A,E7,Calle 146,nombre,alta
-2105,Calle 142 B,E8,Calle 142,nombre,alta
-2200,Alcalá B,E9,Alcalá - Colegio S. Tomás Dominicos,nombre,alta
-2201,Prado C,E10,Prado,nombre,alta
-2202,Calle 127 B,E11,Calle 127,nombre,alta
-2204,Pepe Sierra B,E12,Pepe Sierra - Utel Universidad,nombre,alta
-2300,Calle 100 B,E14,Calle 100 - Marketmedios,nombre,alta
-2302,Virrey A,E15,Virrey - Cendiatra,nombre,alta
-2304,Héroes A,E17,Héroes - Colmena Seguros,nombre,alta
-2502,Terminal B,E1,Terminal,nombre,alta
-3000,Portal Suba T6,E55,Portal Suba,nombre,alta
-3001,La Campiña A,E54,La Campiña,nombre,alta
-3002,Suba,E53,Suba TV 91 - OMNILIFE SEYTÚ,posición: 'Suba' entre La Campiña y Gratamira,media
-3004,Gratamira A,E51,Gratamira,nombre,alta
-3006,Niza,E49,Niza - Calle 127,nombre,alta
-3007,Humedal Córdoba B,E48,Humedal Córdoba,nombre,alta
-3009,Av. Suba,E47,Av. Suba - Calle 116,nombre,alta
-3010,Puentelargo A,E46,Puentelargo,nombre,alta
-3012,Suba,E44,Suba - Calle 95,"posición: segundo 'Suba' después de Puentelargo, antes de San Martín",media
-3013,Rionegro A,E43,Rionegro,nombre,alta
-3014,San Martín A,E42,San Martín,nombre,alta
-4000,Portal 80 T-1B,E68,Portal 80,nombre,alta
-4001,Quirigua A,E67,Quirigua,nombre,alta
-4002,Cra. 90 A,E66,Carrera 90,nombre,alta
-4003,Av. Cali B,E65,Avenida Cali,nombre,alta
-4004,Granja,E64,Granja - CRA. 77,nombre,alta
-4101,Minuto de Dios A,E63,Minuto De Dios,nombre,alta
-4102,Boyacá B,E62,Boyacá,nombre,alta
-4103,Ferias A,E61,Ferias,nombre,alta
-4104,Av. 68 A,E60,Avenida 68,nombre,alta
-4106,Cra. 47 B,E58,Carrera 47,nombre,alta
-4108,Polo B,E56,Polo - FINCOMERCIO,nombre,alta
-6000,Portal Eldorado T-2,E133,Portal El Dorado - C. C Nuestro Bogotá,nombre,alta
-6001,Modelia A,E132,Modelia,nombre,alta
-6100,Av. Rojas B,E130,AV. Rojas - UNISALESIANA,nombre,alta
-6101,El Tiempo,E129,El Tiempo - Cámara De Comercio De Bogotá,nombre,alta
-6102,Salitre,E128,Salitre El Greco - Vive Claro,nombre,alta
-6103,CAN A,E127,CAN - British Council,nombre,alta
-6105,Quinta Paredes B,E125,Quinta Paredes - RTVC,nombre,alta
-6106,Corferias A,E124,Corferias,nombre,alta
-6107,Ciudad Universitaria A,E123,Ciudad Universitaria,nombre,alta
-6108,Concejo de Bogotá A,E122,Concejo de Bogotá,nombre,alta
-6109,Centro Memoria A,E121,Centro Memoria,nombre,alta
-6111,Universidades B,E118,Universidades CityU,nombre,alta
-7000,Portal Sur T3.,E93,Portal Sur - JFK Coop. Financiera,nombre,alta
-7001,Perdomo A,E92,Perdomo,nombre,alta
-7002,Madelena A,E91,C. C Paseo Villa Del Rio - Madelena,nombre,alta
-7003,Sevillana B,E90,Sevillana,nombre,alta
-7004,Venecia A,E89,Venecia,nombre,alta
-7005,Alquería B,E88,Alquería,nombre,alta
-7006,G. Santander B,E87,General Santander,nombre,alta
-7007,NQS,E85,NQS Calle 30 SUR,posición: 'NQS' entre Sevillana y Comuneros; puede ser NQS Calle 30 Sur (E85) o NQS Calle 38A Sur (E86),revisar
-7101,Castellana B,E69,La Castellana,nombre,alta
-7102,NQS,E70,NQS Calle 75,posición: 'NQS' entre Cra. 47 y Av. Chile = NQS Calle 75,media
-7103,Av. Chile A,E71,Avenida Chile,nombre,alta
-7104,7 de Agosto B,E72,7 de Agosto,nombre,alta
-7105,Movistar Arena B,E73,TIGO,nombre comercial nuevo: Movistar Arena = TIGO en el modelo,media
-7106,Campín-UAN A,E74,Campin - UAN,nombre,alta
-7107,U. Nacional A,E75,Universidad Nacional,nombre,alta
-7108,Av. El Dorado B,E76,AV. Eldorado,nombre,alta
-7109,CAD A,E77,CAD,nombre,alta
-7110,Paloquemao A,E78,Paloquemao,nombre,alta
-7111,Ricaurte B,E79,Ricaurte,nombre,alta
-7112,Comuneros A,E83,Comuneros,nombre,alta
-7113,Santa Isabel A,E84,Santa Isabel,nombre,alta
-7200,Tygua,E81,Tygua - San José,nombre,alta
-7201,Guatoque,E80,Guatoque - Veraguas,nombre,alta
-8000,Portal Tunal T5.,E37,Portal Tunal,nombre,alta
-8001,Parque A,E36,Parque,nombre,alta
-8002,Biblioteca A,E35,Biblioteca,nombre,alta
-9001,Molinos B,E39,Molinos,nombre,alta
-9002,Consuelo B,E38,Consuelo,nombre,alta
-9003,Socorro B,E34,Socorro,nombre,alta
-9004,Santa Lucía B,E33,Santa Lucía,nombre,alta
-9100,Calle 40 S. C,E32,Calle 40 Sur,nombre,alta
-9101,Quiroga B,E31,Quiroga,nombre,alta
-9103,Olaya B,E30,Olaya,nombre,alta
-9104,Restrepo B,E29,Restrepo,nombre,alta
-9105,Fucha B,E28,Fucha,nombre,alta
-9106,Nariño B,E27,Nariño,nombre,alta
-9107,Hortúa B,E26,Hortúa,nombre,alta
-9110,Av. Jiménez C,E25,Avenida Jiménez,nombre,alta
-9113,Calle 22 B,E24,Calle 22,nombre,alta
-9114,Calle 26 A,E23,Calle 26 - Atrio,nombre,alta
-9116,Av. 39 A,E22,AV. 39,nombre,alta
-9118,Marly B,E21,Calle 53 - Universidad Manuela Beltrán,"posición entre Av. 39 y Calle 57 (en el modelo se llama 'Calle 53'; tramo de 0,32 km frente a 3,4 min programados)",revisar
-9119,Calle 57 B,E20,Calle 57,nombre,alta
-9121,Flores A,E19,Flores,nombre,alta
-9122,Calle 72 A,E18,Calle 72 - Areandina,nombre,alta
-10000,PORTAL 20 DE JULIO T9.,E143,Portal 20 de Julio,nombre,alta
-10001,Country Sur B,E142,Country Sur,nombre,alta
-10002,Av. 1 de Mayo B,E141,AV. Primero de Mayo,nombre,alta
-10003,Ciudad Jardín-UAN B,E140,Ciudad Jardín - UAN,nombre,alta
-10004,Policarpa A,E139,Policarpa,nombre,alta
-10005,Bicentenario B,E82,Bicentenario,nombre,alta
-10006,San Victorino B,E137,San Victorino,nombre,alta
-10007,Las Nieves B,E136,Las Nieves,nombre,alta
-10008,San Diego A,E135,San Diego,nombre,alta
-10009,Museo Nacional A,E134,Museo Nacional,nombre,alta
-10010,San Bernardo A,E138,Estación San Bernardo,nombre,alta
-74372,Portal Usme T3A,E41,Portal Usme,"nombre (Portal Usme T3A, mismo portal que 90004)",alta
-90004,Portal Usme T1A,E41,Portal Usme,nombre (Portal Usme T1A),alta
-90007,Suba,E45,Suba Calle 100,posición: primer 'Suba' después de Puentelargo,media
-90008,Danubio  A,E40,Danubio,nombre,alta
+station_id,nombre_gtfs,lat_gtfs,lon_gtfs,nodo_grafo,nombre_grafo,dist_gtfs_grafo_m,metodo,confianza
+2502,Terminal A,4.768424788382582,-74.04362815133013,E1,Terminal,44,coordenada,alta
+2001,Calle 187 A,4.762853358123188,-74.04454013762137,E2,Calle 187,55,coordenada,alta
+2000,Portal Norte T1,4.754627707937086,-74.04604990954725,E3,Portal Norte - Unicervantes,1,coordenada,alta
+2101,Toberín E,4.745994407945318,-74.04732167906013,E4,Toberín,22,coordenada,alta
+2102,Calle 161 B,4.741924848691181,-74.04801551662676,E5,Calle 161,2,coordenada,alta
+2103,Mazurén C,4.734740632579878,-74.04919323674041,E6,Mazúren,17,coordenada,alta
+2104,Calle 146 C,4.730808130046415,-74.04984983802339,E7,Calle 146,10,coordenada,alta
+2105,Calle 142 B,4.726861402642283,-74.05051720463207,E8,Calle 142,2,coordenada,alta
+2200,Alcalá C,4.721100036084148,-74.05146711619032,E9,Alcalá - Colegio S. Tomás Dominicos,7,coordenada,alta
+2201,Prado C,4.714518663567339,-74.05257757167054,E10,Prado,5,coordenada,alta
+2202,Calle 127 B,4.704531372647523,-74.05425942577779,E11,Calle 127,13,coordenada,alta
+2204,Pepe Sierra B,4.698006114333733,-74.05532787867942,E12,Pepe Sierra - Utel Universidad,14,coordenada,alta
+2205,Calle 106 B,4.692966680361464,-74.05618662843452,E13,Calle 106,2,coordenada,alta
+2300,Calle 100 C,4.6839529575113525,-74.05770205166318,E14,Calle 100 - Marketmedios,1,coordenada,alta
+2302,Virrey C,4.675841592697676,-74.05904539824515,E15,Virrey - Cendiatra,18,coordenada,alta
+2303,Calle 85 C,4.672287368502928,-74.05966172249676,E16,Calle 85 - Gato Dumas,3,coordenada,alta
+2304,Héroes C,4.668250601008878,-74.06031863081544,E17,Héroes - Colmena Seguros,13,coordenada,alta
+9122,Calle 72 C,4.657710420615236,-74.06217624051392,E18,Calle 72 - Areandina,60,coordenada,alta
+9121,Flores A,4.652808666630331,-74.06397657632303,E19,Flores,256,coordenada,alta
+9119,Calle 57 B,4.645035672882142,-74.06546848336201,E20,Calle 57,232,coordenada,alta
+9118,Marly B,4.636288425464729,-74.0670080076987,E21,Calle 53 - Universidad Manuela Beltrán,0,posición entre Av. 39 y Calle 57 (Marly = 'Calle 53 - UMB' del modelo); coordenada del grafo corregida a la GTFS,alta
+9116,Av. 39 A -2 ó 5-T,4.626574249050841,-74.06874725828807,E22,AV. 39,36,coordenada,alta
+9114,Calle 26 A,4.616671593128758,-74.07215624942873,E23,Calle 26 - Atrio,2,coordenada,alta
+9113,Calle 22 B,4.6095622658606565,-74.07578760762742,E24,Calle 22,58,coordenada,alta
+9110,Av. Jiménez E,4.601251710206465,-74.08099891084447,E25,Avenida Jiménez,191,coordenada,alta
+9107,Hortúa B,4.590753941754307,-74.09033791361834,E26,Hortúa,15,coordenada,alta
+9106,Nariño B,4.586321621416593,-74.0939131861271,E27,Nariño,4,coordenada,alta
+9105,Fucha B,4.582891423146431,-74.09955593093194,E28,Fucha,19,coordenada,alta
+9104,Restrepo B,4.581828843651507,-74.10146967370116,E29,Restrepo,5,coordenada,alta
+9103,Olaya B,4.578821928870745,-74.10759946285143,E30,Olaya,28,coordenada,alta
+9101,Quiroga B,4.576819926830113,-74.114353597665,E31,Quiroga,3,coordenada,alta
+9100,Calle 40 S. C,4.575807787448449,-74.12003230252417,E32,Calle 40 Sur,5,coordenada,alta
+9004,Santa Lucía B,4.570900994359226,-74.12473618026208,E33,Santa Lucía,8,coordenada,alta
+9003,Socorro B,4.564683582852899,-74.12561042796047,E34,Socorro,4,coordenada,alta
+8002,Biblioteca A,4.570316708478239,-74.13038339939206,E35,Biblioteca,2,coordenada,alta
+8001,Parque A,4.568315729227143,-74.13553828528491,E36,Parque,14,coordenada,alta
+8000,Portal Tunal T1,4.568920320642501,-74.1392170367341,E37,Portal Tunal,72,coordenada,alta
+9002,Consuelo B,4.560096328841531,-74.12382285130168,E38,Consuelo,16,coordenada,alta
+9001,Molinos B,4.556907495459544,-74.12182550444597,E39,Molinos,18,coordenada,alta
+90008,Danubio A,4.546104424842511,-74.12096458264368,E40,Danubio,273,coordenada,alta
+90004,Portal Usme T3A,4.531591400093713,-74.11950135052258,E41,Portal Usme,18,coordenada (Portal Usme unificado: T1A + T3A),alta
+3014,San Martín A,4.676434913556642,-74.0671534481374,E42,San Martín,6,coordenada,alta
+3013,Rionegro A,4.6803920275216955,-74.0647911309561,E43,Rionegro,5,coordenada,alta
+3012,Suba,4.6847085925012095,-74.06324104375034,E44,Suba - Calle 95,3,coordenada ('Suba' = Suba Calle 95),alta
+90007,Suba,4.686675157169709,-74.06427686693158,E45,Suba Calle 100,37,coordenada ('Suba' = Suba Calle 100),alta
+3010,Puentelargo A,4.693480620291774,-74.06728059360564,E46,Puentelargo,12,coordenada,alta
+3009,Av. Suba,4.6991957692457635,-74.06987219920262,E47,Av. Suba - Calle 116,6,coordenada,alta
+3007,Humedal Córdoba A,4.7066885458814145,-74.07121321061608,E48,Humedal Córdoba,4,coordenada,alta
+3006,Niza,4.711977139312807,-74.07232641327433,E49,Niza - Calle 127,3,coordenada,alta
+3005,Suba,4.721265378642974,-74.07479201251209,E50,Suba - AV. Boyacá,9,coordenada ('Suba' = Suba - Av. Boyacá),alta
+3004,Gratamira A,4.72750022856056,-74.07474689402886,E51,Gratamira,6,coordenada,alta
+3003,21 Ángeles A,4.7354957538496345,-74.08099349518177,E52,21 Ángeles,2,coordenada,alta
+3002,Suba,4.739280494604835,-74.0873490083971,E53,Suba TV 91 - OMNILIFE SEYTÚ,55,coordenada ('Suba' entre La Campiña y Gratamira),alta
+3001,La Campiña A,4.7428606216674085,-74.09146970037773,E54,La Campiña,38,coordenada,alta
+3000,Portal Suba T8,4.746920830145097,-74.0943347837454,E55,Portal Suba,13,coordenada,alta
+4108,Polo C,4.670184958195546,-74.06437762318217,E56,Polo - FINCOMERCIO,5,coordenada,alta
+4107,Escuela Militar A,4.675563366594573,-74.06986597351757,E57,Escuela Militar,8,coordenada,alta
+4106,Cra. 47 B,4.6777253412183715,-74.07325045524014,E58,Carrera 47,3,coordenada,alta
+4105,Cra. 53 A,4.681761740849458,-74.07737044083757,E59,Carrera 53,7,coordenada,alta
+4104,Av. 68 A,4.686132542192016,-74.08081008865221,E60,Avenida 68,6,coordenada,alta
+4103,Ferias A,4.690978409223615,-74.08466723479924,E61,Ferias,13,coordenada,alta
+4102,Boyacá B,4.69357776456936,-74.08678215157823,E62,Boyacá,55,coordenada,alta
+4101,Minuto de Dios A,4.696873800875805,-74.09193952584826,E63,Minuto De Dios,1,coordenada,alta
+4004,Granja,4.698933566414343,-74.09564968025181,E64,Granja - CRA. 77,47,coordenada,alta
+4003,Av. Cali B,4.702177155663217,-74.09990878657706,E65,Avenida Cali,54,coordenada,alta
+4002,Cra. 90 A,4.704858134786036,-74.10501359475619,E66,Carrera 90,54,coordenada,alta
+4001,Quirigua A,4.706792107347511,-74.10882080235204,E67,Quirigua,12,coordenada,alta
+4000,Portal 80 T-1A,4.709818046503587,-74.11062890676394,E68,Portal 80,14,coordenada,alta
+7101,Castellana A,4.6756375778646655,-74.064461162739,E69,La Castellana,4,coordenada,alta
+7102,NQS,4.669761069953501,-74.0716902561486,E70,NQS Calle 75,61,coordenada ('NQS' = NQS Calle 75),alta
+7103,Av. Chile A,4.666210650451224,-74.07469995789107,E71,Avenida Chile,21,coordenada,alta
+7104,7 de Agosto A,4.657222879875963,-74.07767898052028,E72,7 de Agosto,8,coordenada,alta
+7105,Movistar Arena A,4.6498618382048456,-74.07837096384031,E73,TIGO,20,coordenada (Movistar Arena = TIGO en el modelo),alta
+7106,Campín-UAN A,4.645357626034722,-74.07871246453328,E74,Campin - UAN,4,coordenada,alta
+7107,U. Nacional A,4.6370026786793614,-74.07933497043574,E75,Universidad Nacional,13,coordenada,alta
+7108,Av. El Dorado B,4.630187903278569,-74.07994332867769,E76,AV. Eldorado,54,coordenada,alta
+7109,CAD A,4.623354854234302,-74.08423272483893,E77,CAD,9,coordenada,alta
+7110,Paloquemao A,4.616709985924191,-74.0897407190324,E78,Paloquemao,31,coordenada,alta
+7111,Ricaurte F,4.612134844942205,-74.09208089976316,E79,Ricaurte,26,coordenada,alta
+7201,Guatoque,4.604031710637696,-74.09474044262664,E80,Guatoque - Veraguas,26,coordenada,alta
+7200,Tygua,4.599765815869038,-74.08872416901187,E81,Tygua - San José,5,coordenada,alta
+10005,Bicentenario B,4.593505368283625,-74.0822137357276,E82,Bicentenario,71,coordenada,alta
+7112,Comuneros A,4.6042142824122045,-74.0999091478915,E83,Comuneros,7,coordenada,alta
+7113,Santa Isabel A,4.601500434876156,-74.10284216967213,E84,Santa Isabel,32,coordenada,alta
+7008,NQS,4.594750803495208,-74.11809730419513,E85,NQS Calle 30 SUR,25,coordenada GTFS a 25 m de NQS Calle 30 Sur,alta
+7007,NQS,4.593802339950237,-74.12374550997357,E86,CL 38 A Sur - Centro Mayor,1,"coordenada GTFS a 1 m de CL 38 A Sur - Centro Mayor (E86), no de NQS Calle 30 Sur (E85, que es el ID 7008)",alta
+7006,G. Santander B,4.593599157695808,-74.13006594858292,E87,General Santander,58,coordenada,alta
+7005,Alquería A,4.59426853501558,-74.13422029485847,E88,Alquería,6,coordenada,alta
+7004,Venecia A,4.595551675677527,-74.14282221905187,E89,Venecia,19,coordenada,alta
+7003,Sevillana A,4.595117016335422,-74.14746538191929,E90,Sevillana,6,coordenada,alta
+7002,Madelena A,4.596252014456998,-74.15702471595603,E91,C. C Paseo Villa Del Rio - Madelena,16,coordenada,alta
+7001,Perdomo A,4.595777447273559,-74.16499190928442,E92,Perdomo,3,coordenada,alta
+7000,Portal Sur T1,4.597247605363899,-74.16908534718179,E93,Portal Sur - JFK Coop. Financiera,42,coordenada,alta
+7010,Bosa A,4.596886353100774,-74.18126651900502,E94,Bosa,5,coordenada,alta
+7506,La Despensa A,4.594558047388885,-74.18820600237059,E95,La Despensa,11,coordenada,alta
+7505,León XIII A,4.59217883481719,-74.19311796463666,E96,León XIII,2,coordenada,alta
+7504,Terreros B,4.589048328823109,-74.19934511991666,E97,Terreros - H. Cardiovascular,22,coordenada,alta
+7503,San Mateo A,4.586091905683283,-74.20523125845718,E98,San Mateo,28,coordenada,alta
+14001,De la Sabana A,4.605408261921927,-74.08189299966261,E99,De La Sabana,1,coordenada,alta
+12004,San Façon,4.6096289240876684,-74.0866740085844,E100,San Facon Carrera 22,18,coordenada,alta
+12002,CDS,4.6161028339063,-74.09394325377947,E101,CDS Carrera 32,4,coordenada,alta
+12007,Zona Industrial A,4.620334702454425,-74.09872234244841,E102,Zona Industrial,4,coordenada,alta
+12001,Cra. 43 A,4.622785012020622,-74.10145523184119,E103,Carrera 43 - Comapan,2,coordenada,alta
+12000,Puente Aranda A,4.625787488215574,-74.10478456439489,E104,Puente Aranda,21,coordenada,alta
+5107,Distrito Grafiti A,4.62789284897449,-74.111667134226,E105,Distrito Grafiti,10,coordenada,alta
+5105,Pradera A,4.628507955179006,-74.11858351305474,E106,Pradera - Plaza Central,10,coordenada,alta
+5103,Marsella A,4.629699618094743,-74.1302960467703,E107,Marsella,15,coordenada,alta
+5102,Av. Américas,4.630096224125728,-74.13416563783757,E108,Av Américas - Av. Boyacá,7,coordenada,alta
+5101,Mandalay A,4.630841308922851,-74.1413613824311,E109,Mandalay,7,coordenada,alta
+5100,Banderas T1,4.631285966406915,-74.14564044638449,E110,Banderas,14,coordenada,alta
+5005,Tv. 86 A,4.634173334071981,-74.15204225254047,E111,Transversal 86,4,coordenada,alta
+5002,Biblioteca Tintal A,4.63797523560584,-74.15927967771414,E112,Biblioteca Tintal,11,coordenada,alta
+5001,Patio Bonito A,4.6328612269616025,-74.1649357300714,E113,Patio Bonito,50,coordenada,alta
+5000,Portal Américas T2 A,4.6295088081729165,-74.17276212518998,E114,Portal Americas,36,coordenada,alta
+90011,Islandia A,4.614377976374936,-74.19375138370282,E115,Islandia,1610,nombre (Islandia); el nodo del grafo está a 1610 m de la coordenada GTFS,alta
+90010,Laureles A,4.6110173414413005,-74.2023991841249,E116,Laureles,1104,nombre (Laureles); el nodo del grafo está a 1104 m de la coordenada GTFS,alta
+90009,Tibanica A,4.606806029287865,-74.20602332745385,E117,Tibanica - Primavera,790,nombre (Tibanica); el nodo del grafo está a 790 m de la coordenada GTFS,alta
+6111,Universidades A,4.60475485553183,-74.0672568797864,E118,Universidades CityU,14,coordenada,alta
+14005,Aguas A,4.602562027037322,-74.06835731614862,E119,Las Aguas - Centro Colombo Americano,5,coordenada,alta
+14004,Museo del Oro A,4.601191397675505,-74.07293527384934,E120,Museo del Oro,5,coordenada,alta
+6109,Centro Memoria A,4.620507182641725,-74.07638355041777,E121,Centro Memoria,8,coordenada,alta
+6108,Concejo de Bogotá A,4.625987139326871,-74.0803069964204,E122,Concejo de Bogotá,2,coordenada,alta
+6107,Ciudad Universitaria A,4.630928553733654,-74.08358861484068,E123,Ciudad Universitaria,9,coordenada,alta
+6106,Corferias A,4.634375401630306,-74.089907725336,E124,Corferias,24,coordenada,alta
+6105,Quinta Paredes A,4.637582933022946,-74.09318319978381,E125,Quinta Paredes - RTVC,10,coordenada,alta
+6104,Gobernación A,4.642976924544984,-74.09665742520764,E126,Gobernacion,21,coordenada,alta
+6103,CAN A,4.646951919190747,-74.09912360736658,E127,CAN - British Council,12,coordenada,alta
+6102,Salitre,4.650937244814471,-74.10171540085418,E128,Salitre El Greco - Vive Claro,11,coordenada,alta
+6101,El Tiempo,4.657170537907405,-74.10569849007116,E129,El Tiempo - Cámara De Comercio De Bogotá,13,coordenada,alta
+6100,Av. Rojas A,4.661964010022623,-74.10879566982732,E130,AV. Rojas - UNISALESIANA,3,coordenada,alta
+6002,Normandía A,4.668942144650097,-74.11323037641132,E131,Normandia,9,coordenada,alta
+6001,Modelia A,4.675161040691902,-74.11720876134561,E132,Modelia,17,coordenada,alta
+6000,Portal Eldorado T-1,4.681641405954315,-74.12144187286918,E133,Portal El Dorado - C. C Nuestro Bogotá,5,coordenada,alta
+10009,Museo Nacional A,4.615062292208651,-74.06930949848187,E134,Museo Nacional,23,coordenada,alta
+10008,San Diego A,4.610762867204458,-74.07156656363013,E135,San Diego,17,coordenada,alta
+10007,Las Nieves A,4.606009188799961,-74.07434422219043,E136,Las Nieves,6,coordenada,alta
+10006,San Victorino B,4.600980098461836,-74.07745304101181,E137,San Victorino,6,coordenada,alta
+10010,San Bernardo A,4.590141936519749,-74.08437547694558,E138,Estación San Bernardo,8,coordenada,alta
+10004,Policarpa A,4.586235282232399,-74.08693775537223,E139,Policarpa,16,coordenada,alta
+10003,Ciudad Jardín-UAN B,4.581411282048832,-74.09046928861586,E140,Ciudad Jardín - UAN,20,coordenada,alta
+10002,Av. 1 de Mayo B,4.577037549571948,-74.09364094254673,E141,AV. Primero de Mayo,13,coordenada,alta
+10001,Country Sur B,4.5714211105982345,-74.09865352402595,E142,Country Sur,2,coordenada,alta
+10000,PORTAL 20 DE JULIO T3,4.565403393833461,-74.09718380868689,E143,Portal 20 de Julio,40,coordenada,alta

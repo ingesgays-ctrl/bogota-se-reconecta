@@ -1,505 +1,330 @@
 {
- "fuente": "GTFS_20261013, agency_id 1, service_id 1",
- "arcos": 944,
- "estaciones_gtfs": 108,
- "nodos_grafo_cubiertos": 107,
- "nodos_grafo_sin_oferta": [
-  "E5 Calle 161",
-  "E13 Calle 106",
-  "E16 Calle 85 - Gato Dumas",
-  "E50 Suba - AV. Boyacá",
-  "E52 21 Ángeles",
-  "E57 Escuela Militar",
-  "E59 Carrera 53",
-  "E86 CL 38 A Sur - Centro Mayor",
-  "E94 Bosa",
-  "E95 La Despensa",
-  "E96 León XIII",
-  "E97 Terreros - H. Cardiovascular",
-  "E98 San Mateo",
-  "E99 De La Sabana",
-  "E100 San Facon Carrera 22",
-  "E101 CDS Carrera 32",
-  "E102 Zona Industrial",
-  "E103 Carrera 43 - Comapan",
-  "E104 Puente Aranda",
-  "E105 Distrito Grafiti",
-  "E106 Pradera - Plaza Central",
-  "E107 Marsella",
-  "E108 Av Américas - Av. Boyacá",
-  "E109 Mandalay",
-  "E110 Banderas",
-  "E111 Transversal 86",
-  "E112 Biblioteca Tintal",
-  "E113 Patio Bonito",
-  "E114 Portal Americas",
-  "E115 Islandia",
-  "E116 Laureles",
-  "E117 Tibanica - Primavera",
-  "E119 Las Aguas - Centro Colombo Americano",
-  "E120 Museo del Oro",
-  "E126 Gobernacion",
-  "E131 Normandia"
- ],
+ "fuente": "GTFS_20261013, agency_id 1, todos los service_id hábiles (calendar.txt lunes–viernes = 1)",
+ "arcos": 2173,
+ "arcos_por_franja": {
+  "am": 721,
+  "pm": 719,
+  "valle": 733
+ },
+ "estaciones_gtfs": 143,
+ "nodos_grafo_cubiertos": 143,
+ "rutas_gtfs": 95,
  "rutas_modelo": 106,
- "rutas_gtfs": 27,
  "rutas_modelo_sin_viajes_gtfs": [
-  "1",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "A52",
-  "A60",
-  "A61",
-  "B10",
-  "B11",
-  "B12",
-  "B13",
-  "B16",
-  "B23",
-  "B26",
-  "B27",
-  "B28",
-  "B46",
-  "B50",
-  "B55",
-  "B74",
-  "C19",
-  "C25",
-  "C30",
-  "C50",
-  "C73",
   "C84",
-  "D10",
-  "D24",
-  "D55",
   "D81",
-  "E32",
-  "E42",
-  "E48",
-  "F19",
-  "F23",
-  "F26",
-  "F28",
-  "F32",
-  "F51",
-  "F60",
   "F63",
-  "G11",
-  "G12",
-  "G30",
-  "G52",
-  "H13",
-  "H27",
-  "J23",
-  "J24",
-  "J70",
-  "J73",
-  "J74",
-  "K10",
-  "K16",
-  "K23",
-  "K43",
-  "K54",
   "K86",
-  "L10",
-  "L25",
-  "L41",
   "L81",
   "L82",
-  "M51",
   "M82",
   "M84",
   "M85",
   "M86",
   "P85",
-  "S41",
-  "S42",
-  "S43",
-  "S45",
-  "S46",
-  "S48",
-  "Z61",
   "Z63"
  ],
- "tramos_fisicos_con_oferta": 124,
- "tramos_fisicos_total": 146,
- "arcos_velocidad_fuera_8_60": [
-  {
-   "franja": "am",
-   "de": "7200",
-   "a": "9106",
-   "nombres": "Tygua → Nariño B",
-   "rutas": "H72",
-   "min": 5.0,
-   "km_grafo": 5.89,
-   "estaciones_intermedias_en_grafo": 6,
-   "kmh": 70.5
+ "rutas_gtfs_fuera_del_modelo": [
+  "G45"
+ ],
+ "shapes_cargados": 1100,
+ "metodo_por_par_od": {
+  "adyacente": 282,
+  "trazado": 403,
+  "enlace operacional": 4,
+  "conector faltante": 26,
+  "grafo": 32
+ },
+ "excluidos": {
+  "conector faltante": 72,
+  "bucle": 3
+ },
+ "tramos_base": 146,
+ "tramos_base_con_oferta": 144,
+ "tramos_base_sin_oferta": [
+  "E33|E38",
+  "E34|E35"
+ ],
+ "correccion_ramal_sur": {
+  "quita": [
+   "E33|E38",
+   "E34|E35"
+  ],
+  "agrega": [
+   "E33|E35",
+   "E34|E38"
+  ]
+ },
+ "enlaces_operacionales": {
+  "E141|E31": "Quiroga ↔ Av. 1 de Mayo (M83/H83)",
+  "E27|E81": "Tygua ↔ Nariño (B72/H72)"
+ },
+ "franjas": {
+  "am": {
+   "arcos": 721,
+   "bus_h_promedio_arco": 24.54,
+   "tramo_mas_cargado": "Paloquemao → CAD",
+   "bus_h_tramo_mas_cargado": 319.3
   },
-  {
-   "franja": "am",
-   "de": "8000",
-   "a": "8001",
-   "nombres": "Portal Tunal T5. → Parque A",
-   "rutas": "3, C15",
-   "min": 5.8,
-   "km_grafo": 0.45,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 4.6
+  "valle": {
+   "arcos": 733,
+   "bus_h_promedio_arco": 16.34,
+   "tramo_mas_cargado": "CAD → Paloquemao",
+   "bus_h_tramo_mas_cargado": 142.0
   },
-  {
-   "franja": "am",
-   "de": "9002",
-   "a": "9003",
-   "nombres": "Consuelo B → Socorro B",
-   "rutas": "B75, C17, J76",
-   "min": 1.9,
-   "km_grafo": 1.91,
-   "estaciones_intermedias_en_grafo": 1,
-   "kmh": 61.2
-  },
-  {
-   "franja": "am",
-   "de": "9003",
-   "a": "9001",
-   "nombres": "Socorro B → Molinos B",
-   "rutas": "H72",
-   "min": 2.2,
-   "km_grafo": 2.33,
-   "estaciones_intermedias_en_grafo": 2,
-   "kmh": 64.6
-  },
-  {
-   "franja": "am",
-   "de": "9003",
-   "a": "9002",
-   "nombres": "Socorro B → Consuelo B",
-   "rutas": "H17, H75",
-   "min": 1.6,
-   "km_grafo": 1.91,
-   "estaciones_intermedias_en_grafo": 1,
-   "kmh": 70.7
-  },
-  {
-   "franja": "am",
-   "de": "9101",
-   "a": "10002",
-   "nombres": "Quiroga B → Av. 1 de Mayo B",
-   "rutas": "M83",
-   "min": 9.4,
-   "km_grafo": 11.72,
-   "estaciones_intermedias_en_grafo": 15,
-   "kmh": 74.7
-  },
-  {
-   "franja": "am",
-   "de": "9106",
-   "a": "7200",
-   "nombres": "Nariño B → Tygua",
-   "rutas": "B72",
-   "min": 5.4,
-   "km_grafo": 5.89,
-   "estaciones_intermedias_en_grafo": 6,
-   "kmh": 65.3
-  },
-  {
-   "franja": "am",
-   "de": "9110",
-   "a": "6111",
-   "nombres": "Av. Jiménez C → Universidades B",
-   "rutas": "J76",
-   "min": 13.0,
-   "km_grafo": 1.64,
-   "estaciones_intermedias_en_grafo": 2,
-   "kmh": 7.6
-  },
-  {
-   "franja": "am",
-   "de": "9118",
-   "a": "9119",
-   "nombres": "Marly B → Calle 57 B",
-   "rutas": "B75, C15",
-   "min": 3.4,
-   "km_grafo": 0.32,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 5.6
-  },
-  {
-   "franja": "am",
-   "de": "9119",
-   "a": "9118",
-   "nombres": "Calle 57 B → Marly B",
-   "rutas": "H15, H75",
-   "min": 3.6,
-   "km_grafo": 0.32,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 5.3
-  },
-  {
-   "franja": "am",
-   "de": "10000",
-   "a": "10001",
-   "nombres": "PORTAL 20 DE JULIO T9. → Country Sur B",
-   "rutas": "2, B18",
-   "min": 5.1,
-   "km_grafo": 0.66,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 7.7
-  },
-  {
-   "franja": "am",
-   "de": "10002",
-   "a": "9101",
-   "nombres": "Av. 1 de Mayo B → Quiroga B",
-   "rutas": "H83",
-   "min": 8.8,
-   "km_grafo": 11.72,
-   "estaciones_intermedias_en_grafo": 15,
-   "kmh": 80.0
-  },
-  {
-   "franja": "pm",
-   "de": "6111",
-   "a": "9110",
-   "nombres": "Universidades B → Av. Jiménez C",
-   "rutas": "H76",
-   "min": 25.6,
-   "km_grafo": 1.64,
-   "estaciones_intermedias_en_grafo": 2,
-   "kmh": 3.8
-  },
-  {
-   "franja": "pm",
-   "de": "8000",
-   "a": "8001",
-   "nombres": "Portal Tunal T5. → Parque A",
-   "rutas": "3, C15",
-   "min": 5.5,
-   "km_grafo": 0.45,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 4.8
-  },
-  {
-   "franja": "pm",
-   "de": "8001",
-   "a": "8000",
-   "nombres": "Parque A → Portal Tunal T5.",
-   "rutas": "3, H15",
-   "min": 3.9,
-   "km_grafo": 0.45,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 6.8
-  },
-  {
-   "franja": "pm",
-   "de": "9002",
-   "a": "9003",
-   "nombres": "Consuelo B → Socorro B",
-   "rutas": "B75, C17",
-   "min": 1.7,
-   "km_grafo": 1.91,
-   "estaciones_intermedias_en_grafo": 1,
-   "kmh": 65.6
-  },
-  {
-   "franja": "pm",
-   "de": "9003",
-   "a": "9002",
-   "nombres": "Socorro B → Consuelo B",
-   "rutas": "H17, H75, H76",
-   "min": 1.8,
-   "km_grafo": 1.91,
-   "estaciones_intermedias_en_grafo": 1,
-   "kmh": 63.4
-  },
-  {
-   "franja": "pm",
-   "de": "9101",
-   "a": "10002",
-   "nombres": "Quiroga B → Av. 1 de Mayo B",
-   "rutas": "M83",
-   "min": 9.7,
-   "km_grafo": 11.72,
-   "estaciones_intermedias_en_grafo": 15,
-   "kmh": 72.2
-  },
-  {
-   "franja": "pm",
-   "de": "9106",
-   "a": "7200",
-   "nombres": "Nariño B → Tygua",
-   "rutas": "B72",
-   "min": 5.5,
-   "km_grafo": 5.89,
-   "estaciones_intermedias_en_grafo": 6,
-   "kmh": 64.1
-  },
-  {
-   "franja": "pm",
-   "de": "9118",
-   "a": "9119",
-   "nombres": "Marly B → Calle 57 B",
-   "rutas": "B75, C15",
-   "min": 3.5,
-   "km_grafo": 0.32,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 5.5
-  },
-  {
-   "franja": "pm",
-   "de": "9119",
-   "a": "9118",
-   "nombres": "Calle 57 B → Marly B",
-   "rutas": "H15, H75",
-   "min": 4.1,
-   "km_grafo": 0.32,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 4.7
-  },
-  {
-   "franja": "pm",
-   "de": "10002",
-   "a": "9101",
-   "nombres": "Av. 1 de Mayo B → Quiroga B",
-   "rutas": "H83",
-   "min": 9.7,
-   "km_grafo": 11.72,
-   "estaciones_intermedias_en_grafo": 15,
-   "kmh": 72.7
-  },
-  {
-   "franja": "valle",
-   "de": "6111",
-   "a": "9110",
-   "nombres": "Universidades B → Av. Jiménez C",
-   "rutas": "H76",
-   "min": 24.2,
-   "km_grafo": 1.64,
-   "estaciones_intermedias_en_grafo": 2,
-   "kmh": 4.1
-  },
-  {
-   "franja": "valle",
-   "de": "7200",
-   "a": "9106",
-   "nombres": "Tygua → Nariño B",
-   "rutas": "H72",
-   "min": 4.8,
-   "km_grafo": 5.89,
-   "estaciones_intermedias_en_grafo": 6,
-   "kmh": 74.2
-  },
-  {
-   "franja": "valle",
-   "de": "8000",
-   "a": "8001",
-   "nombres": "Portal Tunal T5. → Parque A",
-   "rutas": "3, C15",
-   "min": 5.4,
-   "km_grafo": 0.45,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 4.9
-  },
-  {
-   "franja": "valle",
-   "de": "9002",
-   "a": "9003",
-   "nombres": "Consuelo B → Socorro B",
-   "rutas": "B75, C17",
-   "min": 1.6,
-   "km_grafo": 1.91,
-   "estaciones_intermedias_en_grafo": 1,
-   "kmh": 70.9
-  },
-  {
-   "franja": "valle",
-   "de": "9003",
-   "a": "9001",
-   "nombres": "Socorro B → Molinos B",
-   "rutas": "H72",
-   "min": 2.1,
-   "km_grafo": 2.33,
-   "estaciones_intermedias_en_grafo": 2,
-   "kmh": 67.7
-  },
-  {
-   "franja": "valle",
-   "de": "9003",
-   "a": "9002",
-   "nombres": "Socorro B → Consuelo B",
-   "rutas": "H17, H75",
-   "min": 1.6,
-   "km_grafo": 1.91,
-   "estaciones_intermedias_en_grafo": 1,
-   "kmh": 71.6
-  },
-  {
-   "franja": "valle",
-   "de": "9101",
-   "a": "10002",
-   "nombres": "Quiroga B → Av. 1 de Mayo B",
-   "rutas": "M83",
-   "min": 9.4,
-   "km_grafo": 11.72,
-   "estaciones_intermedias_en_grafo": 15,
-   "kmh": 75.1
-  },
-  {
-   "franja": "valle",
-   "de": "9106",
-   "a": "7200",
-   "nombres": "Nariño B → Tygua",
-   "rutas": "B72",
-   "min": 5.2,
-   "km_grafo": 5.89,
-   "estaciones_intermedias_en_grafo": 6,
-   "kmh": 68.0
-  },
-  {
-   "franja": "valle",
-   "de": "9110",
-   "a": "6111",
-   "nombres": "Av. Jiménez C → Universidades B",
-   "rutas": "J76",
-   "min": 15.1,
-   "km_grafo": 1.64,
-   "estaciones_intermedias_en_grafo": 2,
-   "kmh": 6.5
-  },
-  {
-   "franja": "valle",
-   "de": "9118",
-   "a": "9119",
-   "nombres": "Marly B → Calle 57 B",
-   "rutas": "B75, C15",
-   "min": 3.1,
-   "km_grafo": 0.32,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 6.2
-  },
-  {
-   "franja": "valle",
-   "de": "9119",
-   "a": "9118",
-   "nombres": "Calle 57 B → Marly B",
-   "rutas": "H15, H75",
-   "min": 3.3,
-   "km_grafo": 0.32,
-   "estaciones_intermedias_en_grafo": 0,
-   "kmh": 5.8
-  },
-  {
-   "franja": "valle",
-   "de": "10002",
-   "a": "9101",
-   "nombres": "Av. 1 de Mayo B → Quiroga B",
-   "rutas": "H83",
-   "min": 9.2,
-   "km_grafo": 11.72,
-   "estaciones_intermedias_en_grafo": 15,
-   "kmh": 76.8
+  "pm": {
+   "arcos": 719,
+   "bus_h_promedio_arco": 23.57,
+   "tramo_mas_cargado": "CAD → Paloquemao",
+   "bus_h_tramo_mas_cargado": 292.3
   }
+ },
+ "equivalencias_mayor_distancia_m": [
+  {
+   "station_id": "90011",
+   "nodo": "E115",
+   "dist_m": 1610
+  },
+  {
+   "station_id": "90010",
+   "nodo": "E116",
+   "dist_m": 1104
+  },
+  {
+   "station_id": "90009",
+   "nodo": "E117",
+   "dist_m": 790
+  },
+  {
+   "station_id": "90008",
+   "nodo": "E40",
+   "dist_m": 273
+  },
+  {
+   "station_id": "9121",
+   "nodo": "E19",
+   "dist_m": 256
+  },
+  {
+   "station_id": "9119",
+   "nodo": "E20",
+   "dist_m": 232
+  },
+  {
+   "station_id": "9110",
+   "nodo": "E25",
+   "dist_m": 191
+  },
+  {
+   "station_id": "8000",
+   "nodo": "E37",
+   "dist_m": 72
+  },
+  {
+   "station_id": "10005",
+   "nodo": "E82",
+   "dist_m": 71
+  },
+  {
+   "station_id": "7102",
+   "nodo": "E70",
+   "dist_m": 61
+  },
+  {
+   "station_id": "9122",
+   "nodo": "E18",
+   "dist_m": 60
+  },
+  {
+   "station_id": "9113",
+   "nodo": "E24",
+   "dist_m": 58
+  }
+ ],
+ "pares_od_conector_faltante": [
+  {
+   "de": "AV. 39",
+   "a": "Universidades CityU",
+   "km": "grafo 4.84 km vs GTFS 3.03 km",
+   "rutas": "J24"
+  },
+  {
+   "de": "Avenida Jiménez",
+   "a": "Bicentenario",
+   "km": "grafo 4.61 km vs GTFS 1.85 km",
+   "rutas": "L18"
+  },
+  {
+   "de": "Avenida Jiménez",
+   "a": "Las Nieves",
+   "km": "grafo 6.25 km vs GTFS 0.71 km",
+   "rutas": "M51"
+  },
+  {
+   "de": "Avenida Jiménez",
+   "a": "Tygua - San José",
+   "km": "grafo 3.61 km vs GTFS 1.06 km",
+   "rutas": "8"
+  },
+  {
+   "de": "Bicentenario",
+   "a": "Avenida Jiménez",
+   "km": "grafo 4.61 km vs GTFS 1.93 km",
+   "rutas": "B18"
+  },
+  {
+   "de": "Calle 22",
+   "a": "Centro Memoria",
+   "km": "grafo 4.81 km vs GTFS 1.95 km",
+   "rutas": "3"
+  },
+  {
+   "de": "Calle 22",
+   "a": "De La Sabana",
+   "km": "grafo 1.56 km vs GTFS 1.06 km",
+   "rutas": "Z61"
+  },
+  {
+   "de": "Calle 26 - Atrio",
+   "a": "Concejo de Bogotá",
+   "km": "grafo 6.44 km vs GTFS 2.17 km",
+   "rutas": "K23"
+  },
+  {
+   "de": "Calle 26 - Atrio",
+   "a": "Universidades CityU",
+   "km": "grafo 3.67 km vs GTFS 1.88 km",
+   "rutas": "J74"
+  },
+  {
+   "de": "Centro Memoria",
+   "a": "Calle 22",
+   "km": "grafo 4.81 km vs GTFS 1.32 km",
+   "rutas": "3"
+  },
+  {
+   "de": "Centro Memoria",
+   "a": "Las Nieves",
+   "km": "grafo 8.05 km vs GTFS 1.88 km",
+   "rutas": "L10"
+  },
+  {
+   "de": "Concejo de Bogotá",
+   "a": "Calle 26 - Atrio",
+   "km": "grafo 6.44 km vs GTFS 2.42 km",
+   "rutas": "B23"
+  },
+  {
+   "de": "De La Sabana",
+   "a": "Calle 22",
+   "km": "grafo 1.56 km vs GTFS 1.08 km",
+   "rutas": "A61"
+  },
+  {
+   "de": "Escuela Militar",
+   "a": "Rionegro",
+   "km": "grafo 2.08 km vs GTFS 1.42 km",
+   "rutas": "C50"
+  },
+  {
+   "de": "Escuela Militar",
+   "a": "San Martín",
+   "km": "grafo 1.57 km vs GTFS 0.86 km",
+   "rutas": "7"
+  },
+  {
+   "de": "Fucha",
+   "a": "Guatoque - Veraguas",
+   "km": "grafo 5.71 km vs GTFS 3.69 km",
+   "rutas": "D21"
+  },
+  {
+   "de": "Guatoque - Veraguas",
+   "a": "Hortúa",
+   "km": "grafo 5.99 km vs GTFS 2.23 km",
+   "rutas": "H17"
+  },
+  {
+   "de": "Hortúa",
+   "a": "Guatoque - Veraguas",
+   "km": "grafo 4.35 km vs GTFS 2.25 km",
+   "rutas": "C17"
+  },
+  {
+   "de": "La Castellana",
+   "a": "Calle 100 - Marketmedios",
+   "km": "grafo 1.51 km vs GTFS 1.10 km",
+   "rutas": "B12"
+  },
+  {
+   "de": "Las Nieves",
+   "a": "Avenida Jiménez",
+   "km": "grafo 6.25 km vs GTFS 0.85 km",
+   "rutas": "F51"
+  },
+  {
+   "de": "Las Nieves",
+   "a": "Centro Memoria",
+   "km": "grafo 9.28 km vs GTFS 2.16 km",
+   "rutas": "K10"
+  },
+  {
+   "de": "Rionegro",
+   "a": "Escuela Militar",
+   "km": "grafo 2.08 km vs GTFS 1.24 km",
+   "rutas": "B50"
+  },
+  {
+   "de": "San Martín",
+   "a": "Escuela Militar",
+   "km": "grafo 1.57 km vs GTFS 0.72 km",
+   "rutas": "7"
+  },
+  {
+   "de": "Tygua - San José",
+   "a": "Avenida Jiménez",
+   "km": "grafo 3.61 km vs GTFS 1.00 km",
+   "rutas": "8"
+  },
+  {
+   "de": "Universidades CityU",
+   "a": "AV. 39",
+   "km": "grafo 4.84 km vs GTFS 2.78 km",
+   "rutas": "D24"
+  },
+  {
+   "de": "Universidades CityU",
+   "a": "Calle 26 - Atrio",
+   "km": "grafo 3.67 km vs GTFS 1.73 km",
+   "rutas": "B74"
+  }
+ ],
+ "pares_od_sin_camino": [
+  "E118→E22",
+  "E118→E23",
+  "E121→E136",
+  "E121→E24",
+  "E122→E23",
+  "E136→E121",
+  "E136→E25",
+  "E22→E118",
+  "E23→E118",
+  "E23→E122",
+  "E24→E121",
+  "E24→E99",
+  "E25→E136",
+  "E25→E81",
+  "E25→E82",
+  "E26→E80",
+  "E28→E80",
+  "E42→E57",
+  "E43→E57",
+  "E57→E42",
+  "E57→E43",
+  "E69→E14",
+  "E80→E26",
+  "E81→E25",
+  "E82→E25",
+  "E99→E24"
  ]
 }

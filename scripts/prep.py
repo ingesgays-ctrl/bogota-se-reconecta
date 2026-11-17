@@ -99,6 +99,10 @@ assert [r[0] for r in M] == [p["estacion"] for p in paradas]
 SOACHA = {"La Despensa", "León XIII", "Terreros - H. Cardiovascular", "San Mateo"}
 red_nodes = [{"id": f"E{int(p['estacion_id'])}", "nombre": fix(p["estacion"]), "lat": float(p["lat"]), "lon": float(p["lon"]),
               "municipio": "Soacha" if p["estacion"] in SOACHA else "Bogotá"} for p in paradas]
+# coordenadas corregidas con el catálogo GTFS (datos/gtfs/catalogo_estaciones_gtfs_coords.csv); la topología no cambia
+COORD_GTFS = {"E21": (4.636288, -74.067008)}   # Marly (GTFS 9118): el Excel la ubicaba a 0,32 km de Calle 57; real ≈ 1,0 km
+for n in red_nodes:
+    if n["id"] in COORD_GTFS: n["lat"], n["lon"] = COORD_GTFS[n["id"]]
 red_edges = []
 for i in range(143):
     for j in range(i+1, 143):

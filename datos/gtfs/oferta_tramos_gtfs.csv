@@ -1,736 +1,883 @@
-franja,desde,hasta,desde_nombre,hasta_nombre,km_grafo,buses_hora_programados,rutas,tiempo_programado_min
-am,E1,E2,Terminal,Calle 187,0.617,10.0,L18,2.23
-am,E10,E11,Prado,Calle 127,1.118,36.33,H72 H75 L18,
-am,E10,E9,Prado,Alcalá - Colegio S. Tomás Dominicos,0.744,61.67,B18 B72 B75,
-am,E100,E79,San Facon Carrera 22,Ricaurte,0.663,38.33,C17 D21 L18,
-am,E100,E99,San Facon Carrera 22,De La Sabana,0.725,40.67,B18 H17 H21,
-am,E11,E10,Calle 127,Prado,1.118,62.01,B18 B72 B75,
-am,E11,E12,Calle 127,Pepe Sierra - Utel Universidad,0.734,36.0,H72 H75 L18,2.59
-am,E118,E119,Universidades CityU,Las Aguas - Centro Colombo Americano,0.259,22.0,3 H54,
-am,E118,E121,Universidades CityU,Centro Memoria,2.022,12.33,3,
-am,E119,E118,Las Aguas - Centro Colombo Americano,Universidades CityU,0.259,21.33,3 J76,
-am,E119,E120,Las Aguas - Centro Colombo Americano,Museo del Oro,0.524,22.0,3 H54,
-am,E12,E11,Pepe Sierra - Utel Universidad,Calle 127,0.734,62.34,B18 B72 B75,2.51
-am,E12,E13,Pepe Sierra - Utel Universidad,Calle 106,0.58,36.0,H72 H75 L18,
-am,E120,E119,Museo del Oro,Las Aguas - Centro Colombo Americano,0.524,21.33,3 J76,
-am,E120,E25,Museo del Oro,Avenida Jiménez,0.853,22.0,3 H54,
-am,E121,E118,Centro Memoria,Universidades CityU,2.022,22.0,3 H54,
-am,E121,E122,Centro Memoria,Concejo de Bogotá,0.755,12.0,3,3.12
-am,E122,E121,Concejo de Bogotá,Centro Memoria,0.755,22.0,3 H54,3.02
-am,E122,E76,Concejo de Bogotá,AV. Eldorado,0.522,12.0,3,
-am,E123,E124,Ciudad Universitaria,Corferias,0.783,28.0,3 K53,3.41
-am,E123,E76,Ciudad Universitaria,AV. Eldorado,0.405,22.0,3 H54,
-am,E124,E123,Corferias,Ciudad Universitaria,0.783,21.67,3 H54,3.05
-am,E124,E125,Corferias,Quinta Paredes - RTVC,0.521,16.0,K53,
-am,E125,E124,Quinta Paredes - RTVC,Corferias,0.521,10.0,H54,1.74
-am,E125,E126,Quinta Paredes - RTVC,Gobernacion,0.702,15.67,K53,
-am,E126,E125,Gobernacion,Quinta Paredes - RTVC,0.702,9.67,H54,
-am,E126,E127,Gobernacion,CAN - British Council,0.529,15.67,K53,
-am,E127,E126,CAN - British Council,Gobernacion,0.529,9.67,H54,
-am,E127,E128,CAN - British Council,Salitre El Greco - Vive Claro,0.529,16.0,K53,
-am,E128,E127,Salitre El Greco - Vive Claro,CAN - British Council,0.529,9.33,H54,1.61
-am,E128,E129,Salitre El Greco - Vive Claro,El Tiempo - Cámara De Comercio De Bogotá,0.82,16.0,K53,
-am,E129,E128,El Tiempo - Cámara De Comercio De Bogotá,Salitre El Greco - Vive Claro,0.82,9.67,H54,2.5
-am,E129,E130,El Tiempo - Cámara De Comercio De Bogotá,AV. Rojas - UNISALESIANA,0.643,16.0,K53,
-am,E13,E12,Calle 106,Pepe Sierra - Utel Universidad,0.58,61.67,B18 B72 B75,
-am,E13,E14,Calle 106,Calle 100 - Marketmedios,1.019,36.0,H72 H75 L18,
-am,E130,E129,AV. Rojas - UNISALESIANA,El Tiempo - Cámara De Comercio De Bogotá,0.643,9.67,H54,2.0
-am,E130,E131,AV. Rojas - UNISALESIANA,Normandia,0.931,15.33,K53,
-am,E131,E130,Normandia,AV. Rojas - UNISALESIANA,0.931,9.33,H54,
-am,E131,E132,Normandia,Modelia,0.794,15.33,K53,
-am,E132,E131,Modelia,Normandia,0.794,9.33,H54,
-am,E132,E133,Modelia,Portal El Dorado - C. C Nuestro Bogotá,0.872,15.33,K53,
-am,E133,E132,Portal El Dorado - C. C Nuestro Bogotá,Modelia,0.872,9.33,H54,2.84
-am,E134,E135,Museo Nacional,San Diego,0.545,27.67,2 G47 H83,1.94
-am,E135,E134,San Diego,Museo Nacional,0.545,48.67,2 M47 M83,2.39
-am,E135,E136,San Diego,Las Nieves,0.622,27.67,2 G47 H83,2.33
-am,E136,E135,Las Nieves,San Diego,0.622,49.0,2 M47 M83,2.06
-am,E136,E137,Las Nieves,San Victorino,0.657,27.33,2 G47 H83,2.41
-am,E137,E136,San Victorino,Las Nieves,0.657,48.66,2 M47 M83,2.35
-am,E137,E82,San Victorino,Bicentenario,0.92,27.34,2 G47 H83,3.81
-am,E138,E139,Estación San Bernardo,Policarpa,0.543,29.67,2 H83 L18,1.92
-am,E138,E82,Estación San Bernardo,Bicentenario,0.507,47.0,2 B18 M83,1.8
-am,E139,E138,Policarpa,Estación San Bernardo,0.543,46.67,2 B18 M83,1.8
-am,E139,E140,Policarpa,Ciudad Jardín - UAN,0.629,29.67,2 H83 L18,2.37
-am,E14,E13,Calle 100 - Marketmedios,Calle 106,1.019,61.67,B18 B72 B75,
-am,E14,E15,Calle 100 - Marketmedios,Virrey - Cendiatra,0.896,36.0,H72 H75 L18,
-am,E140,E139,Ciudad Jardín - UAN,Policarpa,0.629,47.0,2 B18 M83,2.09
-am,E140,E141,Ciudad Jardín - UAN,AV. Primero de Mayo,0.633,29.33,2 H83 L18,2.99
-am,E141,E140,AV. Primero de Mayo,Ciudad Jardín - UAN,0.633,47.0,2 B18 M83,1.95
-am,E141,E142,AV. Primero de Mayo,Country Sur,0.822,17.33,2 L18,3.09
-am,E142,E141,Country Sur,AV. Primero de Mayo,0.822,26.67,2 B18,3.01
-am,E142,E143,Country Sur,Portal 20 de Julio,0.659,17.33,2 L18,3.49
-am,E143,E142,Portal 20 de Julio,Country Sur,0.659,26.67,2 B18,5.12
-am,E15,E14,Virrey - Cendiatra,Calle 100 - Marketmedios,0.896,61.67,B18 B72 B75,
-am,E15,E16,Virrey - Cendiatra,Calle 85 - Gato Dumas,0.415,25.0,H75 L18,
-am,E15,E69,Virrey - Cendiatra,La Castellana,0.603,10.67,H72,
-am,E16,E15,Calle 85 - Gato Dumas,Virrey - Cendiatra,0.415,30.67,B18 B75,
-am,E16,E17,Calle 85 - Gato Dumas,Héroes - Colmena Seguros,0.47,25.0,H75 L18,
-am,E17,E16,Héroes - Colmena Seguros,Calle 85 - Gato Dumas,0.47,30.67,B18 B75,
-am,E17,E18,Héroes - Colmena Seguros,Calle 72 - Areandina,1.118,60.67,H15 H20 H75 L18,3.89
-am,E17,E56,Héroes - Colmena Seguros,Polo - FINCOMERCIO,0.5,26.67,C15 D20,
-am,E18,E17,Calle 72 - Areandina,Héroes - Colmena Seguros,1.118,57.34,B18 B75 C15 D20,4.27
-am,E18,E19,Calle 72 - Areandina,Flores,0.385,60.34,H15 H20 H75 L18,
-am,E19,E18,Flores,Calle 72 - Areandina,0.385,57.33,B18 B75 C15 D20,
-am,E19,E20,Flores,Calle 57,1.362,60.34,H15 H20 H75 L18,
-am,E2,E1,Calle 187,Terminal,0.617,13.67,B18,2.13
-am,E2,E3,Calle 187,Portal Norte - Unicervantes,0.985,10.0,L18,
-am,E20,E19,Calle 57,Flores,1.362,57.33,B18 B75 C15 D20,
-am,E20,E21,Calle 57,Calle 53 - Universidad Manuela Beltrán,0.32,59.67,H15 H20 H75 L18,3.6
-am,E21,E20,Calle 53 - Universidad Manuela Beltrán,Calle 57,0.32,57.0,B18 B75 C15 D20,3.44
-am,E21,E22,Calle 53 - Universidad Manuela Beltrán,AV. 39,1.496,59.34,H15 H20 H75 L18,3.85
-am,E22,E21,AV. 39,Calle 53 - Universidad Manuela Beltrán,1.496,57.33,B18 B75 C15 D20,4.0
-am,E22,E23,AV. 39,Calle 26 - Atrio,1.202,59.0,H15 H20 H75 L18,4.1
-am,E23,E22,Calle 26 - Atrio,AV. 39,1.202,56.67,B18 B75 C15 D20,3.94
-am,E23,E24,Calle 26 - Atrio,Calle 22,0.827,58.33,H15 H20 H75 L18,3.59
-am,E24,E23,Calle 22,Calle 26 - Atrio,0.827,56.34,B18 B75 C15 D20,3.18
-am,E24,E25,Calle 22,Avenida Jiménez,0.961,82.0,3 H15 H20 H75 L18,5.14
-am,E25,E120,Avenida Jiménez,Museo del Oro,0.853,21.33,3 J76,
-am,E25,E24,Avenida Jiménez,Calle 22,0.961,80.67,3 B18 B75 C15 D20,5.0
-am,E25,E26,Avenida Jiménez,Hortúa,1.725,95.34,3 H15 H17 H20 H21 H54 H75,4.9
-am,E25,E99,Avenida Jiménez,De La Sabana,0.328,38.33,C17 D21 L18,
-am,E26,E25,Hortúa,Avenida Jiménez,1.725,91.67,3 B75 C15 C17 D20 D21 J76,5.34
-am,E26,E27,Hortúa,Nariño,0.651,94.68,3 H15 H17 H20 H21 H54 H75,2.32
-am,E27,E26,Nariño,Hortúa,0.651,91.0,3 B75 C15 C17 D20 D21 J76,2.39
-am,E27,E28,Nariño,Fucha,0.71,103.68,3 H15 H17 H20 H21 H54 H72 H75,2.36
-am,E28,E27,Fucha,Nariño,0.71,118.67,3 B72 B75 C15 C17 D20 D21 J76,2.33
-am,E28,E29,Fucha,Restrepo,0.257,102.68,3 H15 H17 H20 H21 H54 H72 H75,1.23
-am,E29,E28,Restrepo,Fucha,0.257,117.68,3 B72 B75 C15 C17 D20 D21 J76,0.98
-am,E29,E30,Restrepo,Olaya,0.734,102.01,3 H15 H17 H20 H21 H54 H72 H75,2.89
-am,E3,E2,Portal Norte - Unicervantes,Calle 187,0.985,14.34,B18,
-am,E3,E4,Portal Norte - Unicervantes,Toberín,0.948,26.0,H75 L18,3.2
-am,E30,E29,Olaya,Restrepo,0.734,117.68,3 B72 B75 C15 C17 D20 D21 J76,2.91
-am,E30,E31,Olaya,Quiroga,0.812,101.34,3 H15 H17 H20 H21 H54 H72 H75,2.89
-am,E31,E30,Quiroga,Olaya,0.812,116.34,3 B72 B75 C15 C17 D20 D21 J76,3.01
-am,E31,E32,Quiroga,Calle 40 Sur,0.642,113.34,3 H15 H17 H20 H21 H54 H72 H75 H83,2.3
-am,E32,E31,Calle 40 Sur,Quiroga,0.642,133.68,3 B72 B75 C15 C17 D20 D21 J76 M83,2.31
-am,E32,E33,Calle 40 Sur,Santa Lucía,0.743,112.67,3 H15 H17 H20 H21 H54 H72 H75 H83,3.0
-am,E33,E32,Santa Lucía,Calle 40 Sur,0.743,132.67,3 B72 B75 C15 C17 D20 D21 J76 M83,3.06
-am,E33,E34,Santa Lucía,Socorro,0.709,99.34,3 B72 H15 H17 H21 H72 H75,2.31
-am,E33,E38,Santa Lucía,Consuelo,1.198,38.67,H20 H54 H83,
-am,E34,E33,Socorro,Santa Lucía,0.709,101.66,3 B72 B75 C15 C17 D21 J76,2.39
-am,E34,E35,Socorro,Biblioteca,0.824,38.34,3 H15 H21,
-am,E35,E34,Biblioteca,Socorro,0.824,36.66,3 C15 D21,
-am,E35,E36,Biblioteca,Parque,0.599,38.34,3 H15 H21,2.48
-am,E36,E35,Parque,Biblioteca,0.599,36.66,3 C15 D21,2.47
-am,E36,E37,Parque,Portal Tunal,0.446,38.34,3 H15 H21,3.21
-am,E37,E36,Portal Tunal,Parque,0.446,36.66,3 C15 D21,5.82
-am,E38,E33,Consuelo,Santa Lucía,1.198,56.99,B72 D20 M83,
-am,E38,E39,Consuelo,Molinos,0.418,64.67,H17 H20 H54 H75 H83,1.19
-am,E39,E38,Molinos,Consuelo,0.418,94.66,B72 B75 C17 D20 J76 M83,1.34
-am,E39,E40,Molinos,Danubio,1.495,72.33,H17 H20 H54 H72 H75 H83,3.93
-am,E4,E3,Toberín,Portal Norte - Unicervantes,0.948,29.67,B18 B75,4.78
-am,E4,E5,Toberín,Calle 161,0.482,36.67,H72 H75 L18,
-am,E40,E39,Danubio,Molinos,1.495,90.33,B72 B75 C17 D20 J76 M83,4.14
-am,E40,E41,Danubio,Portal Usme,1.337,71.67,H17 H20 H54 H72 H75 H83,4.75
-am,E41,E40,Portal Usme,Danubio,1.337,88.66,B72 B75 C17 D20 J76 M83,6.85
-am,E42,E43,San Martín,Rionegro,0.512,31.34,C15 C17,
-am,E42,E70,San Martín,NQS Calle 75,0.831,31.33,H15 H17,
-am,E43,E42,Rionegro,San Martín,0.512,31.0,H15 H17,
-am,E43,E44,Rionegro,Suba - Calle 95,0.515,31.0,C15 C17,
-am,E44,E43,Suba - Calle 95,Rionegro,0.515,30.34,H15 H17,
-am,E44,E45,Suba - Calle 95,Suba Calle 100,0.287,31.0,C15 C17,0.83
-am,E45,E44,Suba Calle 100,Suba - Calle 95,0.287,30.34,H15 H17,0.72
-am,E45,E46,Suba Calle 100,Puentelargo,0.778,31.0,C15 C17,2.33
-am,E46,E45,Puentelargo,Suba Calle 100,0.778,30.67,H15 H17,2.12
-am,E46,E47,Puentelargo,Av. Suba - Calle 116,0.712,31.0,C15 C17,2.25
-am,E47,E46,Av. Suba - Calle 116,Puentelargo,0.712,30.34,H15 H17,2.06
-am,E47,E48,Av. Suba - Calle 116,Humedal Córdoba,0.841,31.0,C15 C17,3.22
-am,E48,E47,Humedal Córdoba,Av. Suba - Calle 116,0.841,30.34,H15 H17,3.56
-am,E48,E49,Humedal Córdoba,Niza - Calle 127,0.604,30.67,C15 C17,2.13
-am,E49,E48,Niza - Calle 127,Humedal Córdoba,0.604,30.34,H15 H17,2.36
-am,E49,E50,Niza - Calle 127,Suba - AV. Boyacá,1.064,30.66,C15 C17,
-am,E5,E4,Calle 161,Toberín,0.482,62.34,B18 B72 B75,
-am,E5,E6,Calle 161,Mazúren,0.826,36.67,H72 H75 L18,
-am,E50,E49,Suba - AV. Boyacá,Niza - Calle 127,1.064,30.0,H15 H17,
-am,E50,E51,Suba - AV. Boyacá,Gratamira,0.688,30.66,C15 C17,
-am,E51,E50,Gratamira,Suba - AV. Boyacá,0.688,30.0,H15 H17,
-am,E51,E52,Gratamira,21 Ángeles,1.133,30.33,C15 C17,
-am,E52,E51,21 Ángeles,Gratamira,1.133,30.0,H15 H17,
-am,E52,E53,21 Ángeles,Suba TV 91 - OMNILIFE SEYTÚ,0.767,30.33,C15 C17,
-am,E53,E52,Suba TV 91 - OMNILIFE SEYTÚ,21 Ángeles,0.767,30.0,H15 H17,
-am,E53,E54,Suba TV 91 - OMNILIFE SEYTÚ,La Campiña,0.623,30.0,C15 C17,2.0
-am,E54,E53,La Campiña,Suba TV 91 - OMNILIFE SEYTÚ,0.623,29.33,H15 H17,1.89
-am,E54,E55,La Campiña,Portal Suba,0.575,29.67,C15 C17,2.65
-am,E55,E54,Portal Suba,La Campiña,0.575,29.67,H15 H17,2.13
-am,E56,E17,Polo - FINCOMERCIO,Héroes - Colmena Seguros,0.5,36.33,H15 H20,
-am,E56,E57,Polo - FINCOMERCIO,Escuela Militar,0.851,26.67,C15 D20,
-am,E57,E56,Escuela Militar,Polo - FINCOMERCIO,0.851,37.0,H15 H20,
-am,E57,E58,Escuela Militar,Carrera 47,0.455,41.0,D20 D21 D22,
-am,E57,E70,Escuela Militar,NQS Calle 75,0.621,41.01,C15 G22 H21,
-am,E58,E57,Carrera 47,Escuela Militar,0.455,47.01,G22 H20 H21,
-am,E58,E59,Carrera 47,Carrera 53,0.645,41.33,D20 D21 D22,
-am,E59,E58,Carrera 53,Carrera 47,0.645,47.01,G22 H20 H21,
-am,E59,E60,Carrera 53,Avenida 68,0.605,41.33,D20 D21 D22,
-am,E6,E5,Mazúren,Calle 161,0.826,62.34,B18 B72 B75,
-am,E6,E7,Mazúren,Calle 146,0.416,36.34,H72 H75 L18,
-am,E60,E59,Avenida 68,Carrera 53,0.605,47.01,G22 H20 H21,
-am,E60,E61,Avenida 68,Ferias,0.681,40.0,D20 D21 D22,2.6
-am,E61,E60,Ferias,Avenida 68,0.681,47.01,G22 H20 H21,2.72
-am,E61,E62,Ferias,Boyacá,0.44,39.67,D20 D21 D22,1.03
-am,E62,E61,Boyacá,Ferias,0.44,47.01,G22 H20 H21,1.28
-am,E62,E63,Boyacá,Minuto De Dios,0.625,39.67,D20 D21 D22,1.7
-am,E63,E62,Minuto De Dios,Boyacá,0.625,47.01,G22 H20 H21,1.5
-am,E63,E64,Minuto De Dios,Granja - CRA. 77,0.518,40.0,D20 D21 D22,1.67
-am,E64,E63,Granja - CRA. 77,Minuto De Dios,0.518,47.0,G22 H20 H21,1.47
-am,E64,E65,Granja - CRA. 77,Avenida Cali,0.601,39.33,D20 D21 D22,2.07
-am,E65,E64,Avenida Cali,Granja - CRA. 77,0.601,44.34,G22 H20 H21,1.78
-am,E65,E66,Avenida Cali,Carrera 90,0.533,39.33,D20 D21 D22,1.78
-am,E66,E65,Carrera 90,Avenida Cali,0.533,44.67,G22 H20 H21,1.62
-am,E66,E67,Carrera 90,Quirigua,0.516,39.33,D20 D21 D22,
-am,E67,E66,Quirigua,Carrera 90,0.516,44.34,G22 H20 H21,
-am,E67,E68,Quirigua,Portal 80,0.397,38.67,D20 D21 D22,1.93
-am,E68,E67,Portal 80,Quirigua,0.397,44.34,G22 H20 H21,2.45
-am,E69,E15,La Castellana,Virrey - Cendiatra,0.603,31.33,B72,
-am,E69,E70,La Castellana,NQS Calle 75,0.973,10.33,H72,
-am,E7,E6,Calle 146,Mazúren,0.416,62.01,B18 B72 B75,
-am,E7,E8,Calle 146,Calle 142,0.456,36.34,H72 H75 L18,0.71
-am,E70,E42,NQS Calle 75,San Martín,0.831,31.0,C15 C17,
-am,E70,E57,NQS Calle 75,Escuela Militar,0.621,45.33,D21 D22 H15,
-am,E70,E69,NQS Calle 75,La Castellana,0.973,31.0,B72,
-am,E70,E71,NQS Calle 75,Avenida Chile,0.556,52.0,G22 H17 H21 H72,1.22
-am,E71,E70,Avenida Chile,NQS Calle 75,0.556,76.33,B72 C17 D21 D22,1.39
-am,E71,E72,Avenida Chile,7 de Agosto,1.065,51.67,G22 H17 H21 H72,
-am,E72,E71,7 de Agosto,Avenida Chile,1.065,75.32,B72 C17 D21 D22,
-am,E72,E73,7 de Agosto,TIGO,0.81,51.67,G22 H17 H21 H72,2.38
-am,E73,E72,TIGO,7 de Agosto,0.81,75.32,B72 C17 D21 D22,2.59
-am,E73,E74,TIGO,Campin - UAN,0.518,52.0,G22 H17 H21 H72,1.47
-am,E74,E73,Campin - UAN,TIGO,0.518,74.32,B72 C17 D21 D22,1.83
-am,E74,E75,Campin - UAN,Universidad Nacional,0.923,52.0,G22 H17 H21 H72,
-am,E75,E74,Universidad Nacional,Campin - UAN,0.923,73.99,B72 C17 D21 D22,
-am,E75,E76,Universidad Nacional,AV. Eldorado,0.72,52.0,G22 H17 H21 H72,1.89
-am,E76,E122,AV. Eldorado,Concejo de Bogotá,0.522,22.0,3 H54,
-am,E76,E123,AV. Eldorado,Ciudad Universitaria,0.405,28.0,3 K53,
-am,E76,E75,AV. Eldorado,Universidad Nacional,0.72,74.0,B72 C17 D21 D22,2.21
-am,E76,E77,AV. Eldorado,CAD,0.937,52.33,G22 H17 H21 H72,
-am,E77,E76,CAD,AV. Eldorado,0.937,90.0,B72 C17 D21 D22 K53,
-am,E77,E78,CAD,Paloquemao,0.936,52.33,G22 H17 H21 H72,
-am,E78,E77,Paloquemao,CAD,0.936,89.0,B72 C17 D21 D22 K53,
-am,E78,E79,Paloquemao,Ricaurte,0.585,51.67,G22 H17 H21 H72,
-am,E79,E100,Ricaurte,San Facon Carrera 22,0.663,40.67,B18 H17 H21,
-am,E79,E78,Ricaurte,Paloquemao,0.585,87.67,B72 C17 D21 D22 K53,
-am,E79,E80,Ricaurte,Guatoque - Veraguas,0.96,73.67,C17 D21 H17 H21 H72 L18,3.37
-am,E79,E83,Ricaurte,Comuneros,1.24,16.33,G22,
-am,E8,E7,Calle 142,Calle 146,0.456,62.34,B18 B72 B75,1.79
-am,E8,E9,Calle 142,Alcalá - Colegio S. Tomás Dominicos,0.642,36.34,H72 H75 L18,
-am,E80,E79,Guatoque - Veraguas,Ricaurte,0.96,99.01,B18 B72 C17 D21 H17 H21,3.45
-am,E80,E81,Guatoque - Veraguas,Tygua - San José,0.84,36.0,H72 L18 M47,2.93
-am,E80,E83,Guatoque - Veraguas,Comuneros,0.546,6.67,G47,2.74
-am,E81,E80,Tygua - San José,Guatoque - Veraguas,0.84,50.34,B18 B72 G47,2.82
-am,E81,E82,Tygua - San José,Bicentenario,1.0,26.0,L18 M47,
-am,E82,E137,Bicentenario,San Victorino,0.92,49.0,2 M47 M83,3.35
-am,E82,E138,Bicentenario,Estación San Bernardo,0.507,29.67,2 H83 L18,1.39
-am,E82,E81,Bicentenario,Tygua - San José,1.0,21.34,B18 G47,
-am,E83,E79,Comuneros,Ricaurte,1.24,29.33,D22 K53,
-am,E83,E80,Comuneros,Guatoque - Veraguas,0.546,17.0,M47,2.97
-am,E83,E84,Comuneros,Santa Isabel,0.419,23.0,G22 G47,
-am,E84,E83,Santa Isabel,Comuneros,0.419,46.33,D22 K53 M47,
-am,E84,E85,Santa Isabel,NQS Calle 30 SUR,1.857,23.0,G22 G47,
-am,E85,E84,NQS Calle 30 SUR,Santa Isabel,1.857,45.67,D22 K53 M47,
-am,E85,E86,NQS Calle 30 SUR,CL 38 A Sur - Centro Mayor,0.66,23.0,G22 G47,
-am,E86,E85,CL 38 A Sur - Centro Mayor,NQS Calle 30 SUR,0.66,45.67,D22 K53 M47,
-am,E86,E87,CL 38 A Sur - Centro Mayor,General Santander,0.642,23.0,G22 G47,
-am,E87,E86,General Santander,CL 38 A Sur - Centro Mayor,0.642,45.67,D22 K53 M47,
-am,E87,E88,General Santander,Alquería,0.53,23.34,G22 G47,
-am,E88,E87,Alquería,General Santander,0.53,46.0,D22 K53 M47,1.66
-am,E88,E89,Alquería,Venecia,0.94,23.34,G22 G47,
-am,E89,E88,Venecia,Alquería,0.94,45.67,D22 K53 M47,3.64
-am,E89,E90,Venecia,Sevillana,0.53,23.34,G22 G47,1.16
-am,E9,E10,Alcalá - Colegio S. Tomás Dominicos,Prado,0.744,36.67,H72 H75 L18,
-am,E9,E8,Alcalá - Colegio S. Tomás Dominicos,Calle 142,0.642,62.34,B18 B72 B75,
-am,E90,E89,Sevillana,Venecia,0.53,43.0,D22 K53 M47,1.32
-am,E90,E91,Sevillana,C. C Paseo Villa Del Rio - Madelena,1.058,23.67,G22 G47,3.62
-am,E91,E90,C. C Paseo Villa Del Rio - Madelena,Sevillana,1.058,42.66,D22 K53 M47,4.05
-am,E91,E92,C. C Paseo Villa Del Rio - Madelena,Perdomo,0.898,23.67,G22 G47,2.83
-am,E92,E91,Perdomo,C. C Paseo Villa Del Rio - Madelena,0.898,42.33,D22 K53 M47,3.14
-am,E92,E93,Perdomo,Portal Sur - JFK Coop. Financiera,0.497,23.67,G22 G47,1.43
-am,E93,E92,Portal Sur - JFK Coop. Financiera,Perdomo,0.497,42.33,D22 K53 M47,3.5
-am,E99,E100,De La Sabana,San Facon Carrera 22,0.725,38.33,C17 D21 L18,
-am,E99,E25,De La Sabana,Avenida Jiménez,0.328,40.67,B18 H17 H21,
-pm,E1,E2,Terminal,Calle 187,0.617,14.33,L18,2.48
-pm,E10,E11,Prado,Calle 127,1.118,45.0,H72 H75 L18,
-pm,E10,E9,Prado,Alcalá - Colegio S. Tomás Dominicos,0.744,34.67,B18 B72 B75,
-pm,E100,E79,San Facon Carrera 22,Ricaurte,0.663,40.66,C17 D21 L18,
-pm,E100,E99,San Facon Carrera 22,De La Sabana,0.725,65.0,B18 H17 H21 H72,
-pm,E11,E10,Calle 127,Prado,1.118,35.0,B18 B72 B75,
-pm,E11,E12,Calle 127,Pepe Sierra - Utel Universidad,0.734,45.0,H72 H75 L18,3.0
-pm,E118,E119,Universidades CityU,Las Aguas - Centro Colombo Americano,0.259,37.34,3 H54 H76,
-pm,E118,E121,Universidades CityU,Centro Memoria,2.022,10.0,3,
-pm,E119,E118,Las Aguas - Centro Colombo Americano,Universidades CityU,0.259,10.0,3,
-pm,E119,E120,Las Aguas - Centro Colombo Americano,Museo del Oro,0.524,37.34,3 H54 H76,
-pm,E12,E11,Pepe Sierra - Utel Universidad,Calle 127,0.734,34.99,B18 B72 B75,2.52
-pm,E12,E13,Pepe Sierra - Utel Universidad,Calle 106,0.58,45.33,H72 H75 L18,
-pm,E120,E119,Museo del Oro,Las Aguas - Centro Colombo Americano,0.524,10.0,3,
-pm,E120,E25,Museo del Oro,Avenida Jiménez,0.853,37.34,3 H54 H76,
-pm,E121,E118,Centro Memoria,Universidades CityU,2.022,26.67,3 H54,
-pm,E121,E122,Centro Memoria,Concejo de Bogotá,0.755,10.33,3,2.9
-pm,E122,E121,Concejo de Bogotá,Centro Memoria,0.755,26.67,3 H54,3.75
-pm,E122,E76,Concejo de Bogotá,AV. Eldorado,0.522,10.33,3,
-pm,E123,E124,Ciudad Universitaria,Corferias,0.783,10.33,3,3.2
-pm,E123,E76,Ciudad Universitaria,AV. Eldorado,0.405,42.0,3 G53 H54,
-pm,E124,E123,Corferias,Ciudad Universitaria,0.783,42.0,3 G53 H54,3.63
-pm,E125,E124,Quinta Paredes - RTVC,Corferias,0.521,30.0,G53 H54,2.11
-pm,E126,E125,Gobernacion,Quinta Paredes - RTVC,0.702,29.67,G53 H54,
-pm,E127,E126,CAN - British Council,Gobernacion,0.529,29.67,G53 H54,
-pm,E128,E127,Salitre El Greco - Vive Claro,CAN - British Council,0.529,30.0,G53 H54,1.93
-pm,E129,E128,El Tiempo - Cámara De Comercio De Bogotá,Salitre El Greco - Vive Claro,0.82,29.66,G53 H54,3.01
-pm,E13,E12,Calle 106,Pepe Sierra - Utel Universidad,0.58,34.66,B18 B72 B75,
-pm,E13,E14,Calle 106,Calle 100 - Marketmedios,1.019,45.33,H72 H75 L18,
-pm,E130,E129,AV. Rojas - UNISALESIANA,El Tiempo - Cámara De Comercio De Bogotá,0.643,30.0,G53 H54,2.4
-pm,E131,E130,Normandia,AV. Rojas - UNISALESIANA,0.931,27.67,G53 H54,
-pm,E132,E131,Modelia,Normandia,0.794,27.67,G53 H54,
-pm,E133,E132,Portal El Dorado - C. C Nuestro Bogotá,Modelia,0.872,27.34,G53 H54,3.36
-pm,E134,E135,Museo Nacional,San Diego,0.545,48.0,2 G47 H83,2.16
-pm,E135,E134,San Diego,Museo Nacional,0.545,29.33,2 M47 M83,2.25
-pm,E135,E136,San Diego,Las Nieves,0.622,48.34,2 G47 H83,2.66
-pm,E136,E135,Las Nieves,San Diego,0.622,28.33,2 M47 M83,1.81
-pm,E136,E137,Las Nieves,San Victorino,0.657,48.34,2 G47 H83,2.72
-pm,E137,E136,San Victorino,Las Nieves,0.657,28.67,2 M47 M83,2.13
-pm,E137,E82,San Victorino,Bicentenario,0.92,48.0,2 G47 H83,4.27
-pm,E138,E139,Estación San Bernardo,Policarpa,0.543,45.0,2 H83 L18,2.28
-pm,E138,E82,Estación San Bernardo,Bicentenario,0.507,31.33,2 B18 M83,1.75
-pm,E139,E138,Policarpa,Estación San Bernardo,0.543,31.66,2 B18 M83,1.73
-pm,E139,E140,Policarpa,Ciudad Jardín - UAN,0.629,45.34,2 H83 L18,2.66
-pm,E14,E13,Calle 100 - Marketmedios,Calle 106,1.019,34.66,B18 B72 B75,
-pm,E14,E15,Calle 100 - Marketmedios,Virrey - Cendiatra,0.896,45.33,H72 H75 L18,
-pm,E140,E139,Ciudad Jardín - UAN,Policarpa,0.629,31.0,2 B18 M83,1.98
-pm,E140,E141,Ciudad Jardín - UAN,AV. Primero de Mayo,0.633,45.0,2 H83 L18,3.36
-pm,E141,E140,AV. Primero de Mayo,Ciudad Jardín - UAN,0.633,31.0,2 B18 M83,1.84
-pm,E141,E142,AV. Primero de Mayo,Country Sur,0.822,27.0,2 L18,3.67
-pm,E142,E141,Country Sur,AV. Primero de Mayo,0.822,21.0,2 B18,2.9
-pm,E142,E143,Country Sur,Portal 20 de Julio,0.659,26.67,2 L18,4.15
-pm,E143,E142,Portal 20 de Julio,Country Sur,0.659,20.67,2 B18,4.9
-pm,E15,E14,Virrey - Cendiatra,Calle 100 - Marketmedios,0.896,34.66,B18 B72 B75,
-pm,E15,E16,Virrey - Cendiatra,Calle 85 - Gato Dumas,0.415,27.67,H75 L18,
-pm,E15,E69,Virrey - Cendiatra,La Castellana,0.603,17.33,H72,
-pm,E16,E15,Calle 85 - Gato Dumas,Virrey - Cendiatra,0.415,25.0,B18 B75,
-pm,E16,E17,Calle 85 - Gato Dumas,Héroes - Colmena Seguros,0.47,27.67,H75 L18,
-pm,E17,E16,Héroes - Colmena Seguros,Calle 85 - Gato Dumas,0.47,25.0,B18 B75,
-pm,E17,E18,Héroes - Colmena Seguros,Calle 72 - Areandina,1.118,59.01,H15 H20 H75 L18,4.2
-pm,E17,E56,Héroes - Colmena Seguros,Polo - FINCOMERCIO,0.5,28.0,C15 D20,
-pm,E18,E17,Calle 72 - Areandina,Héroes - Colmena Seguros,1.118,53.34,B18 B75 C15 D20,4.31
-pm,E18,E19,Calle 72 - Areandina,Flores,0.385,58.0,H15 H20 H75 L18,
-pm,E19,E18,Flores,Calle 72 - Areandina,0.385,53.0,B18 B75 C15 D20,
-pm,E19,E20,Flores,Calle 57,1.362,58.0,H15 H20 H75 L18,
-pm,E2,E1,Calle 187,Terminal,0.617,10.67,B18,2.17
-pm,E2,E3,Calle 187,Portal Norte - Unicervantes,0.985,14.67,L18,
-pm,E20,E19,Calle 57,Flores,1.362,53.66,B18 B75 C15 D20,
-pm,E20,E21,Calle 57,Calle 53 - Universidad Manuela Beltrán,0.32,57.67,H15 H20 H75 L18,4.12
-pm,E21,E20,Calle 53 - Universidad Manuela Beltrán,Calle 57,0.32,53.66,B18 B75 C15 D20,3.49
-pm,E21,E22,Calle 53 - Universidad Manuela Beltrán,AV. 39,1.496,57.67,H15 H20 H75 L18,4.39
-pm,E22,E21,AV. 39,Calle 53 - Universidad Manuela Beltrán,1.496,53.66,B18 B75 C15 D20,4.05
-pm,E22,E23,AV. 39,Calle 26 - Atrio,1.202,57.0,H15 H20 H75 L18,5.03
-pm,E23,E22,Calle 26 - Atrio,AV. 39,1.202,54.33,B18 B75 C15 D20,3.91
-pm,E23,E24,Calle 26 - Atrio,Calle 22,0.827,56.0,H15 H20 H75 L18,4.26
-pm,E24,E23,Calle 22,Calle 26 - Atrio,0.827,53.99,B18 B75 C15 D20,3.38
-pm,E24,E25,Calle 22,Avenida Jiménez,0.961,83.33,3 H15 H20 H75 L18,6.35
-pm,E25,E120,Avenida Jiménez,Museo del Oro,0.853,10.0,3,
-pm,E25,E24,Avenida Jiménez,Calle 22,0.961,76.33,3 B18 B75 C15 D20,4.87
-pm,E25,E26,Avenida Jiménez,Hortúa,1.725,139.0,3 H15 H17 H20 H21 H54 H72 H75 H76,5.77
-pm,E25,E99,Avenida Jiménez,De La Sabana,0.328,40.66,C17 D21 L18,
-pm,E26,E25,Hortúa,Avenida Jiménez,1.725,79.66,3 B75 C15 C17 D20 D21,5.18
-pm,E26,E27,Hortúa,Nariño,0.651,138.34,3 H15 H17 H20 H21 H54 H72 H75 H76,2.77
-pm,E27,E26,Nariño,Hortúa,0.651,79.33,3 B75 C15 C17 D20 D21,2.3
-pm,E27,E28,Nariño,Fucha,0.71,138.0,3 H15 H17 H20 H21 H54 H72 H75 H76,2.76
-pm,E28,E27,Fucha,Nariño,0.71,88.99,3 B72 B75 C15 C17 D20 D21,2.46
-pm,E28,E29,Fucha,Restrepo,0.257,137.66,3 H15 H17 H20 H21 H54 H72 H75 H76,1.56
-pm,E29,E28,Restrepo,Fucha,0.257,88.67,3 B72 B75 C15 C17 D20 D21,0.91
-pm,E29,E30,Restrepo,Olaya,0.734,135.33,3 H15 H17 H20 H21 H54 H72 H75 H76,3.53
-pm,E3,E2,Portal Norte - Unicervantes,Calle 187,0.985,11.34,B18,
-pm,E3,E4,Portal Norte - Unicervantes,Toberín,0.948,27.0,H75 L18,3.38
-pm,E30,E29,Olaya,Restrepo,0.734,88.66,3 B72 B75 C15 C17 D20 D21,2.93
-pm,E30,E31,Olaya,Quiroga,0.812,133.33,3 H15 H17 H20 H21 H54 H72 H75 H76,3.63
-pm,E31,E30,Quiroga,Olaya,0.812,88.0,3 B72 B75 C15 C17 D20 D21,2.9
-pm,E31,E32,Quiroga,Calle 40 Sur,0.642,151.66,3 H15 H17 H20 H21 H54 H72 H75 H76 H83,2.83
-pm,E32,E31,Calle 40 Sur,Quiroga,0.642,98.66,3 B72 B75 C15 C17 D20 D21 M83,2.27
-pm,E32,E33,Calle 40 Sur,Santa Lucía,0.743,149.34,3 H15 H17 H20 H21 H54 H72 H75 H76 H83,3.37
-pm,E33,E32,Santa Lucía,Calle 40 Sur,0.743,98.33,3 B72 B75 C15 C17 D20 D21 M83,2.77
-pm,E33,E34,Santa Lucía,Socorro,0.709,113.0,3 B72 H15 H17 H21 H72 H75 H76,2.52
-pm,E33,E38,Santa Lucía,Consuelo,1.198,66.0,H20 H54 H72 H83,
-pm,E34,E33,Socorro,Santa Lucía,0.709,92.99,3 B72 B75 C15 C17 D21 H72,2.3
-pm,E34,E35,Socorro,Biblioteca,0.824,43.67,3 H15 H21,
-pm,E35,E34,Biblioteca,Socorro,0.824,34.66,3 C15 D21,
-pm,E35,E36,Biblioteca,Parque,0.599,43.34,3 H15 H21,3.11
-pm,E36,E35,Parque,Biblioteca,0.599,35.0,3 C15 D21,2.27
-pm,E36,E37,Parque,Portal Tunal,0.446,42.67,3 H15 H21,3.94
-pm,E37,E36,Portal Tunal,Parque,0.446,35.0,3 C15 D21,5.55
-pm,E38,E33,Consuelo,Santa Lucía,1.198,35.99,B72 D20 M83,
-pm,E38,E39,Consuelo,Molinos,0.418,103.34,H17 H20 H54 H72 H75 H76 H83,1.23
-pm,E39,E38,Molinos,Consuelo,0.418,62.66,B72 B75 C17 D20 M83,1.21
-pm,E39,E40,Molinos,Danubio,1.495,102.01,H17 H20 H54 H72 H75 H76 H83,4.36
-pm,E4,E3,Toberín,Portal Norte - Unicervantes,0.948,24.01,B18 B75,4.96
-pm,E4,E5,Toberín,Calle 161,0.482,43.67,H72 H75 L18,
-pm,E40,E39,Danubio,Molinos,1.495,61.66,B72 B75 C17 D20 M83,4.04
-pm,E40,E41,Danubio,Portal Usme,1.337,100.67,H17 H20 H54 H72 H75 H76 H83,5.31
-pm,E41,E40,Portal Usme,Danubio,1.337,61.33,B72 B75 C17 D20 M83,6.65
-pm,E42,E43,San Martín,Rionegro,0.512,26.33,C15 C17,
-pm,E42,E70,San Martín,NQS Calle 75,0.831,32.67,H15 H17,
-pm,E43,E42,Rionegro,San Martín,0.512,32.67,H15 H17,
-pm,E43,E44,Rionegro,Suba - Calle 95,0.515,26.0,C15 C17,
-pm,E44,E43,Suba - Calle 95,Rionegro,0.515,33.0,H15 H17,
-pm,E44,E45,Suba - Calle 95,Suba Calle 100,0.287,26.0,C15 C17,0.8
-pm,E45,E44,Suba Calle 100,Suba - Calle 95,0.287,33.0,H15 H17,0.77
-pm,E45,E46,Suba Calle 100,Puentelargo,0.778,26.0,C15 C17,2.29
-pm,E46,E45,Puentelargo,Suba Calle 100,0.778,33.0,H15 H17,2.25
-pm,E46,E47,Puentelargo,Av. Suba - Calle 116,0.712,26.33,C15 C17,2.2
-pm,E47,E46,Av. Suba - Calle 116,Puentelargo,0.712,33.0,H15 H17,2.18
-pm,E47,E48,Av. Suba - Calle 116,Humedal Córdoba,0.841,26.33,C15 C17,3.29
-pm,E48,E47,Humedal Córdoba,Av. Suba - Calle 116,0.841,32.67,H15 H17,4.26
-pm,E48,E49,Humedal Córdoba,Niza - Calle 127,0.604,26.0,C15 C17,2.18
-pm,E49,E48,Niza - Calle 127,Humedal Córdoba,0.604,32.67,H15 H17,2.83
-pm,E49,E50,Niza - Calle 127,Suba - AV. Boyacá,1.064,26.0,C15 C17,
-pm,E5,E4,Calle 161,Toberín,0.482,34.67,B18 B72 B75,
-pm,E5,E6,Calle 161,Mazúren,0.826,43.67,H72 H75 L18,
-pm,E50,E49,Suba - AV. Boyacá,Niza - Calle 127,1.064,32.66,H15 H17,
-pm,E50,E51,Suba - AV. Boyacá,Gratamira,0.688,26.0,C15 C17,
-pm,E51,E50,Gratamira,Suba - AV. Boyacá,0.688,32.66,H15 H17,
-pm,E51,E52,Gratamira,21 Ángeles,1.133,25.67,C15 C17,
-pm,E52,E51,21 Ángeles,Gratamira,1.133,32.66,H15 H17,
-pm,E52,E53,21 Ángeles,Suba TV 91 - OMNILIFE SEYTÚ,0.767,25.67,C15 C17,
-pm,E53,E52,Suba TV 91 - OMNILIFE SEYTÚ,21 Ángeles,0.767,32.66,H15 H17,
-pm,E53,E54,Suba TV 91 - OMNILIFE SEYTÚ,La Campiña,0.623,25.33,C15 C17,2.02
-pm,E54,E53,La Campiña,Suba TV 91 - OMNILIFE SEYTÚ,0.623,32.0,H15 H17,2.08
-pm,E54,E55,La Campiña,Portal Suba,0.575,25.33,C15 C17,2.73
-pm,E55,E54,Portal Suba,La Campiña,0.575,32.33,H15 H17,2.41
-pm,E56,E17,Polo - FINCOMERCIO,Héroes - Colmena Seguros,0.5,31.34,H15 H20,
-pm,E56,E57,Polo - FINCOMERCIO,Escuela Militar,0.851,28.0,C15 D20,
-pm,E57,E56,Escuela Militar,Polo - FINCOMERCIO,0.851,31.34,H15 H20,
-pm,E57,E58,Escuela Militar,Carrera 47,0.455,41.34,D20 D21 D22,
-pm,E57,E70,Escuela Militar,NQS Calle 75,0.621,41.0,C15 G22 H21,
-pm,E58,E57,Carrera 47,Escuela Militar,0.455,44.34,G22 H20 H21,
-pm,E58,E59,Carrera 47,Carrera 53,0.645,41.34,D20 D21 D22,
-pm,E59,E58,Carrera 53,Carrera 47,0.645,44.34,G22 H20 H21,
-pm,E59,E60,Carrera 53,Avenida 68,0.605,41.34,D20 D21 D22,
-pm,E6,E5,Mazúren,Calle 161,0.826,34.67,B18 B72 B75,
-pm,E6,E7,Mazúren,Calle 146,0.416,44.01,H72 H75 L18,
-pm,E60,E59,Avenida 68,Carrera 53,0.605,44.34,G22 H20 H21,
-pm,E60,E61,Avenida 68,Ferias,0.681,40.67,D20 D21 D22,2.81
-pm,E61,E60,Ferias,Avenida 68,0.681,44.0,G22 H20 H21,3.12
-pm,E61,E62,Ferias,Boyacá,0.44,40.34,D20 D21 D22,1.11
-pm,E62,E61,Boyacá,Ferias,0.44,44.34,G22 H20 H21,1.46
-pm,E62,E63,Boyacá,Minuto De Dios,0.625,40.34,D20 D21 D22,1.54
-pm,E63,E62,Minuto De Dios,Boyacá,0.625,43.34,G22 H20 H21,1.72
-pm,E63,E64,Minuto De Dios,Granja - CRA. 77,0.518,40.0,D20 D21 D22,1.56
-pm,E64,E63,Granja - CRA. 77,Minuto De Dios,0.518,43.67,G22 H20 H21,1.71
-pm,E64,E65,Granja - CRA. 77,Avenida Cali,0.601,39.67,D20 D21 D22,1.98
-pm,E65,E64,Avenida Cali,Granja - CRA. 77,0.601,43.34,G22 H20 H21,2.06
-pm,E65,E66,Avenida Cali,Carrera 90,0.533,39.67,D20 D21 D22,1.69
-pm,E66,E65,Carrera 90,Avenida Cali,0.533,43.0,G22 H20 H21,1.89
-pm,E66,E67,Carrera 90,Quirigua,0.516,39.67,D20 D21 D22,
-pm,E67,E66,Quirigua,Carrera 90,0.516,43.34,G22 H20 H21,
-pm,E67,E68,Quirigua,Portal 80,0.397,39.0,D20 D21 D22,2.11
-pm,E68,E67,Portal 80,Quirigua,0.397,43.67,G22 H20 H21,2.78
-pm,E69,E15,La Castellana,Virrey - Cendiatra,0.603,10.0,B72,
-pm,E69,E70,La Castellana,NQS Calle 75,0.973,23.0,H72,
-pm,E7,E6,Calle 146,Mazúren,0.416,34.34,B18 B72 B75,
-pm,E7,E8,Calle 146,Calle 142,0.456,44.01,H72 H75 L18,0.75
-pm,E70,E42,NQS Calle 75,San Martín,0.831,26.33,C15 C17,
-pm,E70,E57,NQS Calle 75,Escuela Militar,0.621,41.34,D21 D22 H15,
-pm,E70,E69,NQS Calle 75,La Castellana,0.973,10.33,B72,
-pm,E70,E71,NQS Calle 75,Avenida Chile,0.556,68.67,G22 H17 H21 H72,1.4
-pm,E71,E70,Avenida Chile,NQS Calle 75,0.556,50.0,B72 C17 D21 D22,1.26
-pm,E71,E72,Avenida Chile,7 de Agosto,1.065,69.0,G22 H17 H21 H72,
-pm,E72,E71,7 de Agosto,Avenida Chile,1.065,50.0,B72 C17 D21 D22,
-pm,E72,E73,7 de Agosto,TIGO,0.81,69.0,G22 H17 H21 H72,2.77
-pm,E73,E72,TIGO,7 de Agosto,0.81,50.66,B72 C17 D21 D22,2.48
-pm,E73,E74,TIGO,Campin - UAN,0.518,69.0,G22 H17 H21 H72,1.71
-pm,E74,E73,Campin - UAN,TIGO,0.518,50.66,B72 C17 D21 D22,1.74
-pm,E74,E75,Campin - UAN,Universidad Nacional,0.923,69.0,G22 H17 H21 H72,
-pm,E75,E74,Universidad Nacional,Campin - UAN,0.923,50.66,B72 C17 D21 D22,
-pm,E75,E76,Universidad Nacional,AV. Eldorado,0.72,68.67,G22 H17 H21 H72,2.09
-pm,E76,E122,AV. Eldorado,Concejo de Bogotá,0.522,26.67,3 H54,
-pm,E76,E123,AV. Eldorado,Ciudad Universitaria,0.405,10.33,3,
-pm,E76,E75,AV. Eldorado,Universidad Nacional,0.72,50.33,B72 C17 D21 D22,2.09
-pm,E76,E77,AV. Eldorado,CAD,0.937,84.33,G22 G53 H17 H21 H72,
-pm,E77,E76,CAD,AV. Eldorado,0.937,50.66,B72 C17 D21 D22,
-pm,E77,E78,CAD,Paloquemao,0.936,84.33,G22 G53 H17 H21 H72,
-pm,E78,E77,Paloquemao,CAD,0.936,50.66,B72 C17 D21 D22,
-pm,E78,E79,Paloquemao,Ricaurte,0.585,83.66,G22 G53 H17 H21 H72,
-pm,E79,E100,Ricaurte,San Facon Carrera 22,0.663,65.0,B18 H17 H21 H72,
-pm,E79,E78,Ricaurte,Paloquemao,0.585,50.99,B72 C17 D21 D22,
-pm,E79,E80,Ricaurte,Guatoque - Veraguas,0.96,94.66,C17 D21 H17 H21 H72 L18,3.92
-pm,E79,E83,Ricaurte,Comuneros,1.24,29.33,G22 G53,
-pm,E8,E7,Calle 142,Calle 146,0.456,34.68,B18 B72 B75,1.85
-pm,E8,E9,Calle 142,Alcalá - Colegio S. Tomás Dominicos,0.642,44.01,H72 H75 L18,
-pm,E80,E79,Guatoque - Veraguas,Ricaurte,0.96,101.33,B18 B72 C17 D21 H17 H21 H72,3.3
-pm,E80,E81,Guatoque - Veraguas,Tygua - San José,0.84,45.33,H72 L18 M47,2.49
-pm,E80,E83,Guatoque - Veraguas,Comuneros,0.546,15.33,G47,3.21
-pm,E81,E80,Tygua - San José,Guatoque - Veraguas,0.84,59.67,B18 B72 G47 H72,3.3
-pm,E81,E82,Tygua - San José,Bicentenario,1.0,22.67,L18 M47,
-pm,E82,E137,Bicentenario,San Victorino,0.92,28.34,2 M47 M83,3.32
-pm,E82,E138,Bicentenario,Estación San Bernardo,0.507,45.34,2 H83 L18,1.64
-pm,E82,E81,Bicentenario,Tygua - San José,1.0,27.0,B18 G47,
-pm,E83,E79,Comuneros,Ricaurte,1.24,14.33,D22,
-pm,E83,E80,Comuneros,Guatoque - Veraguas,0.546,8.33,M47,2.52
-pm,E83,E84,Comuneros,Santa Isabel,0.419,44.66,G22 G47 G53,
-pm,E84,E83,Santa Isabel,Comuneros,0.419,22.66,D22 M47,
-pm,E84,E85,Santa Isabel,NQS Calle 30 SUR,1.857,44.0,G22 G47 G53,
-pm,E85,E84,NQS Calle 30 SUR,Santa Isabel,1.857,22.33,D22 M47,
-pm,E85,E86,NQS Calle 30 SUR,CL 38 A Sur - Centro Mayor,0.66,44.0,G22 G47 G53,
-pm,E86,E85,CL 38 A Sur - Centro Mayor,NQS Calle 30 SUR,0.66,22.33,D22 M47,
-pm,E86,E87,CL 38 A Sur - Centro Mayor,General Santander,0.642,44.0,G22 G47 G53,
-pm,E87,E86,General Santander,CL 38 A Sur - Centro Mayor,0.642,22.33,D22 M47,
-pm,E87,E88,General Santander,Alquería,0.53,42.99,G22 G47 G53,1.71
-pm,E88,E87,Alquería,General Santander,0.53,22.33,D22 M47,
-pm,E88,E89,Alquería,Venecia,0.94,42.66,G22 G47 G53,3.37
-pm,E89,E88,Venecia,Alquería,0.94,22.33,D22 M47,
-pm,E89,E90,Venecia,Sevillana,0.53,42.66,G22 G47 G53,1.34
-pm,E9,E10,Alcalá - Colegio S. Tomás Dominicos,Prado,0.744,45.0,H72 H75 L18,
-pm,E9,E8,Alcalá - Colegio S. Tomás Dominicos,Calle 142,0.642,35.01,B18 B72 B75,
-pm,E90,E89,Sevillana,Venecia,0.53,22.33,D22 M47,1.21
-pm,E90,E91,Sevillana,C. C Paseo Villa Del Rio - Madelena,1.058,41.67,G22 G47 G53,4.28
-pm,E91,E90,C. C Paseo Villa Del Rio - Madelena,Sevillana,1.058,21.67,D22 M47,3.45
-pm,E91,E92,C. C Paseo Villa Del Rio - Madelena,Perdomo,0.898,41.0,G22 G47 G53,3.35
-pm,E92,E91,Perdomo,C. C Paseo Villa Del Rio - Madelena,0.898,21.67,D22 M47,2.68
-pm,E92,E93,Perdomo,Portal Sur - JFK Coop. Financiera,0.497,41.0,G22 G47 G53,1.69
-pm,E93,E92,Portal Sur - JFK Coop. Financiera,Perdomo,0.497,21.67,D22 M47,2.97
-pm,E99,E100,De La Sabana,San Facon Carrera 22,0.725,40.66,C17 D21 L18,
-pm,E99,E25,De La Sabana,Avenida Jiménez,0.328,65.0,B18 H17 H21 H72,
-valle,E1,E2,Terminal,Calle 187,0.617,9.87,L18,2.12
-valle,E10,E11,Prado,Calle 127,1.118,33.2,H72 H75 L18,
-valle,E10,E9,Prado,Alcalá - Colegio S. Tomás Dominicos,0.744,33.2,B18 B72 B75,
-valle,E100,E79,San Facon Carrera 22,Ricaurte,0.663,31.33,C17 D21 L18,
-valle,E100,E99,San Facon Carrera 22,De La Sabana,0.725,30.93,B18 H17 H21,
-valle,E11,E10,Calle 127,Prado,1.118,33.07,B18 B72 B75,
-valle,E11,E12,Calle 127,Pepe Sierra - Utel Universidad,0.734,33.07,H72 H75 L18,2.4
-valle,E118,E119,Universidades CityU,Las Aguas - Centro Colombo Americano,0.259,21.87,3 H54 H76,
-valle,E118,E121,Universidades CityU,Centro Memoria,2.022,12.0,3,
-valle,E119,E118,Las Aguas - Centro Colombo Americano,Universidades CityU,0.259,12.27,3 J76,
-valle,E119,E120,Las Aguas - Centro Colombo Americano,Museo del Oro,0.524,21.87,3 H54 H76,
-valle,E12,E11,Pepe Sierra - Utel Universidad,Calle 127,0.734,32.94,B18 B72 B75,2.28
-valle,E12,E13,Pepe Sierra - Utel Universidad,Calle 106,0.58,32.93,H72 H75 L18,
-valle,E120,E119,Museo del Oro,Las Aguas - Centro Colombo Americano,0.524,12.27,3 J76,
-valle,E120,E25,Museo del Oro,Avenida Jiménez,0.853,21.87,3 H54 H76,
-valle,E121,E118,Centro Memoria,Universidades CityU,2.022,21.07,3 H54,
-valle,E121,E122,Centro Memoria,Concejo de Bogotá,0.755,12.0,3,2.76
-valle,E122,E121,Concejo de Bogotá,Centro Memoria,0.755,21.2,3 H54,2.98
-valle,E122,E76,Concejo de Bogotá,AV. Eldorado,0.522,12.0,3,
-valle,E123,E124,Ciudad Universitaria,Corferias,0.783,12.8,3 K53,3.03
-valle,E123,E76,Ciudad Universitaria,AV. Eldorado,0.405,22.0,3 G53 H54,
-valle,E124,E123,Corferias,Ciudad Universitaria,0.783,22.26,3 G53 H54,2.99
-valle,E124,E125,Corferias,Quinta Paredes - RTVC,0.521,0.8,K53,
-valle,E125,E124,Quinta Paredes - RTVC,Corferias,0.521,10.13,G53 H54,1.69
-valle,E125,E126,Quinta Paredes - RTVC,Gobernacion,0.702,0.93,K53,
-valle,E126,E125,Gobernacion,Quinta Paredes - RTVC,0.702,10.4,G53 H54,
-valle,E126,E127,Gobernacion,CAN - British Council,0.529,0.93,K53,
-valle,E127,E126,CAN - British Council,Gobernacion,0.529,10.4,G53 H54,
-valle,E127,E128,CAN - British Council,Salitre El Greco - Vive Claro,0.529,0.93,K53,
-valle,E128,E127,Salitre El Greco - Vive Claro,CAN - British Council,0.529,10.53,G53 H54,1.55
-valle,E128,E129,Salitre El Greco - Vive Claro,El Tiempo - Cámara De Comercio De Bogotá,0.82,0.93,K53,
-valle,E129,E128,El Tiempo - Cámara De Comercio De Bogotá,Salitre El Greco - Vive Claro,0.82,10.53,G53 H54,2.42
-valle,E129,E130,El Tiempo - Cámara De Comercio De Bogotá,AV. Rojas - UNISALESIANA,0.643,0.93,K53,
-valle,E13,E12,Calle 106,Pepe Sierra - Utel Universidad,0.58,32.81,B18 B72 B75,
-valle,E13,E14,Calle 106,Calle 100 - Marketmedios,1.019,32.93,H72 H75 L18,
-valle,E130,E129,AV. Rojas - UNISALESIANA,El Tiempo - Cámara De Comercio De Bogotá,0.643,10.53,G53 H54,1.94
-valle,E130,E131,AV. Rojas - UNISALESIANA,Normandia,0.931,1.33,K53,
-valle,E131,E130,Normandia,AV. Rojas - UNISALESIANA,0.931,10.93,G53 H54,
-valle,E131,E132,Normandia,Modelia,0.794,1.33,K53,
-valle,E132,E131,Modelia,Normandia,0.794,10.93,G53 H54,
-valle,E132,E133,Modelia,Portal El Dorado - C. C Nuestro Bogotá,0.872,1.33,K53,
-valle,E133,E132,Portal El Dorado - C. C Nuestro Bogotá,Modelia,0.872,11.07,G53 H54,2.75
-valle,E134,E135,Museo Nacional,San Diego,0.545,29.2,2 G47 H83,2.12
-valle,E135,E134,San Diego,Museo Nacional,0.545,30.27,2 M47 M83,2.26
-valle,E135,E136,San Diego,Las Nieves,0.622,28.93,2 G47 H83,2.55
-valle,E136,E135,Las Nieves,San Diego,0.622,30.4,2 M47 M83,1.84
-valle,E136,E137,Las Nieves,San Victorino,0.657,28.93,2 G47 H83,2.64
-valle,E137,E136,San Victorino,Las Nieves,0.657,30.26,2 M47 M83,2.15
-valle,E137,E82,San Victorino,Bicentenario,0.92,28.93,2 G47 H83,4.23
-valle,E138,E139,Estación San Bernardo,Policarpa,0.543,29.73,2 H83 L18,2.1
-valle,E138,E82,Estación San Bernardo,Bicentenario,0.507,29.33,2 B18 M83,1.7
-valle,E139,E138,Policarpa,Estación San Bernardo,0.543,29.33,2 B18 M83,1.73
-valle,E139,E140,Policarpa,Ciudad Jardín - UAN,0.629,29.6,2 H83 L18,2.72
-valle,E14,E13,Calle 100 - Marketmedios,Calle 106,1.019,32.81,B18 B72 B75,
-valle,E14,E15,Calle 100 - Marketmedios,Virrey - Cendiatra,0.896,32.79,H72 H75 L18,
-valle,E140,E139,Ciudad Jardín - UAN,Policarpa,0.629,29.46,2 B18 M83,2.06
-valle,E140,E141,Ciudad Jardín - UAN,AV. Primero de Mayo,0.633,29.74,2 H83 L18,3.43
-valle,E141,E140,AV. Primero de Mayo,Ciudad Jardín - UAN,0.633,29.33,2 B18 M83,1.91
-valle,E141,E142,AV. Primero de Mayo,Country Sur,0.822,19.2,2 L18,3.3
-valle,E142,E141,Country Sur,AV. Primero de Mayo,0.822,19.33,2 B18,2.86
-valle,E142,E143,Country Sur,Portal 20 de Julio,0.659,19.2,2 L18,3.75
-valle,E143,E142,Portal 20 de Julio,Country Sur,0.659,19.33,2 B18,4.88
-valle,E15,E14,Virrey - Cendiatra,Calle 100 - Marketmedios,0.896,32.67,B18 B72 B75,
-valle,E15,E16,Virrey - Cendiatra,Calle 85 - Gato Dumas,0.415,19.86,H75 L18,
-valle,E15,E69,Virrey - Cendiatra,La Castellana,0.603,12.93,H72,
-valle,E16,E15,Calle 85 - Gato Dumas,Virrey - Cendiatra,0.415,19.46,B18 B75,
-valle,E16,E17,Calle 85 - Gato Dumas,Héroes - Colmena Seguros,0.47,19.86,H75 L18,
-valle,E17,E16,Héroes - Colmena Seguros,Calle 85 - Gato Dumas,0.47,19.46,B18 B75,
-valle,E17,E18,Héroes - Colmena Seguros,Calle 72 - Areandina,1.118,41.2,H15 H20 H75 L18,3.59
-valle,E17,E56,Héroes - Colmena Seguros,Polo - FINCOMERCIO,0.5,20.27,C15 D20,
-valle,E18,E17,Calle 72 - Areandina,Héroes - Colmena Seguros,1.118,39.6,B18 B75 C15 D20,3.75
-valle,E18,E19,Calle 72 - Areandina,Flores,0.385,41.33,H15 H20 H75 L18,
-valle,E19,E18,Flores,Calle 72 - Areandina,0.385,39.6,B18 B75 C15 D20,
-valle,E19,E20,Flores,Calle 57,1.362,41.33,H15 H20 H75 L18,
-valle,E2,E1,Calle 187,Terminal,0.617,10.0,B18,1.97
-valle,E2,E3,Calle 187,Portal Norte - Unicervantes,0.985,9.73,L18,
-valle,E20,E19,Calle 57,Flores,1.362,39.47,B18 B75 C15 D20,
-valle,E20,E21,Calle 57,Calle 53 - Universidad Manuela Beltrán,0.32,41.33,H15 H20 H75 L18,3.31
-valle,E21,E20,Calle 53 - Universidad Manuela Beltrán,Calle 57,0.32,39.47,B18 B75 C15 D20,3.12
-valle,E21,E22,Calle 53 - Universidad Manuela Beltrán,AV. 39,1.496,41.33,H15 H20 H75 L18,3.55
-valle,E22,E21,AV. 39,Calle 53 - Universidad Manuela Beltrán,1.496,39.47,B18 B75 C15 D20,3.64
-valle,E22,E23,AV. 39,Calle 26 - Atrio,1.202,41.47,H15 H20 H75 L18,3.92
-valle,E23,E22,Calle 26 - Atrio,AV. 39,1.202,39.34,B18 B75 C15 D20,3.57
-valle,E23,E24,Calle 26 - Atrio,Calle 22,0.827,41.87,H15 H20 H75 L18,3.29
-valle,E24,E23,Calle 22,Calle 26 - Atrio,0.827,39.47,B18 B75 C15 D20,2.97
-valle,E24,E25,Calle 22,Avenida Jiménez,0.961,66.53,3 H15 H20 H75 L18,4.96
-valle,E25,E120,Avenida Jiménez,Museo del Oro,0.853,12.27,3 J76,
-valle,E25,E24,Avenida Jiménez,Calle 22,0.961,63.2,3 B18 B75 C15 D20,4.57
-valle,E25,E26,Avenida Jiménez,Hortúa,1.725,75.99,3 H15 H17 H20 H21 H54 H75 H76,4.79
-valle,E25,E99,Avenida Jiménez,De La Sabana,0.328,31.33,C17 D21 L18,
-valle,E26,E25,Hortúa,Avenida Jiménez,1.725,64.13,3 B75 C15 C17 D20 D21 J76,4.8
-valle,E26,E27,Hortúa,Nariño,0.651,76.12,3 H15 H17 H20 H21 H54 H75 H76,2.3
-valle,E27,E26,Nariño,Hortúa,0.651,64.39,3 B75 C15 C17 D20 D21 J76,2.2
-valle,E27,E28,Nariño,Fucha,0.71,88.53,3 H15 H17 H20 H21 H54 H72 H75 H76,2.21
-valle,E28,E27,Fucha,Nariño,0.71,77.06,3 B72 B75 C15 C17 D20 D21 J76,2.27
-valle,E28,E29,Fucha,Restrepo,0.257,88.53,3 H15 H17 H20 H21 H54 H72 H75 H76,1.23
-valle,E29,E28,Restrepo,Fucha,0.257,77.19,3 B72 B75 C15 C17 D20 D21 J76,0.88
-valle,E29,E30,Restrepo,Olaya,0.734,88.94,3 H15 H17 H20 H21 H54 H72 H75,2.76
-valle,E3,E2,Portal Norte - Unicervantes,Calle 187,0.985,9.73,B18,
-valle,E3,E4,Portal Norte - Unicervantes,Toberín,0.948,20.26,H75 L18,2.9
-valle,E30,E29,Olaya,Restrepo,0.734,77.2,3 B72 B75 C15 C17 D20 D21,2.64
-valle,E30,E31,Olaya,Quiroga,0.812,89.47,3 H15 H17 H20 H21 H54 H72 H75,2.9
-valle,E31,E30,Quiroga,Olaya,0.812,77.2,3 B72 B75 C15 C17 D20 D21,2.78
-valle,E31,E32,Quiroga,Calle 40 Sur,0.642,99.47,3 H15 H17 H20 H21 H54 H72 H75 H83,2.26
-valle,E32,E31,Calle 40 Sur,Quiroga,0.642,87.06,3 B72 B75 C15 C17 D20 D21 M83,2.11
-valle,E32,E33,Calle 40 Sur,Santa Lucía,0.743,99.87,3 H15 H17 H20 H21 H54 H72 H75 H83,3.03
-valle,E33,E32,Santa Lucía,Calle 40 Sur,0.743,87.2,3 B72 B75 C15 C17 D20 D21 M83,2.7
-valle,E33,E34,Santa Lucía,Socorro,0.709,81.73,3 B72 H15 H17 H21 H72 H75,2.29
-valle,E33,E38,Santa Lucía,Consuelo,1.198,31.2,H20 H54 H83,
-valle,E34,E33,Socorro,Santa Lucía,0.709,66.93,3 B72 B75 C15 C17 D21,2.13
-valle,E34,E35,Socorro,Biblioteca,0.824,33.2,3 H15 H21,
-valle,E35,E34,Biblioteca,Socorro,0.824,32.13,3 C15 D21,
-valle,E35,E36,Biblioteca,Parque,0.599,33.2,3 H15 H21,2.5
-valle,E36,E35,Parque,Biblioteca,0.599,32.13,3 C15 D21,2.2
-valle,E36,E37,Parque,Portal Tunal,0.446,33.2,3 H15 H21,3.24
-valle,E37,E36,Portal Tunal,Parque,0.446,32.13,3 C15 D21,5.42
-valle,E38,E33,Consuelo,Santa Lucía,1.198,32.94,B72 D20 M83,
-valle,E38,E39,Consuelo,Molinos,0.418,54.41,H17 H20 H54 H75 H83,1.14
-valle,E39,E38,Molinos,Consuelo,0.418,55.34,B72 B75 C17 D20 M83,1.1
-valle,E39,E40,Molinos,Danubio,1.495,67.33,H17 H20 H54 H72 H75 H83,3.8
-valle,E4,E3,Toberín,Portal Norte - Unicervantes,0.948,20.4,B18 B75,4.34
-valle,E4,E5,Toberín,Calle 161,0.482,33.59,H72 H75 L18,
-valle,E40,E39,Danubio,Molinos,1.495,55.2,B72 B75 C17 D20 M83,3.67
-valle,E40,E41,Danubio,Portal Usme,1.337,67.33,H17 H20 H54 H72 H75 H83,4.76
-valle,E41,E40,Portal Usme,Danubio,1.337,55.33,B72 B75 C17 D20 M83,6.36
-valle,E42,E43,San Martín,Rionegro,0.512,21.87,C15 C17,
-valle,E42,E70,San Martín,NQS Calle 75,0.831,22.4,H15 H17,
-valle,E43,E42,Rionegro,San Martín,0.512,22.53,H15 H17,
-valle,E43,E44,Rionegro,Suba - Calle 95,0.515,22.0,C15 C17,
-valle,E44,E43,Suba - Calle 95,Rionegro,0.515,22.67,H15 H17,
-valle,E44,E45,Suba - Calle 95,Suba Calle 100,0.287,22.0,C15 C17,0.76
-valle,E45,E44,Suba Calle 100,Suba - Calle 95,0.287,22.67,H15 H17,0.71
-valle,E45,E46,Suba Calle 100,Puentelargo,0.778,22.0,C15 C17,2.12
-valle,E46,E45,Puentelargo,Suba Calle 100,0.778,22.67,H15 H17,2.07
-valle,E46,E47,Puentelargo,Av. Suba - Calle 116,0.712,21.87,C15 C17,2.05
-valle,E47,E46,Av. Suba - Calle 116,Puentelargo,0.712,22.67,H15 H17,2.01
-valle,E47,E48,Av. Suba - Calle 116,Humedal Córdoba,0.841,22.0,C15 C17,2.98
-valle,E48,E47,Humedal Córdoba,Av. Suba - Calle 116,0.841,22.67,H15 H17,3.21
-valle,E48,E49,Humedal Córdoba,Niza - Calle 127,0.604,22.13,C15 C17,1.97
-valle,E49,E48,Niza - Calle 127,Humedal Córdoba,0.604,22.8,H15 H17,2.13
-valle,E49,E50,Niza - Calle 127,Suba - AV. Boyacá,1.064,22.13,C15 C17,
-valle,E5,E4,Calle 161,Toberín,0.482,33.47,B18 B72 B75,
-valle,E5,E6,Calle 161,Mazúren,0.826,33.59,H72 H75 L18,
-valle,E50,E49,Suba - AV. Boyacá,Niza - Calle 127,1.064,22.93,H15 H17,
-valle,E50,E51,Suba - AV. Boyacá,Gratamira,0.688,22.13,C15 C17,
-valle,E51,E50,Gratamira,Suba - AV. Boyacá,0.688,22.93,H15 H17,
-valle,E51,E52,Gratamira,21 Ángeles,1.133,22.27,C15 C17,
-valle,E52,E51,21 Ángeles,Gratamira,1.133,22.93,H15 H17,
-valle,E52,E53,21 Ángeles,Suba TV 91 - OMNILIFE SEYTÚ,0.767,22.27,C15 C17,
-valle,E53,E52,Suba TV 91 - OMNILIFE SEYTÚ,21 Ángeles,0.767,22.93,H15 H17,
-valle,E53,E54,Suba TV 91 - OMNILIFE SEYTÚ,La Campiña,0.623,22.4,C15 C17,1.86
-valle,E54,E53,La Campiña,Suba TV 91 - OMNILIFE SEYTÚ,0.623,23.2,H15 H17,1.75
-valle,E54,E55,La Campiña,Portal Suba,0.575,22.53,C15 C17,2.49
-valle,E55,E54,Portal Suba,La Campiña,0.575,23.07,H15 H17,2.08
-valle,E56,E17,Polo - FINCOMERCIO,Héroes - Colmena Seguros,0.5,21.2,H15 H20,
-valle,E56,E57,Polo - FINCOMERCIO,Escuela Militar,0.851,20.14,C15 D20,
-valle,E57,E56,Escuela Militar,Polo - FINCOMERCIO,0.851,21.06,H15 H20,
-valle,E57,E58,Escuela Militar,Carrera 47,0.455,30.14,D20 D21 D22,
-valle,E57,E70,Escuela Militar,NQS Calle 75,0.621,29.33,C15 G22 H21,
-valle,E58,E57,Carrera 47,Escuela Militar,0.455,29.99,G22 H20 H21,
-valle,E58,E59,Carrera 47,Carrera 53,0.645,30.0,D20 D21 D22,
-valle,E59,E58,Carrera 53,Carrera 47,0.645,29.99,G22 H20 H21,
-valle,E59,E60,Carrera 53,Avenida 68,0.605,30.0,D20 D21 D22,
-valle,E6,E5,Mazúren,Calle 161,0.826,33.47,B18 B72 B75,
-valle,E6,E7,Mazúren,Calle 146,0.416,33.59,H72 H75 L18,
-valle,E60,E59,Avenida 68,Carrera 53,0.605,29.99,G22 H20 H21,
-valle,E60,E61,Avenida 68,Ferias,0.681,30.53,D20 D21 D22,2.43
-valle,E61,E60,Ferias,Avenida 68,0.681,29.99,G22 H20 H21,2.47
-valle,E61,E62,Ferias,Boyacá,0.44,30.53,D20 D21 D22,0.97
-valle,E62,E61,Boyacá,Ferias,0.44,29.99,G22 H20 H21,1.16
-valle,E62,E63,Boyacá,Minuto De Dios,0.625,30.53,D20 D21 D22,1.42
-valle,E63,E62,Minuto De Dios,Boyacá,0.625,30.13,G22 H20 H21,1.45
-valle,E63,E64,Minuto De Dios,Granja - CRA. 77,0.518,30.4,D20 D21 D22,1.41
-valle,E64,E63,Granja - CRA. 77,Minuto De Dios,0.518,30.14,G22 H20 H21,1.43
-valle,E64,E65,Granja - CRA. 77,Avenida Cali,0.601,30.53,D20 D21 D22,1.83
-valle,E65,E64,Avenida Cali,Granja - CRA. 77,0.601,30.26,G22 H20 H21,1.71
-valle,E65,E66,Avenida Cali,Carrera 90,0.533,30.53,D20 D21 D22,1.57
-valle,E66,E65,Carrera 90,Avenida Cali,0.533,30.26,G22 H20 H21,1.58
-valle,E66,E67,Carrera 90,Quirigua,0.516,30.4,D20 D21 D22,
-valle,E67,E66,Quirigua,Carrera 90,0.516,30.26,G22 H20 H21,
-valle,E67,E68,Quirigua,Portal 80,0.397,30.67,D20 D21 D22,1.83
-valle,E68,E67,Portal 80,Quirigua,0.397,30.13,G22 H20 H21,2.25
-valle,E69,E15,La Castellana,Virrey - Cendiatra,0.603,13.07,B72,
-valle,E69,E70,La Castellana,NQS Calle 75,0.973,12.8,H72,
-valle,E7,E6,Calle 146,Mazúren,0.416,33.47,B18 B72 B75,
-valle,E7,E8,Calle 146,Calle 142,0.456,33.59,H72 H75 L18,0.64
-valle,E70,E42,NQS Calle 75,San Martín,0.831,21.87,C15 C17,
-valle,E70,E57,NQS Calle 75,Escuela Militar,0.621,30.4,D21 D22 H15,
-valle,E70,E69,NQS Calle 75,La Castellana,0.973,12.93,B72,
-valle,E70,E71,NQS Calle 75,Avenida Chile,0.556,44.0,G22 H17 H21 H72,1.18
-valle,E71,E70,Avenida Chile,NQS Calle 75,0.556,44.66,B72 C17 D21 D22,1.17
-valle,E71,E72,Avenida Chile,7 de Agosto,1.065,44.0,G22 H17 H21 H72,
-valle,E72,E71,7 de Agosto,Avenida Chile,1.065,44.8,B72 C17 D21 D22,
-valle,E72,E73,7 de Agosto,TIGO,0.81,44.0,G22 H17 H21 H72,2.3
-valle,E73,E72,TIGO,7 de Agosto,0.81,44.67,B72 C17 D21 D22,2.3
-valle,E73,E74,TIGO,Campin - UAN,0.518,43.87,G22 H17 H21 H72,1.41
-valle,E74,E73,Campin - UAN,TIGO,0.518,44.54,B72 C17 D21 D22,1.62
-valle,E74,E75,Campin - UAN,Universidad Nacional,0.923,43.87,G22 H17 H21 H72,
-valle,E75,E74,Universidad Nacional,Campin - UAN,0.923,44.54,B72 C17 D21 D22,
-valle,E75,E76,Universidad Nacional,AV. Eldorado,0.72,43.87,G22 H17 H21 H72,1.82
-valle,E76,E122,AV. Eldorado,Concejo de Bogotá,0.522,21.2,3 H54,
-valle,E76,E123,AV. Eldorado,Ciudad Universitaria,0.405,12.67,3 K53,
-valle,E76,E75,AV. Eldorado,Universidad Nacional,0.72,44.53,B72 C17 D21 D22,1.94
-valle,E76,E77,AV. Eldorado,CAD,0.937,44.67,G22 G53 H17 H21 H72,
-valle,E77,E76,CAD,AV. Eldorado,0.937,45.2,B72 C17 D21 D22 K53,
-valle,E77,E78,CAD,Paloquemao,0.936,44.54,G22 G53 H17 H21 H72,
-valle,E78,E77,Paloquemao,CAD,0.936,45.06,B72 C17 D21 D22 K53,
-valle,E78,E79,Paloquemao,Ricaurte,0.585,44.54,G22 G53 H17 H21 H72,
-valle,E79,E100,Ricaurte,San Facon Carrera 22,0.663,30.93,B18 H17 H21,
-valle,E79,E78,Ricaurte,Paloquemao,0.585,44.93,B72 C17 D21 D22 K53,
-valle,E79,E80,Ricaurte,Guatoque - Veraguas,0.96,65.6,C17 D21 H17 H21 H72 L18,3.24
-valle,E79,E83,Ricaurte,Comuneros,1.24,10.27,G22 G53,
-valle,E8,E7,Calle 142,Calle 146,0.456,33.33,B18 B72 B75,1.61
-valle,E8,E9,Calle 142,Alcalá - Colegio S. Tomás Dominicos,0.642,33.59,H72 H75 L18,
-valle,E80,E79,Guatoque - Veraguas,Ricaurte,0.96,65.6,B18 B72 C17 D21 H17 H21,3.07
-valle,E80,E81,Guatoque - Veraguas,Tygua - San José,0.84,32.0,H72 L18 M47,2.45
-valle,E80,E83,Guatoque - Veraguas,Comuneros,0.546,8.53,G47,2.79
-valle,E81,E80,Tygua - San José,Guatoque - Veraguas,0.84,30.4,B18 B72 G47,2.87
-valle,E81,E82,Tygua - San José,Bicentenario,1.0,19.33,L18 M47,
-valle,E82,E137,Bicentenario,San Victorino,0.92,30.27,2 M47 M83,3.28
-valle,E82,E138,Bicentenario,Estación San Bernardo,0.507,29.73,2 H83 L18,1.47
-valle,E82,E81,Bicentenario,Tygua - San José,1.0,17.86,B18 G47,
-valle,E83,E79,Comuneros,Ricaurte,1.24,10.26,D22 K53,
-valle,E83,E80,Comuneros,Guatoque - Veraguas,0.546,9.87,M47,2.48
-valle,E83,E84,Comuneros,Santa Isabel,0.419,18.67,G22 G47 G53,
-valle,E84,E83,Santa Isabel,Comuneros,0.419,20.13,D22 K53 M47,
-valle,E84,E85,Santa Isabel,NQS Calle 30 SUR,1.857,18.53,G22 G47 G53,
-valle,E85,E84,NQS Calle 30 SUR,Santa Isabel,1.857,20.14,D22 K53 M47,
-valle,E85,E86,NQS Calle 30 SUR,CL 38 A Sur - Centro Mayor,0.66,18.4,G22 G47 G53,
-valle,E86,E85,CL 38 A Sur - Centro Mayor,NQS Calle 30 SUR,0.66,20.0,D22 K53 M47,
-valle,E86,E87,CL 38 A Sur - Centro Mayor,General Santander,0.642,18.4,G22 G47 G53,
-valle,E87,E86,General Santander,CL 38 A Sur - Centro Mayor,0.642,20.0,D22 K53 M47,
-valle,E87,E88,General Santander,Alquería,0.53,18.27,G22 G47 G53,1.45
-valle,E88,E87,Alquería,General Santander,0.53,19.87,D22 K53 M47,1.13
-valle,E88,E89,Alquería,Venecia,0.94,18.27,G22 G47 G53,2.88
-valle,E89,E88,Venecia,Alquería,0.94,19.87,D22 K53 M47,2.52
-valle,E89,E90,Venecia,Sevillana,0.53,18.14,G22 G47 G53,1.12
-valle,E9,E10,Alcalá - Colegio S. Tomás Dominicos,Prado,0.744,33.06,H72 H75 L18,
-valle,E9,E8,Alcalá - Colegio S. Tomás Dominicos,Calle 142,0.642,33.2,B18 B72 B75,
-valle,E90,E89,Sevillana,Venecia,0.53,19.73,D22 K53 M47,1.12
-valle,E90,E91,Sevillana,C. C Paseo Villa Del Rio - Madelena,1.058,18.14,G22 G47 G53,3.68
-valle,E91,E90,C. C Paseo Villa Del Rio - Madelena,Sevillana,1.058,19.86,D22 K53 M47,3.37
-valle,E91,E92,C. C Paseo Villa Del Rio - Madelena,Perdomo,0.898,18.0,G22 G47 G53,2.88
-valle,E92,E91,Perdomo,C. C Paseo Villa Del Rio - Madelena,0.898,19.73,D22 K53 M47,2.62
-valle,E92,E93,Perdomo,Portal Sur - JFK Coop. Financiera,0.497,18.0,G22 G47 G53,1.46
-valle,E93,E92,Portal Sur - JFK Coop. Financiera,Perdomo,0.497,19.86,D22 K53 M47,2.91
-valle,E99,E100,De La Sabana,San Facon Carrera 22,0.725,31.33,C17 D21 L18,
-valle,E99,E25,De La Sabana,Avenida Jiménez,0.328,30.93,B18 H17 H21,
+franja,desde,hasta,desde_nombre,hasta_nombre,tipo,km_grafo,km_gtfs,buses_hora_programados,rutas,tiempo_programado_min
+am,E1,E2,Terminal,Calle 187,troncal,0.617,0.629,49.67,8 G11 K16 L18,1.86
+am,E2,E1,Calle 187,Terminal,troncal,0.617,0.631,62.0,8 B11 B16 B18 B55,1.84
+am,E2,E3,Calle 187,Portal Norte - Unicervantes,troncal,0.985,0.921,49.67,8 G11 K16 L18,3.69
+am,E3,E2,Portal Norte - Unicervantes,Calle 187,troncal,0.985,0.86,63.34,8 B11 B16 B18 B55,3.19
+am,E3,E4,Portal Norte - Unicervantes,Toberín,troncal,0.948,1.124,168.0,8 D10 F28 G11 G12 H13 H27 H75 J70 J74 K16 L18 S46,3.12
+am,E4,E3,Toberín,Portal Norte - Unicervantes,troncal,0.948,1.284,200.34,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B55 B74 B75,3.78
+am,E4,E5,Toberín,Calle 161,troncal,0.482,0.542,185.67,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,2.17
+am,E5,E4,Calle 161,Toberín,troncal,0.482,0.506,235.68,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B55 B72 B74 B75,1.88
+am,E5,E6,Calle 161,Mazúren,troncal,0.826,0.719,186.0,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,2.77
+am,E6,E5,Mazúren,Calle 161,troncal,0.826,0.737,247.34,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B50 B55 B72 B74 B75,2.73
+am,E6,E7,Mazúren,Calle 146,troncal,0.416,0.509,185.34,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,1.6
+am,E7,E6,Calle 146,Mazúren,troncal,0.416,0.344,247.34,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B50 B55 B72 B74 B75,1.13
+am,E7,E8,Calle 146,Calle 142,troncal,0.456,0.44,186.02,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,1.23
+am,E8,E7,Calle 142,Calle 146,troncal,0.456,0.533,248.35,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B50 B55 B72 B74 B75,1.9
+am,E8,E9,Calle 142,Alcalá - Colegio S. Tomás Dominicos,troncal,0.642,0.732,186.01,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,2.39
+am,E9,E8,Alcalá - Colegio S. Tomás Dominicos,Calle 142,troncal,0.642,0.565,250.68,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B50 B55 B72 B74 B75,2.12
+am,E9,E10,Alcalá - Colegio S. Tomás Dominicos,Prado,troncal,0.744,0.733,200.01,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,2.21
+am,E10,E9,Prado,Alcalá - Colegio S. Tomás Dominicos,troncal,0.744,0.801,283.68,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,2.56
+am,E10,E11,Prado,Calle 127,troncal,1.118,1.146,200.01,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,3.18
+am,E11,E10,Calle 127,Prado,troncal,1.118,1.204,285.01,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,3.39
+am,E11,E12,Calle 127,Pepe Sierra - Utel Universidad,troncal,0.734,0.737,200.68,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,2.78
+am,E12,E11,Pepe Sierra - Utel Universidad,Calle 127,troncal,0.734,0.733,285.67,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,2.61
+am,E12,E13,Pepe Sierra - Utel Universidad,Calle 106,troncal,0.58,0.439,200.34,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,1.51
+am,E13,E12,Calle 106,Pepe Sierra - Utel Universidad,troncal,0.58,0.697,285.68,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,2.03
+am,E13,E14,Calle 106,Calle 100 - Marketmedios,troncal,1.019,1.128,200.01,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,4.49
+am,E14,E13,Calle 100 - Marketmedios,Calle 106,troncal,1.019,0.871,285.35,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,3.28
+am,E14,E15,Calle 100 - Marketmedios,Virrey - Cendiatra,troncal,0.896,0.889,198.67,8 D10 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,3.25
+am,E15,E14,Virrey - Cendiatra,Calle 100 - Marketmedios,troncal,0.896,0.965,259.35,8 B10 B11 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,3.06
+am,E15,E16,Virrey - Cendiatra,Calle 85 - Gato Dumas,troncal,0.415,0.475,112.66,8 D10 G11 H13 H27 H75 J74 K23 L18,1.28
+am,E15,E69,Virrey - Cendiatra,La Castellana,troncal,0.603,,85.01,F28 G12 H72 J70 K16 S46,
+am,E16,E15,Calle 85 - Gato Dumas,Virrey - Cendiatra,troncal,0.415,0.404,172.01,8 B10 B11 B13 B18 B23 B26 B27 B50 B55 B74 B75,1.22
+am,E16,E17,Calle 85 - Gato Dumas,Héroes - Colmena Seguros,troncal,0.47,0.399,112.33,8 D10 G11 H13 H27 H75 J74 K23 L18,1.49
+am,E17,E16,Héroes - Colmena Seguros,Calle 85 - Gato Dumas,troncal,0.47,0.471,172.01,8 B10 B11 B13 B18 B23 B26 B27 B50 B55 B74 B75,1.32
+am,E17,E18,Héroes - Colmena Seguros,Calle 72 - Areandina,troncal,1.118,1.146,169.33,6 8 F19 H13 H15 H20 H27 H75 J24 J74 K23 L18,4.5
+am,E17,E56,Héroes - Colmena Seguros,Polo - FINCOMERCIO,troncal,0.5,0.827,107.99,4 6 A61 C15 C19 D10 D20 D24 G11,2.4
+am,E18,E17,Calle 72 - Areandina,Héroes - Colmena Seguros,troncal,1.118,1.221,170.66,6 8 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,4.31
+am,E18,E19,Calle 72 - Areandina,Flores,troncal,0.385,0.505,179.35,8 A52 F19 F60 H13 H15 H20 H27 H75 J24 J74 K23 L18,1.7
+am,E19,E18,Flores,Calle 72 - Areandina,troncal,0.385,0.645,196.66,8 A52 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,2.45
+am,E19,E20,Flores,Calle 57,troncal,1.362,0.97,164.35,8 F19 F60 H13 H15 H20 H27 H75 J24 J74 K23 L18,3.27
+am,E20,E19,Calle 57,Flores,troncal,1.362,0.898,196.66,8 A52 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,3.33
+am,E20,E21,Calle 57,Calle 53 - Universidad Manuela Beltrán,troncal,0.756,0.991,163.0,8 F19 F60 H13 H15 H20 H27 H75 J24 J74 K23 L18,3.55
+am,E21,E20,Calle 53 - Universidad Manuela Beltrán,Calle 57,troncal,0.756,0.969,197.0,8 A52 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,3.34
+am,E21,E22,Calle 53 - Universidad Manuela Beltrán,AV. 39,troncal,1.061,1.062,162.67,8 F19 F60 H13 H15 H20 H27 H75 J24 J74 K23 L18,3.89
+am,E22,E21,AV. 39,Calle 53 - Universidad Manuela Beltrán,troncal,1.061,1.078,196.66,8 A52 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,3.89
+am,E22,E23,AV. 39,Calle 26 - Atrio,troncal,1.202,1.213,146.34,8 F19 F60 H13 H15 H20 H27 H75 J74 K23 L18,3.95
+am,E23,E22,Calle 26 - Atrio,AV. 39,troncal,1.202,1.15,189.0,8 A52 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20,3.91
+am,E23,E24,Calle 26 - Atrio,Calle 22,troncal,0.827,0.977,119.67,8 F19 F60 H13 H15 H20 H27 H75 L18,3.55
+am,E24,E23,Calle 22,Calle 26 - Atrio,troncal,0.827,0.895,166.34,8 A52 A60 A61 B13 B18 B27 B75 C15 C19 D20,3.14
+am,E24,E25,Calle 22,Avenida Jiménez,troncal,0.961,1.24,129.0,3 8 F19 F60 H13 H15 H20 H27 H75 L18,4.97
+am,E25,E24,Avenida Jiménez,Calle 22,troncal,0.961,1.315,160.0,3 8 A52 A60 B13 B18 B27 B75 C15 C19 D20,5.0
+am,E25,E26,Avenida Jiménez,Hortúa,troncal,1.725,1.408,94.0,3 H13 H15 H20 H27 H54 H75,4.9
+am,E25,E99,Avenida Jiménez,De La Sabana,troncal,0.328,0.498,56.33,5 F19 F23 F51 F60,1.62
+am,E25,E120,Avenida Jiménez,Museo del Oro,troncal,0.853,0.698,60.66,J23 J70 J76 K54,2.3
+am,E26,E25,Hortúa,Avenida Jiménez,troncal,1.725,1.358,110.01,3 B13 B27 B75 C15 D20 J76 K54,4.78
+am,E26,E27,Hortúa,Nariño,troncal,0.651,0.568,106.01,3 H13 H15 H17 H20 H27 H54 H75,2.32
+am,E27,E26,Nariño,Hortúa,troncal,0.651,0.582,125.0,3 B13 B27 B75 C15 C17 D20 J76 K54,2.39
+am,E27,E28,Nariño,Fucha,troncal,0.71,0.729,127.01,3 H13 H15 H17 H20 H21 H27 H54 H72 H75,2.36
+am,E27,E81,Nariño,Tygua - San José,enlace operacional (tráfico mixto),1.607,2.128,28.0,B72,5.42
+am,E28,E27,Fucha,Nariño,troncal,0.71,0.738,152.67,3 B13 B27 B72 B75 C15 C17 D20 J76 K54,2.33
+am,E28,E29,Fucha,Restrepo,troncal,0.257,0.309,126.01,3 H13 H15 H17 H20 H21 H27 H54 H72 H75,1.23
+am,E29,E28,Restrepo,Fucha,troncal,0.257,0.239,164.68,3 B13 B27 B72 B75 C15 C17 D20 D21 J76 K54,0.98
+am,E29,E30,Restrepo,Olaya,troncal,0.734,0.826,124.67,3 H13 H15 H17 H20 H21 H27 H54 H72 H75,2.89
+am,E30,E29,Olaya,Restrepo,troncal,0.734,0.823,164.68,3 B13 B27 B72 B75 C15 C17 D20 D21 J76 K54,2.91
+am,E30,E31,Olaya,Quiroga,troncal,0.812,0.716,124.0,3 H13 H15 H17 H20 H21 H27 H54 H72 H75,2.89
+am,E31,E30,Quiroga,Olaya,troncal,0.812,0.723,163.34,3 B13 B27 B72 B75 C15 C17 D20 D21 J76 K54,3.01
+am,E31,E32,Quiroga,Calle 40 Sur,troncal,0.642,0.619,135.33,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H83,2.25
+am,E31,E141,Quiroga,AV. Primero de Mayo,enlace operacional (tráfico mixto),2.291,2.872,17.67,M83,9.41
+am,E32,E31,Calle 40 Sur,Quiroga,troncal,0.642,0.597,180.34,3 B13 B27 B72 B75 C15 C17 D20 D21 J76 K54 M83,2.21
+am,E32,E33,Calle 40 Sur,Santa Lucía,troncal,0.743,0.877,133.0,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H83,3.0
+am,E33,E32,Santa Lucía,Calle 40 Sur,troncal,0.743,0.851,176.34,3 B13 B27 B72 B75 C15 C17 D20 D21 J76 K54 M83,3.06
+am,E33,E34,Santa Lucía,Socorro,troncal,0.709,0.822,73.34,H17 H20 H54 H72 H75 H83,2.31
+am,E33,E35,Santa Lucía,Biblioteca,corrección ramal sur,0.634,0.737,58.67,3 H13 H15 H21 H27,2.92
+am,E34,E33,Socorro,Santa Lucía,troncal,0.709,0.712,110.0,B72 B75 C17 D20 J76 K54 M83,2.39
+am,E34,E38,Socorro,Consuelo,corrección ramal sur,0.527,0.502,72.33,H17 H20 H54 H72 H75 H83,1.62
+am,E35,E33,Biblioteca,Santa Lucía,corrección ramal sur,0.634,0.838,65.99,3 B13 B27 C15 D21,3.46
+am,E35,E36,Biblioteca,Parque,troncal,0.599,0.628,58.01,3 H13 H15 H21 H27,2.48
+am,E36,E35,Parque,Biblioteca,troncal,0.599,0.599,65.66,3 B13 B27 C15 D21,2.47
+am,E36,E37,Parque,Portal Tunal,troncal,0.446,0.856,58.01,3 H13 H15 H21 H27,3.21
+am,E37,E36,Portal Tunal,Parque,troncal,0.446,1.532,65.66,3 B13 B27 C15 D21,5.82
+am,E38,E34,Consuelo,Socorro,corrección ramal sur,0.527,0.607,109.66,B72 B75 C17 D20 J76 K54 M83,1.87
+am,E38,E39,Consuelo,Molinos,troncal,0.418,0.36,73.0,H17 H20 H54 H72 H75 H83,1.19
+am,E39,E38,Molinos,Consuelo,troncal,0.418,0.353,109.0,B72 B75 C17 D20 J76 K54 M83,1.34
+am,E39,E40,Molinos,Danubio,troncal,1.495,1.237,72.33,H17 H20 H54 H72 H75 H83,3.93
+am,E40,E39,Danubio,Molinos,troncal,1.495,1.176,103.33,B72 B75 C17 D20 J76 K54 M83,3.86
+am,E40,E41,Danubio,Portal Usme,troncal,1.337,1.585,71.67,H17 H20 H54 H72 H75 H83,4.75
+am,E41,E40,Portal Usme,Danubio,troncal,1.337,2.115,101.0,B72 B75 C17 D20 J76 K54 M83,6.71
+am,E42,E43,San Martín,Rionegro,troncal,0.512,0.511,88.33,7 C15 C17 C19 C25 C30,1.52
+am,E42,E70,San Martín,NQS Calle 75,troncal,0.831,1.034,83.66,F19 G30 H15 H17 J73 L25,2.89
+am,E43,E42,Rionegro,San Martín,troncal,0.512,0.457,94.99,7 F19 G30 H15 H17 J73 L25,1.46
+am,E43,E44,Rionegro,Suba - Calle 95,troncal,0.515,0.506,87.66,7 C15 C17 C19 C25 C30,1.5
+am,E44,E43,Suba - Calle 95,Rionegro,troncal,0.515,0.549,105.34,7 B50 F19 G30 H15 H17 J73 L25,1.74
+am,E44,E45,Suba - Calle 95,Suba Calle 100,troncal,0.287,0.28,87.66,7 C15 C17 C19 C25 C30,0.8
+am,E45,E44,Suba Calle 100,Suba - Calle 95,troncal,0.287,0.272,105.34,7 B50 F19 G30 H15 H17 J73 L25,0.78
+am,E45,E46,Suba Calle 100,Puentelargo,troncal,0.778,0.791,87.66,7 C15 C17 C19 C25 C30,2.56
+am,E46,E45,Puentelargo,Suba Calle 100,troncal,0.778,0.873,105.01,7 B50 F19 G30 H15 H17 J73 L25,2.56
+am,E46,E47,Puentelargo,Av. Suba - Calle 116,troncal,0.712,0.763,87.33,7 C15 C17 C19 C25 C30,2.07
+am,E47,E46,Av. Suba - Calle 116,Puentelargo,troncal,0.712,0.696,105.0,7 B50 F19 G30 H15 H17 J73 L25,1.94
+am,E47,E48,Av. Suba - Calle 116,Humedal Córdoba,troncal,0.841,0.909,88.01,7 C15 C17 C19 C25 C30,2.84
+am,E48,E47,Humedal Córdoba,Av. Suba - Calle 116,troncal,0.841,0.906,103.67,7 B50 F19 G30 H15 H17 J73 L25,3.14
+am,E48,E49,Humedal Córdoba,Niza - Calle 127,troncal,0.604,0.601,87.67,7 C15 C17 C19 C25 C30,1.97
+am,E49,E48,Niza - Calle 127,Humedal Córdoba,troncal,0.604,0.602,104.0,7 B50 F19 G30 H15 H17 J73 L25,2.18
+am,E49,E50,Niza - Calle 127,Suba - AV. Boyacá,troncal,1.064,1.069,87.66,7 C15 C17 C19 C25 C30,3.09
+am,E50,E49,Suba - AV. Boyacá,Niza - Calle 127,troncal,1.064,1.081,102.66,7 B50 F19 G30 H15 H17 J73 L25,3.2
+am,E50,E51,Suba - AV. Boyacá,Gratamira,troncal,0.688,0.758,87.99,7 C15 C17 C19 C25 C30,2.24
+am,E51,E50,Gratamira,Suba - AV. Boyacá,troncal,0.688,0.749,103.0,7 B50 F19 G30 H15 H17 J73 L25,2.38
+am,E51,E52,Gratamira,21 Ángeles,troncal,1.133,1.256,87.33,7 C15 C17 C19 C25 C30,3.72
+am,E52,E51,21 Ángeles,Gratamira,troncal,1.133,1.237,102.66,7 B50 F19 G30 H15 H17 J73 L25,3.92
+am,E52,E53,21 Ángeles,Suba TV 91 - OMNILIFE SEYTÚ,troncal,0.767,0.788,87.0,7 C15 C17 C19 C25 C30,2.54
+am,E53,E52,Suba TV 91 - OMNILIFE SEYTÚ,21 Ángeles,troncal,0.767,0.794,102.33,7 B50 F19 G30 H15 H17 J73 L25,2.59
+am,E53,E54,Suba TV 91 - OMNILIFE SEYTÚ,La Campiña,troncal,0.623,0.624,86.0,7 C15 C17 C19 C25 C30,1.91
+am,E54,E53,La Campiña,Suba TV 91 - OMNILIFE SEYTÚ,troncal,0.623,0.625,102.0,7 B50 F19 G30 H15 H17 J73 L25,1.73
+am,E54,E55,La Campiña,Portal Suba,troncal,0.575,0.693,85.33,7 C15 C17 C19 C25 C30,2.36
+am,E55,E54,Portal Suba,La Campiña,troncal,0.575,0.887,101.67,7 B50 F19 G30 H15 H17 J73 L25,2.25
+am,E56,E17,Polo - FINCOMERCIO,Héroes - Colmena Seguros,troncal,0.5,0.909,167.0,4 6 B10 B11 B26 B50 B55 F19 H15 H20 J24,2.39
+am,E56,E57,Polo - FINCOMERCIO,Escuela Militar,troncal,0.851,0.818,100.0,4 6 7 C15 C19 D10 D20 D24 G11,2.56
+am,E57,E56,Escuela Militar,Polo - FINCOMERCIO,troncal,0.851,0.982,178.67,4 6 7 B10 B11 B26 B50 B55 F19 H15 H20 J24,3.28
+am,E57,E58,Escuela Militar,Carrera 47,troncal,0.455,0.444,67.66,6 D10 D20 D21 D22 D24,1.6
+am,E57,E70,Escuela Militar,NQS Calle 75,troncal,0.621,0.988,77.0,4 C15 C19 G11 G22 H21,2.87
+am,E58,E57,Carrera 47,Escuela Militar,troncal,0.455,0.35,107.68,6 B10 B55 G22 H20 H21 J24,1.27
+am,E58,E59,Carrera 47,Carrera 53,troncal,0.645,0.596,67.99,6 D10 D20 D21 D22 D24,1.97
+am,E59,E58,Carrera 53,Carrera 47,troncal,0.645,0.598,107.68,6 B10 B55 G22 H20 H21 J24,1.88
+am,E59,E60,Carrera 53,Avenida 68,troncal,0.605,0.667,67.99,6 D10 D20 D21 D22 D24,1.87
+am,E60,E59,Avenida 68,Carrera 53,troncal,0.605,0.575,108.01,6 B10 B55 G22 H20 H21 J24,1.66
+am,E60,E61,Avenida 68,Ferias,troncal,0.681,0.735,66.66,6 D10 D20 D21 D22 D24,2.6
+am,E61,E60,Ferias,Avenida 68,troncal,0.681,0.729,107.67,6 B10 B55 G22 H20 H21 J24,2.61
+am,E61,E62,Ferias,Boyacá,troncal,0.44,0.291,66.33,6 D10 D20 D21 D22 D24,1.03
+am,E62,E61,Boyacá,Ferias,troncal,0.44,0.342,107.67,6 B10 B55 G22 H20 H21 J24,1.23
+am,E62,E63,Boyacá,Minuto De Dios,troncal,0.625,0.587,66.33,6 D10 D20 D21 D22 D24,2.04
+am,E63,E62,Minuto De Dios,Boyacá,troncal,0.625,0.591,108.0,6 B10 B55 G22 H20 H21 J24,1.84
+am,E63,E64,Minuto De Dios,Granja - CRA. 77,troncal,0.518,0.411,66.33,6 D10 D20 D21 D22 D24,1.58
+am,E64,E63,Granja - CRA. 77,Minuto De Dios,troncal,0.518,0.543,107.33,6 B10 B55 G22 H20 H21 J24,1.57
+am,E64,E65,Granja - CRA. 77,Avenida Cali,troncal,0.601,0.65,66.0,6 D10 D20 D21 D22 D24,1.93
+am,E65,E64,Avenida Cali,Granja - CRA. 77,troncal,0.601,0.608,104.67,6 B10 B55 G22 H20 H21 J24,1.65
+am,E65,E66,Avenida Cali,Carrera 90,troncal,0.533,0.557,65.33,6 D10 D20 D21 D22 D24,2.03
+am,E66,E65,Carrera 90,Avenida Cali,troncal,0.533,0.556,104.67,6 B10 B55 G22 H20 H21 J24,2.06
+am,E66,E67,Carrera 90,Quirigua,troncal,0.516,0.422,65.0,6 D10 D20 D21 D22 D24,1.5
+am,E67,E66,Quirigua,Carrera 90,troncal,0.516,0.444,103.67,6 B10 B55 G22 H20 H21 J24,1.5
+am,E67,E68,Quirigua,Portal 80,troncal,0.397,0.55,64.67,6 D10 D20 D21 D22 D24,1.94
+am,E68,E67,Portal 80,Quirigua,troncal,0.397,0.564,104.0,6 B10 B55 G22 H20 H21 J24,2.0
+am,E69,E15,La Castellana,Virrey - Cendiatra,troncal,0.603,,86.67,B16 B28 B46 B72,
+am,E69,E70,La Castellana,NQS Calle 75,troncal,0.973,0.878,85.0,F28 G12 H72 J70 K16 S46,1.97
+am,E70,E42,NQS Calle 75,San Martín,troncal,0.831,0.921,77.33,C15 C17 C19 C25 C30,2.62
+am,E70,E57,NQS Calle 75,Escuela Militar,troncal,0.621,0.967,103.33,4 B11 B26 D21 D22 F19 H15,3.61
+am,E70,E69,NQS Calle 75,La Castellana,troncal,0.973,1.211,109.67,B12 B16 B28 B46 B72,3.26
+am,E70,E71,NQS Calle 75,Avenida Chile,troncal,0.556,0.482,197.66,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S46,1.3
+am,E71,E70,Avenida Chile,NQS Calle 75,troncal,0.556,0.482,251.66,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32,1.57
+am,E71,E72,Avenida Chile,7 de Agosto,troncal,1.065,1.186,197.66,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S46,3.16
+am,E72,E71,7 de Agosto,Avenida Chile,troncal,1.065,1.101,249.65,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32,3.53
+am,E72,E73,7 de Agosto,TIGO,troncal,0.81,0.817,206.66,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S42 S46,2.28
+am,E73,E72,TIGO,7 de Agosto,troncal,0.81,0.815,278.0,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42,2.67
+am,E73,E74,TIGO,Campin - UAN,troncal,0.518,0.505,207.67,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S42 S46,1.52
+am,E74,E73,Campin - UAN,TIGO,troncal,0.518,0.502,277.0,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42,1.58
+am,E74,E75,Campin - UAN,Universidad Nacional,troncal,0.923,1.045,207.33,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S42 S46,2.58
+am,E75,E74,Universidad Nacional,Campin - UAN,troncal,0.923,0.912,276.0,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42,3.13
+am,E75,E76,Universidad Nacional,AV. Eldorado,troncal,0.72,0.713,207.34,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S42 S46,1.86
+am,E76,E75,AV. Eldorado,Universidad Nacional,troncal,0.72,0.715,276.0,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42,2.27
+am,E76,E77,AV. Eldorado,CAD,troncal,0.937,0.926,184.67,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 L25 S42 S43 S46,2.5
+am,E76,E122,AV. Eldorado,Concejo de Bogotá,troncal,0.522,,70.33,1 3 B23 H54 J73 L10,
+am,E76,E123,AV. Eldorado,Ciudad Universitaria,troncal,0.405,,144.0,1 3 J73 K10 K16 K23 K43 K53 K54,
+am,E77,E76,CAD,AV. Eldorado,troncal,0.937,0.913,303.99,4 B11 B12 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 K43 K53,3.13
+am,E77,E78,CAD,Paloquemao,troncal,0.936,1.007,184.33,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 L25 S42 S43 S46,2.92
+am,E78,E77,Paloquemao,CAD,troncal,0.936,0.875,319.33,4 B11 B12 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 E48 K43 K53,3.24
+am,E78,E79,Paloquemao,Ricaurte,troncal,0.585,0.806,183.33,4 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 L25 S42 S43 S46,2.03
+am,E79,E78,Ricaurte,Paloquemao,troncal,0.585,0.861,316.67,4 B11 B12 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 E48 K43 K53,2.59
+am,E79,E80,Ricaurte,Guatoque - Veraguas,troncal,0.96,1.093,48.67,H17 H21 H72 L25,3.2
+am,E79,E83,Ricaurte,Comuneros,troncal,1.24,1.099,98.33,4 G11 G12 G22 G30 S42 S43 S46,2.57
+am,E79,E100,Ricaurte,San Facon Carrera 22,troncal,0.663,0.481,130.33,5 A52 A60 A61 C19 J23 J70 M51,1.9
+am,E79,E101,Ricaurte,CDS Carrera 32,troncal,0.465,0.604,76.66,5 F19 F23 F28 F32 F51 F60,2.14
+am,E80,E79,Guatoque - Veraguas,Ricaurte,troncal,0.96,1.156,76.34,B72 C17 C25 D21,3.35
+am,E80,E81,Guatoque - Veraguas,Tygua - San José,troncal,0.84,0.819,81.0,8 H21 H72 L25 L41 M47,2.69
+am,E80,E83,Guatoque - Veraguas,Comuneros,troncal,0.546,0.858,14.34,G47 S41,2.74
+am,E81,E27,Tygua - San José,Nariño,enlace operacional (tráfico mixto),1.607,2.108,21.33,H21 H72,5.02
+am,E81,E80,Tygua - San José,Guatoque - Veraguas,troncal,0.84,0.752,72.0,8 B72 C25 G47 S41,2.48
+am,E81,E82,Tygua - San José,Bicentenario,troncal,1.0,1.067,48.34,L25 L41 M47,3.24
+am,E82,E81,Bicentenario,Tygua - San José,troncal,1.0,1.249,31.67,C25 G47 S41,3.43
+am,E82,E137,Bicentenario,San Victorino,troncal,0.92,0.909,64.67,2 K10 M47 M83,3.01
+am,E82,E138,Bicentenario,Estación San Bernardo,troncal,0.507,0.479,53.67,2 H83 L10 L18 L25,1.39
+am,E83,E79,Comuneros,Ricaurte,troncal,1.24,0.952,193.67,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53,2.98
+am,E83,E80,Comuneros,Guatoque - Veraguas,troncal,0.546,0.831,35.67,L41 M47,2.97
+am,E83,E84,Comuneros,Santa Isabel,troncal,0.419,0.498,113.0,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,1.44
+am,E84,E83,Santa Isabel,Comuneros,troncal,0.419,0.519,225.68,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,1.92
+am,E84,E85,Santa Isabel,NQS Calle 30 SUR,troncal,1.857,1.837,112.67,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,4.98
+am,E85,E84,NQS Calle 30 SUR,Santa Isabel,troncal,1.857,1.839,223.67,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,5.75
+am,E85,E86,NQS Calle 30 SUR,CL 38 A Sur - Centro Mayor,troncal,0.66,0.694,112.33,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,2.01
+am,E86,E85,CL 38 A Sur - Centro Mayor,NQS Calle 30 SUR,troncal,0.66,0.695,223.01,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,2.56
+am,E86,E87,CL 38 A Sur - Centro Mayor,General Santander,troncal,0.642,0.723,112.66,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,1.72
+am,E87,E86,General Santander,CL 38 A Sur - Centro Mayor,troncal,0.642,0.629,221.67,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,2.0
+am,E87,E88,General Santander,Alquería,troncal,0.53,0.575,110.67,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,1.66
+am,E88,E87,Alquería,General Santander,troncal,0.53,0.469,213.32,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,1.55
+am,E88,E89,Alquería,Venecia,troncal,0.94,0.91,109.67,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,2.63
+am,E89,E88,Venecia,Alquería,troncal,0.94,0.911,212.32,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,3.23
+am,E89,E90,Venecia,Sevillana,troncal,0.53,0.46,109.33,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,1.35
+am,E90,E89,Sevillana,Venecia,troncal,0.53,0.579,208.32,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,1.74
+am,E90,E91,Sevillana,C. C Paseo Villa Del Rio - Madelena,troncal,1.058,1.025,110.0,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,3.22
+am,E91,E90,C. C Paseo Villa Del Rio - Madelena,Sevillana,troncal,1.058,1.136,207.32,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,3.92
+am,E91,E92,C. C Paseo Villa Del Rio - Madelena,Perdomo,troncal,0.898,0.883,109.33,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,2.66
+am,E92,E91,Perdomo,C. C Paseo Villa Del Rio - Madelena,troncal,0.898,0.882,206.65,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,3.0
+am,E92,E93,Perdomo,Portal Sur - JFK Coop. Financiera,troncal,0.497,0.603,109.33,4 G11 G12 G22 G30 G47 S41 S42 S43 S46,1.46
+am,E93,E92,Portal Sur - JFK Coop. Financiera,Perdomo,troncal,0.497,0.982,204.99,4 A52 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,2.92
+am,E93,E94,Portal Sur - JFK Coop. Financiera,Bosa,troncal,1.322,1.429,39.32,S41 S42 S43 S45 S46,4.29
+am,E94,E93,Bosa,Portal Sur - JFK Coop. Financiera,troncal,1.322,1.692,104.66,B46 E42 E48 G45 K43 L41,5.06
+am,E94,E95,Bosa,La Despensa,troncal,0.805,0.818,40.66,S41 S42 S43 S45 S46,1.96
+am,E95,E94,La Despensa,Bosa,troncal,0.805,0.817,103.33,B46 E42 E48 G45 K43 L41,2.31
+am,E95,E96,La Despensa,León XIII,troncal,0.618,0.547,40.66,S41 S42 S43 S45 S46,1.32
+am,E96,E95,León XIII,La Despensa,troncal,0.618,0.551,102.67,B46 E42 E48 G45 K43 L41,1.66
+am,E96,E97,León XIII,Terreros - H. Cardiovascular,troncal,0.793,0.943,41.33,S41 S42 S43 S45 S46,1.96
+am,E97,E96,Terreros - H. Cardiovascular,León XIII,troncal,0.793,0.711,101.33,B46 E42 E48 G45 K43 L41,2.19
+am,E97,E98,Terreros - H. Cardiovascular,San Mateo,troncal,0.737,0.858,41.67,S41 S42 S43 S45 S46,1.81
+am,E98,E97,San Mateo,Terreros - H. Cardiovascular,troncal,0.737,0.846,84.33,B46 E42 E48 G45 K43 L41,2.38
+am,E99,E25,De La Sabana,Avenida Jiménez,troncal,0.328,0.441,111.99,5 A52 A60 C19 J23 J70 M51,2.16
+am,E99,E100,De La Sabana,San Facon Carrera 22,troncal,0.725,0.652,55.33,5 F19 F23 F51 F60,2.66
+am,E100,E79,San Facon Carrera 22,Ricaurte,troncal,0.663,0.476,55.66,5 F19 F23 F51 F60,1.78
+am,E100,E99,San Facon Carrera 22,De La Sabana,troncal,0.725,0.764,130.67,5 A52 A60 A61 C19 J23 J70 M51,2.78
+am,E101,E79,CDS Carrera 32,Ricaurte,troncal,0.465,0.596,159.33,5 A60 A61 B26 B28 C19 E32 J23 M51,2.3
+am,E101,E102,CDS Carrera 32,Zona Industrial,troncal,0.702,0.707,76.33,5 F19 F23 F28 F32 F51 F60,2.37
+am,E102,E101,Zona Industrial,CDS Carrera 32,troncal,0.702,0.713,159.66,5 A60 A61 B26 B28 C19 E32 J23 M51,2.46
+am,E102,E103,Zona Industrial,Carrera 43 - Comapan,troncal,0.409,0.466,77.0,5 F19 F23 F28 F32 F51 F60,1.76
+am,E103,E102,Carrera 43 - Comapan,Zona Industrial,troncal,0.409,0.464,158.0,5 A60 A61 B26 B28 C19 E32 J23 M51,1.88
+am,E103,E104,Carrera 43 - Comapan,Puente Aranda,troncal,0.479,0.439,77.0,5 F19 F23 F28 F32 F51 F60,1.66
+am,E104,E103,Puente Aranda,Carrera 43 - Comapan,troncal,0.479,0.442,157.66,5 A60 A61 B26 B28 C19 E32 J23 M51,1.77
+am,E104,E105,Puente Aranda,Distrito Grafiti,troncal,0.807,0.916,77.33,5 F19 F23 F28 F32 F51 F60,3.45
+am,E105,E104,Distrito Grafiti,Puente Aranda,troncal,0.807,0.826,156.99,5 A60 A61 B26 B28 C19 E32 J23 M51,3.33
+am,E105,E106,Distrito Grafiti,Pradera - Plaza Central,troncal,0.79,0.759,76.34,5 F19 F23 F28 F32 F51 F60,2.76
+am,E106,E105,Pradera - Plaza Central,Distrito Grafiti,troncal,0.79,0.782,156.33,5 A60 A61 B26 B28 C19 E32 J23 M51,3.17
+am,E106,E107,Pradera - Plaza Central,Marsella,troncal,1.28,1.343,76.0,5 F19 F23 F28 F32 F51 F60,4.91
+am,E107,E106,Marsella,Pradera - Plaza Central,troncal,1.28,1.26,155.67,5 A60 A61 B26 B28 C19 E32 J23 M51,5.07
+am,E107,E108,Marsella,Av Américas - Av. Boyacá,troncal,0.453,0.409,75.66,5 F19 F23 F28 F32 F51 F60,1.59
+am,E108,E107,Av Américas - Av. Boyacá,Marsella,troncal,0.453,0.465,153.34,5 A60 A61 B26 B28 C19 E32 J23 M51,1.68
+am,E108,E109,Av Américas - Av. Boyacá,Mandalay,troncal,0.788,0.724,75.66,5 F19 F23 F28 F32 F51 F60,2.78
+am,E109,E108,Mandalay,Av Américas - Av. Boyacá,troncal,0.788,0.805,153.34,5 A60 A61 B26 B28 C19 E32 J23 M51,2.67
+am,E109,E110,Mandalay,Banderas,troncal,0.498,0.621,74.99,5 F19 F23 F28 F32 F51 F60,1.83
+am,E110,E109,Banderas,Mandalay,troncal,0.498,0.549,152.68,5 A60 A61 B26 B28 C19 E32 J23 M51,1.62
+am,E110,E111,Banderas,Transversal 86,troncal,0.769,0.731,72.33,5 F19 F23 F28 F32 F51 F60,2.48
+am,E111,E110,Transversal 86,Banderas,troncal,0.769,0.877,145.0,5 A60 A61 B26 B28 C19 E32 J23 M51,3.0
+am,E111,E112,Transversal 86,Biblioteca Tintal,troncal,0.907,1.324,72.66,5 F19 F23 F28 F32 F51 F60,4.96
+am,E112,E111,Biblioteca Tintal,Transversal 86,troncal,0.907,1.233,131.33,5 A60 A61 B26 B28 C19 E32 J23 M51,4.28
+am,E112,E113,Biblioteca Tintal,Patio Bonito,troncal,0.785,0.795,71.99,5 F19 F23 F28 F32 F51 F60,2.97
+am,E113,E112,Patio Bonito,Biblioteca Tintal,troncal,0.785,0.895,123.0,5 A60 A61 B26 B28 C19 E32 J23 M51,3.55
+am,E113,E114,Patio Bonito,Portal Americas,troncal,1.027,1.46,72.66,5 F19 F23 F28 F32 F51 F60,4.69
+am,E114,E113,Portal Americas,Patio Bonito,troncal,1.027,1.899,122.0,5 A60 A61 B26 B28 C19 E32 J23 M51,6.91
+am,E115,E114,Islandia,Portal Americas,troncal,1.23,,16.67,A61,
+am,E116,E115,Laureles,Islandia,troncal,1.67,1.154,16.33,A61,4.57
+am,E117,E116,Tibanica - Primavera,Laureles,troncal,1.987,0.541,16.33,A61,2.14
+am,E118,E119,Universidades CityU,Las Aguas - Centro Colombo Americano,troncal,0.259,,10.0,H54,
+am,E118,E121,Universidades CityU,Centro Memoria,troncal,2.022,2.141,29.33,1 K54,5.52
+am,E119,E118,Las Aguas - Centro Colombo Americano,Universidades CityU,troncal,0.259,,26.33,J76 K54,
+am,E119,E120,Las Aguas - Centro Colombo Americano,Museo del Oro,troncal,0.524,0.81,21.67,F23 H54,2.99
+am,E120,E25,Museo del Oro,Avenida Jiménez,troncal,0.853,0.763,21.67,F23 H54,2.81
+am,E120,E119,Museo del Oro,Las Aguas - Centro Colombo Americano,troncal,0.524,0.632,60.33,J23 J70 J76 K54,1.99
+am,E121,E118,Centro Memoria,Universidades CityU,troncal,2.022,2.144,33.67,1 H54 J73,5.28
+am,E121,E122,Centro Memoria,Concejo de Bogotá,troncal,0.755,0.751,57.33,1 3 K10 K54,2.54
+am,E122,E76,Concejo de Bogotá,AV. Eldorado,troncal,0.522,,70.0,1 3 K10 K23 K54,
+am,E122,E121,Concejo de Bogotá,Centro Memoria,troncal,0.755,0.743,57.33,1 3 H54 J73 L10,2.33
+am,E123,E76,Ciudad Universitaria,AV. Eldorado,troncal,0.405,,92.0,1 3 B16 B23 H54 J73 L10 S43,
+am,E123,E124,Ciudad Universitaria,Corferias,troncal,0.783,0.824,134.67,1 3 K10 K16 K23 K43 K53 K54,2.6
+am,E124,E123,Corferias,Ciudad Universitaria,troncal,0.783,0.846,82.01,1 3 B16 B23 H54 L10 S43,2.63
+am,E124,E125,Corferias,Quinta Paredes - RTVC,troncal,0.521,0.517,123.0,1 K10 K16 K23 K43 K53 K54,1.24
+am,E125,E124,Quinta Paredes - RTVC,Corferias,troncal,0.521,0.576,70.0,1 B16 B23 H54 L10 S43,1.35
+am,E125,E126,Quinta Paredes - RTVC,Gobernacion,troncal,0.702,0.712,123.0,1 K10 K16 K23 K43 K53 K54,1.84
+am,E126,E125,Gobernacion,Quinta Paredes - RTVC,troncal,0.702,0.658,70.0,1 B16 B23 H54 L10 S43,1.54
+am,E126,E127,Gobernacion,CAN - British Council,troncal,0.529,0.524,122.0,1 K10 K16 K23 K43 K53 K54,1.42
+am,E127,E126,CAN - British Council,Gobernacion,troncal,0.529,0.522,69.33,1 B16 B23 H54 L10 S43,1.44
+am,E127,E128,CAN - British Council,Salitre El Greco - Vive Claro,troncal,0.529,0.527,122.67,1 K10 K16 K23 K43 K53 K54,1.31
+am,E128,E127,Salitre El Greco - Vive Claro,CAN - British Council,troncal,0.529,0.529,69.66,1 B16 B23 H54 L10 S43,1.36
+am,E128,E129,Salitre El Greco - Vive Claro,El Tiempo - Cámara De Comercio De Bogotá,troncal,0.82,0.821,122.67,1 K10 K16 K23 K43 K53 K54,2.18
+am,E129,E128,El Tiempo - Cámara De Comercio De Bogotá,Salitre El Greco - Vive Claro,troncal,0.82,0.886,70.67,1 B16 B23 H54 L10 S43,2.22
+am,E129,E130,El Tiempo - Cámara De Comercio De Bogotá,AV. Rojas - UNISALESIANA,troncal,0.643,0.605,123.0,1 K10 K16 K23 K43 K53 K54,1.57
+am,E130,E129,AV. Rojas - UNISALESIANA,El Tiempo - Cámara De Comercio De Bogotá,troncal,0.643,0.538,69.67,1 B16 B23 H54 L10 S43,1.6
+am,E130,E131,AV. Rojas - UNISALESIANA,Normandia,troncal,0.931,0.888,122.01,1 K10 K16 K23 K43 K53 K54,2.31
+am,E131,E130,Normandia,AV. Rojas - UNISALESIANA,troncal,0.931,0.884,69.67,1 B16 B23 H54 L10 S43,2.07
+am,E131,E132,Normandia,Modelia,troncal,0.794,0.745,122.0,1 K10 K16 K23 K43 K53 K54,2.26
+am,E132,E131,Modelia,Normandia,troncal,0.794,0.756,69.67,1 B16 B23 H54 L10 S43,1.97
+am,E132,E133,Modelia,Portal El Dorado - C. C Nuestro Bogotá,troncal,0.872,0.85,123.0,1 K10 K16 K23 K43 K53 K54,3.55
+am,E133,E132,Portal El Dorado - C. C Nuestro Bogotá,Modelia,troncal,0.872,0.93,69.33,1 B16 B23 H54 L10 S43,2.95
+am,E134,E135,Museo Nacional,San Diego,troncal,0.545,0.542,35.33,2 F51 G47 H83,2.16
+am,E135,E134,San Diego,Museo Nacional,troncal,0.545,0.585,64.0,2 M47 M51 M83,2.37
+am,E135,E136,San Diego,Las Nieves,troncal,0.622,0.638,35.0,2 F51 G47 H83,2.35
+am,E136,E135,Las Nieves,San Diego,troncal,0.622,0.588,64.33,2 M47 M51 M83,2.14
+am,E136,E137,Las Nieves,San Victorino,troncal,0.657,0.637,38.33,2 G47 H83 L10,2.14
+am,E137,E82,San Victorino,Bicentenario,troncal,0.92,1.053,38.34,2 G47 H83 L10,3.44
+am,E137,E136,San Victorino,Las Nieves,troncal,0.657,0.632,64.66,2 K10 M47 M83,2.09
+am,E138,E82,Estación San Bernardo,Bicentenario,troncal,0.507,0.487,80.67,2 B18 C25 K10 M83,1.53
+am,E138,E139,Estación San Bernardo,Policarpa,troncal,0.543,0.444,54.0,2 H83 L10 L18 L25,1.92
+am,E139,E138,Policarpa,Estación San Bernardo,troncal,0.543,0.453,79.67,2 B18 C25 K10 M83,1.8
+am,E139,E140,Policarpa,Ciudad Jardín - UAN,troncal,0.629,0.588,54.0,2 H83 L10 L18 L25,2.37
+am,E140,E139,Ciudad Jardín - UAN,Policarpa,troncal,0.629,0.6,80.0,2 B18 C25 K10 M83,2.09
+am,E140,E141,Ciudad Jardín - UAN,AV. Primero de Mayo,troncal,0.633,0.581,53.33,2 H83 L10 L18 L25,2.21
+am,E141,E31,AV. Primero de Mayo,Quiroga,enlace operacional (tráfico mixto),2.291,2.857,12.0,H83,8.79
+am,E141,E140,AV. Primero de Mayo,Ciudad Jardín - UAN,troncal,0.633,0.572,80.0,2 B18 C25 K10 M83,1.69
+am,E141,E142,AV. Primero de Mayo,Country Sur,troncal,0.822,0.867,41.34,2 L10 L18 L25,2.8
+am,E142,E141,Country Sur,AV. Primero de Mayo,troncal,0.822,0.873,59.0,2 B18 C25 K10,2.88
+am,E142,E143,Country Sur,Portal 20 de Julio,troncal,0.659,0.954,41.0,2 L10 L18 L25,3.4
+am,E143,E142,Portal 20 de Julio,Country Sur,troncal,0.659,1.443,59.0,2 B18 C25 K10,4.56
+pm,E1,E2,Terminal,Calle 187,troncal,0.617,0.625,60.67,8 D55 G11 K16 L18,2.05
+pm,E2,E1,Calle 187,Terminal,troncal,0.617,0.629,60.0,8 B11 B16 B18,1.78
+pm,E2,E3,Calle 187,Portal Norte - Unicervantes,troncal,0.985,0.921,61.34,8 D55 G11 K16 L18,4.11
+pm,E3,E2,Portal Norte - Unicervantes,Calle 187,troncal,0.985,0.86,60.34,8 B11 B16 B18,2.99
+pm,E3,E4,Portal Norte - Unicervantes,Toberín,troncal,0.948,1.124,179.34,8 D10 D55 F28 G11 G12 H13 H27 H75 J74 K16 L18 S46,3.49
+pm,E4,E3,Toberín,Portal Norte - Unicervantes,troncal,0.948,1.284,152.34,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B74 B75,3.57
+pm,E4,E5,Toberín,Calle 161,troncal,0.482,0.542,196.01,8 D10 D55 F28 G11 G12 H13 H27 H72 H75 J74 K16 L18 S46,2.44
+pm,E5,E4,Calle 161,Toberín,troncal,0.482,0.506,164.67,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B72 B74 B75,1.77
+pm,E5,E6,Calle 161,Mazúren,troncal,0.826,0.719,207.34,8 C50 D10 D55 F28 G11 G12 H13 H27 H72 H75 J74 K16 L18 S46,3.33
+pm,E6,E5,Mazúren,Calle 161,troncal,0.826,0.795,165.01,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B72 B74 B75,2.67
+pm,E6,E7,Mazúren,Calle 146,troncal,0.416,0.509,207.67,8 C50 D10 D55 F28 G11 G12 H13 H27 H72 H75 J74 K16 L18 S46,1.83
+pm,E7,E6,Calle 146,Mazúren,troncal,0.416,0.344,164.34,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B72 B74 B75,1.12
+pm,E7,E8,Calle 146,Calle 142,troncal,0.456,0.44,207.67,8 C50 D10 D55 F28 G11 G12 H13 H27 H72 H75 J74 K16 L18 S46,1.53
+pm,E8,E7,Calle 142,Calle 146,troncal,0.456,0.533,164.01,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B72 B74 B75,1.88
+pm,E8,E9,Calle 142,Alcalá - Colegio S. Tomás Dominicos,troncal,0.642,0.809,208.65,8 C50 D10 D55 F28 G11 G12 H13 H27 H72 H75 J74 K16 L18 S46,3.66
+pm,E9,E8,Alcalá - Colegio S. Tomás Dominicos,Calle 142,troncal,0.642,0.565,165.02,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B72 B74 B75,1.98
+pm,E9,E10,Alcalá - Colegio S. Tomás Dominicos,Prado,troncal,0.744,0.656,241.65,8 C50 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J74 K16 K23 L18 S46,2.77
+pm,E10,E9,Prado,Alcalá - Colegio S. Tomás Dominicos,troncal,0.744,0.75,178.35,8 B10 B11 B12 B13 B16 B18 B23 B27 B28 B46 B72 B74 B75,2.58
+pm,E10,E11,Prado,Calle 127,troncal,1.118,1.146,244.66,8 C50 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J74 K16 K23 L18 S46,3.74
+pm,E11,E10,Calle 127,Prado,troncal,1.118,1.09,178.34,8 B10 B11 B12 B13 B16 B18 B23 B27 B28 B46 B72 B74 B75,3.3
+pm,E11,E12,Calle 127,Pepe Sierra - Utel Universidad,troncal,0.734,0.735,250.65,8 C50 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J74 K16 K23 L18 S46,3.15
+pm,E12,E11,Pepe Sierra - Utel Universidad,Calle 127,troncal,0.734,0.735,178.68,8 B10 B11 B12 B13 B16 B18 B23 B27 B28 B46 B72 B74 B75,2.56
+pm,E12,E13,Pepe Sierra - Utel Universidad,Calle 106,troncal,0.58,0.439,251.31,8 C50 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J74 K16 K23 L18 S46,1.49
+pm,E13,E12,Calle 106,Pepe Sierra - Utel Universidad,troncal,0.58,0.697,178.67,8 B10 B11 B12 B13 B16 B18 B23 B27 B28 B46 B72 B74 B75,2.19
+pm,E13,E14,Calle 106,Calle 100 - Marketmedios,troncal,1.019,1.128,256.3,8 C50 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J74 K16 K23 L18 S46,5.16
+pm,E14,E13,Calle 100 - Marketmedios,Calle 106,troncal,1.019,0.871,179.01,8 B10 B11 B12 B13 B16 B18 B23 B27 B28 B46 B72 B74 B75,3.05
+pm,E14,E15,Calle 100 - Marketmedios,Virrey - Cendiatra,troncal,0.896,0.908,257.31,8 C50 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J74 K16 K23 L18 S46,3.44
+pm,E15,E14,Virrey - Cendiatra,Calle 100 - Marketmedios,troncal,0.896,0.946,164.0,8 B10 B11 B13 B16 B18 B23 B27 B28 B46 B72 B74 B75,3.3
+pm,E15,E16,Virrey - Cendiatra,Calle 85 - Gato Dumas,troncal,0.415,0.475,158.99,8 C50 D10 D55 F26 G11 H13 H27 H75 J74 K23 L18,1.31
+pm,E15,E69,Virrey - Cendiatra,La Castellana,troncal,0.603,,98.66,F28 G12 H72 K16 S46,
+pm,E16,E15,Calle 85 - Gato Dumas,Virrey - Cendiatra,troncal,0.415,0.327,118.34,8 B10 B11 B13 B18 B23 B27 B74 B75,1.21
+pm,E16,E17,Calle 85 - Gato Dumas,Héroes - Colmena Seguros,troncal,0.47,0.399,158.66,8 C50 D10 D55 F26 G11 H13 H27 H75 J74 K23 L18,1.62
+pm,E17,E16,Héroes - Colmena Seguros,Calle 85 - Gato Dumas,troncal,0.47,0.549,118.0,8 B10 B11 B13 B18 B23 B27 B74 B75,1.38
+pm,E17,E18,Héroes - Colmena Seguros,Calle 72 - Areandina,troncal,1.118,1.146,174.99,6 8 F19 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,5.06
+pm,E17,E56,Héroes - Colmena Seguros,Polo - FINCOMERCIO,troncal,0.5,0.675,147.99,4 6 C15 C19 C50 D10 D20 D24 D55 F26 G11,2.46
+pm,E18,E17,Calle 72 - Areandina,Héroes - Colmena Seguros,troncal,1.118,1.221,161.67,6 8 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,4.36
+pm,E18,E19,Calle 72 - Areandina,Flores,troncal,0.385,0.505,190.99,8 F19 F60 G52 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,2.32
+pm,E19,E18,Flores,Calle 72 - Areandina,troncal,0.385,0.648,176.66,8 A60 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24 G52,2.25
+pm,E19,E20,Flores,Calle 57,troncal,1.362,0.896,191.0,8 F19 F60 G52 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,3.82
+pm,E20,E19,Calle 57,Flores,troncal,1.362,0.793,164.66,8 A60 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,3.08
+pm,E20,E21,Calle 57,Calle 53 - Universidad Manuela Beltrán,troncal,0.756,0.991,190.67,8 F19 F60 G52 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,3.94
+pm,E21,E20,Calle 53 - Universidad Manuela Beltrán,Calle 57,troncal,0.756,0.969,164.33,8 A60 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,3.51
+pm,E21,E22,Calle 53 - Universidad Manuela Beltrán,AV. 39,troncal,1.061,1.062,190.33,8 F19 F60 G52 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,4.33
+pm,E22,E21,AV. 39,Calle 53 - Universidad Manuela Beltrán,troncal,1.061,1.127,165.0,8 A60 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,4.02
+pm,E22,E23,AV. 39,Calle 26 - Atrio,troncal,1.202,1.206,180.33,8 F19 F60 G52 H13 H15 H20 H27 H75 J74 K23 L18 Z61,4.53
+pm,E23,E22,Calle 26 - Atrio,AV. 39,troncal,1.202,1.15,151.0,8 A60 B13 B18 B23 B27 B74 B75 C15 C19 D20,3.88
+pm,E23,E24,Calle 26 - Atrio,Calle 22,troncal,0.827,0.977,155.0,8 F19 F60 G52 H13 H15 H20 H27 H75 L18 Z61,4.17
+pm,E24,E23,Calle 22,Calle 26 - Atrio,troncal,0.827,0.895,120.33,8 A60 B13 B18 B27 B75 C15 C19 D20,3.25
+pm,E24,E25,Calle 22,Avenida Jiménez,troncal,0.961,1.24,153.66,3 8 F19 F60 G52 H13 H15 H20 H27 H75 L18,6.08
+pm,E25,E24,Avenida Jiménez,Calle 22,troncal,0.961,1.315,130.33,3 8 A60 B13 B18 B27 B75 C15 C19 D20,4.9
+pm,E25,E26,Avenida Jiménez,Hortúa,troncal,1.725,1.408,116.99,3 H13 H15 H20 H27 H54 H75 H76,5.77
+pm,E25,E99,Avenida Jiménez,De La Sabana,troncal,0.328,0.349,97.0,5 F19 F23 F51 F60 G52,1.75
+pm,E25,E120,Avenida Jiménez,Museo del Oro,troncal,0.853,0.698,21.0,J23 K54,2.55
+pm,E26,E25,Hortúa,Avenida Jiménez,troncal,1.725,1.358,85.33,3 B13 B27 B75 C15 D20 K54,4.82
+pm,E26,E27,Hortúa,Nariño,troncal,0.651,0.568,132.33,3 H13 H15 H17 H20 H27 H54 H75 H76,2.77
+pm,E27,E26,Nariño,Hortúa,troncal,0.651,0.582,99.0,3 B13 B27 B75 C15 C17 D20 K54,2.3
+pm,E27,E28,Nariño,Fucha,troncal,0.71,0.729,169.33,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H76,2.76
+pm,E27,E81,Nariño,Tygua - San José,enlace operacional (tráfico mixto),1.607,2.128,9.67,B72,5.51
+pm,E28,E27,Fucha,Nariño,troncal,0.71,0.738,108.66,3 B13 B27 B72 B75 C15 C17 D20 K54,2.46
+pm,E28,E29,Fucha,Restrepo,troncal,0.257,0.309,168.99,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H76,1.56
+pm,E29,E28,Restrepo,Fucha,troncal,0.257,0.239,120.67,3 B13 B27 B72 B75 C15 C17 D20 D21 K54,0.91
+pm,E29,E30,Restrepo,Olaya,troncal,0.734,0.826,165.66,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H76,3.53
+pm,E30,E29,Olaya,Restrepo,troncal,0.734,0.823,120.66,3 B13 B27 B72 B75 C15 C17 D20 D21 K54,2.93
+pm,E30,E31,Olaya,Quiroga,troncal,0.812,0.716,163.66,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H76,3.63
+pm,E31,E30,Quiroga,Olaya,troncal,0.812,0.723,120.0,3 B13 B27 B72 B75 C15 C17 D20 D21 K54,2.9
+pm,E31,E32,Quiroga,Calle 40 Sur,troncal,0.642,0.619,180.99,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H76 H83,2.76
+pm,E31,E141,Quiroga,AV. Primero de Mayo,enlace operacional (tráfico mixto),2.291,2.872,10.0,M83,9.73
+pm,E32,E31,Calle 40 Sur,Quiroga,troncal,0.642,0.597,130.33,3 B13 B27 B72 B75 C15 C17 D20 D21 K54 M83,2.17
+pm,E32,E33,Calle 40 Sur,Santa Lucía,troncal,0.743,0.877,177.01,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H76 H83,3.37
+pm,E33,E32,Santa Lucía,Calle 40 Sur,troncal,0.743,0.851,129.67,3 B13 B27 B72 B75 C15 C17 D20 D21 K54 M83,2.77
+pm,E33,E34,Santa Lucía,Socorro,troncal,0.709,0.769,104.67,H17 H20 H54 H72 H75 H76 H83,2.52
+pm,E33,E35,Santa Lucía,Biblioteca,corrección ramal sur,0.634,0.737,71.34,3 H13 H15 H21 H27,3.66
+pm,E34,E33,Socorro,Santa Lucía,troncal,0.709,0.762,72.33,B72 B75 C17 D20 K54 M83,2.3
+pm,E34,E38,Socorro,Consuelo,corrección ramal sur,0.527,0.604,103.67,H17 H20 H54 H72 H75 H76 H83,1.81
+pm,E35,E33,Biblioteca,Santa Lucía,corrección ramal sur,0.634,0.838,57.33,3 B13 B27 C15 D21,3.18
+pm,E35,E36,Biblioteca,Parque,troncal,0.599,0.628,71.01,3 H13 H15 H21 H27,3.11
+pm,E36,E35,Parque,Biblioteca,troncal,0.599,0.599,57.33,3 B13 B27 C15 D21,2.27
+pm,E36,E37,Parque,Portal Tunal,troncal,0.446,0.856,70.34,3 H13 H15 H21 H27,3.94
+pm,E37,E36,Portal Tunal,Parque,troncal,0.446,1.532,57.33,3 B13 B27 C15 D21,5.55
+pm,E38,E34,Consuelo,Socorro,corrección ramal sur,0.527,0.508,71.33,B72 B75 C17 D20 K54 M83,1.74
+pm,E38,E39,Consuelo,Molinos,troncal,0.418,0.36,103.34,H17 H20 H54 H72 H75 H76 H83,1.23
+pm,E39,E38,Molinos,Consuelo,troncal,0.418,0.353,71.33,B72 B75 C17 D20 K54 M83,1.21
+pm,E39,E40,Molinos,Danubio,troncal,1.495,1.237,102.01,H17 H20 H54 H72 H75 H76 H83,4.36
+pm,E40,E39,Danubio,Molinos,troncal,1.495,1.176,70.0,B72 B75 C17 D20 K54 M83,3.78
+pm,E40,E41,Danubio,Portal Usme,troncal,1.337,1.585,100.67,H17 H20 H54 H72 H75 H76 H83,5.31
+pm,E41,E40,Portal Usme,Danubio,troncal,1.337,2.115,69.67,B72 B75 C17 D20 K54 M83,6.54
+pm,E42,E43,San Martín,Rionegro,troncal,0.512,0.511,92.0,7 C15 C17 C19 C25 C30 C73,1.76
+pm,E42,E70,San Martín,NQS Calle 75,troncal,0.831,1.034,74.67,F19 G30 H15 H17 L25,3.14
+pm,E43,E42,Rionegro,San Martín,troncal,0.512,0.457,84.67,7 F19 G30 H15 H17 L25,1.51
+pm,E43,E44,Rionegro,Suba - Calle 95,troncal,0.515,0.506,101.0,7 C15 C17 C19 C25 C30 C50 C73,1.75
+pm,E44,E43,Suba - Calle 95,Rionegro,troncal,0.515,0.549,85.33,7 F19 G30 H15 H17 L25,1.81
+pm,E44,E45,Suba - Calle 95,Suba Calle 100,troncal,0.287,0.28,100.66,7 C15 C17 C19 C25 C30 C50 C73,0.82
+pm,E45,E44,Suba Calle 100,Suba - Calle 95,troncal,0.287,0.272,85.0,7 F19 G30 H15 H17 L25,0.82
+pm,E45,E46,Suba Calle 100,Puentelargo,troncal,0.778,0.865,100.66,7 C15 C17 C19 C25 C30 C50 C73,2.56
+pm,E46,E45,Puentelargo,Suba Calle 100,troncal,0.778,0.873,84.33,7 F19 G30 H15 H17 L25,2.76
+pm,E46,E47,Puentelargo,Av. Suba - Calle 116,troncal,0.712,0.763,101.34,7 C15 C17 C19 C25 C30 C50 C73,2.12
+pm,E47,E46,Av. Suba - Calle 116,Puentelargo,troncal,0.712,0.696,84.66,7 F19 G30 H15 H17 L25,2.08
+pm,E47,E48,Av. Suba - Calle 116,Humedal Córdoba,troncal,0.841,0.909,100.67,7 C15 C17 C19 C25 C30 C50 C73,3.02
+pm,E48,E47,Humedal Córdoba,Av. Suba - Calle 116,troncal,0.841,0.906,84.0,7 F19 G30 H15 H17 L25,3.6
+pm,E48,E49,Humedal Córdoba,Niza - Calle 127,troncal,0.604,0.601,100.67,7 C15 C17 C19 C25 C30 C50 C73,2.13
+pm,E49,E48,Niza - Calle 127,Humedal Córdoba,troncal,0.604,0.602,83.67,7 F19 G30 H15 H17 L25,2.49
+pm,E49,E50,Niza - Calle 127,Suba - AV. Boyacá,troncal,1.064,1.069,100.67,7 C15 C17 C19 C25 C30 C50 C73,3.36
+pm,E50,E49,Suba - AV. Boyacá,Niza - Calle 127,troncal,1.064,1.081,83.66,7 F19 G30 H15 H17 L25,3.34
+pm,E50,E51,Suba - AV. Boyacá,Gratamira,troncal,0.688,0.758,99.33,7 C15 C17 C19 C25 C30 C50 C73,2.62
+pm,E51,E50,Gratamira,Suba - AV. Boyacá,troncal,0.688,0.749,83.66,7 F19 G30 H15 H17 L25,2.45
+pm,E51,E52,Gratamira,21 Ángeles,troncal,1.133,1.256,99.0,7 C15 C17 C19 C25 C30 C50 C73,4.34
+pm,E52,E51,21 Ángeles,Gratamira,troncal,1.133,1.237,83.66,7 F19 G30 H15 H17 L25,4.01
+pm,E52,E53,21 Ángeles,Suba TV 91 - OMNILIFE SEYTÚ,troncal,0.767,0.788,98.34,7 C15 C17 C19 C25 C30 C50 C73,2.58
+pm,E53,E52,Suba TV 91 - OMNILIFE SEYTÚ,21 Ángeles,troncal,0.767,0.794,83.33,7 F19 G30 H15 H17 L25,2.82
+pm,E53,E54,Suba TV 91 - OMNILIFE SEYTÚ,La Campiña,troncal,0.623,0.624,97.33,7 C15 C17 C19 C25 C30 C50 C73,1.88
+pm,E54,E53,La Campiña,Suba TV 91 - OMNILIFE SEYTÚ,troncal,0.623,0.625,82.67,7 F19 G30 H15 H17 L25,1.97
+pm,E54,E55,La Campiña,Portal Suba,troncal,0.575,0.769,96.67,7 C15 C17 C19 C25 C30 C50 C73,2.41
+pm,E55,E54,Portal Suba,La Campiña,troncal,0.575,0.887,82.67,7 F19 G30 H15 H17 L25,2.49
+pm,E56,E17,Polo - FINCOMERCIO,Héroes - Colmena Seguros,troncal,0.5,0.598,112.99,4 6 B10 B11 F19 H15 H20 J24 Z61,1.92
+pm,E56,E57,Polo - FINCOMERCIO,Escuela Militar,troncal,0.851,0.818,159.66,4 6 7 C15 C19 C50 D10 D20 D24 D55 F26 G11,3.11
+pm,E57,E56,Escuela Militar,Polo - FINCOMERCIO,troncal,0.851,0.982,106.99,4 6 7 B10 B11 F19 H15 H20 J24,3.21
+pm,E57,E58,Escuela Militar,Carrera 47,troncal,0.455,0.444,95.0,6 D10 D20 D21 D22 D24 D55,1.83
+pm,E57,E70,Escuela Militar,NQS Calle 75,troncal,0.621,0.988,98.33,4 C15 C19 F26 G11 G22 H21,3.82
+pm,E58,E57,Carrera 47,Escuela Militar,troncal,0.455,0.35,75.0,6 B10 G22 H20 H21 J24,1.28
+pm,E58,E59,Carrera 47,Carrera 53,troncal,0.645,0.596,94.01,6 D10 D20 D21 D22 D24 D55,2.17
+pm,E59,E58,Carrera 53,Carrera 47,troncal,0.645,0.598,74.67,6 B10 G22 H20 H21 J24,1.97
+pm,E59,E60,Carrera 53,Avenida 68,troncal,0.605,0.667,94.34,6 D10 D20 D21 D22 D24 D55,2.09
+pm,E60,E59,Avenida 68,Carrera 53,troncal,0.605,0.575,74.67,6 B10 G22 H20 H21 J24,1.71
+pm,E60,E61,Avenida 68,Ferias,troncal,0.681,0.735,93.67,6 D10 D20 D21 D22 D24 D55,2.9
+pm,E61,E60,Ferias,Avenida 68,troncal,0.681,0.729,74.33,6 B10 G22 H20 H21 J24,2.91
+pm,E61,E62,Ferias,Boyacá,troncal,0.44,0.291,93.0,6 D10 D20 D21 D22 D24 D55,1.15
+pm,E62,E61,Boyacá,Ferias,troncal,0.44,0.342,74.67,6 B10 G22 H20 H21 J24,1.36
+pm,E62,E63,Boyacá,Minuto De Dios,troncal,0.625,0.587,93.34,6 D10 D20 D21 D22 D24 D55,2.18
+pm,E63,E62,Minuto De Dios,Boyacá,troncal,0.625,0.591,73.67,6 B10 G22 H20 H21 J24,2.0
+pm,E63,E64,Minuto De Dios,Granja - CRA. 77,troncal,0.518,0.411,92.34,6 D10 D20 D21 D22 D24 D55,1.52
+pm,E64,E63,Granja - CRA. 77,Minuto De Dios,troncal,0.518,0.543,74.33,6 B10 G22 H20 H21 J24,1.77
+pm,E64,E65,Granja - CRA. 77,Avenida Cali,troncal,0.601,0.633,91.67,6 D10 D20 D21 D22 D24 D55,2.0
+pm,E65,E64,Avenida Cali,Granja - CRA. 77,troncal,0.601,0.608,73.34,6 B10 G22 H20 H21 J24,1.75
+pm,E65,E66,Avenida Cali,Carrera 90,troncal,0.533,0.557,91.01,6 D10 D20 D21 D22 D24 D55,2.31
+pm,E66,E65,Carrera 90,Avenida Cali,troncal,0.533,0.556,73.67,6 B10 G22 H20 H21 J24,2.11
+pm,E66,E67,Carrera 90,Quirigua,troncal,0.516,0.422,91.01,6 D10 D20 D21 D22 D24 D55,1.76
+pm,E67,E66,Quirigua,Carrera 90,troncal,0.516,0.444,73.67,6 B10 G22 H20 H21 J24,1.56
+pm,E67,E68,Quirigua,Portal 80,troncal,0.397,0.552,90.67,6 D10 D20 D21 D22 D24 D55,2.04
+pm,E68,E67,Portal 80,Quirigua,troncal,0.397,0.657,74.0,6 B10 G22 H20 H21 J24,2.4
+pm,E69,E15,La Castellana,Virrey - Cendiatra,troncal,0.603,,46.33,B16 B28 B46 B72,
+pm,E69,E70,La Castellana,NQS Calle 75,troncal,0.973,0.878,104.0,F28 G12 H72 K16 S46,2.38
+pm,E70,E42,NQS Calle 75,San Martín,troncal,0.831,0.921,80.67,C15 C17 C19 C25 C30 C73,2.66
+pm,E70,E57,NQS Calle 75,Escuela Militar,troncal,0.621,0.967,75.34,4 B11 D21 D22 F19 H15,3.11
+pm,E70,E69,NQS Calle 75,La Castellana,troncal,0.973,1.211,61.0,B12 B16 B28 B46 B72,2.74
+pm,E70,E71,NQS Calle 75,Avenida Chile,troncal,0.556,0.482,238.33,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 K16 L25 S46,1.62
+pm,E71,E70,Avenida Chile,NQS Calle 75,troncal,0.556,0.556,170.67,4 B11 B12 B16 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32,1.51
+pm,E71,E72,Avenida Chile,7 de Agosto,troncal,1.065,1.186,238.0,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 K16 L25 S46,4.43
+pm,E72,E71,7 de Agosto,Avenida Chile,troncal,1.065,1.023,170.68,4 B11 B12 B16 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32,3.13
+pm,E72,E73,7 de Agosto,TIGO,troncal,0.81,0.817,256.0,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 K16 L25 S42 S46,2.81
+pm,E73,E72,TIGO,7 de Agosto,troncal,0.81,0.815,181.0,4 B11 B12 B16 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32 E42,2.44
+pm,E73,E74,TIGO,Campin - UAN,troncal,0.518,0.505,255.34,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 K16 L25 S42 S46,1.8
+pm,E74,E73,Campin - UAN,TIGO,troncal,0.518,0.502,181.0,4 B11 B12 B16 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32 E42,1.51
+pm,E74,E75,Campin - UAN,Universidad Nacional,troncal,0.923,0.883,255.67,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 K16 L25 S42 S46,3.09
+pm,E75,E74,Universidad Nacional,Campin - UAN,troncal,0.923,1.059,181.0,4 B11 B12 B16 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32 E42,2.82
+pm,E75,E76,Universidad Nacional,AV. Eldorado,troncal,0.72,0.713,254.67,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 K16 L25 S42 S46,2.29
+pm,E76,E75,AV. Eldorado,Universidad Nacional,troncal,0.72,0.715,180.99,4 B11 B12 B16 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32 E42,2.02
+pm,E76,E77,AV. Eldorado,CAD,troncal,0.937,0.926,275.66,4 F26 F28 F32 G11 G12 G22 G30 G53 H17 H21 H72 L25 S42 S43 S46,3.47
+pm,E76,E122,AV. Eldorado,Concejo de Bogotá,troncal,0.522,,67.0,1 3 B23 H54 L10,
+pm,E76,E123,AV. Eldorado,Ciudad Universitaria,troncal,0.405,,86.33,1 3 C73 K10 K16 K23 K43 K54,
+pm,E77,E76,CAD,AV. Eldorado,troncal,0.937,0.992,161.99,4 B11 B12 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 K43,2.84
+pm,E77,E78,CAD,Paloquemao,troncal,0.936,1.007,292.33,4 F26 F28 F32 G11 G12 G22 G30 G53 H17 H21 H72 L25 S42 S43 S46 S48,3.9
+pm,E78,E77,Paloquemao,CAD,troncal,0.936,0.875,161.0,4 B11 B12 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 K43,2.81
+pm,E78,E79,Paloquemao,Ricaurte,troncal,0.585,0.715,292.0,4 F26 F28 F32 G11 G12 G22 G30 G53 H17 H21 H72 L25 S42 S43 S46 S48,2.49
+pm,E79,E78,Ricaurte,Paloquemao,troncal,0.585,0.789,161.66,4 B11 B12 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 K43,2.32
+pm,E79,E80,Ricaurte,Guatoque - Veraguas,troncal,0.96,1.093,70.0,H17 H21 H72 L25,3.63
+pm,E79,E83,Ricaurte,Comuneros,troncal,1.24,1.099,181.99,4 G11 G12 G22 G30 G52 G53 S42 S43 S46 S48,3.22
+pm,E79,E100,Ricaurte,San Facon Carrera 22,troncal,0.663,0.497,63.67,5 A60 C19 J23 M51,1.8
+pm,E79,E101,Ricaurte,CDS Carrera 32,troncal,0.465,0.604,153.0,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.59
+pm,E80,E79,Guatoque - Veraguas,Ricaurte,troncal,0.96,1.156,50.66,B72 C17 C25 D21,3.3
+pm,E80,E81,Guatoque - Veraguas,Tygua - San José,troncal,0.84,0.819,80.67,8 H21 H72 L25 L41 M47,2.59
+pm,E80,E83,Guatoque - Veraguas,Comuneros,troncal,0.546,0.858,33.0,G47 S41,3.21
+pm,E81,E27,Tygua - San José,Nariño,enlace operacional (tráfico mixto),1.607,2.108,37.34,H21 H72,7.13
+pm,E81,E80,Tygua - San José,Guatoque - Veraguas,troncal,0.84,0.884,67.67,8 B72 C25 G47 S41,2.9
+pm,E81,E82,Tygua - San José,Bicentenario,troncal,1.0,1.133,31.67,L25 L41 M47,3.28
+pm,E82,E81,Bicentenario,Tygua - San José,troncal,1.0,1.183,47.34,C25 G47 S41,3.71
+pm,E82,E137,Bicentenario,San Victorino,troncal,0.92,0.909,39.67,2 K10 M47 M83,2.96
+pm,E82,E138,Bicentenario,Estación San Bernardo,troncal,0.507,0.479,75.67,2 H83 L10 L18 L25,1.59
+pm,E83,E79,Comuneros,Ricaurte,troncal,1.24,0.952,91.0,4 B11 B12 B46 C30 D22 E42 K43,2.67
+pm,E83,E80,Comuneros,Guatoque - Veraguas,troncal,0.546,0.831,15.66,L41 M47,2.52
+pm,E83,E84,Comuneros,Santa Isabel,troncal,0.419,0.498,214.65,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,1.93
+pm,E84,E83,Santa Isabel,Comuneros,troncal,0.419,0.519,106.66,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,1.67
+pm,E84,E85,Santa Isabel,NQS Calle 30 SUR,troncal,1.857,1.837,213.66,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,6.06
+pm,E85,E84,NQS Calle 30 SUR,Santa Isabel,troncal,1.857,1.839,105.99,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,5.34
+pm,E85,E86,NQS Calle 30 SUR,CL 38 A Sur - Centro Mayor,troncal,0.66,0.694,212.98,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,2.68
+pm,E86,E85,CL 38 A Sur - Centro Mayor,NQS Calle 30 SUR,troncal,0.66,0.695,106.66,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,2.23
+pm,E86,E87,CL 38 A Sur - Centro Mayor,General Santander,troncal,0.642,0.723,211.99,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,2.18
+pm,E87,E86,General Santander,CL 38 A Sur - Centro Mayor,troncal,0.642,0.629,106.33,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,1.82
+pm,E87,E88,General Santander,Alquería,troncal,0.53,0.518,211.32,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,1.72
+pm,E88,E87,Alquería,General Santander,troncal,0.53,0.527,105.33,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,1.69
+pm,E88,E89,Alquería,Venecia,troncal,0.94,0.91,209.66,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,3.25
+pm,E89,E88,Venecia,Alquería,troncal,0.94,0.911,105.34,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,2.92
+pm,E89,E90,Venecia,Sevillana,troncal,0.53,0.577,208.98,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,1.78
+pm,E90,E89,Sevillana,Venecia,troncal,0.53,0.463,105.33,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,1.5
+pm,E90,E91,Sevillana,C. C Paseo Villa Del Rio - Madelena,troncal,1.058,1.14,207.65,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,4.13
+pm,E91,E90,C. C Paseo Villa Del Rio - Madelena,Sevillana,troncal,1.058,1.02,105.01,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,3.34
+pm,E91,E92,C. C Paseo Villa Del Rio - Madelena,Perdomo,troncal,0.898,0.883,206.99,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,3.19
+pm,E92,E91,Perdomo,C. C Paseo Villa Del Rio - Madelena,troncal,0.898,0.882,104.67,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,2.76
+pm,E92,E93,Perdomo,Portal Sur - JFK Coop. Financiera,troncal,0.497,0.581,204.66,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,1.78
+pm,E93,E92,Portal Sur - JFK Coop. Financiera,Perdomo,troncal,0.497,0.876,104.67,4 B11 B12 B46 C30 D22 E42 K43 L41 M47,2.41
+pm,E93,E94,Portal Sur - JFK Coop. Financiera,Bosa,troncal,1.322,1.429,97.33,S41 S42 S43 S45 S46 S48,4.62
+pm,E94,E93,Bosa,Portal Sur - JFK Coop. Financiera,troncal,1.322,1.692,39.34,B46 E42 G45 K43 L41,4.32
+pm,E94,E95,Bosa,La Despensa,troncal,0.805,0.818,91.67,S41 S42 S43 S45 S46 S48,2.4
+pm,E95,E94,La Despensa,Bosa,troncal,0.805,0.817,39.33,B46 E42 G45 K43 L41,1.86
+pm,E95,E96,La Despensa,León XIII,troncal,0.618,0.547,91.0,S41 S42 S43 S45 S46 S48,1.68
+pm,E96,E95,León XIII,La Despensa,troncal,0.618,0.551,39.33,B46 E42 G45 K43 L41,1.33
+pm,E96,E97,León XIII,Terreros - H. Cardiovascular,troncal,0.793,0.709,89.67,S41 S42 S43 S45 S46 S48,2.33
+pm,E97,E96,Terreros - H. Cardiovascular,León XIII,troncal,0.793,0.711,39.0,B46 E42 G45 K43 L41,1.85
+pm,E97,E98,Terreros - H. Cardiovascular,San Mateo,troncal,0.737,0.729,88.33,S41 S42 S43 S45 S46 S48,2.13
+pm,E98,E97,San Mateo,Terreros - H. Cardiovascular,troncal,0.737,0.846,39.0,B46 E42 G45 K43 L41,1.92
+pm,E99,E25,De La Sabana,Avenida Jiménez,troncal,0.328,0.721,64.67,5 A60 C19 J23 M51,2.16
+pm,E99,E100,De La Sabana,San Facon Carrera 22,troncal,0.725,0.784,115.33,5 F19 F23 F51 F60 G52 Z61,3.15
+pm,E100,E79,San Facon Carrera 22,Ricaurte,troncal,0.663,0.479,114.33,5 F19 F23 F51 F60 G52 Z61,2.05
+pm,E100,E99,San Facon Carrera 22,De La Sabana,troncal,0.725,0.633,63.67,5 A60 C19 J23 M51,2.55
+pm,E101,E79,CDS Carrera 32,Ricaurte,troncal,0.465,0.605,82.67,5 A60 B28 C19 E32 J23 M51,2.08
+pm,E101,E102,CDS Carrera 32,Zona Industrial,troncal,0.702,0.707,152.34,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.78
+pm,E102,E101,Zona Industrial,CDS Carrera 32,troncal,0.702,0.713,82.33,5 A60 B28 C19 E32 J23 M51,2.26
+pm,E102,E103,Zona Industrial,Carrera 43 - Comapan,troncal,0.409,0.466,152.0,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.09
+pm,E103,E102,Carrera 43 - Comapan,Zona Industrial,troncal,0.409,0.464,82.33,5 A60 B28 C19 E32 J23 M51,1.72
+pm,E103,E104,Carrera 43 - Comapan,Puente Aranda,troncal,0.479,0.439,151.66,5 F19 F23 F26 F28 F32 F51 F60 Z61,1.97
+pm,E104,E103,Puente Aranda,Carrera 43 - Comapan,troncal,0.479,0.442,82.0,5 A60 B28 C19 E32 J23 M51,1.63
+pm,E104,E105,Puente Aranda,Distrito Grafiti,troncal,0.807,0.916,151.33,5 F19 F23 F26 F28 F32 F51 F60 Z61,4.11
+pm,E105,E104,Distrito Grafiti,Puente Aranda,troncal,0.807,0.826,82.33,5 A60 B28 C19 E32 J23 M51,3.05
+pm,E105,E106,Distrito Grafiti,Pradera - Plaza Central,troncal,0.79,0.698,149.66,5 F19 F23 F26 F28 F32 F51 F60 Z61,3.16
+pm,E106,E105,Pradera - Plaza Central,Distrito Grafiti,troncal,0.79,0.845,81.34,5 A60 B28 C19 E32 J23 M51,3.02
+pm,E106,E107,Pradera - Plaza Central,Marsella,troncal,1.28,1.268,149.0,5 F19 F23 F26 F28 F32 F51 F60 Z61,5.65
+pm,E107,E106,Marsella,Pradera - Plaza Central,troncal,1.28,1.348,81.01,5 A60 B28 C19 E32 J23 M51,4.83
+pm,E107,E108,Marsella,Av Américas - Av. Boyacá,troncal,0.453,0.468,146.34,5 F19 F23 F26 F28 F32 F51 F60 Z61,1.89
+pm,E108,E107,Av Américas - Av. Boyacá,Marsella,troncal,0.453,0.391,81.01,5 A60 B28 C19 E32 J23 M51,1.54
+pm,E108,E109,Av Américas - Av. Boyacá,Mandalay,troncal,0.788,0.799,143.67,5 F19 F23 F26 F28 F32 F51 F60 Z61,3.06
+pm,E109,E108,Mandalay,Av Américas - Av. Boyacá,troncal,0.788,0.728,80.68,5 A60 B28 C19 E32 J23 M51,2.77
+pm,E109,E110,Mandalay,Banderas,troncal,0.498,0.621,143.01,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.03
+pm,E110,E109,Banderas,Mandalay,troncal,0.498,0.466,80.34,5 A60 B28 C19 E32 J23 M51,1.55
+pm,E110,E111,Banderas,Transversal 86,troncal,0.769,0.731,141.0,5 F19 F23 F26 F28 F32 F51 F60 Z61,3.06
+pm,E111,E110,Transversal 86,Banderas,troncal,0.769,0.877,80.33,5 A60 B28 C19 E32 J23 M51,3.02
+pm,E111,E112,Transversal 86,Biblioteca Tintal,troncal,0.907,1.324,140.0,5 F19 F23 F26 F28 F32 F51 F60 Z61,5.81
+pm,E112,E111,Biblioteca Tintal,Transversal 86,troncal,0.907,1.304,79.66,5 A60 B28 C19 E32 J23 M51,4.8
+pm,E112,E113,Biblioteca Tintal,Patio Bonito,troncal,0.785,0.795,138.0,5 F19 F23 F26 F28 F32 F51 F60 Z61,3.47
+pm,E113,E112,Patio Bonito,Biblioteca Tintal,troncal,0.785,0.895,78.32,5 A60 B28 C19 E32 J23 M51,3.28
+pm,E113,E114,Patio Bonito,Portal Americas,troncal,1.027,1.46,136.67,5 F19 F23 F26 F28 F32 F51 F60 Z61,5.44
+pm,E114,E113,Portal Americas,Patio Bonito,troncal,1.027,1.899,78.33,5 A60 B28 C19 E32 J23 M51,6.56
+pm,E114,E115,Portal Americas,Islandia,troncal,1.23,,16.67,Z61,
+pm,E115,E116,Islandia,Laureles,troncal,1.67,1.156,14.0,Z61,4.87
+pm,E116,E117,Laureles,Tibanica - Primavera,troncal,1.987,0.73,14.0,Z61,3.03
+pm,E118,E119,Universidades CityU,Las Aguas - Centro Colombo Americano,troncal,0.259,,25.34,H54 H76,
+pm,E118,E121,Universidades CityU,Centro Memoria,troncal,2.022,2.141,41.67,1 C73 H76 K54,5.62
+pm,E119,E118,Las Aguas - Centro Colombo Americano,Universidades CityU,troncal,0.259,,8.67,K54,
+pm,E119,E120,Las Aguas - Centro Colombo Americano,Museo del Oro,troncal,0.524,0.81,42.34,F23 H54 H76,3.57
+pm,E120,E25,Museo del Oro,Avenida Jiménez,troncal,0.853,0.763,42.34,F23 H54 H76,3.34
+pm,E120,E119,Museo del Oro,Las Aguas - Centro Colombo Americano,troncal,0.524,0.632,21.34,J23 K54,2.3
+pm,E121,E118,Centro Memoria,Universidades CityU,troncal,2.022,2.144,37.34,1 H54 H76,5.33
+pm,E121,E122,Centro Memoria,Concejo de Bogotá,troncal,0.755,0.751,63.0,1 3 C73 H76 K10 K54,2.39
+pm,E122,E76,Concejo de Bogotá,AV. Eldorado,troncal,0.522,,64.0,1 3 C73 K10 K23 K54,
+pm,E122,E121,Concejo de Bogotá,Centro Memoria,troncal,0.755,0.743,64.0,1 3 H54 H76 L10,2.79
+pm,E123,E76,Ciudad Universitaria,AV. Eldorado,troncal,0.405,,129.66,1 3 B16 B23 C73 G53 H54 L10 S43,
+pm,E123,E124,Ciudad Universitaria,Corferias,troncal,0.783,0.824,76.33,1 3 K10 K16 K23 K43 K54,2.56
+pm,E124,E123,Corferias,Ciudad Universitaria,troncal,0.783,0.846,118.99,1 3 B16 B23 G53 H54 L10 S43,3.15
+pm,E124,E125,Corferias,Quinta Paredes - RTVC,troncal,0.521,0.517,66.0,1 K10 K16 K23 K43 K54,1.31
+pm,E125,E124,Quinta Paredes - RTVC,Corferias,troncal,0.521,0.576,106.99,1 B16 B23 G53 H54 L10 S43,1.46
+pm,E125,E126,Quinta Paredes - RTVC,Gobernacion,troncal,0.702,0.712,66.33,1 K10 K16 K23 K43 K54,1.85
+pm,E126,E125,Gobernacion,Quinta Paredes - RTVC,troncal,0.702,0.658,106.33,1 B16 B23 G53 H54 L10 S43,1.64
+pm,E126,E127,Gobernacion,CAN - British Council,troncal,0.529,0.524,66.0,1 K10 K16 K23 K43 K54,1.5
+pm,E127,E126,CAN - British Council,Gobernacion,troncal,0.529,0.522,106.0,1 B16 B23 G53 H54 L10 S43,1.55
+pm,E127,E128,CAN - British Council,Salitre El Greco - Vive Claro,troncal,0.529,0.527,65.33,1 K10 K16 K23 K43 K54,1.4
+pm,E128,E127,Salitre El Greco - Vive Claro,CAN - British Council,troncal,0.529,0.529,106.33,1 B16 B23 G53 H54 L10 S43,1.45
+pm,E128,E129,Salitre El Greco - Vive Claro,El Tiempo - Cámara De Comercio De Bogotá,troncal,0.82,0.821,65.66,1 K10 K16 K23 K43 K54,2.23
+pm,E129,E128,El Tiempo - Cámara De Comercio De Bogotá,Salitre El Greco - Vive Claro,troncal,0.82,0.886,105.66,1 B16 B23 G53 H54 L10 S43,2.43
+pm,E129,E130,El Tiempo - Cámara De Comercio De Bogotá,AV. Rojas - UNISALESIANA,troncal,0.643,0.605,65.33,1 K10 K16 K23 K43 K54,1.71
+pm,E130,E129,AV. Rojas - UNISALESIANA,El Tiempo - Cámara De Comercio De Bogotá,troncal,0.643,0.538,101.66,1 B16 B23 G53 H54 L10 S43,1.74
+pm,E130,E131,AV. Rojas - UNISALESIANA,Normandia,troncal,0.931,0.888,65.33,1 K10 K16 K23 K43 K54,2.3
+pm,E131,E130,Normandia,AV. Rojas - UNISALESIANA,troncal,0.931,0.884,99.0,1 B16 B23 G53 H54 L10 S43,2.19
+pm,E131,E132,Normandia,Modelia,troncal,0.794,0.745,65.34,1 K10 K16 K23 K43 K54,2.04
+pm,E132,E131,Modelia,Normandia,troncal,0.794,0.756,99.34,1 B16 B23 G53 H54 L10 S43,2.28
+pm,E132,E133,Modelia,Portal El Dorado - C. C Nuestro Bogotá,troncal,0.872,1.817,65.34,1 K10 K16 K23 K43 K54,3.8
+pm,E133,E132,Portal El Dorado - C. C Nuestro Bogotá,Modelia,troncal,0.872,0.93,98.0,1 B16 B23 G53 H54 L10 S43,3.48
+pm,E134,E135,Museo Nacional,San Diego,troncal,0.545,0.542,65.0,2 F51 G47 H83,2.48
+pm,E135,E134,San Diego,Museo Nacional,troncal,0.545,0.808,37.33,2 M47 M51 M83,2.22
+pm,E135,E136,San Diego,Las Nieves,troncal,0.622,0.638,65.34,2 F51 G47 H83,2.68
+pm,E136,E135,Las Nieves,San Diego,troncal,0.622,0.588,36.33,2 M47 M51 M83,1.91
+pm,E136,E137,Las Nieves,San Victorino,troncal,0.657,0.637,62.34,2 G47 H83 L10,2.47
+pm,E137,E82,San Victorino,Bicentenario,troncal,0.92,1.053,62.34,2 G47 H83 L10,3.88
+pm,E137,E136,San Victorino,Las Nieves,troncal,0.657,0.632,40.0,2 K10 M47 M83,1.94
+pm,E138,E82,Estación San Bernardo,Bicentenario,troncal,0.507,0.487,56.33,2 B18 C25 K10 M83,1.51
+pm,E138,E139,Estación San Bernardo,Policarpa,troncal,0.543,0.589,75.0,2 H83 L10 L18 L25,2.28
+pm,E139,E138,Policarpa,Estación San Bernardo,troncal,0.543,0.453,56.32,2 B18 C25 K10 M83,1.73
+pm,E139,E140,Policarpa,Ciudad Jardín - UAN,troncal,0.629,0.588,75.34,2 H83 L10 L18 L25,2.66
+pm,E140,E139,Ciudad Jardín - UAN,Policarpa,troncal,0.629,0.6,55.66,2 B18 C25 K10 M83,1.98
+pm,E140,E141,Ciudad Jardín - UAN,AV. Primero de Mayo,troncal,0.633,0.743,75.0,2 H83 L10 L18 L25,2.58
+pm,E141,E31,AV. Primero de Mayo,Quiroga,enlace operacional (tráfico mixto),2.291,2.857,17.67,H83,9.67
+pm,E141,E140,AV. Primero de Mayo,Ciudad Jardín - UAN,troncal,0.633,0.572,55.66,2 B18 C25 K10 M83,1.64
+pm,E141,E142,AV. Primero de Mayo,Country Sur,troncal,0.822,0.867,56.67,2 L10 L18 L25,3.31
+pm,E142,E141,Country Sur,AV. Primero de Mayo,troncal,0.822,0.873,46.0,2 B18 C25 K10,2.81
+pm,E142,E143,Country Sur,Portal 20 de Julio,troncal,0.659,0.954,56.67,2 L10 L18 L25,3.96
+pm,E143,E142,Portal 20 de Julio,Country Sur,troncal,0.659,1.443,45.33,2 B18 C25 K10,4.42
+valle,E1,E2,Terminal,Calle 187,troncal,0.617,0.625,41.47,8 D55 G11 K16 L18,1.83
+valle,E2,E1,Calle 187,Terminal,troncal,0.617,0.631,39.47,8 B11 B16 B18 B55,1.71
+valle,E2,E3,Calle 187,Portal Norte - Unicervantes,troncal,0.985,0.921,41.07,8 D55 G11 K16 L18,3.53
+valle,E3,E2,Portal Norte - Unicervantes,Calle 187,troncal,0.985,0.86,39.19,8 B11 B16 B18 B55,3.04
+valle,E3,E4,Portal Norte - Unicervantes,Toberín,troncal,0.948,1.124,112.4,8 D10 D55 F28 G11 G12 H13 H27 H75 J70 J74 K16 L18 S46,3.09
+valle,E4,E3,Toberín,Portal Norte - Unicervantes,troncal,0.948,1.079,108.26,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B55 B74 B75,3.23
+valle,E4,E5,Toberín,Calle 161,troncal,0.482,0.542,125.47,8 D10 D55 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,2.07
+valle,E5,E4,Calle 161,Toberín,troncal,0.482,0.506,120.12,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B55 B72 B74 B75,1.78
+valle,E5,E6,Calle 161,Mazúren,troncal,0.826,0.719,125.07,8 D10 D55 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,2.61
+valle,E6,E5,Mazúren,Calle 161,troncal,0.826,0.737,120.39,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B50 B55 B72 B74 B75,2.53
+valle,E6,E7,Mazúren,Calle 146,troncal,0.416,0.509,125.33,8 D10 D55 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,1.54
+valle,E7,E6,Calle 146,Mazúren,troncal,0.416,0.344,120.52,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B50 B55 B72 B74 B75,1.04
+valle,E7,E8,Calle 146,Calle 142,troncal,0.456,0.44,125.06,8 D10 D55 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,1.23
+valle,E8,E7,Calle 142,Calle 146,troncal,0.456,0.591,120.67,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B50 B55 B72 B74 B75,1.72
+valle,E8,E9,Calle 142,Alcalá - Colegio S. Tomás Dominicos,troncal,0.642,0.809,124.66,8 D10 D55 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 L18 S46,3.03
+valle,E9,E8,Alcalá - Colegio S. Tomás Dominicos,Calle 142,troncal,0.642,0.565,119.73,8 B10 B11 B12 B13 B16 B18 B27 B28 B46 B50 B55 B72 B74 B75,1.99
+valle,E9,E10,Alcalá - Colegio S. Tomás Dominicos,Prado,troncal,0.744,0.857,136.93,8 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,2.34
+valle,E10,E9,Prado,Alcalá - Colegio S. Tomás Dominicos,troncal,0.744,0.801,131.86,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,2.43
+valle,E10,E11,Prado,Calle 127,troncal,1.118,1.146,137.07,8 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,3.23
+valle,E11,E10,Calle 127,Prado,troncal,1.118,1.09,131.59,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,3.02
+valle,E11,E12,Calle 127,Pepe Sierra - Utel Universidad,troncal,0.734,0.737,136.53,8 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,2.61
+valle,E12,E11,Pepe Sierra - Utel Universidad,Calle 127,troncal,0.734,0.735,131.2,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,2.43
+valle,E12,E13,Pepe Sierra - Utel Universidad,Calle 106,troncal,0.58,0.439,136.26,8 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,1.36
+valle,E13,E12,Calle 106,Pepe Sierra - Utel Universidad,troncal,0.58,0.697,130.81,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B55 B72 B74 B75,2.02
+valle,E13,E14,Calle 106,Calle 100 - Marketmedios,troncal,1.019,1.128,136.12,8 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,4.28
+valle,E14,E13,Calle 100 - Marketmedios,Calle 106,troncal,1.019,0.871,130.68,8 B10 B11 B12 B13 B16 B18 B23 B26 B27 B28 B46 B50 B72 B74 B75,3.05
+valle,E14,E15,Calle 100 - Marketmedios,Virrey - Cendiatra,troncal,0.896,0.889,134.78,8 D10 D55 F26 F28 G11 G12 H13 H27 H72 H75 J70 J74 K16 K23 L18 S46,3.15
+valle,E15,E14,Virrey - Cendiatra,Calle 100 - Marketmedios,troncal,0.896,0.946,117.06,8 B10 B11 B13 B16 B18 B23 B26 B27 B28 B46 B50 B72 B74 B75,3.19
+valle,E15,E16,Virrey - Cendiatra,Calle 85 - Gato Dumas,troncal,0.415,0.475,87.32,8 D10 D55 F26 G11 H13 H27 H75 J74 K23 L18,1.43
+valle,E15,E69,Virrey - Cendiatra,La Castellana,troncal,0.603,,47.19,F28 G12 H72 J70 K16 S46,
+valle,E16,E15,Calle 85 - Gato Dumas,Virrey - Cendiatra,troncal,0.415,0.327,83.59,8 B10 B11 B13 B18 B23 B26 B27 B50 B74 B75,1.11
+valle,E16,E17,Calle 85 - Gato Dumas,Héroes - Colmena Seguros,troncal,0.47,0.399,87.32,8 D10 D55 F26 G11 H13 H27 H75 J74 K23 L18,1.19
+valle,E17,E16,Héroes - Colmena Seguros,Calle 85 - Gato Dumas,troncal,0.47,0.549,83.59,8 B10 B11 B13 B18 B23 B26 B27 B50 B74 B75,1.21
+valle,E17,E18,Héroes - Colmena Seguros,Calle 72 - Areandina,troncal,1.118,1.146,119.32,6 8 F19 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,4.27
+valle,E17,E56,Héroes - Colmena Seguros,Polo - FINCOMERCIO,troncal,0.5,0.827,86.53,4 6 A61 C15 C19 D10 D20 D24 D55 F26 G11,2.28
+valle,E18,E17,Calle 72 - Areandina,Héroes - Colmena Seguros,troncal,1.118,1.221,115.32,6 8 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,3.91
+valle,E18,E19,Calle 72 - Areandina,Flores,troncal,0.385,0.505,122.52,8 A52 F19 F60 G52 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,1.88
+valle,E19,E18,Flores,Calle 72 - Areandina,troncal,0.385,0.645,116.25,8 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24 G52,2.23
+valle,E19,E20,Flores,Calle 57,troncal,1.362,0.896,121.6,8 F19 F60 G52 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,3.1
+valle,E20,E19,Calle 57,Flores,troncal,1.362,0.898,115.2,8 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,2.97
+valle,E20,E21,Calle 57,Calle 53 - Universidad Manuela Beltrán,troncal,0.756,0.991,121.6,8 F19 F60 G52 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,3.27
+valle,E21,E20,Calle 53 - Universidad Manuela Beltrán,Calle 57,troncal,0.756,0.969,115.06,8 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,3.09
+valle,E21,E22,Calle 53 - Universidad Manuela Beltrán,AV. 39,troncal,1.061,1.062,121.73,8 F19 F60 G52 H13 H15 H20 H27 H75 J24 J74 K23 L18 Z61,3.56
+valle,E22,E21,AV. 39,Calle 53 - Universidad Manuela Beltrán,troncal,1.061,1.078,114.93,8 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20 D24,3.57
+valle,E22,E23,AV. 39,Calle 26 - Atrio,troncal,1.202,1.213,110.67,8 F19 F60 G52 H13 H15 H20 H27 H75 J74 K23 L18 Z61,3.72
+valle,E23,E22,Calle 26 - Atrio,AV. 39,troncal,1.202,1.214,105.33,8 A60 A61 B13 B18 B23 B27 B74 B75 C15 C19 D20,3.57
+valle,E23,E24,Calle 26 - Atrio,Calle 22,troncal,0.827,0.977,90.01,8 F19 F60 G52 H13 H15 H20 H27 H75 L18 Z61,3.33
+valle,E24,E23,Calle 22,Calle 26 - Atrio,troncal,0.827,0.895,84.26,8 A60 A61 B13 B18 B27 B75 C15 C19 D20,2.92
+valle,E24,E25,Calle 22,Avenida Jiménez,troncal,0.961,1.24,100.8,3 8 F19 F60 G52 H13 H15 H20 H27 H75 L18,4.79
+valle,E25,E24,Avenida Jiménez,Calle 22,troncal,0.961,1.315,92.79,3 8 A60 B13 B18 B27 B75 C15 C19 D20,4.6
+valle,E25,E26,Avenida Jiménez,Hortúa,troncal,1.725,1.408,68.92,3 H13 H15 H20 H27 H54 H75 H76,4.79
+valle,E25,E99,Avenida Jiménez,De La Sabana,troncal,0.328,0.349,55.07,5 F19 F23 F51 F60 G52,1.51
+valle,E25,E120,Avenida Jiménez,Museo del Oro,troncal,0.853,0.698,23.34,J23 J70 J76 K54,2.37
+valle,E26,E25,Hortúa,Avenida Jiménez,troncal,1.725,1.358,62.92,3 B13 B27 B75 C15 D20 J76 K54,4.47
+valle,E26,E27,Hortúa,Nariño,troncal,0.651,0.694,81.45,3 H13 H15 H17 H20 H27 H54 H75 H76,2.3
+valle,E27,E26,Nariño,Hortúa,troncal,0.651,0.691,75.32,3 B13 B27 B75 C15 C17 D20 J76 K54,2.2
+valle,E27,E28,Nariño,Fucha,troncal,0.71,0.729,103.33,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H76,2.21
+valle,E27,E81,Nariño,Tygua - San José,enlace operacional (tráfico mixto),1.607,2.128,12.8,B72,5.2
+valle,E28,E27,Fucha,Nariño,troncal,0.71,0.738,87.99,3 B13 B27 B72 B75 C15 C17 D20 J76 K54,2.27
+valle,E28,E29,Fucha,Restrepo,troncal,0.257,0.309,103.33,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H76,1.23
+valle,E29,E28,Restrepo,Fucha,troncal,0.257,0.239,98.12,3 B13 B27 B72 B75 C15 C17 D20 D21 J76 K54,0.88
+valle,E29,E30,Restrepo,Olaya,troncal,0.734,0.686,103.88,3 H13 H15 H17 H20 H21 H27 H54 H72 H75,2.76
+valle,E30,E29,Olaya,Restrepo,troncal,0.734,0.696,98.13,3 B13 B27 B72 B75 C15 C17 D20 D21 K54,2.64
+valle,E30,E31,Olaya,Quiroga,troncal,0.812,0.844,104.41,3 H13 H15 H17 H20 H21 H27 H54 H72 H75,2.9
+valle,E31,E30,Quiroga,Olaya,troncal,0.812,0.844,98.13,3 B13 B27 B72 B75 C15 C17 D20 D21 K54,2.78
+valle,E31,E32,Quiroga,Calle 40 Sur,troncal,0.642,0.619,114.53,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H83,2.17
+valle,E31,E141,Quiroga,AV. Primero de Mayo,enlace operacional (tráfico mixto),2.291,2.872,10.13,M83,9.36
+valle,E32,E31,Calle 40 Sur,Quiroga,troncal,0.642,0.597,108.13,3 B13 B27 B72 B75 C15 C17 D20 D21 K54 M83,2.03
+valle,E32,E33,Calle 40 Sur,Santa Lucía,troncal,0.743,0.877,115.34,3 H13 H15 H17 H20 H21 H27 H54 H72 H75 H83,3.03
+valle,E33,E32,Santa Lucía,Calle 40 Sur,troncal,0.743,0.802,108.26,3 B13 B27 B72 B75 C15 C17 D20 D21 K54 M83,2.7
+valle,E33,E34,Santa Lucía,Socorro,troncal,0.709,0.822,67.06,H17 H20 H54 H72 H75 H83,2.29
+valle,E33,E35,Santa Lucía,Biblioteca,corrección ramal sur,0.634,0.737,48.67,3 H13 H15 H21 H27,2.93
+valle,E34,E33,Socorro,Santa Lucía,troncal,0.709,0.762,63.73,B72 B75 C17 D20 K54 M83,2.13
+valle,E34,E38,Socorro,Consuelo,corrección ramal sur,0.527,0.502,67.07,H17 H20 H54 H72 H75 H83,1.6
+valle,E35,E33,Biblioteca,Santa Lucía,corrección ramal sur,0.634,0.838,44.53,3 B13 B27 C15 D21,3.09
+valle,E35,E36,Biblioteca,Parque,troncal,0.599,0.628,48.67,3 H13 H15 H21 H27,2.5
+valle,E36,E35,Parque,Biblioteca,troncal,0.599,0.599,44.66,3 B13 B27 C15 D21,2.2
+valle,E36,E37,Parque,Portal Tunal,troncal,0.446,0.848,48.67,3 H13 H15 H21 H27,3.24
+valle,E37,E36,Portal Tunal,Parque,troncal,0.446,1.54,44.66,3 B13 B27 C15 D21,5.42
+valle,E38,E34,Consuelo,Socorro,corrección ramal sur,0.527,0.508,63.87,B72 B75 C17 D20 K54 M83,1.61
+valle,E38,E39,Consuelo,Molinos,troncal,0.418,0.36,67.08,H17 H20 H54 H72 H75 H83,1.14
+valle,E39,E38,Molinos,Consuelo,troncal,0.418,0.353,64.0,B72 B75 C17 D20 K54 M83,1.1
+valle,E39,E40,Molinos,Danubio,troncal,1.495,1.237,67.33,H17 H20 H54 H72 H75 H83,3.8
+valle,E40,E39,Danubio,Molinos,troncal,1.495,1.176,63.86,B72 B75 C17 D20 K54 M83,3.47
+valle,E40,E41,Danubio,Portal Usme,troncal,1.337,1.585,67.33,H17 H20 H54 H72 H75 H83,4.76
+valle,E41,E40,Portal Usme,Danubio,troncal,1.337,2.115,64.13,B72 B75 C17 D20 K54 M83,6.24
+valle,E42,E43,San Martín,Rionegro,troncal,0.512,0.511,54.13,7 C15 C17 C19 C25 C30,1.53
+valle,E42,E70,San Martín,NQS Calle 75,troncal,0.831,1.034,43.47,F19 G30 H15 H17 J73 L25,2.93
+valle,E43,E42,Rionegro,San Martín,troncal,0.512,0.457,54.53,7 F19 G30 H15 H17 J73 L25,1.38
+valle,E43,E44,Rionegro,Suba - Calle 95,troncal,0.515,0.506,54.26,7 C15 C17 C19 C25 C30,1.51
+valle,E44,E43,Suba - Calle 95,Rionegro,troncal,0.515,0.549,54.54,7 F19 G30 H15 H17 J73 L25,1.66
+valle,E44,E45,Suba - Calle 95,Suba Calle 100,troncal,0.287,0.28,54.13,7 C15 C17 C19 C25 C30,0.77
+valle,E45,E44,Suba Calle 100,Suba - Calle 95,troncal,0.287,0.272,54.41,7 F19 G30 H15 H17 J73 L25,0.74
+valle,E45,E46,Suba Calle 100,Puentelargo,troncal,0.778,0.791,54.13,7 C15 C17 C19 C25 C30,2.37
+valle,E46,E45,Puentelargo,Suba Calle 100,troncal,0.778,0.873,54.67,7 F19 G30 H15 H17 J73 L25,2.48
+valle,E46,E47,Puentelargo,Av. Suba - Calle 116,troncal,0.712,0.763,54.13,7 C15 C17 C19 C25 C30,2.1
+valle,E47,E46,Av. Suba - Calle 116,Puentelargo,troncal,0.712,0.696,54.41,7 F19 G30 H15 H17 J73 L25,2.02
+valle,E47,E48,Av. Suba - Calle 116,Humedal Córdoba,troncal,0.841,0.794,54.13,7 C15 C17 C19 C25 C30,2.66
+valle,E48,E47,Humedal Córdoba,Av. Suba - Calle 116,troncal,0.841,0.79,54.54,7 F19 G30 H15 H17 J73 L25,2.8
+valle,E48,E49,Humedal Córdoba,Niza - Calle 127,troncal,0.604,0.6,54.13,7 C15 C17 C19 C25 C30,1.87
+valle,E49,E48,Niza - Calle 127,Humedal Córdoba,troncal,0.604,0.601,54.67,7 F19 G30 H15 H17 J73 L25,1.98
+valle,E49,E50,Niza - Calle 127,Suba - AV. Boyacá,troncal,1.064,1.069,54.26,7 C15 C17 C19 C25 C30,3.06
+valle,E50,E49,Suba - AV. Boyacá,Niza - Calle 127,troncal,1.064,1.079,54.92,7 F19 G30 H15 H17 J73 L25,3.19
+valle,E50,E51,Suba - AV. Boyacá,Gratamira,troncal,0.688,0.758,54.39,7 C15 C17 C19 C25 C30,2.25
+valle,E51,E50,Gratamira,Suba - AV. Boyacá,troncal,0.688,0.749,54.79,7 F19 G30 H15 H17 J73 L25,2.28
+valle,E51,E52,Gratamira,21 Ángeles,troncal,1.133,1.256,54.66,7 C15 C17 C19 C25 C30,3.73
+valle,E52,E51,21 Ángeles,Gratamira,troncal,1.133,1.237,54.92,7 F19 G30 H15 H17 J73 L25,3.76
+valle,E52,E53,21 Ángeles,Suba TV 91 - OMNILIFE SEYTÚ,troncal,0.767,0.788,54.53,7 C15 C17 C19 C25 C30,2.4
+valle,E53,E52,Suba TV 91 - OMNILIFE SEYTÚ,21 Ángeles,troncal,0.767,0.794,54.93,7 F19 G30 H15 H17 J73 L25,2.61
+valle,E53,E54,Suba TV 91 - OMNILIFE SEYTÚ,La Campiña,troncal,0.623,0.624,54.93,7 C15 C17 C19 C25 C30,1.84
+valle,E54,E53,La Campiña,Suba TV 91 - OMNILIFE SEYTÚ,troncal,0.623,0.625,55.2,7 F19 G30 H15 H17 J73 L25,1.78
+valle,E54,E55,La Campiña,Portal Suba,troncal,0.575,0.769,55.2,7 C15 C17 C19 C25 C30,2.4
+valle,E55,E54,Portal Suba,La Campiña,troncal,0.575,0.637,55.2,7 F19 G30 H15 H17 J73 L25,2.19
+valle,E56,E17,Polo - FINCOMERCIO,Héroes - Colmena Seguros,troncal,0.5,0.598,85.2,4 6 B10 B11 B26 F19 H15 H20 J24 Z61,1.82
+valle,E56,E57,Polo - FINCOMERCIO,Escuela Militar,troncal,0.851,0.818,93.33,4 6 7 C15 C19 D10 D20 D24 D55 F26 G11,2.57
+valle,E57,E56,Escuela Militar,Polo - FINCOMERCIO,troncal,0.851,0.982,92.66,4 6 7 B10 B11 B26 F19 H15 H20 J24,2.94
+valle,E57,E58,Escuela Militar,Carrera 47,troncal,0.455,0.444,59.87,6 D10 D20 D21 D22 D24 D55,1.56
+valle,E57,E70,Escuela Militar,NQS Calle 75,troncal,0.621,0.988,61.46,4 C15 C19 F26 G11 G22 H21,2.78
+valle,E58,E57,Carrera 47,Escuela Militar,troncal,0.455,0.35,59.19,6 B10 G22 H20 H21 J24,1.13
+valle,E58,E59,Carrera 47,Carrera 53,troncal,0.645,0.685,59.73,6 D10 D20 D21 D22 D24 D55,2.02
+valle,E59,E58,Carrera 53,Carrera 47,troncal,0.645,0.707,59.19,6 B10 G22 H20 H21 J24,1.82
+valle,E59,E60,Carrera 53,Avenida 68,troncal,0.605,0.571,59.6,6 D10 D20 D21 D22 D24 D55,1.88
+valle,E60,E59,Avenida 68,Carrera 53,troncal,0.605,0.575,59.19,6 B10 G22 H20 H21 J24,1.58
+valle,E60,E61,Avenida 68,Ferias,troncal,0.681,0.735,60.13,6 D10 D20 D21 D22 D24 D55,2.54
+valle,E61,E60,Ferias,Avenida 68,troncal,0.681,0.729,59.19,6 B10 G22 H20 H21 J24,2.39
+valle,E61,E62,Ferias,Boyacá,troncal,0.44,0.291,59.87,6 D10 D20 D21 D22 D24 D55,1.01
+valle,E62,E61,Boyacá,Ferias,troncal,0.44,0.342,59.19,6 B10 G22 H20 H21 J24,1.12
+valle,E62,E63,Boyacá,Minuto De Dios,troncal,0.625,0.726,59.87,6 D10 D20 D21 D22 D24 D55,2.02
+valle,E63,E62,Minuto De Dios,Boyacá,troncal,0.625,0.677,59.19,6 B10 G22 H20 H21 J24,1.8
+valle,E63,E64,Minuto De Dios,Granja - CRA. 77,troncal,0.518,0.411,59.87,6 D10 D20 D21 D22 D24 D55,1.39
+valle,E64,E63,Granja - CRA. 77,Minuto De Dios,troncal,0.518,0.543,59.2,6 B10 G22 H20 H21 J24,1.54
+valle,E64,E65,Granja - CRA. 77,Avenida Cali,troncal,0.601,0.65,59.87,6 D10 D20 D21 D22 D24 D55,1.87
+valle,E65,E64,Avenida Cali,Granja - CRA. 77,troncal,0.601,0.608,59.33,6 B10 G22 H20 H21 J24,1.52
+valle,E65,E66,Avenida Cali,Carrera 90,troncal,0.533,0.73,60.0,6 D10 D20 D21 D22 D24 D55,2.03
+valle,E66,E65,Carrera 90,Avenida Cali,troncal,0.533,0.727,59.2,6 B10 G22 H20 H21 J24,1.9
+valle,E66,E67,Carrera 90,Quirigua,troncal,0.516,0.422,59.87,6 D10 D20 D21 D22 D24 D55,1.51
+valle,E67,E66,Quirigua,Carrera 90,troncal,0.516,0.444,59.2,6 B10 G22 H20 H21 J24,1.4
+valle,E67,E68,Quirigua,Portal 80,troncal,0.397,0.552,59.87,6 D10 D20 D21 D22 D24 D55,1.89
+valle,E68,E67,Portal 80,Quirigua,troncal,0.397,0.657,59.07,6 B10 G22 H20 H21 J24,1.97
+valle,E69,E15,La Castellana,Virrey - Cendiatra,troncal,0.603,,33.6,B16 B28 B46 B72,
+valle,E69,E70,La Castellana,NQS Calle 75,troncal,0.973,0.878,46.93,F28 G12 H72 J70 K16 S46,1.93
+valle,E70,E42,NQS Calle 75,San Martín,troncal,0.831,0.921,43.6,C15 C17 C19 C25 C30 C73,2.52
+valle,E70,E57,NQS Calle 75,Escuela Militar,troncal,0.621,0.967,62.13,4 B11 B26 D21 D22 F19 H15,2.93
+valle,E70,E69,NQS Calle 75,La Castellana,troncal,0.973,1.211,45.46,B12 B16 B28 B46 B72,2.51
+valle,E70,E71,NQS Calle 75,Avenida Chile,troncal,0.556,0.483,123.73,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S46,1.31
+valle,E71,E70,Avenida Chile,NQS Calle 75,troncal,0.556,0.556,122.13,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32,1.44
+valle,E71,E72,Avenida Chile,7 de Agosto,troncal,1.065,1.053,123.73,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S46,3.12
+valle,E72,E71,7 de Agosto,Avenida Chile,troncal,1.065,1.023,122.53,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32,2.99
+valle,E72,E73,7 de Agosto,TIGO,troncal,0.81,0.743,135.86,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S42 S46,2.18
+valle,E73,E72,TIGO,7 de Agosto,troncal,0.81,0.743,133.05,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32 E42,2.27
+valle,E73,E74,TIGO,Campin - UAN,troncal,0.518,0.505,135.86,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S42 S46,1.48
+valle,E74,E73,Campin - UAN,TIGO,troncal,0.518,0.502,132.79,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32 E42,1.44
+valle,E74,E75,Campin - UAN,Universidad Nacional,troncal,0.923,0.883,135.86,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S42 S46,2.48
+valle,E75,E74,Universidad Nacional,Campin - UAN,troncal,0.923,1.059,132.92,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32 E42,2.64
+valle,E75,E76,Universidad Nacional,AV. Eldorado,troncal,0.72,0.713,135.99,4 F26 F28 F32 G11 G12 G22 G30 H17 H21 H72 J70 J73 K16 L25 S42 S46,1.84
+valle,E76,E75,AV. Eldorado,Universidad Nacional,troncal,0.72,0.715,132.79,4 B11 B12 B16 B26 B28 B46 B72 C17 C25 C30 C73 D21 D22 E32 E42,1.91
+valle,E76,E77,AV. Eldorado,CAD,troncal,0.937,0.851,138.79,4 F26 F28 F32 G11 G12 G22 G30 G53 H17 H21 H72 J70 L25 S42 S43 S46,2.45
+valle,E76,E122,AV. Eldorado,Concejo de Bogotá,troncal,0.522,,54.4,1 3 B23 H54 J73 L10,
+valle,E76,E123,AV. Eldorado,Ciudad Universitaria,troncal,0.405,,75.74,1 3 C73 J73 K10 K16 K23 K43 K53 K54,
+valle,E77,E76,CAD,AV. Eldorado,troncal,0.937,0.992,134.93,4 B11 B12 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 K43 K53,2.71
+valle,E77,E78,CAD,Paloquemao,troncal,0.936,1.007,141.99,4 F26 F28 F32 G11 G12 G22 G30 G53 H17 H21 H72 J70 L25 S42 S43 S46 S48,2.81
+valle,E78,E77,Paloquemao,CAD,troncal,0.936,0.875,136.79,4 B11 B12 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 E48 K43 K53,2.63
+valle,E78,E79,Paloquemao,Ricaurte,troncal,0.585,0.806,141.73,4 F26 F28 F32 G11 G12 G22 G30 G53 H17 H21 H72 J70 L25 S42 S43 S46 S48,1.96
+valle,E79,E78,Ricaurte,Paloquemao,troncal,0.585,0.789,136.53,4 B11 B12 B26 B28 B46 B72 C17 C25 C30 D21 D22 E32 E42 E48 K43 K53,2.18
+valle,E79,E80,Ricaurte,Guatoque - Veraguas,troncal,0.96,1.093,43.87,H17 H21 H72 L25,3.15
+valle,E79,E83,Ricaurte,Comuneros,troncal,1.24,0.951,75.99,4 G11 G12 G22 G30 G52 G53 S42 S43 S46 S48,2.54
+valle,E79,E100,Ricaurte,San Facon Carrera 22,troncal,0.663,0.481,57.73,5 A60 A61 C19 J23 J70 M51,1.7
+valle,E79,E101,Ricaurte,CDS Carrera 32,troncal,0.465,0.604,76.67,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.07
+valle,E80,E79,Guatoque - Veraguas,Ricaurte,troncal,0.96,1.09,44.54,B72 C17 C25 D21,3.13
+valle,E80,E81,Guatoque - Veraguas,Tygua - San José,troncal,0.84,0.819,62.27,8 H21 H72 L25 L41 M47,2.44
+valle,E80,E83,Guatoque - Veraguas,Comuneros,troncal,0.546,0.858,18.53,G47 S41,2.79
+valle,E81,E27,Tygua - San José,Nariño,enlace operacional (tráfico mixto),1.607,2.108,22.14,H21 H72,4.76
+valle,E81,E80,Tygua - San José,Guatoque - Veraguas,troncal,0.84,0.752,51.47,8 B72 C25 G47 S41,2.51
+valle,E81,E82,Tygua - San José,Bicentenario,troncal,1.0,1.067,30.67,L25 L41 M47,2.96
+valle,E82,E81,Bicentenario,Tygua - San José,troncal,1.0,1.183,28.66,C25 G47 S41,3.25
+valle,E82,E137,Bicentenario,San Victorino,troncal,0.92,0.909,39.87,2 K10 M47 M83,2.95
+valle,E82,E138,Bicentenario,Estación San Bernardo,troncal,0.507,0.479,49.2,2 H83 L10 L18 L25,1.45
+valle,E83,E79,Comuneros,Ricaurte,troncal,1.24,0.952,72.26,4 B11 B12 B46 C30 D22 E42 E48 K43 K53,2.52
+valle,E83,E80,Comuneros,Guatoque - Veraguas,troncal,0.546,0.831,20.4,L41 M47,2.48
+valle,E83,E84,Comuneros,Santa Isabel,troncal,0.419,0.498,94.25,4 G11 G12 G22 G30 G47 G52 G53 S41 S42 S43 S46 S48,1.38
+valle,E84,E83,Santa Isabel,Comuneros,troncal,0.419,0.519,92.66,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,1.57
+valle,E84,E85,Santa Isabel,NQS Calle 30 SUR,troncal,1.857,1.837,93.46,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,4.78
+valle,E85,E84,NQS Calle 30 SUR,Santa Isabel,troncal,1.857,1.839,92.67,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,5.04
+valle,E85,E86,NQS Calle 30 SUR,CL 38 A Sur - Centro Mayor,troncal,0.66,0.694,93.19,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,1.92
+valle,E86,E85,CL 38 A Sur - Centro Mayor,NQS Calle 30 SUR,troncal,0.66,0.695,92.41,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,2.09
+valle,E86,E87,CL 38 A Sur - Centro Mayor,General Santander,troncal,0.642,0.591,93.19,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,1.65
+valle,E87,E86,General Santander,CL 38 A Sur - Centro Mayor,troncal,0.642,0.643,92.41,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,1.88
+valle,E87,E88,General Santander,Alquería,troncal,0.53,0.575,92.66,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,1.59
+valle,E88,E87,Alquería,General Santander,troncal,0.53,0.527,92.27,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,1.58
+valle,E88,E89,Alquería,Venecia,troncal,0.94,0.91,92.93,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,2.53
+valle,E89,E88,Venecia,Alquería,troncal,0.94,0.911,92.0,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,2.74
+valle,E89,E90,Venecia,Sevillana,troncal,0.53,0.577,92.8,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,1.39
+valle,E90,E89,Sevillana,Venecia,troncal,0.53,0.579,92.0,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,1.46
+valle,E90,E91,Sevillana,C. C Paseo Villa Del Rio - Madelena,troncal,1.058,1.025,92.8,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,3.19
+valle,E91,E90,C. C Paseo Villa Del Rio - Madelena,Sevillana,troncal,1.058,1.02,91.86,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,3.21
+valle,E91,E92,C. C Paseo Villa Del Rio - Madelena,Perdomo,troncal,0.898,0.883,92.53,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,2.62
+valle,E92,E91,Perdomo,C. C Paseo Villa Del Rio - Madelena,troncal,0.898,0.882,91.73,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,2.64
+valle,E92,E93,Perdomo,Portal Sur - JFK Coop. Financiera,troncal,0.497,0.581,92.67,4 G11 G12 G22 G30 G47 G53 S41 S42 S43 S46 S48,1.46
+valle,E93,E92,Portal Sur - JFK Coop. Financiera,Perdomo,troncal,0.497,0.876,92.0,4 B11 B12 B46 C30 D22 E42 E48 K43 K53 L41 M47,2.34
+valle,E93,E94,Portal Sur - JFK Coop. Financiera,Bosa,troncal,1.322,,38.8,S41 S42 S43 S46 S48,
+valle,E94,E93,Bosa,Portal Sur - JFK Coop. Financiera,troncal,1.322,,35.33,B46 E42 E48 K43 L41,
+valle,E94,E95,Bosa,La Despensa,troncal,0.805,0.805,37.33,S41 S42 S43 S46 S48,1.88
+valle,E95,E94,La Despensa,Bosa,troncal,0.805,0.817,35.07,B46 E42 E48 K43 L41,1.81
+valle,E95,E96,La Despensa,León XIII,troncal,0.618,0.547,37.07,S41 S42 S43 S46 S48,1.26
+valle,E96,E95,León XIII,La Despensa,troncal,0.618,0.551,34.93,B46 E42 E48 K43 L41,1.29
+valle,E96,E97,León XIII,Terreros - H. Cardiovascular,troncal,0.793,0.943,37.07,S41 S42 S43 S46 S48,2.07
+valle,E97,E96,Terreros - H. Cardiovascular,León XIII,troncal,0.793,0.711,35.07,B46 E42 E48 K43 L41,1.88
+valle,E97,E98,Terreros - H. Cardiovascular,San Mateo,troncal,0.737,0.625,37.07,S41 S42 S43 S46 S48,1.65
+valle,E98,E97,San Mateo,Terreros - H. Cardiovascular,troncal,0.737,0.711,34.93,B46 E42 E48 K43 L41,1.67
+valle,E99,E25,De La Sabana,Avenida Jiménez,troncal,0.328,0.441,54.52,5 A60 C19 J23 J70 M51,2.0
+valle,E99,E100,De La Sabana,San Facon Carrera 22,troncal,0.725,0.784,56.8,5 F19 F23 F51 F60 G52 Z61,2.6
+valle,E100,E79,San Facon Carrera 22,Ricaurte,troncal,0.663,0.479,56.8,5 F19 F23 F51 F60 G52 Z61,1.72
+valle,E100,E99,San Facon Carrera 22,De La Sabana,troncal,0.725,0.764,57.59,5 A60 A61 C19 J23 J70 M51,2.44
+valle,E101,E79,CDS Carrera 32,Ricaurte,troncal,0.465,0.596,75.99,5 A60 A61 B26 B28 C19 E32 J23 M51,1.99
+valle,E101,E102,CDS Carrera 32,Zona Industrial,troncal,0.702,0.707,76.54,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.23
+valle,E102,E101,Zona Industrial,CDS Carrera 32,troncal,0.702,0.713,76.0,5 A60 A61 B26 B28 C19 E32 J23 M51,2.13
+valle,E102,E103,Zona Industrial,Carrera 43 - Comapan,troncal,0.409,0.466,76.27,5 F19 F23 F26 F28 F32 F51 F60 Z61,1.7
+valle,E103,E102,Carrera 43 - Comapan,Zona Industrial,troncal,0.409,0.464,75.73,5 A60 A61 B26 B28 C19 E32 J23 M51,1.62
+valle,E103,E104,Carrera 43 - Comapan,Puente Aranda,troncal,0.479,0.439,76.14,5 F19 F23 F26 F28 F32 F51 F60 Z61,1.59
+valle,E104,E103,Puente Aranda,Carrera 43 - Comapan,troncal,0.479,0.442,75.73,5 A60 A61 B26 B28 C19 E32 J23 M51,1.54
+valle,E104,E105,Puente Aranda,Distrito Grafiti,troncal,0.807,0.916,75.86,5 F19 F23 F26 F28 F32 F51 F60 Z61,3.34
+valle,E105,E104,Distrito Grafiti,Puente Aranda,troncal,0.807,0.826,75.73,5 A60 A61 B26 B28 C19 E32 J23 M51,2.88
+valle,E105,E106,Distrito Grafiti,Pradera - Plaza Central,troncal,0.79,0.759,75.86,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.62
+valle,E106,E105,Pradera - Plaza Central,Distrito Grafiti,troncal,0.79,0.845,75.73,5 A60 A61 B26 B28 C19 E32 J23 M51,2.81
+valle,E106,E107,Pradera - Plaza Central,Marsella,troncal,1.28,1.343,75.73,5 F19 F23 F26 F28 F32 F51 F60 Z61,4.69
+valle,E107,E106,Marsella,Pradera - Plaza Central,troncal,1.28,1.348,75.73,5 A60 A61 B26 B28 C19 E32 J23 M51,4.51
+valle,E107,E108,Marsella,Av Américas - Av. Boyacá,troncal,0.453,0.409,75.6,5 F19 F23 F26 F28 F32 F51 F60 Z61,1.55
+valle,E108,E107,Av Américas - Av. Boyacá,Marsella,troncal,0.453,0.391,74.93,5 A60 A61 B26 B28 C19 E32 J23 M51,1.45
+valle,E108,E109,Av Américas - Av. Boyacá,Mandalay,troncal,0.788,0.724,74.67,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.67
+valle,E109,E108,Mandalay,Av Américas - Av. Boyacá,troncal,0.788,0.728,74.79,5 A60 A61 B26 B28 C19 E32 J23 M51,2.6
+valle,E109,E110,Mandalay,Banderas,troncal,0.498,0.621,74.8,5 F19 F23 F26 F28 F32 F51 F60 Z61,1.81
+valle,E110,E109,Banderas,Mandalay,troncal,0.498,0.466,74.93,5 A60 A61 B26 B28 C19 E32 J23 M51,1.54
+valle,E110,E111,Banderas,Transversal 86,troncal,0.769,0.731,74.93,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.48
+valle,E111,E110,Transversal 86,Banderas,troncal,0.769,0.877,75.06,5 A60 A61 B26 B28 C19 E32 J23 M51,2.85
+valle,E111,E112,Transversal 86,Biblioteca Tintal,troncal,0.907,1.324,74.8,5 F19 F23 F26 F28 F32 F51 F60 Z61,4.82
+valle,E112,E111,Biblioteca Tintal,Transversal 86,troncal,0.907,1.304,75.06,5 A60 A61 B26 B28 C19 E32 J23 M51,4.53
+valle,E112,E113,Biblioteca Tintal,Patio Bonito,troncal,0.785,0.795,75.07,5 F19 F23 F26 F28 F32 F51 F60 Z61,2.9
+valle,E113,E112,Patio Bonito,Biblioteca Tintal,troncal,0.785,0.895,75.6,5 A60 A61 B26 B28 C19 E32 J23 M51,3.11
+valle,E113,E114,Patio Bonito,Portal Americas,troncal,1.027,1.46,74.53,5 F19 F23 F26 F28 F32 F51 F60 Z61,4.64
+valle,E114,E113,Portal Americas,Patio Bonito,troncal,1.027,1.899,75.61,5 A60 A61 B26 B28 C19 E32 J23 M51,6.22
+valle,E114,E115,Portal Americas,Islandia,troncal,1.23,,1.07,Z61,
+valle,E115,E114,Islandia,Portal Americas,troncal,1.23,,1.87,A61,
+valle,E115,E116,Islandia,Laureles,troncal,1.67,1.156,0.53,Z61,3.81
+valle,E116,E115,Laureles,Islandia,troncal,1.67,1.154,1.73,A61,3.63
+valle,E116,E117,Laureles,Tibanica - Primavera,troncal,1.987,0.73,0.27,Z61,2.39
+valle,E117,E116,Tibanica - Primavera,Laureles,troncal,1.987,0.541,1.73,A61,1.7
+valle,E118,E119,Universidades CityU,Las Aguas - Centro Colombo Americano,troncal,0.259,,10.0,H54 H76,
+valle,E118,E121,Universidades CityU,Centro Memoria,troncal,2.022,2.141,22.27,1 C73 H76 K54,5.29
+valle,E119,E118,Las Aguas - Centro Colombo Americano,Universidades CityU,troncal,0.259,,8.94,J76 K54,
+valle,E119,E120,Las Aguas - Centro Colombo Americano,Museo del Oro,troncal,0.524,0.81,23.73,F23 H54 H76,2.9
+valle,E120,E25,Museo del Oro,Avenida Jiménez,troncal,0.853,0.763,23.6,F23 H54 H76,2.73
+valle,E120,E119,Museo del Oro,Las Aguas - Centro Colombo Americano,troncal,0.524,0.632,23.47,J23 J70 J76 K54,2.11
+valle,E121,E118,Centro Memoria,Universidades CityU,troncal,2.022,2.144,22.93,1 H54 H76 J73,4.84
+valle,E121,E122,Centro Memoria,Concejo de Bogotá,troncal,0.755,0.751,43.74,1 3 C73 H76 K10 K54,2.3
+valle,E122,E76,Concejo de Bogotá,AV. Eldorado,troncal,0.522,,53.74,1 3 C73 K10 K23 K54,
+valle,E122,E121,Concejo de Bogotá,Centro Memoria,troncal,0.755,0.743,44.27,1 3 H54 H76 J73 L10,2.32
+valle,E123,E76,Ciudad Universitaria,AV. Eldorado,troncal,0.405,,77.2,1 3 B16 B23 C73 G53 H54 J73 L10 S43,
+valle,E123,E124,Ciudad Universitaria,Corferias,troncal,0.783,0.824,74.66,1 3 K10 K16 K23 K43 K53 K54,2.45
+valle,E124,E123,Corferias,Ciudad Universitaria,troncal,0.783,0.846,76.13,1 3 B16 B23 G53 H54 L10 S43,2.59
+valle,E124,E125,Corferias,Quinta Paredes - RTVC,troncal,0.521,0.517,62.79,1 K10 K16 K23 K43 K53 K54,1.22
+valle,E125,E124,Quinta Paredes - RTVC,Corferias,troncal,0.521,0.576,64.0,1 B16 B23 G53 H54 L10 S43,1.3
+valle,E125,E126,Quinta Paredes - RTVC,Gobernacion,troncal,0.702,0.712,62.93,1 K10 K16 K23 K43 K53 K54,1.75
+valle,E126,E125,Gobernacion,Quinta Paredes - RTVC,troncal,0.702,0.658,64.27,1 B16 B23 G53 H54 L10 S43,1.47
+valle,E126,E127,Gobernacion,CAN - British Council,troncal,0.529,0.524,63.34,1 K10 K16 K23 K43 K53 K54,1.37
+valle,E127,E126,CAN - British Council,Gobernacion,troncal,0.529,0.522,64.67,1 B16 B23 G53 H54 L10 S43,1.4
+valle,E127,E128,CAN - British Council,Salitre El Greco - Vive Claro,troncal,0.529,0.527,63.33,1 K10 K16 K23 K43 K53 K54,1.27
+valle,E128,E127,Salitre El Greco - Vive Claro,CAN - British Council,troncal,0.529,0.529,64.67,1 B16 B23 G53 H54 L10 S43,1.32
+valle,E128,E129,Salitre El Greco - Vive Claro,El Tiempo - Cámara De Comercio De Bogotá,troncal,0.82,0.821,63.33,1 K10 K16 K23 K43 K53 K54,2.02
+valle,E129,E128,El Tiempo - Cámara De Comercio De Bogotá,Salitre El Greco - Vive Claro,troncal,0.82,0.822,64.67,1 B16 B23 G53 H54 L10 S43,2.11
+valle,E129,E130,El Tiempo - Cámara De Comercio De Bogotá,AV. Rojas - UNISALESIANA,troncal,0.643,0.605,63.6,1 K10 K16 K23 K43 K53 K54,1.54
+valle,E130,E129,AV. Rojas - UNISALESIANA,El Tiempo - Cámara De Comercio De Bogotá,troncal,0.643,0.538,64.8,1 B16 B23 G53 H54 L10 S43,1.53
+valle,E130,E131,AV. Rojas - UNISALESIANA,Normandia,troncal,0.931,0.888,64.0,1 K10 K16 K23 K43 K53 K54,2.18
+valle,E131,E130,Normandia,AV. Rojas - UNISALESIANA,troncal,0.931,0.884,65.46,1 B16 B23 G53 H54 L10 S43,1.98
+valle,E131,E132,Normandia,Modelia,troncal,0.794,0.745,64.0,1 K10 K16 K23 K43 K53 K54,1.95
+valle,E132,E131,Modelia,Normandia,troncal,0.794,0.756,65.46,1 B16 B23 G53 H54 L10 S43,1.95
+valle,E132,E133,Modelia,Portal El Dorado - C. C Nuestro Bogotá,troncal,0.872,1.817,64.0,1 K10 K16 K23 K43 K53 K54,3.59
+valle,E133,E132,Portal El Dorado - C. C Nuestro Bogotá,Modelia,troncal,0.872,0.93,65.86,1 B16 B23 G53 H54 L10 S43,2.96
+valle,E134,E135,Museo Nacional,San Diego,troncal,0.545,0.542,37.33,2 F51 G47 H83,2.26
+valle,E135,E134,San Diego,Museo Nacional,troncal,0.545,0.808,38.8,2 M47 M51 M83,2.2
+valle,E135,E136,San Diego,Las Nieves,troncal,0.622,0.638,37.06,2 F51 G47 H83,2.45
+valle,E136,E135,Las Nieves,San Diego,troncal,0.622,0.588,38.93,2 M47 M51 M83,1.88
+valle,E136,E137,Las Nieves,San Victorino,troncal,0.657,0.637,38.66,2 G47 H83 L10,2.35
+valle,E137,E82,San Victorino,Bicentenario,troncal,0.92,1.053,38.53,2 G47 H83 L10,3.78
+valle,E137,E136,San Victorino,Las Nieves,troncal,0.657,0.632,39.86,2 K10 M47 M83,1.96
+valle,E138,E82,Estación San Bernardo,Bicentenario,troncal,0.507,0.487,48.93,2 B18 C25 K10 M83,1.48
+valle,E138,E139,Estación San Bernardo,Policarpa,troncal,0.543,0.589,49.19,2 H83 L10 L18 L25,2.1
+valle,E139,E138,Policarpa,Estación San Bernardo,troncal,0.543,0.59,49.06,2 B18 C25 K10 M83,1.73
+valle,E139,E140,Policarpa,Ciudad Jardín - UAN,troncal,0.629,0.588,49.06,2 H83 L10 L18 L25,2.72
+valle,E140,E139,Ciudad Jardín - UAN,Policarpa,troncal,0.629,0.6,49.19,2 B18 C25 K10 M83,2.06
+valle,E140,E141,Ciudad Jardín - UAN,AV. Primero de Mayo,troncal,0.633,0.743,49.2,2 H83 L10 L18 L25,2.55
+valle,E141,E31,AV. Primero de Mayo,Quiroga,enlace operacional (tráfico mixto),2.291,2.857,10.4,H83,9.15
+valle,E141,E140,AV. Primero de Mayo,Ciudad Jardín - UAN,troncal,0.633,0.556,49.06,2 B18 C25 K10 M83,1.66
+valle,E141,E142,AV. Primero de Mayo,Country Sur,troncal,0.822,0.867,38.66,2 L10 L18 L25,3.0
+valle,E142,E141,Country Sur,AV. Primero de Mayo,troncal,0.822,0.873,39.07,2 B18 C25 K10,2.77
+valle,E142,E143,Country Sur,Portal 20 de Julio,troncal,0.659,0.954,38.66,2 L10 L18 L25,3.59
+valle,E143,E142,Portal 20 de Julio,Country Sur,troncal,0.659,1.443,39.07,2 B18 C25 K10,4.43

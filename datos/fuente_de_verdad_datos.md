@@ -54,11 +54,15 @@ CSV con `utf-8-sig` (BOM); "Ricuarte" → "Ricaurte"; `p3_upl.geojson` simplific
 ## 7. Mapa base
 CARTO exige API key desde 2026 (sin clave, marca de agua "API KEY REQUIRED"). Por defecto: Esri World Light Gray (base + referencia), respaldo OpenStreetMap en gris, y base vectorial UPL si el visor bloquea imágenes externas. Si se obtiene una clave CARTO, se pega en `CARTO_KEY` y se usa Positron.
 
-## 8. GTFS estático TransMilenio (GTFS_20261013)
-`datos/gtfs/matriz_arcos_gtfs_visor.csv`: 944 arcos (troncal, `service_id == 1`), 108 estaciones mapeadas a 107 nodos del grafo (`equivalencias_gtfs_grafo.csv`). Validación en `datos/gtfs/VALIDACION.md`. Uso permitido: oferta PROGRAMADA y tiempos programados de referencia. No reemplaza ninguna cifra oficial del modelo IPF/BPR. Pendientes antes de usarlo como oferta total:
-- Cobertura parcial: 27 de 106 rutas del modelo; faltan Américas, Soacha y Eje Ambiental (probable filtro de `service_id`).
-- Discrepancia de topología en la matriz del modelo (Socorro–Biblioteca / Consuelo–Santa Lucía frente a Socorro–Consuelo / Santa Lucía–Biblioteca en GTFS). Faltan los conectores Quiroga–Av. 1 de Mayo y Tygua–Caracas Sur. No se corrigieron, porque la matriz oficial es la que reproduce los 110 / 38 / 83 / 27 puentes.
-- "NQS" 7007 sin resolver (E85 o E86): hacen falta las coordenadas de `troncales_stops.csv`.
+## 8. GTFS estático TransMilenio (GTFS_20261013), oferta completa de día hábil
+`datos/gtfs/matriz_arcos_gtfs_habil_completo.csv`: 2.173 arcos (721 mañana · 733 valle · 719 tarde), troncal, todos los `service_id` hábiles de `calendar.txt`, con `distancia_km` desde `shape_dist_traveled`. `catalogo_estaciones_gtfs_coords.csv`: 143 estaciones con coordenadas, uno a uno con los 143 nodos (`equivalencias_gtfs_grafo.csv`). 95 rutas (94 del modelo + G45). Integración: `python3 -I scripts/gtfs_integrar.py <shapes.txt>`; validación en `datos/gtfs/VALIDACION.md`.
+- Uso permitido: oferta PROGRAMADA y tiempos programados de referencia. No reemplaza ninguna cifra oficial del modelo IPF/BPR.
+- La matriz base de 143 nodos / 146 tramos (110 / 38 / 83 / 27 puentes) no se modifica. La capa de oferta GTFS usa su propio grafo: ramal sur corregido (Socorro–Consuelo y Santa Lucía–Biblioteca en lugar de Socorro–Biblioteca y Santa Lucía–Consuelo) y dos enlaces operacionales de tráfico mixto (Quiroga ↔ Av. 1 de Mayo, M83/H83; Tygua ↔ Nariño, B72/H72).
+- Saltos expresos repartidos por el trazado oficial (`shapes.txt`, no versionado). 26 pares O-D usan conectores que el grafo no tiene (Calle 26 ↔ Caracas, Carrera 10 ↔ Caracas, Carrera 10 ↔ Calle 26, Calle 6 ↔ Caracas, Suba ↔ Calle 80, NQS ↔ Autonorte, Calle 22 ↔ De La Sabana): no se proyectan.
+- Equivalencias por coordenada: 7007 = E86 (CL 38 A Sur), 7008 = E85 (NQS Calle 30 Sur), 9118 Marly = E21.
+- Única corrección al grafo: **coordenada de E21** = Marly GTFS (4,636288, −74,067008); el Excel la ubicaba a 0,32 km de Calle 57 (real ≈ 1,0 km). Trazado E20–E21–E22 tomado del shape 12558. Topología sin cambios.
+- Filtros: bucle 9110 → 9110 excluido; arcos con velocidad implícita < 8 km/h fuera de la calibración BPR (con distancia real no hay ninguno; mínimo 11,8 km/h).
+- Cifras derivadas (cálculo propio sobre el GTFS): velocidad comercial programada 19,8 km/h (mañana), 21,0 (valle), 18,5 (tarde); tramo más cargado Paloquemao → CAD con 319 bus/h en la mañana.
 
 ## 9. Horarios de los servicios (Guía General de viaje TransMilenio, corte agosto 2026)
 `datos/horarios_servicios.json`, extraído con `scripts/horarios_guia.py`. De la guía solo se toman los HORARIOS: rutas y paradas siguen siendo las del Excel. Los 106 códigos de servicio del modelo tienen horario, y las filas se verificaron visualmente contra el PDF.
