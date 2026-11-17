@@ -2030,7 +2030,7 @@ const acSta = makeAC($("#staSearch"), { onPick: id => { const n = NODE.get(id); 
 function tripStops() {
   if (!lab.route) return [];
   const [o, d] = lab.route, eb = lab.esc || 3, seen = new Set([o, d]), out = [];
-  [[0, "en tu ruta de hoy"], [eb, "en la ruta con " + escName(eb).toLowerCase()]].forEach(([e, why]) => { const r = routeInfo(e, o, d); if (r) r.path.forEach(id => { if (!seen.has(id)) { seen.add(id); out.push({ n: NODE.get(id), why, i: out.length + 1 }); } }); });
+  [[0, "de tu ruta de hoy"], [eb, "de la ruta con " + escName(eb).toLowerCase()]].forEach(([e, why]) => { const r = routeInfo(e, o, d); if (r) r.path.slice(1, -1).forEach((id, j) => { if (!seen.has(id)) { seen.add(id); out.push({ n: NODE.get(id), why, i: j + 1 }); } }); });
   return out;
 }
 const acFail = makeAC($("#failSel"), { poolFn: () => tripStops().map(x => Object.assign(Object.create(x.n), { _why: x.why, _i: x.i })), subFn: n => `parada ${n._i} · ${n._why}`, emptyMsg: () => "Primero elige de dónde sales y a dónde vas", onPick: id => { lab.fail = id; if (!lab.route) lab.sel = { type: "node", id }; apply(labState()); if (lab.view === "map" && !lab.route) flyToFail(); }, onClear: () => { lab.fail = null; apply(labState()); } });
@@ -2052,6 +2052,8 @@ function setRoute(rt) {
   if (rt) { setTab("trip"); openPanel(); }
   if (!rt) { rtSel.o = rtSel.d = null; }
   lab.route = rt; lab.sel = null; if (rt && lab.esc === 0) lab.esc = 3;
+  // la estación cerrada del viaje anterior se quita si no está en el nuevo recorrido
+  if (rt && lab.fail && !tripStops().some(x => x.n.id === lab.fail)) { lab.fail = null; acFail.set(null); }
   apply(labState());
   if (rt && lab.view !== "graph") flyTo(routeCam(rt, lab.esc), 1200);
 }
