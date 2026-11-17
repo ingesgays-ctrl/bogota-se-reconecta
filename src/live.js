@@ -61,12 +61,16 @@ function snap(lon, lat, allowed) {
 
 // ---------- servicios (las 114 rutas del Excel) ----------
 const normCod = s => String(s || "").toUpperCase().replace(/[\s\-_.]/g, "");
-const SVC_BY = new Map(D.servicios.map(sv => [normCod(sv.cod), sv]));
+// clave única por servicio: las rutas 1–8 comparten código en sus dos sentidos (p. ej. "1" a Portal El Dorado y "1" a Universidades)
+{ const n = {}; D.servicios.forEach(sv => n[sv.cod] = (n[sv.cod] || 0) + 1); D.servicios.forEach(sv => sv.key = n[sv.cod] > 1 ? `${sv.cod}·${sv.nombre}` : sv.cod); }
+const SVC_KEY = new Map(D.servicios.map(sv => [sv.key, sv]));
+const SVC_BY = new Map(); D.servicios.forEach(sv => { const k = normCod(sv.cod); if (!SVC_BY.has(k)) SVC_BY.set(k, sv); });
+const svcCod = key => (SVC_KEY.get(key) || { cod: key }).cod;
 const svcOf = v => SVC_BY.get(normCod(v.route)) || SVC_BY.get(normCod(v.label)) || SVC_BY.get(normCod(v.route_id)) || null;
 const SVC_GEO = new Map();
 function svcGeo(cod) {   // camino en el grafo que une las paradas del servicio, en orden
   if (SVC_GEO.has(cod)) return SVC_GEO.get(cod);
-  const sv = SVC_BY.get(normCod(cod)); if (!sv) return null;
+  const sv = SVC_KEY.get(cod) || SVC_BY.get(normCod(cod)); if (!sv) return null;
   const path = [sv.stops[0]];
   for (let i = 1; i < sv.stops.length; i++) { const r = shortest(0, sv.stops[i - 1], sv.stops[i]); if (r) path.push(...r.path.slice(1)); }
   const edges = new Set(); for (let i = 1; i < path.length; i++) edges.add(ekey(path[i - 1], path[i]));
@@ -130,7 +134,7 @@ function liveIngest(data) {
   }
   const dur = Math.min(LIVE.interval * 1.05, 30000);
   vs.forEach(v => {
-    const sv = svcOf(v), geo = sv ? svcGeo(sv.cod) : null, sn = snap(v.lon, v.lat, geo && geo.edges);
+    const sv = svcOf(v), geo = sv ? svcGeo(sv.key) : null, sn = snap(v.lon, v.lat, geo && geo.edges);
     let m = LIVE.busMarkers.get(v.id);
     if (!sn) { if (m) m.miss = (m.miss || 0) + 1; return; }
     snapped++;
@@ -145,7 +149,7 @@ function liveIngest(data) {
       if (moved > .4) m.ang = Math.atan2(sn.y - m.y, sn.x - m.x) * 180 / Math.PI;
     }
     const t = EDGE_TR.get(sn.k), [a, b] = sn.k.split("|"), near = NODE.get(sn.u < .5 ? sn.from : (sn.from === a ? b : a));
-    Object.assign(m, { seen: now, miss: 0, v, k: sn.k, u: sn.u, from_id: sn.from, svc: sv ? sv.cod : null, near: near.id,
+    Object.assign(m, { seen: now, miss: 0, v, k: sn.k, u: sn.u, from_id: sn.from, svc: sv ? sv.key : null, near: near.id,
       color: sv && geo ? geo.color : t !== undefined ? TRONCAL[t].color : "#3E4A53",
       late: v.delay !== undefined && v.delay >= LATE_S,
       slow: (v.speed !== undefined && v.speed < SLOW_MS && v.status !== "STOPPED_AT") || /CONGESTION/.test(v.congestion || "") });
@@ -173,7 +177,7 @@ function liveLabel(m) {
   const [a, b] = m.k.split("|");
   const occ = { EMPTY: "vacío", MANY_SEATS_AVAILABLE: "con sillas libres", FEW_SEATS_AVAILABLE: "pocas sillas libres", STANDING_ROOM_ONLY: "solo de pie", CRUSHED_STANDING_ROOM_ONLY: "muy lleno", FULL: "lleno", NOT_ACCEPTING_PASSENGERS: "no recibe pasajeros" }[v.occupancy];
   const gap = m.ahead !== undefined ? ` · siguiente bus de la ruta delante a ~${fI(m.ahead)} min${m.gapFlag === "hueco" ? " (hueco)" : m.gapFlag === "pegado" ? " (van pegados)" : ""}` : "";
-  return `<b>${m.svc ? "Ruta " + esc(m.svc) : DEV ? "Ruta " + esc(v.route_id || "sin código") : "Bus troncal"}${DEV ? " · " + esc(v.id) : ""}</b>${st}<small>Cerca de ${esc(short(NODE.get(m.near).nombre))} · tramo ${esc(short(NODE.get(a).nombre))} – ${esc(short(NODE.get(b).nombre))}${v.speed !== undefined ? ` · ${fI(v.speed * 3.6)} km/h` : ""}${occ ? " · " + occ : ""}${gap}</small>`;
+  return `<b>${m.svc ? "Ruta " + esc(svcCod(m.svc)) : DEV ? "Ruta " + esc(v.route_id || "sin código") : "Bus troncal"}${DEV ? " · " + esc(v.id) : ""}</b>${st}<small>Cerca de ${esc(short(NODE.get(m.near).nombre))} · tramo ${esc(short(NODE.get(a).nombre))} – ${esc(short(NODE.get(b).nombre))}${v.speed !== undefined ? ` · ${fI(v.speed * 3.6)} km/h` : ""}${occ ? " · " + occ : ""}${gap}</small>`;
 }
 function liveSyncBuses() {   // el resto del laboratorio (WebGL, seguir bus, clics) lee sim.buses
   sim.buses = [...LIVE.busMarkers.values()];
@@ -264,7 +268,7 @@ function simSvcBuses(add) {
     const tr = mkTrack(0, p);
     for (let j = 0; j < 2; j++) {
       add(tr, `<b>Ruta ${esc(geo.sv.cod)} · hacia ${nm(p[p.length - 1])}</b><small>Simulación · ${geo.sv.stops.length} paradas · sale de ${nm(p[0])}</small>`, geo.color, (ph + j * .5 + .1) % 1, false, p);
-      const b = sim.buses[sim.buses.length - 1]; b.svc = geo.sv.cod; b.g.classList.add("svc"); b.g.style.setProperty("--svc", geo.color);
+      const b = sim.buses[sim.buses.length - 1]; b.svc = geo.sv.key; b.g.classList.add("svc"); b.g.style.setProperty("--svc", geo.color);
       b.g.insertAdjacentHTML("afterbegin", '<circle class="ring" r="11"/>');
     }
   });
@@ -364,17 +368,17 @@ function svcAnimate() {
 const SVC_LIST = D.servicios.map(sv => ({ sv, txt: norm(`${sv.cod} ${sv.nombre} ${NODE.get(sv.stops[0]).nombre} ${NODE.get(sv.stops[sv.stops.length - 1]).nombre}`) }));
 const svcLine = sv => `${short(NODE.get(sv.stops[0]).nombre)} → ${short(NODE.get(sv.stops[sv.stops.length - 1]).nombre)}`;
 const inkOn = hex => { const n = parseInt(hex.slice(1), 16), r = n >> 16, g = n >> 8 & 255, b = n & 255; return (0.299 * r + 0.587 * g + 0.114 * b) > 165 ? "#172026" : "#fff"; };
-function svcChip(cod) { const g = svcGeo(cod), c = g ? g.color : "#6C757D"; return `<span class="svc-chip" style="--c:${c};color:${inkOn(c)}">${esc(cod)}</span>`; }
+function svcChip(key) { const g = svcGeo(key), c = g ? g.color : "#6C757D"; return `<span class="svc-chip" style="--c:${c};color:${inkOn(c)}">${esc(svcCod(key))}</span>`; }
 (() => {
   const inp = $("#svcSearch"), list = $("#svcList"); let act = -1, items = [];
   const show = () => {
     const q = norm(inp.value.trim());
     items = SVC_LIST.filter(o => !q || o.txt.includes(q)).sort((a, b) => (norm(a.sv.cod).startsWith(q) ? 0 : 1) - (norm(b.sv.cod).startsWith(q) ? 0 : 1) || a.sv.cod.localeCompare(b.sv.cod, "es", { numeric: true })).slice(0, q ? 30 : 114);
     act = items.length ? 0 : -1;
-    list.innerHTML = items.map((o, i) => { const r = LIVE.byRoute.get(o.sv.cod); return `<li role="option" data-i="${i}" class="${i === act ? "act" : ""}"><span>${svcChip(o.sv.cod)} <b>${esc(o.sv.nombre)}</b>${r && LIVE.mode === "live" ? ` <small class="lv">${r.n} en vía${r.late ? ` · ${r.late} con retraso` : ""}</small>` : ""}</span><small>${esc(svcLine(o.sv))} · ${o.sv.stops.length} paradas</small></li>`; }).join("") || '<li class="none">Ninguna ruta coincide</li>';
+    list.innerHTML = items.map((o, i) => { const r = LIVE.byRoute.get(o.sv.key); return `<li role="option" data-i="${i}" class="${i === act ? "act" : ""}"><span>${svcChip(o.sv.key)} <b>${esc(o.sv.nombre)}</b>${r && LIVE.mode === "live" ? ` <small class="lv">${r.n} en vía${r.late ? ` · ${r.late} con retraso` : ""}</small>` : ""}</span><small>${esc(svcLine(o.sv))} · ${o.sv.stops.length} paradas</small></li>`; }).join("") || '<li class="none">Ninguna ruta coincide</li>';
     list.hidden = false; inp.setAttribute("aria-expanded", "true");
   };
-  const pick = i => { const o = items[i]; if (!o) return; inp.value = `${o.sv.cod} · ${o.sv.nombre}`; list.hidden = true; inp.setAttribute("aria-expanded", "false"); selectSvc(o.sv.cod); };
+  const pick = i => { const o = items[i]; if (!o) return; inp.value = `${o.sv.cod} · ${o.sv.nombre}`; list.hidden = true; inp.setAttribute("aria-expanded", "false"); selectSvc(o.sv.key); };
   inp.addEventListener("focus", show); inp.addEventListener("input", show);
   inp.addEventListener("keydown", ev => {
     if (ev.key === "ArrowDown" || ev.key === "ArrowUp") { ev.preventDefault(); act = Math.max(0, Math.min(items.length - 1, act + (ev.key === "ArrowDown" ? 1 : -1))); list.querySelectorAll("li").forEach((li, i) => li.classList.toggle("act", i === act)); const a = list.querySelector("li.act"); if (a) a.scrollIntoView({ block: "nearest" }); }
@@ -385,7 +389,7 @@ function svcChip(cod) { const g = svcGeo(cod), c = g ? g.color : "#6C757D"; retu
 })();
 $("#paneLive").addEventListener("click", ev => {
   const b = ev.target.closest("[data-svc-act],[data-svc]"); if (!b) return;
-  if (b.dataset.svc) { $("#svcSearch").value = b.dataset.svc; selectSvc(b.dataset.svc); return; }
+  if (b.dataset.svc) { const s2 = SVC_KEY.get(b.dataset.svc); $("#svcSearch").value = s2 ? `${s2.cod} · ${s2.nombre}` : b.dataset.svc; selectSvc(b.dataset.svc); return; }
   const a = b.dataset.svcAct;
   if (a === "follow") { if (!followSvc()) { $("#svcMsg").textContent = "Todavía no hay buses de esta ruta en la vía. Intenta en unos segundos."; } }
   else if (a === "fit") { const geo = svcGeo(LIVE.sel); setFollow(false); flyTo(fit(geo.path.map(id => [NODE.get(id).lon, NODE.get(id).lat]), { pitch: cam.pitch, rot: cam.rot, pad: .7 }), 900); }
@@ -408,13 +412,13 @@ function renderLive() {
   const out = $("#svcOut"); if (!out) return;
   if (!LIVE.sel) out.innerHTML = "";
   else {
-    const geo = svcGeo(LIVE.sel), sv = geo.sv, r = LIVE.byRoute.get(sv.cod), al = LIVE.alerts.filter(a => a.routes.some(x => normCod(x) === normCod(sv.cod)));
+    const geo = svcGeo(LIVE.sel), sv = geo.sv, r = LIVE.byRoute.get(sv.key), al = LIVE.alerts.filter(a => a.routes.some(x => normCod(x) === normCod(sv.cod)));
     const nm = id => esc(NODE.get(id).nombre);
     const now = LIVE.mode === "live" ? (r ? `<b>${r.n}</b> ${r.n === 1 ? "bus" : "buses"} en la vía${r.late ? ` · <span class="bad">${r.late} con retraso (hasta ${fI(r.maxDelay / 60)} min)</span>` : ""}${r.slow ? ` · <span class="mid">${r.slow} avanzando lento</span>` : ""}` : "Ningún bus de esta ruta reporta posición en este momento.") : "Simulación: 4 buses de ejemplo, 2 en cada sentido.";
-    out.innerHTML = `<div class="svc-card" style="--c:${geo.color}"><div class="svc-h">${svcChip(sv.cod)}<b>${esc(sv.nombre)}</b></div>
+    out.innerHTML = `<div class="svc-card" style="--c:${geo.color}"><div class="svc-h">${svcChip(sv.key)}<b>${esc(sv.nombre)}</b></div>
       <p class="svc-od">${nm(sv.stops[0])} → ${nm(sv.stops[sv.stops.length - 1])}</p>
       <p class="svc-now">${now}</p>
-      ${LIVE.mode === "live" ? svcRealHTML(sv.cod) : ""}
+      ${LIVE.mode === "live" ? svcRealHTML(sv.key) : ""}
       ${al.map(a => `<p class="svc-alert">⚠ ${esc(a.header || a.description || "Novedad en la ruta")}</p>`).join("")}
       <div class="svc-btns"><button type="button" class="btn pri" data-svc-act="follow">Seguir un bus</button><button type="button" class="btn" data-svc-act="fit">Ver toda la ruta</button><button type="button" class="btn" data-svc-act="clear">Quitar</button></div>
       <p class="note" id="svcMsg"></p>
