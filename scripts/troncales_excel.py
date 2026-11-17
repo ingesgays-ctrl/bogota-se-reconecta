@@ -33,12 +33,26 @@ DEF = [("B", "Autopista Norte", [(1, 17)], [(1, 17)]),
        ("K", "Calle 26", [(121, 133)], [(121, 133)]),
        ("L", "Carrera 10", [(134, 143)], [(134, 143)])]
 rng = lambda rs: [f"E{i}" for a, b in rs for i in range(a, b + 1)]
+# Conectores: tramos de la matriz que unen dos troncales. Cada uno pasa a la troncal que continúa por él (la que llega
+# a la estación de transbordo), y esa estación queda también como estación de esa troncal.
+CONECTORES = {"NQS Central": [("E15", "E69")],                                     # NQS sube hasta Virrey
+              "Calle 80": [("E17", "E56"), ("E57", "E70")],                        # Calle 80 llega a Héroes y a NQS Calle 75
+              "Américas": [("E25", "E99"), ("E79", "E100"), ("E79", "E101")],     # Calle 13 hasta Av. Jiménez; Américas en Ricaurte
+              "Eje Ambiental": [("E25", "E120")],                                  # Eje Ambiental hasta Av. Jiménez
+              "Suba": [("E42", "E70")],                                            # Suba llega a NQS Calle 75
+              "Calle 26": [("E76", "E122"), ("E76", "E123"), ("E118", "E121")],    # Calle 26 en Av. El Dorado y Universidades
+              "NQS Sur y Soacha": [("E79", "E83"), ("E80", "E83")],               # NQS Sur llega a Ricaurte y Guatoque
+              "Carrera 10": [("E82", "E137"), ("E82", "E138")]}                    # Carrera 10 en Bicentenario
 out = []
 for letra, nombre, ids, own in DEF:
     cols = {COL[e] for e in rng(own)}
     assert len(cols) == 1, f"{nombre}: el Excel tiene más de un color en sus filas {cols}"
-    out.append({"letra": letra, "nombre": nombre, "color": cols.pop(), "ids": rng(ids), "propias": rng(own)})
+    con = CONECTORES.get(nombre, []); extra = [e for ab in con for e in ab if e not in rng(ids)]
+    out.append({"letra": letra, "nombre": nombre, "color": cols.pop(), "ids": rng(ids) + list(dict.fromkeys(extra)), "propias": rng(own), "conectores": [list(ab) for ab in con]})
 assert sorted({e for t in out for e in t["propias"]}, key=lambda s: int(s[1:])) == [f"E{i}" for i in range(1, 144)], "las troncales deben cubrir las 143 estaciones"
-p = f"{B}/src/data.json"; d = json.load(open(p)); d["troncales"] = out
+p = f"{B}/src/data.json"; d = json.load(open(p))
+aristas = {tuple(sorted(e)) for e in d["red"]["aristas"]}
+assert all(tuple(sorted(ab)) in aristas for t in out for ab in t["conectores"]), "cada conector debe ser un tramo de la matriz"
+d["troncales"] = out
 json.dump(d, open(p, "w"), ensure_ascii=False, separators=(",", ":"))
 for t in out: print(t["letra"], t["nombre"], t["color"], len(t["ids"]))

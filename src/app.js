@@ -527,13 +527,15 @@ const CHAINS = (() => {
 })();
 // Troncales: bloques de color de la hoja "Estaciones" del Excel (scripts/troncales_excel.py → data.json "troncales").
 // La Caracas Sur (H) va en dos ramales, Tunal y Usme, que comparten el tronco Hortúa – Santa Lucía.
-const TRONCAL = D.troncales.map(t => ({ letra: t.letra, nombre: t.nombre, color: t.color, ids: t.ids, own: new Set(t.propias) }));
+const TRONCAL = D.troncales.map(t => ({ letra: t.letra, nombre: t.nombre, color: t.color, ids: t.ids, own: new Set(t.propias), con: new Set((t.conectores || []).map(([a, b]) => ekey(a, b))) }));
 // cada tramo de la matriz se pinta con la troncal que lo contiene (ambos extremos en sus estaciones y al menos uno propio);
 // los tramos entre dos troncales consecutivas en el Excel van con la segunda; el resto son conectores (sin color)
 const EDGE_TR = new Map();
 (() => { const num = id => +id.slice(1), ownOf = id => TRONCAL.findIndex(t => t.own.has(id));
   D.red.aristas.forEach(([a, b]) => { const k = ekey(a, b);
-    let i = TRONCAL.findIndex(t => t.ids.includes(a) && t.ids.includes(b) && (t.own.has(a) || t.own.has(b)));
+    // conectores entre troncales: van con la troncal que continúa por ellos (definidos en scripts/troncales_excel.py)
+    let i = TRONCAL.findIndex(t => t.con.has(k));
+    if (i < 0) i = TRONCAL.findIndex(t => t.own.has(a) && t.own.has(b) || (t.ids.includes(a) && t.ids.includes(b) && (t.own.has(a) || t.own.has(b)) && !TRONCAL.some(u => u.con.has(k))));
     if (i < 0 && Math.abs(num(a) - num(b)) === 1) i = ownOf(num(a) > num(b) ? a : b);
     if (i >= 0) EDGE_TR.set(k, i); }); })();
 const troncalesDe = id => TRONCAL.filter(t => t.ids.includes(id));
@@ -542,7 +544,9 @@ const TR_GROUPS = (() => {
   const base = D.red.aristas;
   const out = TRONCAL.map((t, i) => { const ids = new Set(t.ids);
     return { key: "t:" + i, letra: t.letra, nombre: t.nombre, color: t.color, ids, nuevo: false,
-      edges: new Set(base.filter(([a, b]) => ids.has(a) && ids.has(b) || [...EDGE_TR].some(([k, j]) => j === i && k === ekey(a, b))).map(([a, b]) => ekey(a, b))) }; });
+      // tramos propios + conectores + tronco compartido del mismo ramal (Tunal y Usme comparten Hortúa – Santa Lucía)
+      edges: new Set(base.map(([a, b]) => ekey(a, b)).filter(k => { const j = EDGE_TR.get(k); if (j === i) return true; const [a, b] = k.split("|");
+        return j !== undefined && ids.has(a) && ids.has(b) && TRONCAL[j].letra === t.letra; })) }; });
   D.corredores.forEach(c => out.push({ key: "c:" + c.id, corr: c.id, letra: SHORT[c.id], nombre: c.nombre, color: COLOR[c.id], ids: new Set(c.path), edges: new Set(), nuevo: true }));
   return out;
 })();
@@ -1327,6 +1331,7 @@ function updateGraph() {
         { selector: "node:selected", style: { "border-color": "#2747D8", "border-width": 3.5 } },
         { selector: "node.hl", style: { label: "data(label)", "font-size": 10, color: NIGHT ? "#E3E7EA" : "#172026", "text-background-color": NIGHT ? "#1C242A" : "#fff", "text-background-opacity": .85, "text-background-padding": 2 } },
         { selector: "edge", style: { width: 2, "line-color": "#B8BEC2", "curve-style": "straight" } },
+        { selector: "edge.trc", style: { width: 3, "line-color": "data(color)" } },
         { selector: "edge.corr", style: { width: 3.4, "line-color": "data(color)" } },
         { selector: "edge.bridge", style: { "line-color": "#E85D04", "line-style": "dashed", width: 3 } },
         { selector: "edge.iso", style: { "line-color": "#D8101E" } },
@@ -1353,7 +1358,8 @@ function updateGraph() {
     const cid = gi.corrEdge.get(k);
     const cls = [cid ? "corr" : "", s.bridges && gi.bridges.has(k) ? "bridge" : "", F && (F.iso.has(a) || F.iso.has(b)) && a !== lab.fail && b !== lab.fail ? "iso" : "", F && (a === lab.fail || b === lab.fail) ? "dead" : "", k === ekey(CRIT_A, CRIT_B) ? "crit" : ""].filter(Boolean).join(" ");
     const hv = s.layers.heat ? CENT[lab.esc].edges.get(k) : undefined, ht = hv === undefined ? 0 : Math.min(1, hv / EBMAX);
-    els.push({ group: "edges", data: { id: "e" + k, source: a, target: b, color: cid ? COLOR[cid] : "#B8BEC2", hc: heatColor(ht), hw: 2 + 9 * ht }, classes: cls + (hv !== undefined ? " heat" : "") });
+    const tr = cid ? undefined : EDGE_TR.get(k), trc = tr !== undefined && s.colorMode !== "uso" ? TRONCAL[tr].color : null;
+    els.push({ group: "edges", data: { id: "e" + k, source: a, target: b, color: cid ? COLOR[cid] : trc || "#B8BEC2", hc: heatColor(ht), hw: 2 + 9 * ht }, classes: cls + (hv !== undefined ? " heat" : "") + (trc ? " trc" : "") });
   }));
   const prevPos = {}; cy.nodes().forEach(n => prevPos[n.id()] = { ...n.position() });
   cy.batch(() => { cy.elements().remove(); cy.add(els); });

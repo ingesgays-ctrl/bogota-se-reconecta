@@ -80,7 +80,7 @@ function mlData(side) {
     if (cl.contains("bridge")) { c = "#E85D04"; w = 3.2; o = .95; d = 1; }
     if (cl.contains("iso")) { c = "#D8101E"; w = 2.8; o = .9; d = 0; }
     if (cl.contains("live-slow")) { c = "#F2A007"; w = 4.5; o = 1; d = 1; }
-    if (cl.contains("conn") && !cl.contains("crit") && !cl.contains("bridge")) d = 1;
+    if (cl.contains("conn") && !cl.contains("by-tr") && !cl.contains("crit") && !cl.contains("bridge")) d = 1;
     if (cl.contains("dead")) o = .12;
     if (cl.contains("tr-off")) o = .06;
     if (cl.contains("tr-on")) { w = 5; o = 1; }

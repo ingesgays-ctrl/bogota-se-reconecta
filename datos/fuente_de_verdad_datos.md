@@ -101,7 +101,17 @@ Fuente: hoja `Estaciones` del Excel, color de relleno del nombre de cada estaci�
 | L Carrera 10 | E134–E143 | #66FFFF |
 
 - Tunal y Usme tienen el mismo color en el Excel. En el visor se separan en dos ramales: comparten el tronco Hortúa – Santa Lucía y cada uno se puede filtrar por separado en la pestaña Troncal.
-- Un tramo toma el color de la troncal que contiene sus dos estaciones. Los tramos entre dos troncales consecutivas en el Excel van con la segunda. Los 16 conectores restantes van sin color (gris).
+- Un tramo toma el color de la troncal que contiene sus dos estaciones. Los tramos entre dos troncales consecutivas en el Excel van con la segunda.
+- **Conectores entre troncales (15 tramos):** cada uno pasa a la troncal que continúa por él, y la estación de transbordo queda también como estación de esa troncal (`CONECTORES` en `scripts/troncales_excel.py`):
+  - NQS Central: Virrey–La Castellana.
+  - Calle 80: Héroes–Polo y Escuela Militar–NQS Calle 75.
+  - Américas: Av. Jiménez–De La Sabana, Ricaurte–San Façon y Ricaurte–CDS.
+  - Eje Ambiental: Av. Jiménez–Museo del Oro.
+  - Suba: San Martín–NQS Calle 75.
+  - Calle 26: Av. El Dorado–Concejo, Av. El Dorado–Ciudad Universitaria y Universidades–Centro Memoria.
+  - NQS Sur y Soacha: Ricaurte–Comuneros y Guatoque–Comuneros.
+  - Carrera 10: Bicentenario–San Victorino y Bicentenario–San Bernardo.
+- **Efecto:** los 146 tramos quedan con troncal y se dibujan continuos, en el mapa, en el mapa vectorial y en el esquema. Las estaciones de transbordo pertenecen a varias troncales (p. ej. Ricaurte: NQS Central, NQS Sur y Soacha, Américas; Av. Jiménez: Caracas, Américas, Eje Ambiental), y así aparecen en la ficha de estación y en el filtro de la pestaña Troncal. Solo cambia el color y la pertenencia: la topología y las cifras oficiales no cambian.
 - Para que el amarillo, el durazno y el cian se lean sobre el mapa claro, las líneas van con un borde oscuro fino; el color no se cambia.
 - Socorro sigue en el ramal Tunal, como en el orden del Excel y en la matriz oficial. El GTFS la ubica en el ramal Usme (ver §8).
 - Caminata entre buses: en modo usuario es un valor fijo de 5 min por transbordo; en modo desarrollador sigue siendo un supuesto ajustable de 0 a 12 min.

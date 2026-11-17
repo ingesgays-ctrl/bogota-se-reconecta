@@ -840,3 +840,5 @@ body.night .franja-box,body.night .live-st{background:var(--soft);color:var(--in
 body.night .thermo.b{background:#183326}
 body.night .badge.yes{background:#183326;color:#CDEBD9}
 body.night .focus-note{background:#3A3116;color:#F3E2B0}
+/* los conectores ya son parte de una troncal: con color por troncal se dibujan continuos, no punteados */
+.edge.conn.by-tr{stroke-dasharray:none}
