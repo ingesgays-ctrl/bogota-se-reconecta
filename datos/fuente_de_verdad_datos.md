@@ -59,3 +59,12 @@ CARTO exige API key desde 2026 (sin clave, marca de agua "API KEY REQUIRED"). Po
 - Cobertura parcial: 27 de 106 rutas del modelo; faltan Américas, Soacha y Eje Ambiental (probable filtro de `service_id`).
 - Discrepancia de topología en la matriz del modelo (Socorro–Biblioteca / Consuelo–Santa Lucía frente a Socorro–Consuelo / Santa Lucía–Biblioteca en GTFS). Faltan los conectores Quiroga–Av. 1 de Mayo y Tygua–Caracas Sur. No se corrigieron, porque la matriz oficial es la que reproduce los 110 / 38 / 83 / 27 puentes.
 - "NQS" 7007 sin resolver (E85 o E86): hacen falta las coordenadas de `troncales_stops.csv`.
+
+## 9. Horarios de los servicios (Guía General de viaje TransMilenio, corte agosto 2026)
+`datos/horarios_servicios.json`, extraído con `scripts/horarios_guia.py`. De la guía solo se toman los HORARIOS: rutas y paradas siguen siendo las del Excel. Los 106 códigos de servicio del modelo tienen horario, y las filas se verificaron visualmente contra el PDF.
+- Días: L-V lunes a viernes · L-S lunes a sábado · S sábado · L-D todos los días · D-F domingos y festivos (festivos nacionales de 2026 incluidos, con el nuevo del 13 de julio).
+- "Operación durante Ciclovía" (D81, K86, L81, L82, M86; domingos y festivos de 7:00 a.m. a 2:00 p.m.): recorrido especial. Solo se usan sus estaciones TransMilenio que están en el Excel; los paraderos zonales se ignoran.
+- Planeador de viaje: una ruta solo se ofrece si opera a la hora de salida. Si un tramo se queda sin bus, se muestra cuándo vuelve a pasar. Se avisa cuando quedan ≤ 30 min para el último bus, contando el tiempo de viaje estimado hasta ese tramo.
+- Corredores propuestos (C1–C6) sin horario oficial: se asume el horario general del sistema según la guía (4:00 a.m.–11:00 p.m.).
+- La hora de salida fija la franja del modelo: pico mañana 6–9, pico tarde 4:30–7:30 (días hábiles); el resto, y sábados, domingos y festivos, valle.
+

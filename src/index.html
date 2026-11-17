@@ -149,6 +149,9 @@
         <div class="ac"><label for="rtO" class="fl" data-u="¿Desde dónde sales?" data-d="Origen (nodo)"></label><div class="ac-box"><input id="rtO" class="sel ac-in" type="search" placeholder="Ej.: Portal Usme" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
         <button type="button" class="swap" id="rtSwap" title="Intercambiar origen y destino" aria-label="Intercambiar origen y destino">⇅</button>
         <div class="ac"><label for="rtD" class="fl" data-u="¿A dónde vas?" data-d="Destino (nodo)"></label><div class="ac-box"><input id="rtD" class="sel ac-in" type="search" placeholder="Ej.: Portal 20 de Julio" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+        <div class="when-row"><label class="fl" for="rtDia">¿Cuándo sales?</label>
+          <div class="when"><select id="rtDia" class="sel" aria-label="Día del viaje"><option value="ahora">Ahora</option><option value="lv">Lunes a viernes</option><option value="s">Sábado</option><option value="df">Domingo o festivo</option></select><input id="rtHora" class="sel" type="time" step="300" aria-label="Hora de salida"></div>
+          <small class="note" id="whenTxt">Horarios oficiales de la Guía de viaje de TransMilenio (agosto 2026).</small></div>
         <div class="ac"><label for="failSel" class="fl" data-u="Estación cerrada (opcional)" data-d="Nodo retirado (opcional)"></label><div class="ac-box"><input id="failSel" class="sel ac-in" type="search" placeholder="Toca para ver las paradas de tu viaje" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
           <label class="rng" for="rtPen"><span data-u="Caminata entre buses" data-d="Penalización por transbordo (supuesto)"></span> <b id="rtPenV">5 min</b></label>
           <input type="range" id="rtPen" min="0" max="12" step="1" value="5">
@@ -206,6 +209,7 @@
 
 <script>window.DATA = /*DATA*/;</script>
 <script>window.TRAMOS = /*TRAMOS*/null;</script>
+<script>window.HORARIOS = /*HORARIOS*/null;</script>
 <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.34.1/dist/cytoscape.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>

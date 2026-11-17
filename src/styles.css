@@ -735,3 +735,9 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
 @media (prefers-reduced-motion:reduce){.edge.sat-hot{animation:none;stroke-width:calc(5px / var(--k,1))}}
 .valle-box[hidden]{display:none!important}
 .edge.conn{stroke-dasharray:calc(5px / var(--k,1)) calc(4px / var(--k,1))}
+
+/* ¿Cuándo sales? y horarios en el itinerario */
+.when-row{margin:8px 0 4px}.when{display:flex;gap:6px}.when select{flex:1.4}.when input{flex:1}
+.hor{display:block;font-size:12px;color:var(--muted);margin-top:2px}.hor.warn{color:#9A6A00;font-weight:600}.hor.bad{color:#B0101A;font-weight:600}
+.steps li.nohora>div{opacity:.85}.steps li.nohora .sn{background:#D8101E}
+.when-sum{font-size:12.5px;background:#E9F5EE;border-radius:8px;padding:6px 10px;margin:8px 0}.when-sum.bad{background:#FDECEC}

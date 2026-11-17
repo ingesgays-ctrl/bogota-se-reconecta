@@ -196,8 +196,8 @@ function shortest(esc, s, t, avoid) {
   const path = [t]; while (path[path.length - 1] !== s) path.push(prev.get(path[path.length - 1]));
   return { path: path.reverse(), km: dist.get(t) };
 }
-function legsOf(esc, P) {
-  const svcs = SERV.concat(E[esc].corredores.map(id => CORR_SERV[id])), L = [];
+function legsOf(esc, P, when) {
+  const all = SERV.concat(E[esc].corredores.map(id => CORR_SERV[id])), svcs = when ? all.map(sv => svcAt(sv, when)).filter(Boolean) : all, L = [];
   let i = 0;
   while (i < P.length - 1) {
     let best = i, bs = null;
@@ -211,23 +211,29 @@ function legsOf(esc, P) {
       }
       if (last > best || (last === best && bs && sv.corr && !bs.corr)) { best = last; bs = sv; }
     }
+    if (!bs && when) {   // ninguna ruta pasa a esa hora: se marca el tramo con la ruta que lo cubre y su próxima salida
+      let b2 = i, s2 = null;
+      for (const sv of all) { if (!sv.idx.has(P[i])) continue; let o = sv.idx.get(P[i]), dir = 0, last = i; for (let j = i + 1; j < P.length; j++) { if (!sv.idx.has(P[j])) continue; const d = sv.idx.get(P[j]) > o ? 1 : -1; if (!dir) dir = d; if (d !== dir) break; o = sv.idx.get(P[j]); last = j; } if (last > b2) { b2 = last; s2 = sv; } }
+      if (s2) { const st = s2.corr ? { next: when.min < SIS.desde ? { desde: SIS.desde } : null } : svcState(s2.cod, when); best = b2; bs = { cod: s2.cod, nombre: s2.nombre, corr: s2.corr, sinHora: true, next: st.next || null }; }
+    }
     if (!bs) { best = i + 1; bs = { cod: "—", nombre: "conexión a pie / sin servicio directo" }; }
     L.push({ sv: bs, from: P[i], to: P[best] }); i = best;
   }
   return L;
 }
 const ROUTE_CACHE = new Map();
-function routeInfo(esc, o, d, avoid) {
-  const k = `${esc}|${o}|${d}|${avoid || ""}`; if (ROUTE_CACHE.has(k)) return ROUTE_CACHE.get(k);
+function routeInfo(esc, o, d, avoid, when = TRIP_WHEN()) {
+  const k = `${esc}|${o}|${d}|${avoid || ""}|${whenKey(when)}`; if (ROUTE_CACHE.has(k)) return ROUTE_CACHE.get(k);
   const r = shortest(esc, o, d, avoid); if (!r) { ROUTE_CACHE.set(k, null); return null; }
-  const legs = legsOf(esc, r.path), eje = r.path.filter(id => EJE.includes(id));
-  const out = { ...r, esc, legs, transfers: Math.max(0, legs.length - 1), eje };
+  const legs = legsOf(esc, r.path, when), eje = r.path.filter(id => EJE.includes(id));
+  const out = { ...r, esc, legs, transfers: Math.max(0, legs.length - 1), eje, when };
   ROUTE_CACHE.set(k, out); return out;
 }
 const ROUTE_PRESETS = [["Portal Usme", "Portal 20 de Julio"], ["Portal Suba", "Portal El Dorado - C. C Nuestro Bogotá"], ["Portal Tunal", "Calle 72 - Areandina"], ["Portal 80", "Portal El Dorado - C. C Nuestro Bogotá"], ["Terminal", "Portal Suba"], ["Alquería", "Calle 100 - Marketmedios"]].map(([a, b]) => [byName(a), byName(b)]);
 let TRANSFER_MIN = 5;   // supuesto ajustable: minutos por transbordo (espera + caminata)
 const tripMin = r => bprRide(r.esc, r.path) + r.transfers * TRANSFER_MIN;   // tiempo en bus tramo a tramo con BPR estimado (según franja)
 /*FLEET*/
+/*HORARIOS_JS*/
 const short = n => n.replace(" - C. C Nuestro Bogotá", "").replace(" - Unicervantes", "").replace(" - Marketmedios", "").replace(" - Areandina", "");
 const QUICK = [...new Set(["Ricaurte", "Avenida Jiménez", "Calle 72 - Areandina", "Banderas"].map(byName).concat(CENT_RANK[0].filter(id => NODE.get(id).kind === "old").slice(0, 4)))].slice(0, 6);
 
@@ -1121,12 +1127,15 @@ function stepsHTML(r, title, open) {
   if (!r) return "";
   const P = r.path, idx = id => P.indexOf(id), nm = id => esc(NODE.get(id).nombre);
   const svc = l => l.sv.corr ? (DEV ? `corredor ${esc(SHORT[l.sv.corr])}` : `la nueva ${PERIF.includes(l.sv.corr) ? "conexión entre barrios" : "troncal de la Av. Carrera 68"} (${esc(SHORT[l.sv.corr])})`) : l.sv.cod === "—" ? "a pie" : `la ruta <b class="svc">${esc(l.sv.cod)}</b> (hacia ${esc(l.sv.nombre)})`;
+  let t = r.when ? r.when.min : null;   // reloj del viaje: hora estimada de llegada a cada tramo
   const items = r.legs.map((l, i) => {
     const seg = P.slice(idx(l.from), idx(l.to) + 1), n = seg.length - 1;
-    return `<li><span class="sn">${i + 1}</span><div>${i ? "Cambia a" : "Toma"} ${svc(l)} en <b>${nm(l.from)}</b> y bájate en <b>${nm(l.to)}</b> · ${n} ${n === 1 ? "parada" : "paradas"}
+    const hor = r.when ? legHorarioHTML(l, t, r.when) : "";
+    if (t !== null) t += (i ? TRANSFER_MIN : 0) + bprRide(r.esc, seg);
+    return `<li class="${l.sv.sinHora ? "nohora" : ""}"><span class="sn">${i + 1}</span><div>${i ? "Cambia a" : "Toma"} ${svc(l)} en <b>${nm(l.from)}</b> y bájate en <b>${nm(l.to)}</b> · ${n} ${n === 1 ? "parada" : "paradas"}${hor}
       <details><summary>Ver las ${n + 1} estaciones del tramo</summary><ol class="stops">${seg.map(id => `<li>${nm(id)}</li>`).join("")}</ol></details></div></li>`;
   }).join("");
-  return `<details class="itin"${open ? " open" : ""}><summary>${esc(title)} · ${fI(tripMin(r))} min · ${r.transfers} ${r.transfers === 1 ? "cambio de bus" : "cambios de bus"}</summary><ol class="steps">${items}<li><span class="sn">✓</span><div>Llegas a <b>${nm(P[P.length - 1])}</b></div></li></ol></details>`;
+  return `<details class="itin"${open ? " open" : ""}><summary>${esc(title)} · ${fI(tripMin(r))} min · ${r.transfers} ${r.transfers === 1 ? "cambio de bus" : "cambios de bus"}</summary><ol class="steps">${items}<li><span class="sn">✓</span><div>Llegas a <b>${nm(P[P.length - 1])}</b>${r.when ? ` <small class="hor">hacia las ${hhmm(r.when.min + tripMin(r))}</small>` : ""}</div></li></ol></details>`;
 }
 function renderTrip() {
   const out = $("#tripOut");
@@ -1139,7 +1148,7 @@ function renderTrip() {
   } else {
     out.innerHTML = tx(`<div class="det"><h2>${esc(short(NODE.get(rt[0]).nombre))} → ${esc(short(NODE.get(rt[1]).nombre))}</h2>${routeCompareHTML(rt, eb)}<div class="thermos">${thermoHTML(escName(0), routeInfo(0, rt[0], rt[1]), "a")}${thermoHTML(escName(eb), routeInfo(eb, rt[0], rt[1]), "b")}</div><h3 class="itin-h">Cómo llegar</h3>${stepsHTML(routeInfo(eb, rt[0], rt[1]), "Con " + escName(eb).toLowerCase(), true)}${stepsHTML(routeInfo(0, rt[0], rt[1]), "Hoy", false)}</div>`);
   }
-  out.insertAdjacentHTML("afterbegin", franjaHTML(rt, eb, cl));
+  out.insertAdjacentHTML("afterbegin", whenHTML(routeInfo(eb, rt[0], rt[1], cl || undefined)) + franjaHTML(rt, eb, cl));
   const c2 = $("#rtClear2"); if (c2) c2.onclick = () => setRoute(null);
 }
 function renderDetail() {
@@ -1571,6 +1580,23 @@ function setDev(v) {
 $("#mUser").onclick = () => setDev(false); $("#mDev").onclick = () => setDev(true);
 const setPeak = pk => { lab.peak = pk; $("#pkAM").setAttribute("aria-pressed", pk === "am"); $("#pkVL").setAttribute("aria-pressed", pk === "valle"); $("#pkPM").setAttribute("aria-pressed", pk === "pm"); $("#valleBox").hidden = pk !== "valle"; apply(labState()); };
 $("#pkAM").onclick = () => setPeak("am"); $("#pkPM").onclick = () => setPeak("pm"); $("#pkVL").onclick = () => setPeak("valle");
+// ¿Cuándo sales? → filtra las rutas por su horario oficial y ajusta la franja del modelo
+(() => {
+  const dia = $("#rtDia"), hora = $("#rtHora"), txt = $("#whenTxt");
+  const toMin = v => { const [h, m] = (v || "0:0").split(":").map(Number); return h * 60 + m; };
+  const fmt = m => String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+  const sync = () => {
+    const w = lab.when || whenNow();
+    if (!lab.when) hora.value = fmt(w.min);
+    const fr = franjaDe(w); if (lab.peak !== fr) setPeak(fr); else apply(labState());
+    txt.textContent = `${lab.when ? "" : "Hora actual de Bogotá. "}${w.festivo ? "Hoy es festivo: horario de domingos y festivos. " : ""}Franja del modelo: ${FRANJAS[fr].u}${fr === "valle" && w.dia !== "lv" ? " (fin de semana o festivo)" : ""}.`;
+  };
+  dia.onchange = () => { lab.when = dia.value === "ahora" ? null : { dia: dia.value, min: toMin(hora.value || fmt(whenNow().min)) }; sync(); };
+  hora.onchange = () => { if (!hora.value) return; const d = dia.value === "ahora" ? whenNow().dia : dia.value; if (dia.value === "ahora") dia.value = d; lab.when = { dia: d, min: toMin(hora.value) }; sync(); };
+  hora.value = fmt(whenNow().min);
+  setInterval(() => { if (!lab.when && mode === "laboratorio") { hora.value = fmt(whenNow().min); if (lab.route) renderTrip(); } }, 60000);
+  window.__syncWhen = sync;
+})();
 $("#valleF").oninput = ev => { FLEET.valle = +ev.target.value / 100; $("#valleV").textContent = ev.target.value + " %"; sim.peak = null; apply(labState()); };
 applyModeTexts(); $("#mUser").setAttribute("aria-pressed", !DEV); $("#mDev").setAttribute("aria-pressed", DEV);
 
@@ -1613,5 +1639,5 @@ route();
 /*GTFSRT*/
 /*LIVE*/
 /*ML*/
-window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim, FLEET, EDGE_TR, TRONCAL, ROAD };
+window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim, FLEET, EDGE_TR, TRONCAL, ROAD, routeInfo, TRIP_WHEN, whenNow };
 })();

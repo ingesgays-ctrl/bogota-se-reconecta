@@ -35,3 +35,7 @@ Sin puente, o si el feed falla, el laboratorio muestra la simulación. La pesta�
 ## GTFS estático (oferta programada)
 
 `datos/gtfs/` tiene la matriz de arcos del GTFS oficial (GTFS_20261013), la equivalencia de estaciones con el grafo, la oferta programada por tramo y franja, y el reporte de validación (`VALIDACION.md`). Para regenerarlo: `python3 -I scripts/gtfs_integrar.py`.
+
+## Horarios oficiales en el planeador
+
+El planeador de viaje usa los horarios de la Guía General de viaje de TransMilenio (agosto 2026), guardados en `datos/horarios_servicios.json`. Para regenerarlos: `python3 -I scripts/horarios_guia.py <guía.pdf>`. Puedes elegir día y hora de salida ("Ahora" usa la hora de Bogotá y reconoce los festivos de 2026). Solo se proponen rutas que operan a esa hora.
