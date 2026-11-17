@@ -41,7 +41,8 @@ function mlSetup(m, side) {
     paint: { "fill-extrusion-color": "#E2E8F0", "fill-extrusion-opacity": 0.55,
       "fill-extrusion-height": ["interpolate", ["linear"], ["zoom"], 13, 0, 15, ["coalesce", ["get", "render_height"], 8]],
       "fill-extrusion-base": ["interpolate", ["linear"], ["zoom"], 13, 0, 15, ["coalesce", ["get", "render_min_height"], 0]] } }, firstSym);
-  ["upl", "heat", "edges", "corr", "route", "radio", "cols", "stations", "bus"].forEach(id => m.addSource("s-" + id, { type: "geojson", data: FC([]) }));
+  ["upl", "heat", "edges", "corr", "route", "radio", "cols", "stations"].forEach(id => m.addSource("s-" + id, { type: "geojson", data: FC([]) }));
+  m.addSource("live-buses", { type: "geojson", data: FC([]) });   // única fuente de buses: solo se actualiza con setData
   m.addLayer({ id: "ml-upl", type: "line", source: "s-upl", paint: { "line-color": "#7E8A90", "line-width": 1.1, "line-dasharray": [3, 2] } });
   m.addLayer({ id: "ml-heat", type: "line", source: "s-heat", layout: { "line-cap": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": .9 } });
   m.addLayer({ id: "ml-edges", type: "line", source: "s-edges", filter: ["!=", ["get", "d"], 1], layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"] } });
@@ -56,7 +57,7 @@ function mlSetup(m, side) {
   m.addLayer({ id: "ml-cols", type: "fill-extrusion", source: "s-cols", paint: { "fill-extrusion-color": ["get", "c"], "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": .88 } });
   m.addLayer({ id: "ml-metro", type: "circle", source: "s-stations", filter: ["==", ["get", "metro"], 1], paint: { "circle-radius": 9.5, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "#111", "circle-stroke-width": 1, "circle-stroke-opacity": .7 } });
   m.addLayer({ id: "ml-stations", type: "circle", source: "s-stations", paint: { "circle-radius": ["get", "r"], "circle-color": ["get", "fc"], "circle-stroke-color": ["get", "sc"], "circle-stroke-width": ["get", "sw"], "circle-opacity": ["get", "o"], "circle-stroke-opacity": ["get", "o"], "circle-pitch-alignment": "map" } });
-  m.addLayer({ id: "ml-bus", type: "circle", source: "s-bus", paint: { "circle-radius": ["case", ["==", ["get", "od"], 1], 5.5, 4.5], "circle-color": ["get", "c"], "circle-stroke-color": "#fff", "circle-stroke-width": 1.5 } });
+  m.addLayer({ id: "ml-bus", type: "circle", source: "live-buses", paint: { "circle-radius": ["case", ["==", ["get", "od"], 1], 5.5, 4.5], "circle-color": ["get", "c"], "circle-stroke-color": "#fff", "circle-stroke-width": 1.5 } });
   m.getSource("s-upl").setData(FC(D.upl.map(u => ({ type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: u.rings } }))));
 }
 const HEAT_GEO = new Map();
@@ -142,9 +143,9 @@ function mlApply() {
   mlCurtain();
 }
 function mlBuses() {
-  const m = ML.map; if (!m || !m.getSource("s-bus")) return;
+  const m = ML.map; if (!m || !m.getSource("live-buses")) return;
   const on = sim.on && S.layers.bus !== false;
-  m.getSource("s-bus").setData(FC(!on ? [] : sim.buses.filter(b => b.x !== undefined).map((b, i) => ({ type: "Feature", properties: { i: sim.buses.indexOf(b), c: b.color, od: b.od ? 1 : 0, ...mlBusProps(b) }, geometry: { type: "Point", coordinates: unP([b.x, b.y]) } }))));
+  m.getSource("live-buses").setData(FC(!on ? [] : sim.buses.filter(b => b.x !== undefined).map((b, i) => ({ type: "Feature", properties: { i: sim.buses.indexOf(b), c: b.color, od: b.od ? 1 : 0, ...mlBusProps(b) }, geometry: { type: "Point", coordinates: unP([b.x, b.y]) } }))));
 }
 // ---- cortina: segundo mapa sincronizado debajo del principal ----
 function mlEnsureB() {

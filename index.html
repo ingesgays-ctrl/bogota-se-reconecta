@@ -731,6 +731,19 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
 @media (max-width:820px){.panel-dock{right:8px}.panel-dock button{width:46px;padding:4px 1px}.panel-dock small{font-size:8.5px}}
 @media (max-height:760px){.panel-dock small{display:none}.panel-dock button{padding:7px 2px}}
 .svc-real{font-size:13px;line-height:1.5;margin:6px 0;padding:6px 8px;background:#F3F5F4;border-radius:6px}.svc-real .bad{color:#B0101A;font-weight:600}.svc-real .mid{color:#9A6A00;font-weight:600}.svc-real small{color:var(--muted)}
+
+/* franjas, saturación BPR y estados de buses */
+.valle-box{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12px;box-shadow:0 2px 6px rgba(0,0,0,.08);pointer-events:auto}
+.valle-box input{width:90px}.valle-box small{color:var(--muted)}
+.edge.sat-hot{animation:satPulse 1.6s ease-in-out infinite}
+@keyframes satPulse{0%,100%{stroke-width:calc(3px / var(--k,1));filter:none}50%{stroke-width:calc(7px / var(--k,1));filter:drop-shadow(0 0 3px rgba(216,16,30,.7))}}
+.lg-sat{display:inline-block;width:26px;height:6px;border-radius:3px;background:linear-gradient(90deg,#1E7F55,#E9B949,#D8101E);margin-right:4px;vertical-align:middle}
+.bus.cong rect:nth-of-type(1){stroke:#E9A100;stroke-width:2.6}
+.bus.late rect:nth-of-type(1){stroke:#D8101E;stroke-width:2.6}
+.franja-box{background:#F3F5F4;border-radius:8px;padding:8px 10px;margin:8px 0;font-size:13px}
+.franja-box ul{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:2px}.franja-box small{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.edge.sat-hot{animation:none;stroke-width:calc(5px / var(--k,1))}}
+.valle-box[hidden]{display:none!important}
 </style>
 </head>
 <body class="mode-relato">
@@ -787,12 +800,12 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
       <div class="hud-top" id="hudTop">
         <div class="hud-row">
           <div class="esc-seg" id="escList" role="radiogroup" aria-label="Escenarios"></div>
-          <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div>
+          <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkVL" aria-pressed="false" title="Hora valle: supuesto, sin dato oficial">☁ Valle</button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div><label class="valle-box" id="valleBox" hidden>Demanda en valle <input id="valleF" type="range" min="20" max="90" step="5" value="50"> <b id="valleV">50 %</b> <small>del pico · supuesto</small></label>
         </div>
         <div class="hud-cap" id="escCap"></div>
         <div class="hud-row">
           <div class="ac ac-top"><label for="qSearch" class="vh">Buscar estación</label><div class="ac-box"><input id="qSearch" class="sel ac-in" type="search" placeholder="Buscar estación…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
-          <label class="cmode" for="colorMode"><span data-u="Color" data-d="Color del grafo"></span><select id="colorMode"><option value="corr">por troncal y corredor</option><option value="uso">por uso de los tramos</option></select></label>
+          <label class="cmode" for="colorMode"><span data-u="Color" data-d="Color del grafo"></span><select id="colorMode"><option value="corr">por troncal y corredor</option><option value="uso">por uso de los tramos</option><option value="sat">por saturación (V/C estimado)</option></select></label>
           <div class="dd"><button type="button" class="hud-btn" id="btnLayers" aria-expanded="false" aria-controls="layersPanel">Capas ▾</button>
             <div class="dd-panel" id="layersPanel" hidden>
           <label class="tg lay"><input type="checkbox" id="lyBusT" checked><span><b data-u="Buses en operación" data-d="Buses (simulación)"></b><small data-u="Buses de la simulación recorriendo las troncales y los viajes entre barrios." data-d="ⓘ Troncales de paradas_ordenadas.csv + pares O-D por Dijkstra; velocidad efectiva BPR del escenario."></small></span></label>
@@ -847,6 +860,7 @@ body:not(.mode-laboratorio) .panel-dock{display:none!important}
         <span id="lgCent" hidden><i class="lg-cent"></i>Rutas que pasan por ahí</span>
         <span class="lg-rt"><i class="lg-ra"></i>Viaje hoy</span><span class="lg-rt"><i class="lg-rb"></i>Viaje con la nueva red</span>
         <span class="lg-cl"><i class="lg-blk"></i>Tramo bloqueado</span><span class="lg-cl"><i class="lg-rc"></i>Alternativa de hoy</span>
+        <span id="lgSat" hidden><i class="lg-sat"></i>Saturación estimada: verde &lt; 0,6 · ámbar 0,6–0,85 · rojo &gt; 0,85 (pulsa)</span>
         <span id="lgHeat" hidden><i class="lg-h"></i>Tramos: poco usados → muy usados</span>
         <div class="lg-tr-list" id="lgTroncal"></div>
       </div>
@@ -1150,12 +1164,134 @@ function routeInfo(esc, o, d, avoid) {
   const k = `${esc}|${o}|${d}|${avoid || ""}`; if (ROUTE_CACHE.has(k)) return ROUTE_CACHE.get(k);
   const r = shortest(esc, o, d, avoid); if (!r) { ROUTE_CACHE.set(k, null); return null; }
   const legs = legsOf(esc, r.path), eje = r.path.filter(id => EJE.includes(id));
-  const out = { ...r, legs, transfers: Math.max(0, legs.length - 1), eje, ride: r.km / VEL[esc] * 60 };
+  const out = { ...r, esc, legs, transfers: Math.max(0, legs.length - 1), eje };
   ROUTE_CACHE.set(k, out); return out;
 }
 const ROUTE_PRESETS = [["Portal Usme", "Portal 20 de Julio"], ["Portal Suba", "Portal El Dorado - C. C Nuestro Bogotá"], ["Portal Tunal", "Calle 72 - Areandina"], ["Portal 80", "Portal El Dorado - C. C Nuestro Bogotá"], ["Terminal", "Portal Suba"], ["Alquería", "Calle 100 - Marketmedios"]].map(([a, b]) => [byName(a), byName(b)]);
 let TRANSFER_MIN = 5;   // supuesto ajustable: minutos por transbordo (espera + caminata)
-const tripMin = r => r.ride + r.transfers * TRANSFER_MIN;
+const tripMin = r => bprRide(r.esc, r.path) + r.transfers * TRANSFER_MIN;   // tiempo en bus tramo a tramo con BPR estimado (según franja)
+// =====================================================================
+// Telemetría de flota híbrida: simulador BPR acoplado al grafo + entrada GTFS-RT
+// ---------------------------------------------------------------------
+// El modelo IPF/BPR NO publica V/C por tramo (fuente de verdad, §6). Aquí se ESTIMA:
+//   carga relativa del tramo  ∝  s_e (fracción de trayectos que lo usan, centralidad de arista) × viajes del escenario
+//   x_e = K · s_e · viajes      (saturación estimada, "V/C estimado")
+//   t_e = t0_e · (1 + α·x_e^β)  con α = 0,15 y β = 4 (valores de referencia del Bureau of Public Roads)
+// K y la velocidad libre v0 se calibran por mínimos cuadrados para que el tiempo medio con congestión
+// de los 4 escenarios reproduzca el oficial (30,1 · 26,9 · 26,4 · 24,6 min). Es una estimación del visor.
+// =====================================================================
+const BPR = { a: .15, b: 4 };
+const FRANJAS = {
+  am: { u: "Pico mañana · 6–9 a. m.", demanda: () => 1 },
+  valle: { u: "Hora valle", demanda: () => FLEET.valle },    // supuesto ajustable, sin dato oficial
+  pm: { u: "Pico tarde · 4:30–7:30 p. m.", demanda: () => 1 },  // OD transpuesta: mismos volúmenes por tramo
+};
+const FLEET = (() => {
+  const per = E.map((e, i) => { const arr = []; CENT[i].edges.forEach((s, k) => { const [a, b] = k.split("|"); arr.push({ k, s, km: edgeKm(i, a, b) }); }); return arr; });
+  const F = (i, K) => { let num = 0, den = 0; per[i].forEach(o => { const w = o.s * o.km, x = K * o.s * E[i].viajes; num += w * (1 + BPR.a * x ** BPR.b); den += w; }); return num / den; };
+  const smax0 = Math.max(...per[0].map(o => o.s)) * E[0].viajes;
+  let best = null;
+  for (let j = 0; j <= 600; j++) {
+    const K = (j / 600) * 4 / smax0;                     // x máximo de la red actual entre 0 y 4
+    const a = E.map((e, i) => e.longitud * F(i, K) / e.tiempo), c = a.reduce((t, v) => t + v, 0) / a.reduce((t, v) => t + v * v, 0);
+    const err = Math.sqrt(a.reduce((t, v) => t + (c * v - 1) ** 2, 0) / a.length);
+    if (!best || err < best.err) best = { K, c, err };
+  }
+  const v0 = 60 / best.c;                                // km/h a flujo libre (calibrada)
+  const pred = E.map((e, i) => best.c * e.longitud * F(i, best.K));
+  return { K: best.K, v0, err: best.err, pred, per, valle: .5, xmax: E.map((e, i) => Math.max(...per[i].map(o => best.K * o.s * e.viajes))) };
+})();
+
+// ---------- saturación y velocidad por tramo ----------
+const FR = () => (typeof S !== "undefined" && S && S.peak) || "am";
+const SAT_ALERT = .85;
+const sOf = (esc, k) => CENT[esc].edges.get(k) || 0;
+function satX(esc, k, fr = FR()) { return FLEET.K * sOf(esc, k) * E[esc].viajes * FRANJAS[fr].demanda(); }
+function satKmh(esc, k, fr = FR()) { return FLEET.v0 / (1 + BPR.a * satX(esc, k, fr) ** BPR.b); }
+const satLevel = x => x > SAT_ALERT ? "alta" : x > .6 ? "media" : "baja";
+const satColor = x => x > SAT_ALERT ? "#D8101E" : x > .6 ? "#E9B949" : "#1E7F55";
+// tiempo en bus de un camino del grafo, tramo a tramo (min)
+function bprRide(esc, path, fr = FR()) {
+  let t = 0; for (let i = 1; i < path.length; i++) { const k = ekey(path[i - 1], path[i]); t += edgeKm(esc, path[i - 1], path[i]) / satKmh(esc, k, fr) * 60; } return t;
+}
+function freeRide(esc, path) { let km = 0; for (let i = 1; i < path.length; i++) km += edgeKm(esc, path[i - 1], path[i]); return km / FLEET.v0 * 60; }
+
+// ---------- recorrido de un bus: polilínea + horario por vértice (llega / sale) ----------
+const DWELL_MIN = 20 / 60;   // detención simulada en cada estación (supuesto visual: 20 s)
+function mkTimedTrack(esc, P, opts = {}) {
+  const pts = [NODE.get(P[0]).xy], seg = [], node = [0];
+  for (let i = 1; i < P.length; i++) {
+    const k = ekey(P[i - 1], P[i]), q = routePts(esc, [P[i - 1], P[i]]);
+    for (let j = 1; j < q.length; j++) { pts.push(q[j]); seg.push(k); }
+    node.push(pts.length - 1);
+  }
+  const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  const isNode = new Set(node), arr = [0], dep = [isNode.has(0) ? DWELL_MIN : 0], free = [0];
+  // km reales de cada tramo repartidos en proporción a su largo dibujado
+  const pxEdge = new Map(); for (let i = 1; i < pts.length; i++) pxEdge.set(seg[i - 1], (pxEdge.get(seg[i - 1]) || 0) + (cum[i] - cum[i - 1]));
+  for (let i = 1; i < pts.length; i++) {
+    const k = seg[i - 1], [a, b] = k.split("|"), share = (cum[i] - cum[i - 1]) / (pxEdge.get(k) || 1), km = edgeKm(esc, a, b) * share;
+    arr.push(dep[i - 1] + km / satKmh(esc, k, opts.fr) * 60); free.push(free[i - 1] + km / FLEET.v0 * 60 + (isNode.has(i - 1) ? DWELL_MIN : 0));
+    dep.push(arr[i] + (isNode.has(i) && i < pts.length - 1 ? DWELL_MIN : 0));
+  }
+  const eje = pts.map(p => EJE_XY.some(q => Math.hypot(q[0] - p[0], q[1] - p[1]) < EJE_R));
+  return { pts, cum, len: cum[cum.length - 1], seg, arr, dep, free, T: dep[dep.length - 1], eje, esc, ids: P };
+}
+// posición de un bus a los m minutos de su salida
+function trackAt(tr, m) {
+  const n = tr.pts.length; if (m >= tr.T) return { i: n - 1, x: tr.pts[n - 1][0], y: tr.pts[n - 1][1], ang: 0, stop: true, k: tr.seg[tr.seg.length - 1], free: tr.free[n - 1] };
+  let lo = 0, hi = n - 1; while (lo < hi) { const md = (lo + hi + 1) >> 1; if (tr.arr[md] <= m) lo = md; else hi = md - 1; }
+  const i = lo, p = tr.pts[i];
+  if (m < tr.dep[i] || i === n - 1) { const q = tr.pts[Math.min(i + 1, n - 1)]; return { i, x: p[0], y: p[1], ang: Math.atan2(q[1] - p[1], q[0] - p[0]) * 180 / Math.PI, stop: true, k: tr.seg[Math.min(i, tr.seg.length - 1)], free: tr.free[i] }; }
+  const q = tr.pts[i + 1], u = (m - tr.dep[i]) / ((tr.arr[i + 1] - tr.dep[i]) || 1);
+  return { i, x: p[0] + (q[0] - p[0]) * u, y: p[1] + (q[1] - p[1]) * u, ang: Math.atan2(q[1] - p[1], q[0] - p[0]) * 180 / Math.PI, stop: false, k: tr.seg[i], free: tr.free[i] + (tr.free[i + 1] - tr.free[i]) * u };
+}
+// estado operativo: fluido | congestionado (tramo con V/C estimado > 0,85) | retraso (≥ 5 min sobre flujo libre o cierre en su recorrido)
+function opState(b, at, m) {
+  if (S.fail && b.tr.ids && b.tr.ids.includes(S.fail)) return "retraso";
+  if (m - at.free >= 5) return "retraso";
+  return satX(b.tr.esc, at.k) > SAT_ALERT ? "congestionado" : "fluido";
+}
+const ST_COLOR = { fluido: "#1E7F55", congestionado: "#E9A100", retraso: "#D8101E" };
+const ST_TXT = { fluido: "fluido", congestionado: "congestionado", retraso: "con retraso" };
+
+// ---------- adaptador GTFS-RT ----------
+// Acepta entidades ya simplificadas {lat, lon, trip_id, route_id, id?, speed?, delay?} o FeedEntity de GTFS-RT
+// ({ vehicle: { position: {latitude, longitude, speed}, trip: {trip_id, route_id}, vehicle: {id} } }).
+// Si no hay entidades válidas, el simulador BPR sigue activo (sin errores de CORS/404 en GitHub Pages).
+function ingestGtfsRtFeed(entities) {
+  const vs = (entities || []).map((e, i) => {
+    const v = e.vehicle && e.vehicle.position ? e.vehicle : null, pos = v ? v.position : e, trip = (v && v.trip) || e;
+    const lat = +(pos.lat ?? pos.latitude), lon = +(pos.lon ?? pos.longitude);
+    if (!isFinite(lat) || !isFinite(lon) || !lat) return null;
+    return { id: String((v && v.vehicle && (v.vehicle.id || v.vehicle.label)) || e.id || e.vehicle_id || trip.trip_id || "veh" + i), lat, lon, route_id: trip.route_id || "", route: e.route || trip.route_id || "", trip: trip.trip_id, speed: pos.speed ?? e.speed, delay: e.delay, bearing: pos.bearing };
+  }).filter(Boolean);
+  if (!vs.length) return { ok: false, motivo: "sin vehículos válidos: sigue el simulador BPR" };
+  try { liveIngest({ source: "gtfs-rt", ts: Math.round(Date.now() / 1000), vehicles: vs, alerts: [] }); }
+  catch (err) { return { ok: false, motivo: String(err.message || err) }; }
+  return { ok: LIVE.mode === "live", acoplados: LIVE.counts.snapped, recibidos: vs.length };
+}
+window.ingestGtfsRtFeed = ingestGtfsRtFeed;
+
+// aspecto de un bus simulado según su estado y el modo de color
+function busLook(b) {
+  const sat = (typeof lab !== "undefined" && lab.colorMode === "sat");
+  b.color = sat ? ST_COLOR[b.st || "fluido"] : b.color0;
+  const r = b.g.querySelector("rect"); if (r) r.setAttribute("fill", b.color);
+  b.g.classList.toggle("cong", b.st === "congestionado"); b.g.classList.toggle("late", b.st === "retraso");
+  if (b.k && b.tr) {
+    const [a, c] = b.k.split("|"), x = satX(b.tr.esc, b.k), v = satKmh(b.tr.esc, b.k);
+    b.label = b.g.dataset.tip = `${b.base}<em class="lt ${b.st === "retraso" ? "bad" : b.st === "congestionado" ? "mid" : "good"}">${ST_TXT[b.st || "fluido"]}</em><small>${b.stop ? "Detenido en estación · " : ""}Tramo ${esc(short(NODE.get(a).nombre))} – ${esc(short(NODE.get(c).nombre))} · ${fI(v)} km/h · ${DEV ? "V/C estimado " + f2(x) : "saturación estimada de la vía " + fI(x * 100) + " %"}</small>`;
+  }
+}
+// tiempo del viaje en la franja elegida, frente a flujo libre
+function franjaHTML(rt, eb, cl) {
+  const r0 = routeInfo(0, rt[0], rt[1], cl), rb = routeInfo(eb, rt[0], rt[1], cl), fr = FR();
+  if (!r0 && !rb) return "";
+  const row = (t, r) => r ? `<li><b>${esc(t)}</b> <span class="num">${fI(tripMin(r))} min</span> <small>sin trancón ${fI(freeRide(r.esc, r.path) + r.transfers * TRANSFER_MIN)} min · +${fI(bprRide(r.esc, r.path) - freeRide(r.esc, r.path))} min por congestión</small></li>` : "";
+  return `<div class="franja-box"><b>⏱ ${esc(FRANJAS[fr].u)}${fr === "valle" ? ` · demanda ${fI(FLEET.valle * 100)} % del pico (supuesto)` : ""}</b><ul>${row(escName(0), r0)}${row(escName(eb), rb)}</ul>${DEV ? `<small>BPR tramo a tramo, V/C estimado (calibrado con el tiempo medio oficial; v0 = ${f1(FLEET.v0)} km/h). Estimación del visor, no salida del modelo.</small>` : ""}</div>`;
+}
+
 const short = n => n.replace(" - C. C Nuestro Bogotá", "").replace(" - Unicervantes", "").replace(" - Marketmedios", "").replace(" - Areandina", "");
 const QUICK = [...new Set(["Ricaurte", "Avenida Jiménez", "Calle 72 - Areandina", "Banderas"].map(byName).concat(CENT_RANK[0].filter(id => NODE.get(id).kind === "old").slice(0, 4)))].slice(0, 6);
 
@@ -1437,6 +1573,9 @@ const EJE_XY = EJE.map(id => NODE.get(id).xy), EJE_R = 450 / MPP12;
 const sim = { on: false, t: 0, last: 0, esc: -1, buses: [], raf: 0 };
 const MIN_PER_SEC = 4;   // 1 segundo en pantalla = 4 minutos reales
 function mkTrack(esc, P) {
+  return mkTimedTrack(esc, P);
+}
+function mkTrackLinear(esc, P) {
   const pts = routePts(esc, P), cum = [0];
   for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
   const eje = pts.map(p => EJE_XY.some(q => Math.hypot(q[0] - p[0], q[1] - p[1]) < EJE_R));
@@ -1449,7 +1588,7 @@ function simBuild() {
   const add = (tr, label, color, phase, od, ids) => {
     const g = svgEl("g", { class: "bus" + (od ? " od" : "") }, lyBus);
     g.innerHTML = `<rect x="-7" y="-3.6" width="14" height="7.2" rx="2" fill="${color}"/><rect x="3.2" y="-2.6" width="2.6" height="5.2" rx=".8" fill="#fff" opacity=".85"/>`;
-    g.dataset.tip = label; if (!sim.focus || sim.focus.g && !sim.focus.g.isConnected) sim.focus = null; sim.buses.push({ g, tr, phase, pxPerMin, od, ids, color, label });
+    g.dataset.tip = label; if (!sim.focus || sim.focus.g && !sim.focus.g.isConnected) sim.focus = null; sim.buses.push({ g, tr, phase, pxPerMin, od, ids, color, color0: color, base: label, label });
   };
   SIM_OD.forEach(([a, b], i) => [[a, b], [b, a]].forEach(([o, d], j) => {
     const r = routeInfo(esc2, o, d); if (!r) return;
@@ -1459,10 +1598,10 @@ function simBuild() {
     const tr = mkTrack(esc2, r.path); sim.odN++; if (r.eje.length) sim.odEje++;
     for (let k = 0; k < 2; k++) add(tr, `<b>${esc(short(NODE.get(o).nombre))} → ${esc(short(NODE.get(d).nombre))}</b><small>${esc(usa)} · ${esc(pasa)} · ${fI(tripMin(r))} min</small>`, col, (k * 0.5 + i * 0.13 + j * 0.27) % 1, true, r.path);
   }));
-  const pm = S.peak === "pm";
+  const pm = S.peak === "pm", vl = S.peak === "valle";
   CHAINS.forEach((P, i) => {
     const inb = P, outb = [...P].reverse(), lbl = (Q, sent) => `<b>Troncal ${esc(short(NODE.get(Q[0]).nombre))} → ${esc(short(NODE.get(Q[Q.length - 1]).nombre))}</b><small>${sent} · ${Q.length} paradas en el orden de paradas_ordenadas.csv</small>`;
-    const nIn = pm ? 1 : 2, nOut = pm ? 2 : 1;
+    const nIn = vl ? 1 : pm ? 1 : 2, nOut = vl ? 1 : pm ? 2 : 1;
     for (let k = 0; k < nIn; k++) add(mkTrack(0, inb), lbl(inb, "hacia el centro"), pm ? "#E58A93" : "#D8101E", (i * 0.17 + k / nIn) % 1, false, inb);
     for (let k = 0; k < nOut; k++) add(mkTrack(0, outb), lbl(outb, "hacia los barrios"), pm ? "#D8101E" : "#E58A93", (i * 0.17 + .25 + k / nOut) % 1, false, outb);
   });
@@ -1476,12 +1615,13 @@ function simFrame(now) {
   const k = 2 ** (cam.z - Z0); let inEje = 0, odEje = 0, nOd = 0;
   const inGraph = lab.view === "graph" && cy && mode === "laboratorio";
   for (const b of sim.buses) {
-    const tr = b.tr, cycle = tr.len / b.pxPerMin + 6;           // minutos por vuelta + 6 min en terminal
-    const m = ((sim.t / cycle + b.phase) % 1) * cycle, d = Math.min(tr.len, m * b.pxPerMin);
-    let i = 1; while (i < tr.cum.length - 1 && tr.cum[i] < d) i++;
-    const a = tr.pts[i - 1], c = tr.pts[i], seg = tr.cum[i] - tr.cum[i - 1] || 1, u = (d - tr.cum[i - 1]) / seg;
-    const x = a[0] + (c[0] - a[0]) * u, y = a[1] + (c[1] - a[1]) * u, ang = Math.atan2(c[1] - a[1], c[0] - a[0]) * 180 / Math.PI;
+    // avance con velocidad BPR del tramo y detención en estaciones (horario por vértice de mkTimedTrack)
+    const tr = b.tr, cycle = tr.T + 6;                        // minutos por vuelta + 6 min en terminal
+    const m = ((sim.t / cycle + b.phase) % 1) * cycle, at = trackAt(tr, m), i = Math.max(1, at.i);
+    const x = at.x, y = at.y, ang = at.ang;
     b.g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${(1 / k).toFixed(4)}) rotate(${ang.toFixed(0)})`); b.x = x; b.y = y;
+    const st = opState(b, at, m); if (st !== b.st || at.k !== b.k || at.stop !== b.stop) { b.st = st; b.k = at.k; b.stop = at.stop; busLook(b); }
+    const d = tr.cum[at.i] + Math.hypot(x - tr.pts[at.i][0], y - tr.pts[at.i][1]);
     const e2 = tr.eje[i] || tr.eje[i - 1]; if (e2) inEje++;
     if (inGraph && b.ids) {   // misma posición sobre el esquema del grafo
       if (!b.gc) { b.gc = [0]; for (let j = 1; j < b.ids.length; j++) b.gc.push(b.gc[j - 1] + hav(NODE.get(b.ids[j - 1]), NODE.get(b.ids[j]))); }
@@ -1496,7 +1636,7 @@ function simFrame(now) {
     if (b.od) { nOd++; if (e2) odEje++; }
   }
   if (ML.on) mlBuses();
-  $("#simHud").innerHTML = (S.peak === "pm" ? "Tarde: más buses saliendo del centro · " : "Mañana: más buses entrando al centro · ") + `Rutas entre bordes que pasan por el centro: <b class="num">${sim.odEje} de ${sim.odN}</b> · buses en el eje central ahora: <b class="num">${inEje}</b>`;
+  $("#simHud").innerHTML = (S.peak === "pm" ? "Tarde: más buses saliendo del centro · " : S.peak === "valle" ? `Valle: demanda al ${fI(FLEET.valle * 100)} % del pico (supuesto) · ` : "Mañana: más buses entrando al centro · ") + `Rutas entre bordes que pasan por el centro: <b class="num">${sim.odEje} de ${sim.odN}</b> · buses en el eje central ahora: <b class="num">${inEje}</b>`;
   if (follow && sim.focus && sim.focus.x !== undefined && !drag) { cam.cx += (sim.focus.x - cam.cx) * .12; cam.cy += (sim.focus.y - cam.cy) * .12; requestDraw(); }
   sim.raf = requestAnimationFrame(simFrame);
 }
@@ -1623,7 +1763,13 @@ function apply(s = S) {
   } else radio.style.display = "none";
   // color de la red: por troncal o por uso
   const byTr = s.colorMode !== "uso";
-  EDGE_EL.forEach((el, k) => { const t = EDGE_TR.get(k); el.style.stroke = byTr && t !== undefined && !el.classList.contains("crit") ? TRONCAL[t].color : ""; el.style.strokeOpacity = byTr && t !== undefined ? ".8" : ""; });
+  const satM = s.colorMode === "sat";
+  EDGE_EL.forEach((el, k) => { const t = EDGE_TR.get(k), x = satX(s.esc || 0, k, s.peak);
+    if (satM && !el.classList.contains("crit")) { el.style.stroke = satColor(x); el.style.strokeOpacity = "1"; }
+    else { el.style.stroke = byTr && !satM && t !== undefined && !el.classList.contains("crit") ? TRONCAL[t].color : ""; el.style.strokeOpacity = byTr && t !== undefined ? ".8" : ""; }
+    el.classList.toggle("sat-hot", x > SAT_ALERT && (satM || sim.on)); });
+  $("#lgSat").hidden = !satM;
+  if (sim.cmode !== s.colorMode) { sim.cmode = s.colorMode; sim.buses.forEach(b => busLook(b)); }
   if (s.colorMode === "uso") s.layers.heat = true;
   lyBus.style.display = sim.on && s.layers.bus !== false ? "" : "none";
   tilesEl.style.visibility = s.layers.base === false ? "hidden" : ""; $("#lyBase").style.visibility = s.layers.base === false ? "hidden" : "";
@@ -1731,7 +1877,7 @@ function routeCompareHTML(rt, eb, compact) {
   return `<div class="big-row">${stat(`${sgn(tb - ta, fI)} min`, `de ${fI(ta)} a ${fI(tb)} min (${sgn((tb - ta) / ta * 100, fI)} %)`, tb < ta ? "good" : "")}${stat(`${f1(a.km)} → ${f1(b.km)} km`, "distancia recorrida", b.km < a.km ? "good" : "")}${stat(`${a.transfers} → ${b.transfers}`, "transbordos", b.transfers < a.transfers ? "good" : "")}${stat(`${a.eje.length} → ${b.eje.length}`, "nodos del eje central atravesados", b.eje.length < a.eje.length ? "good" : "")}</div>
     <div class="rt-cmp"><div><b class="rt-key a">Red actual</b><div class="route">${svc(a)}</div><small>${a.path.length - 1} tramos · eje central: ${eje(a)}</small></div>
     <div><b class="rt-key b">${esc(E[eb].corto)}</b><div class="route">${svc(b)}</div><small>${b.path.length - 1} tramos · eje central: ${eje(b)}</small></div></div>
-    ${compact ? "" : ""}<p class="note">Ruta más corta en km (Dijkstra) sobre el grafo de cada escenario. Transbordos: cambios entre los 114 servicios de la hoja Rutas (cada corredor nuevo cuenta como un servicio). Tiempo: km ÷ velocidad efectiva con congestión del modelo BPR (${f1(VEL[0])} km/h en la red actual y ${f1(VEL[eb])} km/h en este escenario), más ${TRANSFER_MIN} min por transbordo (supuesto ajustable en el laboratorio).</p>`;
+    ${compact ? "" : ""}<p class="note">Ruta más corta en km (Dijkstra) sobre el grafo de cada escenario. Transbordos: cambios entre los 114 servicios de la hoja Rutas (cada corredor nuevo cuenta como un servicio). Tiempo: suma tramo a tramo de km ÷ velocidad BPR estimada (t = t0·(1 + 0,15·x⁴), x = V/C estimado del tramo para la franja elegida, calibrado con el tiempo medio oficial de cada escenario), más ${TRANSFER_MIN} min por transbordo (supuesto ajustable).</p>`;
 }
 const CH = [
   { id: "inicio", cam: () => fit(allPts, { pitch: 44, rot: -12, pad: .86 }), st: { esc: 3, layers: { col: true } },
@@ -1935,7 +2081,7 @@ const PLAIN = [
   "Solo la Av. Carrera 68: una vía paralela a la NQS que descongestiona el centro, aunque los barrios del borde siguen frágiles.",
   "Las 5 conexiones entre barrios más la Av. 68: menos trancón en el centro y una red que no se parte si se cierra una estación.",
 ];
-const PEAK = { am: { u: "de la mañana", dir: "entrando al centro", d: "AM (6:00–9:00)" }, pm: { u: "de la tarde", dir: "saliendo del centro hacia los barrios", d: "PM (16:30–19:30)" } };
+const PEAK = { am: { u: "de la mañana", dir: "entrando al centro", d: "AM (6:00–9:00)" }, valle: { u: "de la mañana (no hay cifra oficial de hora valle)", dir: "en ambos sentidos", d: "AM (no hay cifra oficial de valle)" }, pm: { u: "de la tarde", dir: "saliendo del centro hacia los barrios", d: "PM (16:30–19:30)" } };
 function focusCards(id, e) {
   const n = NODE.get(id), nm = short(n.nombre), cv = E.map((_, i) => (CENT[i].get(id) || 0) * 100);
   const iso = E.map((_, i) => G[i].g.has(id) ? failInfo(i, id).iso.size / (G[i].nV - 1) * 100 : 0);
@@ -2016,7 +2162,7 @@ function closureCardHTML(rt, eb, cl) {
       ${row("new", `Con ${esc(escName(eb).toLowerCase())}`, rb, "Tampoco hay ruta en este escenario.")}
     </div>
     ${best != null && base != null ? `<p class="lead-s">${best < base ? `Ahorras <b>${fI(base - best)} min</b> frente a la mejor opción de hoy.` : best === base ? "Mismo tiempo que la mejor opción de hoy." : `Tardas ${fI(best - base)} min más que hoy.`}</p>` : base == null && best != null ? `<p class="lead-s">Hoy no tendrías cómo llegar; con ${esc(escName(eb).toLowerCase())} sí.</p>` : ""}
-    <p class="note">En el mapa: rojo discontinuo = tramo bloqueado, naranja = alternativa de hoy, verde = nueva opción. Tiempos con la velocidad promedio con trancón del modelo y ${TRANSFER_MIN} min por cada cambio de bus.</p>
+    <p class="note">En el mapa: rojo discontinuo = tramo bloqueado, naranja = alternativa de hoy, verde = nueva opción. Tiempos tramo a tramo con la congestión estimada para la franja elegida y ${TRANSFER_MIN} min por cada cambio de bus.</p>
     <button type="button" class="linkbtn" id="rtClear2">Quitar viaje</button></div>`;
 }
 function thermoHTML(title, r, cls) {
@@ -2047,6 +2193,7 @@ function renderTrip() {
   } else {
     out.innerHTML = tx(`<div class="det"><h2>${esc(short(NODE.get(rt[0]).nombre))} → ${esc(short(NODE.get(rt[1]).nombre))}</h2>${routeCompareHTML(rt, eb)}<div class="thermos">${thermoHTML(escName(0), routeInfo(0, rt[0], rt[1]), "a")}${thermoHTML(escName(eb), routeInfo(eb, rt[0], rt[1]), "b")}</div><h3 class="itin-h">Cómo llegar</h3>${stepsHTML(routeInfo(eb, rt[0], rt[1]), "Con " + escName(eb).toLowerCase(), true)}${stepsHTML(routeInfo(0, rt[0], rt[1]), "Hoy", false)}</div>`);
   }
+  out.insertAdjacentHTML("afterbegin", franjaHTML(rt, eb, cl));
   const c2 = $("#rtClear2"); if (c2) c2.onclick = () => setRoute(null);
 }
 function renderDetail() {
@@ -2299,7 +2446,7 @@ function renderAnalysis() {
         <dt>¿Por qué con los 5 corredores periféricos sube un ${f1(e1.alivio)} % la carga del centro?</dt>
         <dd>Los anillos unen portales entre sí, pero no crean una nueva entrada al centro expandido, que es hacia donde va la mayoría de viajes de la mañana. Al mejorar la accesibilidad, el modelo gravitacional capta ${fI(e1.viajes - e0.viajes)} viajes más, y esos viajes siguen entrando por la NQS y la Caracas: Paloquemao–Ricaurte pasa de ${fI(e0.carga)} a ${fI(e1.carga)} pasajeros. La Av. 68 sí abre una entrada paralela al tronco central (${sgn(e2.alivio)} %), y por eso las dos intervenciones se complementan.</dd>
         <dt>¿Cómo se calcula el ahorro del simulador de rutas?</dt>
-        <dd>Ruta más corta en km (Dijkstra) en cada escenario. Transbordos: cambios entre los 114 servicios reales de la hoja Rutas, y cada corredor nuevo cuenta como un servicio. Tiempo: km ÷ velocidad efectiva con congestión del escenario, que sale del propio modelo BPR (longitud media ÷ tiempo medio: ${f1(VEL[0])} km/h en la red actual y ${f1(VEL[3])} km/h en el integral), más un tiempo por transbordo ajustable. Los datos no traen volumen ni capacidad por tramo, así que no se aplica BPR tramo a tramo.</dd>
+        <dd>Ruta más corta en km (Dijkstra) en cada escenario. Transbordos: cambios entre los 114 servicios reales de la hoja Rutas, y cada corredor nuevo cuenta como un servicio. Tiempo: suma tramo a tramo con BPR (α = 0,15, β = 4, valores de referencia). Como los datos no traen volumen ni capacidad por tramo, el V/C de cada tramo se ESTIMA: proporcional a la fracción de trayectos que lo usan × viajes del escenario, con una escala y una velocidad libre (${f1(FLEET.v0)} km/h) ajustadas por mínimos cuadrados para reproducir el tiempo medio oficial de los 4 escenarios (error medio ${f1(FLEET.err * 100)} %). Hora valle: demanda como % ajustable del pico (supuesto, sin dato oficial). Más un tiempo por transbordo ajustable.</dd>
         <dt>¿Qué mide la centralidad?</dt>
         <dd>El porcentaje de los caminos más cortos (en km) entre todos los pares de estaciones que pasan por cada estación. Mide rutas en el grafo, no pasajeros. La media del eje central baja de ${pctC(ejeMean(0))} a ${pctC(ejeMean(3))}.</dd>
         <dt>¿Por qué no aparecen Calle 76 ni Tercer Milenio?</dt>
@@ -2476,8 +2623,9 @@ function setDev(v) {
   if (presenting) presGo(step);
 }
 $("#mUser").onclick = () => setDev(false); $("#mDev").onclick = () => setDev(true);
-const setPeak = pk => { lab.peak = pk; $("#pkAM").setAttribute("aria-pressed", pk === "am"); $("#pkPM").setAttribute("aria-pressed", pk === "pm"); apply(labState()); };
-$("#pkAM").onclick = () => setPeak("am"); $("#pkPM").onclick = () => setPeak("pm");
+const setPeak = pk => { lab.peak = pk; $("#pkAM").setAttribute("aria-pressed", pk === "am"); $("#pkVL").setAttribute("aria-pressed", pk === "valle"); $("#pkPM").setAttribute("aria-pressed", pk === "pm"); $("#valleBox").hidden = pk !== "valle"; apply(labState()); };
+$("#pkAM").onclick = () => setPeak("am"); $("#pkPM").onclick = () => setPeak("pm"); $("#pkVL").onclick = () => setPeak("valle");
+$("#valleF").oninput = ev => { FLEET.valle = +ev.target.value / 100; $("#valleV").textContent = ev.target.value + " %"; sim.peak = null; apply(labState()); };
 applyModeTexts(); $("#mUser").setAttribute("aria-pressed", !DEV); $("#mDev").setAttribute("aria-pressed", DEV);
 
 /* =====================================================================
@@ -2786,6 +2934,7 @@ function liveIngest(data) {
       color: sv && geo ? geo.color : t !== undefined ? TRONCAL[t].color : "#3E4A53",
       late: v.delay !== undefined && v.delay >= LATE_S,
       slow: (v.speed !== undefined && v.speed < SLOW_MS && v.status !== "STOPPED_AT") || /CONGESTION/.test(v.congestion || "") });
+    m.st = m.late ? "retraso" : (m.slow || satX(0, sn.k) > SAT_ALERT) ? "congestionado" : "fluido"; m.color0 = m.color; if (lab.colorMode === "sat") m.color = ST_COLOR[m.st];
     m.g.querySelector("rect").setAttribute("fill", m.color);
     m.g.dataset.tip = m.label = liveLabel(m);
   });
@@ -2937,26 +3086,32 @@ function followSvc() {
 // ---------- capa WebGL (MapLibre) de la ruta elegida ----------
 function mlLiveSetup(m) {
   m.addSource("s-svc", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+  m.addSource("s-sat", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+  m.addLayer({ id: "ml-sat-pulse", type: "line", source: "s-sat", layout: { "line-cap": "round" }, paint: { "line-color": "#D8101E", "line-width": 9, "line-opacity": .35, "line-blur": 2 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-glow", type: "line", source: "s-svc", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": 16, "line-opacity": .22, "line-blur": 4 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-line", type: "line", source: "s-svc", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": 5 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-flow", type: "line", source: "s-svc", layout: { "line-cap": "butt", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": 2.4, "line-dasharray": [0, 4, 3] } }, "ml-stations");
-  m.addLayer({ id: "ml-bus-ring", type: "circle", source: "s-bus", filter: ["==", ["get", "sv"], 1], paint: { "circle-radius": 8, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "c"], "circle-stroke-width": 2.5, "circle-stroke-opacity": .9, "circle-pitch-alignment": "map" } }, "ml-bus");
+  m.addLayer({ id: "ml-bus-ring", type: "circle", source: "live-buses", filter: ["==", ["get", "sv"], 1], paint: { "circle-radius": 8, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "c"], "circle-stroke-width": 2.5, "circle-stroke-opacity": .9, "circle-pitch-alignment": "map" } }, "ml-bus");
   m.setPaintProperty("ml-bus", "circle-stroke-color", ["match", ["get", "st"], 2, "#D8101E", 1, "#F2A007", "#ffffff"]);
   m.setPaintProperty("ml-bus", "circle-stroke-width", ["match", ["get", "st"], 0, 1.5, 3]);
   m.setPaintProperty("ml-bus", "circle-radius", ["case", ["==", ["get", "sv"], 1], 6.5, ["==", ["get", "od"], 1], 5.5, 4.5]);
 }
 function mlSvcApply() {
   [ML.map, ML.mapB].forEach(m => { if (!m || !m.getSource("s-svc")) return; const geo = LIVE.sel && svcGeo(LIVE.sel);
-    m.getSource("s-svc").setData({ type: "FeatureCollection", features: geo ? [{ type: "Feature", properties: { c: geo.color }, geometry: { type: "LineString", coordinates: geo.pts.map(unP) } }] : [] }); });
+    m.getSource("s-svc").setData({ type: "FeatureCollection", features: geo ? [{ type: "Feature", properties: { c: geo.color }, geometry: { type: "LineString", coordinates: geo.pts.map(unP) } }] : [] });
+    const hot = m === ML.map ? [...EDGE_EL].filter(([, el]) => el.classList.contains("sat-hot") && lyRed.style.display !== "none").map(([k]) => { const [a, b] = k.split("|"); return { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: [LL(a), LL(b)] } }; }) : [];
+    if (m.getSource("s-sat")) m.getSource("s-sat").setData({ type: "FeatureCollection", features: hot }); ML.hot = hot.length; });
+  svcAnimate();
 }
-const mlBusProps = b => ({ st: b.late ? 2 : b.slow ? 1 : 0, sv: LIVE.sel && b.svc === LIVE.sel ? 1 : 0 });
+const mlBusProps = b => ({ st: b.late || b.st === "retraso" ? 2 : b.slow || b.st === "congestionado" ? 1 : 0, sv: LIVE.sel && b.svc === LIVE.sel ? 1 : 0 });
 let svcRaf = 0;
 const DASH = [[0, 4, 3], [.5, 4, 2.5], [1, 4, 2], [1.5, 4, 1.5], [2, 4, 1], [2.5, 4, .5], [3, 4, 0], [0, .5, 3, 3.5], [0, 1, 3, 3], [0, 1.5, 3, 2.5], [0, 2, 3, 2], [0, 2.5, 3, 1.5], [0, 3, 3, 1], [0, 3.5, 3, .5]];
 function svcAnimate() {
-  cancelAnimationFrame(svcRaf); if (!LIVE.sel || !ML.on) return;
+  cancelAnimationFrame(svcRaf); if ((!LIVE.sel && !ML.hot) || !ML.on) return;
   let last = -1;
   const step = t => {
-    const m = ML.map; if (!LIVE.sel || !m) return;
+    const m = ML.map; if ((!LIVE.sel && !ML.hot) || !m) return;
+    if (ML.hot && m.getLayer("ml-sat-pulse")) { const g = .5 + .5 * Math.sin(t / 260); m.setPaintProperty("ml-sat-pulse", "line-opacity", .15 + .45 * g); m.setPaintProperty("ml-sat-pulse", "line-width", 7 + 6 * g); }
     const i = Math.floor(t / 55) % DASH.length;
     if (i !== last && m.getLayer("ml-svc-flow")) { m.setPaintProperty("ml-svc-flow", "line-dasharray", DASH[i]); last = i; }
     const f = (t % 1500) / 1500;
@@ -3084,7 +3239,8 @@ function mlSetup(m, side) {
     paint: { "fill-extrusion-color": "#E2E8F0", "fill-extrusion-opacity": 0.55,
       "fill-extrusion-height": ["interpolate", ["linear"], ["zoom"], 13, 0, 15, ["coalesce", ["get", "render_height"], 8]],
       "fill-extrusion-base": ["interpolate", ["linear"], ["zoom"], 13, 0, 15, ["coalesce", ["get", "render_min_height"], 0]] } }, firstSym);
-  ["upl", "heat", "edges", "corr", "route", "radio", "cols", "stations", "bus"].forEach(id => m.addSource("s-" + id, { type: "geojson", data: FC([]) }));
+  ["upl", "heat", "edges", "corr", "route", "radio", "cols", "stations"].forEach(id => m.addSource("s-" + id, { type: "geojson", data: FC([]) }));
+  m.addSource("live-buses", { type: "geojson", data: FC([]) });   // única fuente de buses: solo se actualiza con setData
   m.addLayer({ id: "ml-upl", type: "line", source: "s-upl", paint: { "line-color": "#7E8A90", "line-width": 1.1, "line-dasharray": [3, 2] } });
   m.addLayer({ id: "ml-heat", type: "line", source: "s-heat", layout: { "line-cap": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": .9 } });
   m.addLayer({ id: "ml-edges", type: "line", source: "s-edges", filter: ["!=", ["get", "d"], 1], layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"] } });
@@ -3099,7 +3255,7 @@ function mlSetup(m, side) {
   m.addLayer({ id: "ml-cols", type: "fill-extrusion", source: "s-cols", paint: { "fill-extrusion-color": ["get", "c"], "fill-extrusion-height": ["get", "h"], "fill-extrusion-base": 0, "fill-extrusion-opacity": .88 } });
   m.addLayer({ id: "ml-metro", type: "circle", source: "s-stations", filter: ["==", ["get", "metro"], 1], paint: { "circle-radius": 9.5, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": "#111", "circle-stroke-width": 1, "circle-stroke-opacity": .7 } });
   m.addLayer({ id: "ml-stations", type: "circle", source: "s-stations", paint: { "circle-radius": ["get", "r"], "circle-color": ["get", "fc"], "circle-stroke-color": ["get", "sc"], "circle-stroke-width": ["get", "sw"], "circle-opacity": ["get", "o"], "circle-stroke-opacity": ["get", "o"], "circle-pitch-alignment": "map" } });
-  m.addLayer({ id: "ml-bus", type: "circle", source: "s-bus", paint: { "circle-radius": ["case", ["==", ["get", "od"], 1], 5.5, 4.5], "circle-color": ["get", "c"], "circle-stroke-color": "#fff", "circle-stroke-width": 1.5 } });
+  m.addLayer({ id: "ml-bus", type: "circle", source: "live-buses", paint: { "circle-radius": ["case", ["==", ["get", "od"], 1], 5.5, 4.5], "circle-color": ["get", "c"], "circle-stroke-color": "#fff", "circle-stroke-width": 1.5 } });
   m.getSource("s-upl").setData(FC(D.upl.map(u => ({ type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: u.rings } }))));
 }
 const HEAT_GEO = new Map();
@@ -3185,9 +3341,9 @@ function mlApply() {
   mlCurtain();
 }
 function mlBuses() {
-  const m = ML.map; if (!m || !m.getSource("s-bus")) return;
+  const m = ML.map; if (!m || !m.getSource("live-buses")) return;
   const on = sim.on && S.layers.bus !== false;
-  m.getSource("s-bus").setData(FC(!on ? [] : sim.buses.filter(b => b.x !== undefined).map((b, i) => ({ type: "Feature", properties: { i: sim.buses.indexOf(b), c: b.color, od: b.od ? 1 : 0, ...mlBusProps(b) }, geometry: { type: "Point", coordinates: unP([b.x, b.y]) } }))));
+  m.getSource("live-buses").setData(FC(!on ? [] : sim.buses.filter(b => b.x !== undefined).map((b, i) => ({ type: "Feature", properties: { i: sim.buses.indexOf(b), c: b.color, od: b.od ? 1 : 0, ...mlBusProps(b) }, geometry: { type: "Point", coordinates: unP([b.x, b.y]) } }))));
 }
 // ---- cortina: segundo mapa sincronizado debajo del principal ----
 function mlEnsureB() {
@@ -3254,7 +3410,7 @@ function mlInit() {
 if (document.hidden) { const onVis = () => { if (!document.hidden) { document.removeEventListener("visibilitychange", onVis); mlInit(); } }; document.addEventListener("visibilitychange", onVis); }
 else mlInit();
 
-window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim };
+window.__TM = { G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim, FLEET };
 })();
 </script>
 </body>

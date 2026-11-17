@@ -148,6 +148,7 @@ function liveIngest(data) {
       color: sv && geo ? geo.color : t !== undefined ? TRONCAL[t].color : "#3E4A53",
       late: v.delay !== undefined && v.delay >= LATE_S,
       slow: (v.speed !== undefined && v.speed < SLOW_MS && v.status !== "STOPPED_AT") || /CONGESTION/.test(v.congestion || "") });
+    m.st = m.late ? "retraso" : (m.slow || satX(0, sn.k) > SAT_ALERT) ? "congestionado" : "fluido"; m.color0 = m.color; if (lab.colorMode === "sat") m.color = ST_COLOR[m.st];
     m.g.querySelector("rect").setAttribute("fill", m.color);
     m.g.dataset.tip = m.label = liveLabel(m);
   });
@@ -299,26 +300,32 @@ function followSvc() {
 // ---------- capa WebGL (MapLibre) de la ruta elegida ----------
 function mlLiveSetup(m) {
   m.addSource("s-svc", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+  m.addSource("s-sat", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+  m.addLayer({ id: "ml-sat-pulse", type: "line", source: "s-sat", layout: { "line-cap": "round" }, paint: { "line-color": "#D8101E", "line-width": 9, "line-opacity": .35, "line-blur": 2 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-glow", type: "line", source: "s-svc", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": 16, "line-opacity": .22, "line-blur": 4 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-line", type: "line", source: "s-svc", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": 5 } }, "ml-stations");
   m.addLayer({ id: "ml-svc-flow", type: "line", source: "s-svc", layout: { "line-cap": "butt", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": 2.4, "line-dasharray": [0, 4, 3] } }, "ml-stations");
-  m.addLayer({ id: "ml-bus-ring", type: "circle", source: "s-bus", filter: ["==", ["get", "sv"], 1], paint: { "circle-radius": 8, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "c"], "circle-stroke-width": 2.5, "circle-stroke-opacity": .9, "circle-pitch-alignment": "map" } }, "ml-bus");
+  m.addLayer({ id: "ml-bus-ring", type: "circle", source: "live-buses", filter: ["==", ["get", "sv"], 1], paint: { "circle-radius": 8, "circle-color": "rgba(0,0,0,0)", "circle-stroke-color": ["get", "c"], "circle-stroke-width": 2.5, "circle-stroke-opacity": .9, "circle-pitch-alignment": "map" } }, "ml-bus");
   m.setPaintProperty("ml-bus", "circle-stroke-color", ["match", ["get", "st"], 2, "#D8101E", 1, "#F2A007", "#ffffff"]);
   m.setPaintProperty("ml-bus", "circle-stroke-width", ["match", ["get", "st"], 0, 1.5, 3]);
   m.setPaintProperty("ml-bus", "circle-radius", ["case", ["==", ["get", "sv"], 1], 6.5, ["==", ["get", "od"], 1], 5.5, 4.5]);
 }
 function mlSvcApply() {
   [ML.map, ML.mapB].forEach(m => { if (!m || !m.getSource("s-svc")) return; const geo = LIVE.sel && svcGeo(LIVE.sel);
-    m.getSource("s-svc").setData({ type: "FeatureCollection", features: geo ? [{ type: "Feature", properties: { c: geo.color }, geometry: { type: "LineString", coordinates: geo.pts.map(unP) } }] : [] }); });
+    m.getSource("s-svc").setData({ type: "FeatureCollection", features: geo ? [{ type: "Feature", properties: { c: geo.color }, geometry: { type: "LineString", coordinates: geo.pts.map(unP) } }] : [] });
+    const hot = m === ML.map ? [...EDGE_EL].filter(([, el]) => el.classList.contains("sat-hot") && lyRed.style.display !== "none").map(([k]) => { const [a, b] = k.split("|"); return { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: [LL(a), LL(b)] } }; }) : [];
+    if (m.getSource("s-sat")) m.getSource("s-sat").setData({ type: "FeatureCollection", features: hot }); ML.hot = hot.length; });
+  svcAnimate();
 }
-const mlBusProps = b => ({ st: b.late ? 2 : b.slow ? 1 : 0, sv: LIVE.sel && b.svc === LIVE.sel ? 1 : 0 });
+const mlBusProps = b => ({ st: b.late || b.st === "retraso" ? 2 : b.slow || b.st === "congestionado" ? 1 : 0, sv: LIVE.sel && b.svc === LIVE.sel ? 1 : 0 });
 let svcRaf = 0;
 const DASH = [[0, 4, 3], [.5, 4, 2.5], [1, 4, 2], [1.5, 4, 1.5], [2, 4, 1], [2.5, 4, .5], [3, 4, 0], [0, .5, 3, 3.5], [0, 1, 3, 3], [0, 1.5, 3, 2.5], [0, 2, 3, 2], [0, 2.5, 3, 1.5], [0, 3, 3, 1], [0, 3.5, 3, .5]];
 function svcAnimate() {
-  cancelAnimationFrame(svcRaf); if (!LIVE.sel || !ML.on) return;
+  cancelAnimationFrame(svcRaf); if ((!LIVE.sel && !ML.hot) || !ML.on) return;
   let last = -1;
   const step = t => {
-    const m = ML.map; if (!LIVE.sel || !m) return;
+    const m = ML.map; if ((!LIVE.sel && !ML.hot) || !m) return;
+    if (ML.hot && m.getLayer("ml-sat-pulse")) { const g = .5 + .5 * Math.sin(t / 260); m.setPaintProperty("ml-sat-pulse", "line-opacity", .15 + .45 * g); m.setPaintProperty("ml-sat-pulse", "line-width", 7 + 6 * g); }
     const i = Math.floor(t / 55) % DASH.length;
     if (i !== last && m.getLayer("ml-svc-flow")) { m.setPaintProperty("ml-svc-flow", "line-dasharray", DASH[i]); last = i; }
     const f = (t % 1500) / 1500;

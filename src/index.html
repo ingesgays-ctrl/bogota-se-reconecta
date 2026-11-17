@@ -64,12 +64,12 @@
       <div class="hud-top" id="hudTop">
         <div class="hud-row">
           <div class="esc-seg" id="escList" role="radiogroup" aria-label="Escenarios"></div>
-          <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div>
+          <div class="peak" role="group" aria-label="Jornada"><button type="button" id="pkAM" aria-pressed="true">☀ Mañana · 6–9 a. m.</button><button type="button" id="pkVL" aria-pressed="false" title="Hora valle: supuesto, sin dato oficial">☁ Valle</button><button type="button" id="pkPM" aria-pressed="false">☾ Tarde · 4:30–7:30 p. m.</button></div><label class="valle-box" id="valleBox" hidden>Demanda en valle <input id="valleF" type="range" min="20" max="90" step="5" value="50"> <b id="valleV">50 %</b> <small>del pico · supuesto</small></label>
         </div>
         <div class="hud-cap" id="escCap"></div>
         <div class="hud-row">
           <div class="ac ac-top"><label for="qSearch" class="vh">Buscar estación</label><div class="ac-box"><input id="qSearch" class="sel ac-in" type="search" placeholder="Buscar estación…" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
-          <label class="cmode" for="colorMode"><span data-u="Color" data-d="Color del grafo"></span><select id="colorMode"><option value="corr">por troncal y corredor</option><option value="uso">por uso de los tramos</option></select></label>
+          <label class="cmode" for="colorMode"><span data-u="Color" data-d="Color del grafo"></span><select id="colorMode"><option value="corr">por troncal y corredor</option><option value="uso">por uso de los tramos</option><option value="sat">por saturación (V/C estimado)</option></select></label>
           <div class="dd"><button type="button" class="hud-btn" id="btnLayers" aria-expanded="false" aria-controls="layersPanel">Capas ▾</button>
             <div class="dd-panel" id="layersPanel" hidden>
           <label class="tg lay"><input type="checkbox" id="lyBusT" checked><span><b data-u="Buses en operación" data-d="Buses (simulación)"></b><small data-u="Buses de la simulación recorriendo las troncales y los viajes entre barrios." data-d="ⓘ Troncales de paradas_ordenadas.csv + pares O-D por Dijkstra; velocidad efectiva BPR del escenario."></small></span></label>
@@ -124,6 +124,7 @@
         <span id="lgCent" hidden><i class="lg-cent"></i>Rutas que pasan por ahí</span>
         <span class="lg-rt"><i class="lg-ra"></i>Viaje hoy</span><span class="lg-rt"><i class="lg-rb"></i>Viaje con la nueva red</span>
         <span class="lg-cl"><i class="lg-blk"></i>Tramo bloqueado</span><span class="lg-cl"><i class="lg-rc"></i>Alternativa de hoy</span>
+        <span id="lgSat" hidden><i class="lg-sat"></i>Saturación estimada: verde &lt; 0,6 · ámbar 0,6–0,85 · rojo &gt; 0,85 (pulsa)</span>
         <span id="lgHeat" hidden><i class="lg-h"></i>Tramos: poco usados → muy usados</span>
         <div class="lg-tr-list" id="lgTroncal"></div>
       </div>
