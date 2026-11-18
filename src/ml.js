@@ -51,10 +51,12 @@ function mlSetup(m, side) {
   m.addLayer({ id: "ml-edges-case", type: "line", source: "s-edges", filter: ["all", ["!=", ["get", "d"], 1], [">=", ["get", "w"], 3]], layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#2B3238", "line-width": ["+", ["get", "w"], 1.6], "line-opacity": ["*", 0.55, ["get", "o"]] } });
   m.addLayer({ id: "ml-edges", type: "line", source: "s-edges", filter: ["!=", ["get", "d"], 1], layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"] } });
   m.addLayer({ id: "ml-edges-dash", type: "line", source: "s-edges", filter: ["==", ["get", "d"], 1], paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["get", "o"], "line-dasharray": [2, 1.2] } });
-  m.moveLayer("ml-heat");   // el mapa de calor va encima de las troncales (que son gruesas y con borde) y debajo de los corredores
   m.addLayer({ id: "ml-corr-case", type: "line", source: "s-corr", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": ["+", ["get", "w"], 3.5], "line-opacity": ["coalesce", ["get", "o"], 1] } });
   m.addLayer({ id: "ml-corr", type: "line", source: "s-corr", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ["get", "c"], "line-width": ["get", "w"], "line-opacity": ["coalesce", ["get", "o"], 1] } });
   m.addLayer({ id: "ml-corr-hit", type: "line", source: "s-corr", paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0.01 } });
+  // orden: corredores nuevos debajo, troncales de hoy encima (en los tramos compartidos se ven las dos: la troncal al
+  // centro y el corredor como borde) y el mapa de calor encima de todo eso
+  ["ml-edges-case", "ml-edges", "ml-edges-dash", "ml-heat"].forEach(id => m.moveLayer(id));
   m.addLayer({ id: "ml-route-case", type: "line", source: "s-route", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#fff", "line-width": 10 } });
   [["a", "#4A5560", [2, 1.4], 5], ["ab", "#D8101E", [1.6, 1.2], 5], ["c", "#EF8A17", null, 5.5], ["b", "#1E7F55", null, 6.5]].forEach(([t, c, dash, w]) =>
     m.addLayer({ id: "ml-route-" + t, type: "line", source: "s-route", filter: ["==", ["get", "t"], t], layout: { "line-join": "round" }, paint: { "line-color": c, "line-width": w, ...(dash ? { "line-dasharray": dash } : {}) } }));
@@ -91,7 +93,7 @@ function mlData(side) {
     const [a, b] = k.split("|");
     return { type: "Feature", properties: { c, w, o, d }, geometry: { type: "LineString", coordinates: roadLL(a, b) || [LL(a), LL(b)] } };
   });
-  out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], o: CORR_EL[c.id].g.classList.contains("tr-off") ? .07 : 1, w: CORR_EL[c.id].ln.classList.contains("sel") ? 8 : 5.5, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "LineString", coordinates: c.coords } }));
+  out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], o: CORR_EL[c.id].g.classList.contains("tr-off") ? .07 : 1, w: CORR_EL[c.id].ln.classList.contains("sel") ? 9.5 : 7, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "LineString", coordinates: c.coords } }));
   out.heat = L || lyHeat.style.display === "none" ? [] : [...HEAT_EL].filter(([, el]) => el.style.display !== "none" && el.style.stroke).map(([k, el]) => ({ type: "Feature", properties: { c: el.style.stroke, w: numW(el.style.strokeWidth) || 3 }, geometry: { type: "LineString", coordinates: heatGeo(k) } }));
   // estaciones
   out.stations = [];
