@@ -277,6 +277,7 @@ const is3D = () => cam.pitch > 1;
 function requestDraw() { if (!raf) raf = requestAnimationFrame(draw); }
 function draw() {
   raf = 0;
+  if (lab.view === "graph") graphRotate();
   if (ML.on) { mlPushCam(); drawHud(); return; }
   const k = 2 ** (cam.z - Z0);
   camEl.style.transform = `rotateX(${cam.pitch}deg) rotateZ(${cam.rot}deg)`;
@@ -1314,9 +1315,17 @@ function setView(v) {
   lab.compare = v === "cmp"; lab.view = v === "graph" ? "graph" : "map";
   if (lab.compare) { if (lab.esc === 0) lab.esc = 3; lab.bridges = true; $("#tgBridges").checked = true; curtain = .5; }
   $("#graph").hidden = lab.view !== "graph"; $("#mapWrap").classList.toggle("graphing", lab.view === "graph");
+  ["#cam3d", "#camTop"].forEach(q => { $(q).hidden = lab.view === "graph"; });   // 3D y cenital no aplican al esquema
   if (mode === "laboratorio") apply(labState());
   if (lab.view === "graph") updateGraph();
 }
+// girar el esquema con clic derecho o Shift + arrastre (Cytoscape no gira la vista por sí solo)
+(() => { const box = $("#graph"); let rd = null;
+  box.addEventListener("contextmenu", e => e.preventDefault());
+  box.addEventListener("pointerdown", ev => { if (!(ev.button === 2 || ev.shiftKey) || !cy) return; rd = { x: ev.clientX }; cy.userPanningEnabled(false); cy.boxSelectionEnabled(false); setOrbit(false); ev.preventDefault(); }, true);
+  window.addEventListener("pointermove", ev => { if (!rd) return; cam.rot += (ev.clientX - rd.x) * 0.35; rd.x = ev.clientX; graphRotate(); });
+  window.addEventListener("pointerup", () => { if (!rd) return; rd = null; if (cy) cy.userPanningEnabled(true); requestDraw(); });
+})();
 function updateGraph() {
   if (typeof window.cytoscape !== "function") { $("#gNote").textContent = "No se pudo cargar la librería de grafos (Cytoscape) desde jsDelivr. Revisa tu conexión."; return; }
   if (!cy) {
@@ -1370,16 +1379,34 @@ function updateGraph() {
   runLayout(false);
   $("#gNote").textContent = `${gi.nV} nodos · ${gi.nE} aristas · ${gi.bridges.size} puentes${gi.ok ? " (coincide con el modelo)" : ""}`;
 }
+const GROT = { base: null, ref: 0, last: null };
+function graphBase(ref) {
+  if (!cy) return; GROT.base = new Map(); GROT.ref = ref;
+  cy.nodes().not(".bus").forEach(n => GROT.base.set(n.id(), { ...n.position() }));
+  let sx = 0, sy = 0; GROT.base.forEach(p => { sx += p.x; sy += p.y; }); GROT.c = { x: sx / GROT.base.size, y: sy / GROT.base.size };
+}
+function graphRotate() {
+  if (!cy || !GROT.base || lab.view !== "graph") return;
+  const deg = cam.rot - GROT.ref; if (GROT.last !== null && Math.abs(deg - GROT.last) < .05) return; GROT.last = deg;
+  const a = deg * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a), { x: cx, y: cy0 } = GROT.c;
+  cy.batch(() => GROT.base.forEach((p, id) => { const n = cy.getElementById(id); if (!n.length) return; const dx = p.x - cx, dy = p.y - cy0;
+    n.position({ x: cx + dx * cs - dy * sn, y: cy0 + dx * sn + dy * cs }); }));
+}
 function runLayout(animate) {
   if (!cy) return;
   $("#gGeo").setAttribute("aria-pressed", graphLayout === "geo"); $("#gTopo").setAttribute("aria-pressed", graphLayout === "topo");
   const els = cy.elements().not(".bus");
-  if (graphLayout === "geo") els.layout({ name: "preset", positions: n => { const x = NODE.get(n.id()).xy; return { x: x[0] * 1.6, y: x[1] * 1.6 }; }, animate: animate && !reduceMotion, animationDuration: 900, fit: true, padding: 30 }).run();
+  // el esquema gira con la cámara del mapa: en "Mapa real" las posiciones base son las geográficas sin girar (misma
+  // orientación que el mapa); en el esquemático se gira respecto al ángulo que tenía la cámara al calcular la disposición
+  let L;
+  if (graphLayout === "geo") L = els.layout({ name: "preset", positions: n => { const x = NODE.get(n.id()).xy; return { x: x[0] * 1.6, y: x[1] * 1.6 }; }, animate: false, fit: false });
   else {
     const hasF = !!(window.cytoscapeFcose || (cytoscape.extension && cytoscape.extension("layout", "fcose")));
-    els.layout(hasF ? { name: "fcose", quality: "proof", randomize: true, animate: animate && !reduceMotion ? "end" : false, animationDuration: 1200, nodeRepulsion: () => 6500, idealEdgeLength: () => 34, edgeElasticity: () => .55, gravity: .25, numIter: 3000, fit: true, padding: 30 }
-      : { name: "cose", animate: false, fit: true, padding: 30 }).run();
+    L = els.layout(hasF ? { name: "fcose", quality: "proof", randomize: true, animate: false, nodeRepulsion: () => 6500, idealEdgeLength: () => 34, edgeElasticity: () => .55, gravity: .25, numIter: 3000, fit: false }
+      : { name: "cose", animate: false, fit: false });
   }
+  L.one("layoutstop", () => { graphBase(graphLayout === "geo" ? 0 : cam.rot); GROT.last = null; graphRotate(); cy.fit(cy.elements().not(".bus"), 30); });
+  L.run();
 }
 
 /* =====================================================================
@@ -1676,7 +1703,7 @@ function setFollow(on) {
     if (sim.focus) { $("#simHud").hidden = false; flyTo({ ...cam, z: 14, pitch: Math.max(cam.pitch, 45) }, 600); showTip(sim.focus.label, innerWidth / 2, innerHeight / 2, false); setTimeout(() => hideTip(), 2500); } }
 }
 $("#cam3d").onclick = () => $("#t3d").click();
-$("#camAll").onclick = () => { setFollow(false); flyTo(fit(allPts, { pitch: cam.pitch > 1 ? 45 : 0, rot: cam.rot, pad: .9 }), 1000); };
+$("#camAll").onclick = () => { if (lab.view === "graph" && cy) { cy.animate({ fit: { eles: cy.elements().not(".bus"), padding: 30 } }, { duration: 600 }); return; } setFollow(false); flyTo(fit(allPts, { pitch: cam.pitch > 1 ? 45 : 0, rot: cam.rot, pad: .9 }), 1000); };
 $("#camTop").onclick = () => { const top = cam.pitch > 1; if (top) prevTilt = cam.pitch; $("#camTop").setAttribute("aria-pressed", top); flyTo({ ...cam, pitch: top ? 0 : prevTilt, rot: top ? 0 : cam.rot }, 800); };
 $("#camOrbit").onclick = () => setOrbit($("#camOrbit").getAttribute("aria-pressed") !== "true");
 $("#camFollow").onclick = () => setFollow(!follow);

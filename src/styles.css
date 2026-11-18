@@ -884,3 +884,4 @@ body.night .rep-t[aria-pressed="true"]{background:#3A1E20}
 .rep-map span{display:flex;flex-direction:column}
 .rep-map small{display:block}
 .tabs button{padding:8px 6px}
+#cam3d[hidden],#camTop[hidden]{display:none!important}
