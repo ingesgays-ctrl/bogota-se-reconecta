@@ -774,7 +774,8 @@ function apply(s = S) {
     const xy = NODE.get(s.sel.id).xy; radio.setAttribute("cx", xy[0]); radio.setAttribute("cy", xy[1]); radio.style.display = "";
   } else radio.style.display = "none";
   // color de la red: por troncal o por uso
-  const byTr = s.colorMode !== "uso";
+  // con el mapa de calor encendido las troncales van en gris delgado: el calor es lo que se debe leer
+  const byTr = s.colorMode !== "uso" && !s.layers.heat;
   const satM = s.colorMode === "sat";
   EDGE_EL.forEach((el, k) => { const t = EDGE_TR.get(k), x = satX(s.esc || 0, k, s.peak);
     if (satM && !el.classList.contains("crit")) { el.style.stroke = satColor(x); el.style.strokeOpacity = "1"; }
@@ -1369,7 +1370,7 @@ function updateGraph() {
     const cid = gi.corrEdge.get(k);
     const cls = [cid ? "corr" : "", s.bridges && gi.bridges.has(k) ? "bridge" : "", F && (F.iso.has(a) || F.iso.has(b)) && a !== lab.fail && b !== lab.fail ? "iso" : "", F && (a === lab.fail || b === lab.fail) ? "dead" : "", k === ekey(CRIT_A, CRIT_B) ? "crit" : ""].filter(Boolean).join(" ");
     const hv = s.layers.heat ? CENT[lab.esc].edges.get(k) : undefined, ht = hv === undefined ? 0 : Math.min(1, hv / EBMAX);
-    const tr = cid ? undefined : EDGE_TR.get(k), trc = tr !== undefined && s.colorMode !== "uso" ? TRONCAL[tr].color : null;
+    const tr = cid ? undefined : EDGE_TR.get(k), trc = tr !== undefined && s.colorMode !== "uso" && !s.layers.heat ? TRONCAL[tr].color : null;
     els.push({ group: "edges", data: { id: "e" + k, source: a, target: b, color: cid ? COLOR[cid] : trc || "#B8BEC2", hc: heatColor(ht), hw: 2 + 9 * ht }, classes: cls + (hv !== undefined ? " heat" : "") + (trc ? " trc" : "") });
   }));
   const prevPos = {}; cy.nodes().forEach(n => prevPos[n.id()] = { ...n.position() });
