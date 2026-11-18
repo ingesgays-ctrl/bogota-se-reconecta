@@ -52,7 +52,9 @@ const tx = h => DEV ? h : TX.reduce((acc, [re, r]) => acc.replace(re, r), h);
 function applyModeTexts() { $$("[data-u]").forEach(el => el.innerHTML = DEV ? el.dataset.d : el.dataset.u); }
 
 const COLOR = { C1: "#EF8A17", C2: "#D1495B", C3: "#A23B72", C4: "#6A4C93", C5: "#8C6D31", C6_Av68: "#2747D8" };
-const SHORT = { C1: "C1", C2: "C2", C3: "C3", C4: "C4", C5: "C5", C6_Av68: "C6 · Av. 68" };
+// Nombres de las troncales nuevas: letras de las troncales que unen (C1 Portal 80–Portal El Dorado = D Calle 80 + K Calle 26, etc.)
+const SHORT = { C1: "DK Nueva", C2: "CD Nueva", C3: "BC Nueva", C4: "HL Nueva · Usme", C5: "HL Nueva · Tunal", C6_Av68: "GB Nueva · Av. 68" };
+const COD = { C1: "DK", C2: "CD", C3: "BC", C4: "HL Usme", C5: "HL Tunal", C6_Av68: "GB · Av. 68" };   // etiqueta corta del mapa
 const PERIF = ["C1", "C2", "C3", "C4", "C5"];
 const E = D.escenarios;
 const CORR = Object.fromEntries(D.corredores.map(c => [c.id, c]));
@@ -685,7 +687,7 @@ const XF = Array.from({ length: 6 }, () => { const o = addLbl([0, 0], "xf", "", 
 const CORR_LBL = {};
 D.corredores.forEach(c => {
   const mid = c.coords[Math.floor(c.coords.length * (c.id === "C6_Av68" ? 0.55 : 0.5))];
-  const o = addLbl(P(mid[0], mid[1]), "corr-l", esc(SHORT[c.id]), null, 4);
+  const o = addLbl(P(mid[0], mid[1]), "corr-l", `<b>${esc(COD[c.id])}</b><small>Nueva</small>`, null, 4);
   o.el.firstChild.style.borderLeftColor = COLOR[c.id]; CORR_LBL[c.id] = o;
 });
 const UPL_LBL = D.upl.map(u => {
@@ -927,7 +929,7 @@ const CH = [
     html: `<div class="eyebrow"><b>4</b> Corredores periféricos · norte</div><h2>Tres anillos que conectan portales sin pasar por el centro</h2>
       <p>Los corredores se trazaron con camino mínimo (Dijkstra) sobre la malla vial arterial real del POT. Cada uno une dos portales que hoy solo se comunican a través del tronco central.</p>
       ${ejesHTML(["C1", "C2", "C3"])}
-      <p class="note">C3 rodea los Cerros de Suba y la Reserva Thomas van der Hammen por la Calle 153 y la Av. Boyacá, en vez de atravesarlos.</p>` },
+      <p class="note">${SHORT.C3} rodea los Cerros de Suba y la Reserva Thomas van der Hammen por la Calle 153 y la Av. Boyacá, en vez de atravesarlos.</p>` },
   { id: "sur", cam: () => fit(ptsOf(["C4", "C5"]), { pitch: 50, rot: 15, pad: .8 }), st: { esc: 1, only: PERIF, stagger: true, layers: { col: false } },
     html: `<div class="eyebrow"><b>5</b> Corredores periféricos · sur</div><h2>Usme y Tunal ganan una segunda salida</h2>
       <p>En el sur, dos corredores conectan Usme y Tunal con la troncal Av. Carrera 10 (Portal 20 de Julio). Juntos forman una malla que duplica las rutas de salida de esas localidades.</p>
@@ -944,7 +946,7 @@ const CH = [
       <p>Los anillos cierran ciclos entre portales y el grafo gana caminos alternativos: los puentes caen de ${e0.puentes} a ${e1.puentes} y la vulnerabilidad de Ricaurte baja de ${f1(e0.vulnerabilidad)} % a ${f1(e1.vulnerabilidad)} %.</p>
       <p>Pero los viajes de la mañana van de la periferia al centro expandido. Los corredores captan ${fI(e1.viajes - e0.viajes)} viajes más, y muchos terminan entrando por el mismo tronco. La carga en Paloquemao–Ricaurte <strong>sube a ${fI(e1.carga)} pasajeros (${sgn(e1.alivio)} %)</strong>.</p>
       <div class="big-row">${stat(`${e0.puentes} → ${e1.puentes}`, "puentes topológicos", "good")}${stat(`${f1(e0.vulnerabilidad)} → ${f1(e1.vulnerabilidad)} %`, "vulnerabilidad Ricaurte", "good")}${stat(sgn(e1.alivio) + " %", `carga Paloquemao–Ricaurte (${fI(e1.carga)} pax)`, "crit")}${stat(`${f1(e0.tiempo)} → ${f1(e1.tiempo)} min`, "tiempo medio con congestión", "good")}</div>
-      <p>En el eje central el alivio es pequeño: la centralidad de Ricaurte pasa de ${cN(0, "Ricaurte")} a ${cN(1, "Ricaurte")} y la media del eje de ${pctC(ejeMean(0))} a ${pctC(ejeMean(1))}. Lo que sí cambia es la robustez: si cae Av. Jiménez ya no se aísla ninguna estación (antes eran ${isoN(0, JIM)}), porque C4 y C5 conectan el sur con la Av. Carrera 10.</p>
+      <p>En el eje central el alivio es pequeño: la centralidad de Ricaurte pasa de ${cN(0, "Ricaurte")} a ${cN(1, "Ricaurte")} y la media del eje de ${pctC(ejeMean(0))} a ${pctC(ejeMean(1))}. Lo que sí cambia es la robustez: si cae Av. Jiménez ya no se aísla ninguna estación (antes eran ${isoN(0, JIM)}), porque ${SHORT.C4} y ${SHORT.C5} conectan el sur con la Av. Carrera 10.</p>
       <p class="note">Con Ricaurte fuera de servicio sigue aislada ${isoTxt(G[1])}: ningún corredor periférico la toca.</p>` },
   { id: "av68", cam: () => fit(ptsOf(["C6_Av68"]), { pitch: 54, rot: -30, pad: .78 }), st: { esc: 2, stagger: true, layers: { col: false, cent: true } },
     html: `<div class="eyebrow"><b>8</b> Escenario 2 · bypass transversal</div><h2>La Av. Carrera 68 descarga el tronco central</h2>
@@ -1503,7 +1505,7 @@ function renderAnalysis() {
       <li>Fuente única de indicadores: <span class="mono">comparacion_4_escenarios_congestion.csv</span>. Los archivos <span class="mono">comparacion_3_escenarios_av68.csv</span> y <span class="mono">comparacion_antes_despues.csv</span> corresponden a una versión preliminar sin congestión y no se usan.</li>
       <li>Kilómetros tomados de <span class="mono">tabla_coherencia_corredores.csv</span>. Algunas propiedades de los GeoJSON (por ejemplo, Av. 68 = 21,44 km) difieren porque se calcularon de otra forma.</li>
       <li>Los ejes viales se reconstruyeron completos; en los archivos originales estaban cortados a 120 caracteres.</li>
-      <li>Las estaciones con nombre repetido llevan el sufijo [corredor·orden], por ejemplo «Avenida Carrera 86 (Tabora) [C1·2]».</li>
+      <li>Las estaciones con nombre repetido llevan el sufijo [corredor·orden], por ejemplo «Avenida Carrera 86 (Tabora) [DK·2]».</li>
       <li>En las 14 estaciones de la Av. 68, el Área de Actividad se asignó según la UPL (Puente Aranda: industrial/productiva; Salitre: grandes servicios metropolitanos; Teusaquillo y Barrios Unidos: estructurante/proximidad), no por cruce espacial.</li>
       <li>«Ricuarte» en los archivos fuente se corrigió a «Ricaurte». Los límites UPL se simplificaron con una tolerancia de 0,0005° para que carguen rápido.</li>
       <li>El mapa base CartoDB Positron se carga cuando el entorno lo permite. En visores que bloquean imágenes externas se usa un mapa base vectorial dibujado con los polígonos UPL.</li>
@@ -1585,9 +1587,9 @@ document.addEventListener("keydown", ev => {
 });
 
 // ---- panel con pestañas ----
-const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"], live: ["#tbLive", "#paneLive"], tr: ["#tbTr", "#paneTr"] };
+const TABS = { trip: ["#tbTrip", "#paneTrip"], fail: ["#tbFail", "#paneFail"], sta: ["#tbSta", "#paneSta"], live: ["#tbLive", "#paneLive"], tr: ["#tbTr", "#paneTr"], rep: ["#tbRep", "#paneRep"] };
 let curTab = "trip";
-function setTab(t) { if (curTab === "tr" && t !== "tr") trClear(); curTab = t; Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); $(TABS[t][0]).scrollIntoView({ block: "nearest", inline: "nearest" }); syncDock(); }
+function setTab(t) { if (curTab === "tr" && t !== "tr") trClear(); curTab = t; Object.entries(TABS).forEach(([k, [b, p]]) => { $(b).setAttribute("aria-selected", k === t); $(p).hidden = k !== t; }); requestAnimationFrame(() => { const tb = $(TABS[t][0]), bar = tb.parentElement; if (tb.offsetLeft < bar.scrollLeft || tb.offsetLeft + tb.offsetWidth > bar.scrollLeft + bar.clientWidth) bar.scrollLeft = tb.offsetLeft - (bar.clientWidth - tb.offsetWidth) / 2; }); syncDock(); }
 function syncDock() { const open = !$("#lPanel").hidden; $$("#panelDock [data-dock]").forEach(b => b.setAttribute("aria-pressed", open && b.dataset.dock === curTab));
   const tp = open && curTab === "trip"; if (tp !== TRIP_OPEN) { TRIP_OPEN = tp; if (mode === "laboratorio") apply(labState()); } }
 Object.keys(TABS).forEach(k => $(TABS[k][0]).onclick = () => setTab(k));
@@ -1702,7 +1704,7 @@ function renderTicker(s) {
     { n: pm ? "Ricaurte → Paloquemao (salida)" : "Paloquemao → Ricaurte", st: prk[0], k: prk[1], v: `${fI(e.carga)} pasajeros`, d: s.esc ? sgn(e.alivio) + " %" : "" },
     node("Avenida Jiménez", "Av. Jiménez"), node("Calle 72 - Areandina", "Calle 72"), node("NQS Calle 75", "NQS Calle 75"),
     { n: "Av. Carrera 68", st: e.corredores.includes("C6_Av68") ? "En operación" : "No existe hoy", k: e.corredores.includes("C6_Av68") ? "good" : "off", v: e.corredores.includes("C6_Av68") ? "22,38 km · 14 estaciones" : "", d: "" },
-    { n: DEV ? "Corredores periféricos C1–C5" : "Conexiones entre barrios", st: e.corredores.includes("C1") ? "En operación" : "No existen hoy", k: e.corredores.includes("C1") ? "good" : "off", v: e.corredores.includes("C1") ? "37,32 km · 5 tramos" : "", d: "" },
+    { n: DEV ? "Corredores periféricos (DK, CD, BC, HL Usme, HL Tunal)" : "Conexiones entre barrios", st: e.corredores.includes("C1") ? "En operación" : "No existen hoy", k: e.corredores.includes("C1") ? "good" : "off", v: e.corredores.includes("C1") ? "37,32 km · 5 tramos" : "", d: "" },
   ];
   const head = `<span class="tk-head ${s.esc ? "fut" : ""}">${s.esc ? (DEV ? "Con mejoras · " + ESC_D[s.esc] : "Con las mejoras · " + ESC_U[s.esc]) : (DEV ? "Hoy · Esc. 0 red actual" : "Hoy · red actual")} · ${pm ? "pico tarde" : "pico mañana"}</span>`;
   $("#ticker").innerHTML = head + (typeof LIVE !== "undefined" && LIVE ? liveTickerHTML() : "") + items.map(i => `<span class="tk ${i.k}"><b>${esc(i.n)}</b><em>${esc(i.st)}</em>${i.v ? `<span>${esc(i.v)}</span>` : ""}${i.d ? `<span class="num">${esc(i.d)}</span>` : ""}</span>`).join("") + (DEV ? '<span class="tk-note">Umbrales de centralidad: ≥ 30 % muy cargado · ≥ 15 % cargado</span>' : "");
@@ -1787,5 +1789,6 @@ route();
 /*GTFSRT*/
 /*LIVE*/
 /*ML*/
+/*REPORTES*/
 window.__TM = { bprRide, freeRide, congParts, SEM, G, E, GRAPH_OK, cam, apply, lab, NODE, CENT, TOP10, EJE, ejeMean, failInfo, QUICK, ML, LIVE, sim, FLEET, EDGE_TR, TRONCAL, ROAD, routeInfo, TRIP_WHEN, whenNow };
 })();

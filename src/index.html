@@ -75,8 +75,8 @@
           <label class="tg lay"><input type="checkbox" id="lyBusT" checked><span><b data-u="Buses en operación" data-d="Buses (simulación)"></b><small data-u="Buses de la simulación recorriendo las troncales y los viajes entre barrios." data-d="ⓘ Troncales de paradas_ordenadas.csv + pares O-D por Dijkstra; velocidad efectiva BPR del escenario."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyBaseT" checked><span><b data-u="Mapa base con calles" data-d="Mapa base raster"></b><small data-u="Calles, barrios y nombres de Bogotá debajo de la red." data-d="ⓘ Esri World Light Gray; CARTO Positron si se configura una API key."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyRedT" checked><span><b data-u="Red TransMilenio actual" data-d="Red troncal actual"></b><small data-u="Las troncales y portales que funcionan hoy en Bogotá." data-d="ⓘ 143 nodos y 146 aristas de la matriz de adyacencia."></small></span></label>
-          <label class="tg lay"><input type="checkbox" id="lyPerT" checked><span><b data-u="Conexiones directas entre barrios (5 tramos)" data-d="5 corredores periféricos (C1–C5)"></b><small data-u="Enlaces directos entre portales para viajar sin ir al centro." data-d="ⓘ Selección voraz de enlaces y Dijkstra sobre la malla arterial; 37,32 km."></small></span></label>
-          <label class="tg lay"><input type="checkbox" id="lyAvT" checked><span><b data-u="Corredor Av. Carrera 68" data-d="Bypass Av. Carrera 68 (C6)"></b><small data-u="Vía rápida transversal que desahoga los trancones del centro." data-d="ⓘ Escenario contrafactual; 22,38 km (16,54 de obra nueva)."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyPerT" checked><span><b data-u="Conexiones directas entre barrios (5 tramos)" data-d="5 corredores periféricos (DK, CD, BC, HL Usme, HL Tunal)"></b><small data-u="Enlaces directos entre portales para viajar sin ir al centro." data-d="ⓘ Selección voraz de enlaces y Dijkstra sobre la malla arterial; 37,32 km."></small></span></label>
+          <label class="tg lay"><input type="checkbox" id="lyAvT" checked><span><b data-u="Corredor Av. Carrera 68" data-d="Bypass Av. Carrera 68 (GB)"></b><small data-u="Vía rápida transversal que desahoga los trancones del centro." data-d="ⓘ Escenario contrafactual; 22,38 km (16,54 de obra nueva)."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyEstT" checked><span><b data-u="Estaciones nuevas y transbordos" data-d="36 estaciones aprobadas + 11 transbordos"></b><small data-u="Puntos nuevos donde podrás subirte o cambiar de ruta." data-d="ⓘ Filtro POT (Decreto 555/2021): UPL, Áreas de Actividad, EEP ≤ 45 %, Metro ≤ 350 m."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyLoadT" checked><span><b data-u="Ricaurte: columna e información de pasajeros" data-d="Columna e información de carga Paloquemao–Ricaurte"></b><small data-u="La barra roja, la tarjeta con los pasajeros que cruzan Paloquemao–Ricaurte en hora pico y la etiqueta de Ricaurte." data-d="ⓘ Carga oficial del tramo crítico por escenario (pax, pico AM)."></small></span></label>
           <label class="tg lay"><input type="checkbox" id="lyColT"><span><b data-u="Zonas con más actividad urbana" data-d="Columnas 3D de densidad POT"></b><small data-u="Barras 3D altas = zonas con más vivienda, comercio y empleo según el POT, que necesitan rutas cercanas." data-d="ⓘ Índice de densidad POT (0,52–0,95) según el Área de Actividad."></small></span></label>
@@ -108,6 +108,7 @@
         <button type="button" data-dock="sta" aria-pressed="false" title="Ficha de una estación"><b>◉</b><small>Estación</small></button>
         <button type="button" data-dock="live" aria-pressed="false" title="Rutas y buses en vivo"><b>≋</b><small>Rutas</small></button>
         <button type="button" data-dock="tr" aria-pressed="false" title="Filtrar el mapa por troncal"><b>☷</b><small>Troncal</small></button>
+        <button type="button" data-dock="rep" aria-pressed="false" title="Reportar un problema en TransMilenio"><b>⚑</b><small>Reportar</small></button>
       </div>
       <div class="ticker" id="ticker" aria-label="Estado de los ejes principales"></div>
       <div class="map-ctrl" role="group" aria-label="Controles del mapa">
@@ -144,7 +145,7 @@
       <div class="pres-nav"><button type="button" id="presPrev" aria-label="Escena anterior">←</button><span id="presCount" class="num"></span><button type="button" id="presNext" aria-label="Escena siguiente">→</button><button type="button" id="presExit">Salir · Esc</button></div>
     </div>
     <aside class="lpanel" id="lPanel" aria-label="Panel de viaje, cierres y estación">
-      <div class="lp-head"><div class="tabs" role="tablist"><button type="button" role="tab" id="tbTrip" aria-selected="true" aria-controls="paneTrip">Planear viaje</button><button type="button" role="tab" id="tbFail" aria-selected="false" aria-controls="paneFail" data-u="Cierres" data-d="Cierres / fallas"></button><button type="button" role="tab" id="tbSta" aria-selected="false" aria-controls="paneSta">Estación</button><button type="button" role="tab" id="tbLive" aria-selected="false" aria-controls="paneLive">Rutas</button><button type="button" role="tab" id="tbTr" aria-selected="false" aria-controls="paneTr">Troncal</button></div><button type="button" class="fc-close" id="lpClose" aria-label="Ocultar panel">×</button></div>
+      <div class="lp-head"><div class="tabs" role="tablist"><button type="button" role="tab" id="tbTrip" aria-selected="true" aria-controls="paneTrip">Viaje</button><button type="button" role="tab" id="tbFail" aria-selected="false" aria-controls="paneFail" data-u="Cierres" data-d="Cierres / fallas"></button><button type="button" role="tab" id="tbSta" aria-selected="false" aria-controls="paneSta">Estación</button><button type="button" role="tab" id="tbLive" aria-selected="false" aria-controls="paneLive">Rutas</button><button type="button" role="tab" id="tbTr" aria-selected="false" aria-controls="paneTr">Troncal</button><button type="button" role="tab" id="tbRep" aria-selected="false" aria-controls="paneRep">Reportar</button></div><button type="button" class="fc-close" id="lpClose" aria-label="Ocultar panel">×</button></div>
       <div class="lp-body">
         <section id="paneTrip" role="tabpanel" aria-labelledby="tbTrip">
           <div class="quick" id="routeQuick" role="group" aria-label="Viajes de ejemplo"></div>
@@ -191,6 +192,29 @@
           <h4 class="tr-h">Troncales nuevas (POT)</h4>
           <div class="tr-list" id="trListNew" role="group" aria-label="Troncales nuevas del POT"></div>
           <button type="button" class="chip" id="trAll">Ver todas las troncales</button>
+        </section>
+        <section id="paneRep" role="tabpanel" aria-labelledby="tbRep" hidden>
+          <p class="rep-sos"><b>¿Es una emergencia?</b> Llama a la <a href="tel:123">Línea 123</a>. Este formulario no es atendido en tiempo real.</p>
+          <form id="repForm" novalidate>
+            <p class="fl">¿Qué pasó?</p>
+            <div class="rep-tipos" id="repTipos" role="group" aria-label="Tipo de reporte"></div>
+            <div class="ac"><label for="repEst" class="fl">¿En qué estación?</label><div class="ac-box"><input id="repEst" class="sel ac-in" type="search" placeholder="Escribe o elige una estación" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list"><ul class="ac-list" role="listbox" hidden></ul></div></div>
+            <button type="button" class="chip rep-sel" id="repUsarSel">Usar la estación que toqué en el mapa</button>
+            <div class="rep-2">
+              <label class="fl">Ruta (opcional)<input id="repRuta" class="sel" type="text" maxlength="12" placeholder="p. ej. B74" autocomplete="off"></label>
+              <label class="fl">¿Cuándo?<input id="repCuando" class="sel" type="datetime-local"></label>
+            </div>
+            <label class="fl" for="repTxt">Cuéntanos qué pasó</label>
+            <textarea id="repTxt" class="sel" maxlength="500" rows="4" placeholder="Describe lo que viste. No incluyas nombres, teléfonos ni otros datos personales."></textarea>
+            <small class="rep-n" id="repN">0/500</small>
+            <input id="repWeb" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" class="rep-trampa">
+            <button type="submit" class="chip on" id="repBtn">Enviar reporte</button>
+            <p class="rep-msg" id="repMsg" role="status" aria-live="polite"></p>
+          </form>
+          <label class="tg rep-map"><input type="checkbox" id="repMapa" checked><span><b>Mostrar reportes en el mapa</b><small>Número de reportes de los últimos 30 días en cada estación.</small></span></label>
+          <label class="fl dev-only">URL de la aplicación web (Apps Script)<input id="repUrlDev" class="sel" type="url" placeholder="https://script.google.com/macros/s/…/exec"></label>
+          <div class="rep-head"><h4 class="tr-h">Reportes recientes</h4><button type="button" class="chip" id="repRefrescar">Actualizar</button></div>
+          <div id="repList"></div>
         </section>
       </div>
     </aside>

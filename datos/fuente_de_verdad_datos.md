@@ -33,7 +33,7 @@ Total 59.70 km = 38.42 obra nueva + 21.28 operación compartida. C1 5.07 · C2 6
 - C6_Av68: Av. Carrera 68 → Av. Calle 100 (NQS Sur / Alquería → Autonorte / Calle 100)
 
 ## 4. Estaciones
-- Nombres repetidos se desambiguan con `[corredor·orden]`, p. ej. `Avenida Carrera 86 (Tabora) [C1·2]`.
+- Nombres repetidos se desambiguan con `[corredor·orden]`, p. ej. `Avenida Carrera 86 (Tabora) [DK·2]` (código del §13).
 - Av. 68: ficha enriquecida con UPL, índice de densidad, conexión Metro y Área de Actividad por tramo: Puente Aranda → industrial/productivo; Salitre → grandes servicios metropolitanos; Teusaquillo y Barrios Unidos → estructurante/proximidad (asignación por UPL, no por cruce espacial con `p1_area_actividad`).
 - Calle 76 y Tercer Milenio no están en la matriz de 143 estaciones: no se pueden simular.
 
@@ -121,4 +121,27 @@ Fuente: hoja `Estaciones` del Excel, color de relleno del nombre de cada estaci�
 - **"Valle" → "Hora tranquila · 9 a. m.–4:30 p. m."** en modo usuario. En modo desarrollador sigue diciendo "Valle".
 - **Planear viaje:** con un viaje elegido y la pestaña abierta, el mapa muestra solo la ruta (hoy y con la red nueva), sus estaciones, el origen con la primera ruta que se toma y cada transbordo con el cambio de ruta (p. ej. "Transbordo 1 · Portal 80 · C2 → C1"). Las troncales, corredores, buses, columnas y demás etiquetas vuelven al cambiar de pestaña, cerrar el panel o quitar el viaje.
 - **Portales:** las 9 estaciones cuyo nombre empieza por "Portal" (Norte, Tunal, Usme, Suba, 80, Sur, Américas, El Dorado y 20 de Julio) se dibujan como un cuadro oscuro con una "P" en el mapa, en el mapa vectorial, en el esquema y en la leyenda. Terminal no se marca como portal.
+
+## 13. Nombres de las troncales nuevas
+Cada corredor nuevo se nombra con las letras de las dos troncales que une (§11), más "Nueva". Los ID internos (C1–C6) no cambian; solo cambia el nombre que se muestra (`SHORT` y `COD` en `src/app.js`; `CODIGO` en `scripts/prep.py` para los sufijos de estación).
+
+| ID | Nombre | Une | Por qué |
+|---|---|---|---|
+| C1 | DK Nueva | Portal 80 – Portal El Dorado | D Calle 80 + K Calle 26 |
+| C2 | CD Nueva | Portal Suba – Portal 80 | C Suba + D Calle 80 |
+| C3 | BC Nueva | Terminal – Portal Suba | B Autopista Norte + C Suba |
+| C4 | HL Nueva · Usme | Portal Usme – Portal 20 de Julio | H Caracas Sur (Usme) + L Carrera 10 |
+| C5 | HL Nueva · Tunal | Portal Tunal – Portal 20 de Julio | H Caracas Sur (Tunal) + L Carrera 10 |
+| C6_Av68 | GB Nueva · Av. 68 | Alquería – Calle 100 | G NQS Sur + B Autopista Norte |
+
+C4 y C5 unen las mismas dos troncales (H y L), así que se distinguen por el portal de salida. En el mapa, la etiqueta muestra el código en grande y "Nueva" debajo. Los nombres de estación del CSV con "(Transbordo C3)" y similares se muestran con el código nuevo, p. ej. "(Transbordo BC)".
+
+## 14. Reportes ciudadanos (no cambian ninguna cifra del modelo)
+Pestaña "Reportar" en Explorar la red. Los tipos son: Seguridad, Accidente, Acoso, Infraestructura dañada, Bus o estación llena, Accesibilidad y Otro. El reporte lleva la estación (una de las 143 actuales), la ruta (opcional), la fecha y hora del hecho y una descripción de máximo 500 caracteres. No se piden datos personales.
+- **Destino:** una hoja de Google del administrador, a través de un Apps Script publicado como aplicación web (`datos/reportes/Codigo.gs`; configuración en `datos/reportes/INSTRUCCIONES.md`). La URL `/exec` va en `REPORTES_URL` de `src/reportes.js`. Mientras esté vacía, los reportes se guardan solo en el navegador de quien reporta.
+- **Mapa:** insignia roja con el número de reportes de los últimos 30 días en cada estación, en el mapa SVG y en el vectorial; se puede ocultar. La lista de recientes lleva a la estación con un toque.
+- **Moderación:** `publicar = no` en la hoja oculta el reporte.
+- **Protecciones:** el texto no se ejecuta como fórmula, se aceptan solo los tipos de la lista y los ID de estación del modelo, hay un límite global de 30 reportes por minuto y de 1 por minuto por navegador, y un campo oculto contra robots. Los reportes que no se pudieron enviar se reenvían cuando vuelve la conexión.
+- **Emergencias:** la pestaña remite a la Línea 123; los reportes no se atienden en tiempo real.
+- **Límite conocido:** la copia de la página publicada como artifact de claude.ai no puede conectarse con Google, porque su política de seguridad bloquea esas solicitudes. Allí los reportes quedan en el navegador.
 

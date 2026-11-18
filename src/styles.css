@@ -842,3 +842,45 @@ body.night .badge.yes{background:#183326;color:#CDEBD9}
 body.night .focus-note{background:#3A3116;color:#F3E2B0}
 /* los conectores ya son parte de una troncal: con color por troncal se dibujan continuos, no punteados */
 .edge.conn.by-tr{stroke-dasharray:none}
+/* ---- reportes ciudadanos ---- */
+.rep-sos{margin:0 0 12px;padding:9px 11px;border-radius:10px;background:#FDECEC;color:#7A0A12;font-size:13px;line-height:1.4}
+.rep-sos a{color:inherit;font-weight:700}
+.rep-tipos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.rep-t{display:flex;align-items:center;gap:7px;text-align:left;border:1.5px solid var(--line,#dde1e6);background:#fff;border-radius:10px;padding:7px 9px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;min-height:42px}
+.rep-t span{font-size:16px}
+.rep-t[aria-pressed="true"]{border-color:#C8102E;background:#FDECEC;box-shadow:inset 0 0 0 1px #C8102E}
+.rep-sel{margin:6px 0 10px;font-size:12.5px}
+.rep-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rep-2 .sel{width:100%;margin-top:4px}
+#repTxt{width:100%;resize:vertical;font:inherit;min-height:84px}
+.rep-n{display:block;text-align:right;color:var(--muted);font-size:11.5px;margin:2px 0 8px}
+.rep-trampa{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+#repBtn{width:100%}
+.rep-msg{min-height:1.2em;margin:8px 0 0;font-size:13px}
+.rep-msg.good{color:#1E7F55}.rep-msg.bad{color:#B3261E}
+.rep-map{margin:14px 0 6px}
+.rep-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.rep-aviso{font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:7px 9px}
+.rep-cs{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
+.rep-c{font-size:12px;background:var(--soft);border-radius:999px;padding:3px 9px}
+.rep-ul{list-style:none;margin:0;padding:0}
+.rep-ul button{display:flex;gap:9px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line,#e6e9ec);background:none;padding:9px 2px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer}
+.rep-ul button:hover{background:var(--soft)}
+.rep-i{font-size:17px;line-height:1.2}
+.rep-ul small{display:block;color:var(--muted);font-size:11.5px}
+.rep-d{display:block;margin-top:2px;color:var(--ink);opacity:.85}
+.mk .rep-b{display:none;pointer-events:none}
+body.rep-on .mk .rep-b{display:inline}
+body.rep-on .mk.tr-off .rep-b,body.trip-focus .mk .rep-b{display:none}
+.rep-b circle{fill:#C8102E;stroke:#fff;stroke-width:1.5}
+.rep-b text{fill:#fff;font-size:8.5px;font-weight:700;text-anchor:middle}
+body.night .rep-sos{background:#3A1E20;color:#F5C9CB}
+body.night .rep-t{background:var(--card,#1C242A)}
+body.night .rep-t[aria-pressed="true"]{background:#3A1E20}
+.lbl.corr-l span{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05;padding-top:4px;padding-bottom:4px}
+.lbl.corr-l span small{font-family:var(--f-body,inherit);font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.7}
+#repBtn{background:#C8102E;border-color:#C8102E;color:#fff;font-weight:700;min-height:44px}
+#repBtn:disabled{opacity:.6}
+.rep-map span{display:flex;flex-direction:column}
+.rep-map small{display:block}
+.tabs button{padding:8px 6px}

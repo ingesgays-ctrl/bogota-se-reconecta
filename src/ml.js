@@ -63,6 +63,9 @@ function mlSetup(m, side) {
   m.addLayer({ id: "ml-stations", type: "circle", source: "s-stations", paint: { "circle-radius": ["get", "r"], "circle-color": ["get", "fc"], "circle-stroke-color": ["get", "sc"], "circle-stroke-width": ["get", "sw"], "circle-opacity": ["get", "o"], "circle-stroke-opacity": ["get", "o"], "circle-pitch-alignment": "map" } });
   // portales: "P" sobre el círculo oscuro (con la fuente del estilo base); si el estilo no trae fuentes, un punto blanco
   const fontL = st.layers.find(l => l.type === "symbol" && l.layout && l.layout["text-font"]);
+  // reportes ciudadanos: insignia roja con el número de reportes de la estación
+  m.addLayer({ id: "ml-rep", type: "circle", source: "s-stations", filter: [">", ["get", "rep"], 0], paint: { "circle-radius": 7, "circle-color": "#C8102E", "circle-stroke-color": "#fff", "circle-stroke-width": 1.5, "circle-translate": [9, -9] } });
+  if (fontL) m.addLayer({ id: "ml-rep-t", type: "symbol", source: "s-stations", filter: [">", ["get", "rep"], 0], layout: { "text-field": ["get", "repT"], "text-font": fontL.layout["text-font"], "text-size": 9.5, "text-allow-overlap": true, "text-ignore-placement": true }, paint: { "text-color": "#fff", "text-translate": [9, -9] } });
   if (fontL) m.addLayer({ id: "ml-portal", type: "symbol", source: "s-stations", filter: ["==", ["get", "portal"], 1], layout: { "text-field": "P", "text-font": fontL.layout["text-font"], "text-size": 10.5, "text-allow-overlap": true, "text-ignore-placement": true }, paint: { "text-color": ["get", "pc"] } });
   else m.addLayer({ id: "ml-portal-dot", type: "circle", source: "s-stations", filter: ["==", ["get", "portal"], 1], paint: { "circle-radius": 2.6, "circle-color": ["get", "pc"] } });
   m.addLayer({ id: "ml-bus", type: "circle", source: "live-buses", paint: { "circle-radius": ["case", ["==", ["get", "od"], 1], 5.5, 4.5], "circle-color": ["get", "c"], "circle-stroke-color": "#fff", "circle-stroke-width": 1.5 } });
@@ -99,7 +102,8 @@ function mlData(side) {
     let p = isNew ? { r: 5.6, fc: "#FFD166", sc: "#111", sw: 1.6 } : ric ? { r: 6.5, fc: "#D8101E", sc: "#fff", sw: 2 } : por ? { r: 7.5, fc: night ? "#E3E7EA" : "#1B2A38", sc: night ? "#12181C" : "#fff", sw: 2.2 } : tr ? { r: 5.5, fc: "#2A9D8F", sc: "#0D3B36", sw: 1.4 } : { r: 3.6, fc: night ? "#1C242A" : "#fff", sc: night ? "#8A949B" : "#6C757D", sw: 1.4 };
     if (!L && cl.contains("iso") && !isNew) p = { ...p, fc: "#D8101E", sc: "#7A0A12" };
     if (!L && cl.contains("sel")) p = { ...p, sc: "#2747D8", sw: 3 };
-    out.stations.push({ type: "Feature", properties: { id, portal: por ? 1 : 0, pc: night ? "#12181C" : "#fff", ...p, o: !L && cl.contains("tr-off") ? .12 : !L && cl.contains("dead") ? .25 : 1, metro: isNew && g.querySelector(".metro") ? 1 : 0, tip: g.dataset.tip }, geometry: { type: "Point", coordinates: LL(id) } });
+    let rep = 0; try { if (!L && document.body.classList.contains("rep-on") && !cl.contains("tr-off")) rep = REP.porEst.get(id) || 0; } catch (_) { }
+    out.stations.push({ type: "Feature", properties: { id, rep, repT: rep > 9 ? "9+" : String(rep), portal: por ? 1 : 0, pc: night ? "#12181C" : "#fff", ...p, o: !L && cl.contains("tr-off") ? .12 : !L && cl.contains("dead") ? .25 : 1, metro: isNew && g.querySelector(".metro") ? 1 : 0, tip: g.dataset.tip }, geometry: { type: "Point", coordinates: LL(id) } });
   });
   // rutas O→D
   out.route = [];

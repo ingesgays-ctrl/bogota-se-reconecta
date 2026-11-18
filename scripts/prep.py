@@ -1,6 +1,8 @@
 """Preprocesado único -> data.json (fuente de verdad: claude/fuente_de_verdad_datos.md).
 Uso: python3 -I prep.py <carpeta_datos> <salida.json>
 """
+# código de cada troncal nueva: letras de las troncales que une (ver fuente de verdad §13)
+CODIGO = {"C1": "DK", "C2": "CD", "C3": "BC", "C4": "HL Usme", "C5": "HL Tunal", "C6_Av68": "GB"}
 import csv, json, math, re, sys, collections
 import openpyxl
 
@@ -126,8 +128,9 @@ cnt = collections.Counter(r["nombre_estacion"] for r in est)
 estaciones = []
 for r in est:
     cid = r["corredor_id"]; nombre = fix(r["nombre_estacion"])
+    nombre = re.sub(r"\(Transbordo (C[1-6])\)", lambda m: f"(Transbordo {CODIGO[m.group(1) if m.group(1) != 'C6' else 'C6_Av68']})", nombre)
     if cnt[r["nombre_estacion"]] > 1:
-        nombre = f"{nombre} [{cid.replace('_Av68','')}·{r['orden']}]"
+        nombre = f"{nombre} [{CODIGO[cid]}·{r['orden']}]"
     j = fix(r["justificacion_pot"]); metro = r["conexion_metro_pot"].strip()
     e = {"id": f"{cid}-{r['orden']}", "corredor": cid, "orden": int(r["orden"]), "nombre": nombre,
          "estado": r["estado_pot"], "upl": r["upl"], "lat": float(r["lat"]), "lon": float(r["lon"]),
