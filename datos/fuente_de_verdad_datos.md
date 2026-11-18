@@ -119,7 +119,7 @@ Fuente: hoja `Estaciones` del Excel, color de relleno del nombre de cada estaci�
 ## 12. Presentación (no cambia ninguna cifra)
 - **Modo noche:** botón "🌙 Noche" en la barra superior, guardado en el navegador. Oscurece paneles y textos, invierte suavemente el mapa base de teselas y pone un velo oscuro sobre el mapa vectorial (capa `ml-night`). Los colores de troncales y corredores no cambian.
 - **"Valle" → "Hora tranquila · 9 a. m.–4:30 p. m."** en modo usuario. En modo desarrollador sigue diciendo "Valle".
-- **Planear viaje:** con un viaje elegido y la pestaña abierta, el mapa muestra solo la ruta (hoy y con la red nueva), sus estaciones, el origen con la primera ruta que se toma y cada transbordo con el cambio de ruta (p. ej. "Transbordo 1 · Portal 80 · C2 → C1"). Las troncales, corredores, buses, columnas y demás etiquetas vuelven al cambiar de pestaña, cerrar el panel o quitar el viaje.
+- **Planear viaje:** con un viaje elegido y la pestaña abierta, el mapa muestra solo la ruta (hoy y con la red nueva), sus estaciones, el origen con la primera ruta que se toma y cada transbordo con el cambio de ruta (p. ej. "Transbordo 1 · Portal 80 · CD Nueva → DK Nueva"). Las troncales, corredores, buses, columnas y demás etiquetas vuelven al cambiar de pestaña, cerrar el panel o quitar el viaje.
 - **Portales:** las 9 estaciones cuyo nombre empieza por "Portal" (Norte, Tunal, Usme, Suba, 80, Sur, Américas, El Dorado y 20 de Julio) se dibujan como un cuadro oscuro con una "P" en el mapa, en el mapa vectorial, en el esquema y en la leyenda. Terminal no se marca como portal.
 
 ## 13. Nombres de las troncales nuevas
