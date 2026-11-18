@@ -93,7 +93,7 @@ function mlData(side) {
     const [a, b] = k.split("|");
     return { type: "Feature", properties: { c, w, o, d }, geometry: { type: "LineString", coordinates: roadLL(a, b) || [LL(a), LL(b)] } };
   });
-  out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], o: CORR_EL[c.id].g.classList.contains("tr-off") ? .07 : 1, w: CORR_EL[c.id].ln.classList.contains("sel") ? 9.5 : 7, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "LineString", coordinates: c.coords } }));
+  out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], o: CORR_EL[c.id].g.classList.contains("tr-off") ? .07 : 1, w: CORR_EL[c.id].ln.classList.contains("sel") ? 9.5 : 7, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "MultiLineString", coordinates: CORR_PARTS[c.id] } }));
   out.heat = L || lyHeat.style.display === "none" ? [] : [...HEAT_EL].filter(([, el]) => el.style.display !== "none" && el.style.stroke).map(([k, el]) => ({ type: "Feature", properties: { c: el.style.stroke, w: numW(el.style.strokeWidth) || 3 }, geometry: { type: "LineString", coordinates: heatGeo(k) } }));
   // estaciones
   out.stations = [];

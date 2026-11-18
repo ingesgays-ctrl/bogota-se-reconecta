@@ -1869,11 +1869,37 @@ D.red.aristas.forEach(([a, b]) => {
   EDGE_EL.set(k, el);
   EDGE_L.set(k, el.cloneNode(true)); lyRedL.appendChild(EDGE_L.get(k));
 });
-// corredores
+// corredores: donde un corredor nuevo va por encima de una troncal existente (comparte la vía), no se dibuja
+// esa parte; ahí manda el color de la troncal de hoy y el corredor se ve como continuación de ella.
+// CORR_PARTS[id] = tramos propios del corredor; CORR_SHARED[id] = tramos de la red actual que usa.
+const CORR_PARTS = {}, CORR_SHARED = {};
+(() => {
+  const kx = 111320 * Math.cos(4.65 * Math.PI / 180), ky = 110574, SHARE_M = 120, MIN_RUN = 200;
+  const segs = [];
+  D.red.aristas.forEach(([a, b]) => { const k = ekey(a, b), na = NODE.get(a), nb = NODE.get(b);
+    const c = ROAD.get(k) || [[na.lon, na.lat], [nb.lon, nb.lat]];
+    for (let i = 1; i < c.length; i++) segs.push([c[i - 1], c[i], k]); });
+  const near = p => { let best = 1e9, bk = null;
+    segs.forEach(([u, v, k]) => { const ax = (v[0] - u[0]) * kx, ay = (v[1] - u[1]) * ky, bx = (p[0] - u[0]) * kx, by = (p[1] - u[1]) * ky, L = ax * ax + ay * ay;
+      const t = L ? Math.max(0, Math.min(1, (ax * bx + ay * by) / L)) : 0, d = Math.hypot(bx - t * ax, by - t * ay); if (d < best) { best = d; bk = k; } });
+    return [best, bk]; };
+  D.corredores.forEach(c => {
+    const pts = c.coords, nr = pts.map(near), n = pts.length - 1;
+    const len = i => Math.hypot((pts[i + 1][0] - pts[i][0]) * kx, (pts[i + 1][1] - pts[i][1]) * ky);
+    const sh = Array.from({ length: n }, (_, i) => nr[i][0] < SHARE_M && nr[i + 1][0] < SHARE_M);
+    // tramos compartidos muy cortos (cruces) no cuentan
+    for (let i = 0; i < n;) { if (!sh[i]) { i++; continue; } let j = i, L = 0; while (j < n && sh[j]) L += len(j++); if (L < MIN_RUN) for (let q = i; q < j; q++) sh[q] = false; i = j; }
+    const parts = [], shared = new Set(); let cur = null;
+    for (let i = 0; i < n; i++) {
+      if (sh[i]) { cur = null; [nr[i][1], nr[i + 1][1]].forEach(k => k && shared.add(k)); continue; }
+      if (!cur) { cur = [pts[i]]; parts.push(cur); } cur.push(pts[i + 1]); }
+    CORR_PARTS[c.id] = parts.length ? parts : [pts]; CORR_SHARED[c.id] = shared;
+  });
+})();
 const CORR_EL = {};
 D.corredores.forEach(c => {
   const g = svgEl("g", { class: "corrg", "data-c": c.id }, lyCorr);
-  const d = pathD(c.coords.map(([lon, lat]) => P(lon, lat)));
+  const d = CORR_PARTS[c.id].map(pp => pathD(pp.map(([lon, lat]) => P(lon, lat)))).join("");
   const cs = svgEl("path", { d, class: "corr-case", pathLength: 1 }, g);
   const ln = svgEl("path", { d, class: "corr", stroke: COLOR[c.id], pathLength: 1 }, g);
   const hit = svgEl("path", { d, class: "hit" }, g);
@@ -1963,7 +1989,7 @@ const TR_GROUPS = (() => {
       // tramos propios + conectores + tronco compartido del mismo ramal (Tunal y Usme comparten Hortúa – Santa Lucía)
       edges: new Set(base.map(([a, b]) => ekey(a, b)).filter(k => { const j = EDGE_TR.get(k); if (j === i) return true; const [a, b] = k.split("|");
         return j !== undefined && ids.has(a) && ids.has(b) && TRONCAL[j].letra === t.letra; })) }; });
-  D.corredores.forEach(c => out.push({ key: "c:" + c.id, corr: c.id, letra: SHORT[c.id], nombre: c.nombre, color: COLOR[c.id], ids: new Set(c.path), edges: new Set(), nuevo: true }));
+  D.corredores.forEach(c => out.push({ key: "c:" + c.id, corr: c.id, letra: SHORT[c.id], nombre: c.nombre, color: COLOR[c.id], ids: new Set(c.path), edges: new Set(CORR_SHARED[c.id]), nuevo: true }));
   return out;
 })();
 var TRF = new Set();   // grupos elegidos (vacío = todas las troncales)
@@ -2100,7 +2126,7 @@ const odA = addLbl([0, 0], "od", "", null, 8), odB = addLbl([0, 0], "od", "", nu
 const XF = Array.from({ length: 6 }, () => { const o = addLbl([0, 0], "xf", "", null, 7); o.el.style.display = "none"; return o; });   // transbordos del viaje
 const CORR_LBL = {};
 D.corredores.forEach(c => {
-  const mid = c.coords[Math.floor(c.coords.length * (c.id === "C6_Av68" ? 0.55 : 0.5))];
+  const pp = CORR_PARTS[c.id].reduce((x, y) => y.length > x.length ? y : x), mid = pp[Math.floor(pp.length * (c.id === "C6_Av68" ? 0.55 : 0.5))];   // sobre su tramo propio más largo
   const o = addLbl(P(mid[0], mid[1]), "corr-l", `<b>${esc(COD[c.id])}</b><small>Nueva</small>`, null, 4);
   o.el.firstChild.style.borderLeftColor = COLOR[c.id]; CORR_LBL[c.id] = o;
 });
@@ -3892,7 +3918,7 @@ function mlData(side) {
     const [a, b] = k.split("|");
     return { type: "Feature", properties: { c, w, o, d }, geometry: { type: "LineString", coordinates: roadLL(a, b) || [LL(a), LL(b)] } };
   });
-  out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], o: CORR_EL[c.id].g.classList.contains("tr-off") ? .07 : 1, w: CORR_EL[c.id].ln.classList.contains("sel") ? 9.5 : 7, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "LineString", coordinates: c.coords } }));
+  out.corr = L ? [] : D.corredores.filter(c => CORR_EL[c.id].drawn).map(c => ({ type: "Feature", properties: { id: c.id, c: COLOR[c.id], o: CORR_EL[c.id].g.classList.contains("tr-off") ? .07 : 1, w: CORR_EL[c.id].ln.classList.contains("sel") ? 9.5 : 7, tip: CORR_EL[c.id].g.querySelector(".hit").dataset.tip }, geometry: { type: "MultiLineString", coordinates: CORR_PARTS[c.id] } }));
   out.heat = L || lyHeat.style.display === "none" ? [] : [...HEAT_EL].filter(([, el]) => el.style.display !== "none" && el.style.stroke).map(([k, el]) => ({ type: "Feature", properties: { c: el.style.stroke, w: numW(el.style.strokeWidth) || 3 }, geometry: { type: "LineString", coordinates: heatGeo(k) } }));
   // estaciones
   out.stations = [];
