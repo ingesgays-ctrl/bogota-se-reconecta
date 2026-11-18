@@ -1825,7 +1825,10 @@ window.addEventListener("pointerup", endDrag); window.addEventListener("pointerc
 mapEl.addEventListener("click", ev => { if (moved) { ev.stopPropagation(); ev.preventDefault(); moved = false; } else if (ev.target === mapEl || ev.target.closest(".tiles") || ev.target.classList.contains("upl")) { select(null); } }, true);
 mapEl.addEventListener("wheel", ev => { ev.preventDefault(); cancelAnimationFrame(flight); cam.z = Math.max(10, Math.min(16.5, cam.z - ev.deltaY * 0.0022)); requestDraw(); }, { passive: false });
 const zoomBy = d => flyTo({ ...cam, z: Math.max(10, Math.min(16.5, cam.z + d)) }, 350);
-$("#zIn").onclick = () => zoomBy(0.8); $("#zOut").onclick = () => zoomBy(-0.8);
+// en el esquema los botones + y − acercan y alejan el grafo (Cytoscape), no la cámara del mapa
+const graphZoom = f => { const r = $("#cy").getBoundingClientRect(); cy.animate({ zoom: { level: Math.max(cy.minZoom(), Math.min(cy.maxZoom(), cy.zoom() * f)), renderedPosition: { x: r.width / 2, y: r.height / 2 } } }, { duration: 250 }); };
+$("#zIn").onclick = () => lab.view === "graph" && cy ? graphZoom(1.5) : zoomBy(0.8);
+$("#zOut").onclick = () => lab.view === "graph" && cy ? graphZoom(1 / 1.5) : zoomBy(-0.8);
 $("#t3d").onclick = () => flyTo({ ...cam, pitch: is3D() ? 0 : 48 }, 700);
 $("#rotL").onclick = () => flyTo({ ...cam, rot: cam.rot - 30 }, 500);
 $("#rotR").onclick = () => flyTo({ ...cam, rot: cam.rot + 30 }, 500);
@@ -2725,7 +2728,7 @@ function updateGraph() {
   if (typeof window.cytoscape !== "function") { $("#gNote").textContent = "No se pudo cargar la librería de grafos (Cytoscape) desde jsDelivr. Revisa tu conexión."; return; }
   if (!cy) {
     try { if (window.cytoscapeFcose) cytoscape.use(window.cytoscapeFcose); } catch (_) { }
-    cy = cytoscape({ container: $("#cy"), minZoom: .2, maxZoom: 5,
+    cy = window.__cy = cytoscape({ container: $("#cy"), minZoom: .15, maxZoom: 6, wheelSensitivity: 3,   // la rueda por defecto acerca ~4 % por paso: casi no se nota
       style: [
         { selector: "node", style: { width: 7, height: 7, "background-color": "#fff", "border-width": 1.5, "border-color": "#6C757D" } },
         { selector: "node.new", style: { width: 11, height: 11, "background-color": "#FFD166", "border-color": "#111" } },
